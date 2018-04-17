@@ -10,5 +10,11 @@ module.exports = {
       }
     ],
     '@neutrinojs/jest'
-  ]
+  ],
+  options: {
+    mains: {
+      index: 'index',
+      go: 'go'
+    }
+  }
 };
