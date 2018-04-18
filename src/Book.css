@@ -1,0 +1,15 @@
+.Book {
+  width: 80%;
+  height: 80%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  color: black;
+  border: 1px solid #333333;
+  margin: auto;
+  font-size: 15px;
+  padding: .5em;
+}
