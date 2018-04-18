@@ -15,7 +15,8 @@
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-hot-loader": "^4.0.1"
+    "react-hot-loader": "^4.0.1",
+    "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git"
   },
   "devDependencies": {
     "@neutrinojs/airbnb": "^8.2.2",
