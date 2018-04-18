@@ -9,6 +9,12 @@ module.exports = {
         }
       }
     ],
+    [
+      '@neutrinojs/dev-server',
+      {
+        https: true
+      }
+    ],
     '@neutrinojs/jest'
   ],
   options: {
