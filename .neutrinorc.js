@@ -12,7 +12,10 @@ module.exports = {
     [
       '@neutrinojs/dev-server',
       {
-        https: true
+        https: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
       }
     ],
     '@neutrinojs/jest'
