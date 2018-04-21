@@ -15,6 +15,9 @@ module.exports = {
         https: true,
         headers: {
           'Access-Control-Allow-Origin': '*'
+        },
+        proxy: {
+          "/api": "http://localhost:8585/"
         }
       }
     ],
