@@ -3,13 +3,13 @@ import './App.css';
 
 export default class App extends Component {
   state = {
-    name: 'smq-web',
+    name: 'Semiquaver',
   };
 
   render() {
     return (
       <div className="App">
-        <h1>Welcome to {this.state.name}</h1>
+        <h1>{this.state.name}</h1>
       </div>
     );
   }
