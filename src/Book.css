@@ -26,3 +26,7 @@
   color: black;
   cursor: auto;
 }
+
+.Book input[type=text] {
+  width: 22em;
+}
