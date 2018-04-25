@@ -14,7 +14,9 @@ module.exports = {
       {
         https: true,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': 'https://maimai-net.com',
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Credentials': 'true'
         },
         proxy: {
           "/api": "http://localhost:8585/"
