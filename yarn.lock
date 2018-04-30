@@ -7792,7 +7792,7 @@ selfsigned@^1.9.1:
 
 "semiquaver-parser@https://github.com/semiquaver-moe/parser.git":
   version "0.0.1"
-  resolved "https://github.com/semiquaver-moe/parser.git#34808ba49a9331181b91af9a662be37a8dbacb2f"
+  resolved "https://github.com/semiquaver-moe/parser.git#1d85a2a96bd5787c80c17780e5bde3ef90292d9a"
   dependencies:
     react-native-cheerio "^1.0.0-rc.4"
 
