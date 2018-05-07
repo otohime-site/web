@@ -1,6 +1,16 @@
 module.exports = {
   use: [
-    '@neutrinojs/airbnb',
+    ['@neutrinojs/airbnb',
+      {
+        eslint: {
+          rules: {
+            'jsx-a11y/anchor-is-valid': [ "error", {
+              "specialLink": [ "to" ],
+            }]
+          }
+        }
+      }
+    ],
     [
       '@neutrinojs/react',
       {
