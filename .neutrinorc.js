@@ -6,7 +6,8 @@ module.exports = {
       {
         html: {
           title: 'Semiquaver'
-        }
+        },
+        publicPath: "/"
       }
     ],
     [
