@@ -18,6 +18,7 @@ export default class Player extends Component {
     for (let i = 0; i < songList.length; i += 1) {
       scores.set(songList[i].id, { ...songList[i], difficulties: new Array(6) });
     }
+    this.setState({ scores });
 
     const res = await fetch(`https://localhost:5000/api/mai/${this.props.match.params.nickname}`);
     const result = await res.json();
@@ -34,7 +35,7 @@ export default class Player extends Component {
       rows.push((
         /* eslint-disable-next-line react/no-array-index-key */
         <tr key={key}>
-          <td>{scores.name}</td>
+          <td className="song-name">{scores.name}</td>
           { scores.difficulties.map((score, i) => (
             (score) ? (
               <td

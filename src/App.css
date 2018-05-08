@@ -30,27 +30,33 @@ h1 {
   text-transform: uppercase;
 }
 
+.player-scores .song-name {
+  height: 2.5em;
+}
+
 .player-scores .difficulty-0 {
+  width: 5.5em;
   background: #F0FFFF;
 }
 .player-scores .difficulty-1 {
+  width: 5.5em;
   background: #FFFFF0;
 }
 .player-scores .difficulty-2 {
+  width: 5.5em;
   background: #FFFAF0;
 }
 .player-scores .difficulty-3 {
+  width: 5.5em;
   background: #FFF0F0;
 }
 .player-scores .difficulty-4 {
+  width: 5.5em;
   background: #FAF0FA;
 }
 .player-scores .difficulty-5 {
-  background: #FAF0FA;
-}
-.player-scores .score {
   width: 5.5em;
-  height: 2.5em;
+  background: #FAF0FA;
 }
 
 .player-name {
