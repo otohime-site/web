@@ -4,8 +4,8 @@ import Class from './Class';
 import Flags from './Flags';
 
 export default class Player extends Component {
-  propTypes = {
-    match: PropTypes.shape({ params: { nickname: PropTypes.string } }),
+  static propTypes = {
+    match: PropTypes.shape({ params: { nickname: PropTypes.string } }).isRequired,
   };
   state = {
     record: {},
@@ -18,9 +18,8 @@ export default class Player extends Component {
     for (let i = 0; i < songList.length; i += 1) {
       scores.set(songList[i].id, { ...songList[i], difficulties: new Array(6) });
     }
-    console.log(scores); // eslint-disable-line no-console
 
-    const res = await fetch(`https://localhost:5000/api/mai/${this.props.match.params.nickname}`); // eslint-disable-line react/prop-types
+    const res = await fetch(`https://localhost:5000/api/mai/${this.props.match.params.nickname}`);
     const result = await res.json();
 
     for (let i = 0; i < result.scores.length; i += 1) {
