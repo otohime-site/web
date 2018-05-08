@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import Player from './laundry/Player';
+import Player from './laundry/components/Player';
 import './App.css';
 
 export default function App() {
