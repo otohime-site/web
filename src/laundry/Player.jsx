@@ -2,6 +2,7 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import Class from './Class';
 import Flags from './Flags';
+import './Player.css';
 
 export default class Player extends Component {
   static propTypes = {
