@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Class from './Class';
 import Flags from './Flags';
 import { getPlayer, getSongs } from '../actions';
@@ -72,6 +73,7 @@ class Player extends Component {
           <Class rawClass={this.props.record.class} />
           <p className="player-title">{this.props.record.title}</p>
           <p className="player-rating">Rating {this.props.record.rating} (Max {this.props.record.max_rating})</p>
+          <Link to={`/mai/${this.props.match.params.nickname}/timelines`}>Histories</Link>
         </div>
         <table className="player-scores">
           <thead>

@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import Player from './laundry/components/Player';
+import Laundry from './laundry/components/Laundry';
 import './App.css';
 
 export default function App() {
@@ -7,7 +7,7 @@ export default function App() {
     <div className="App">
       <h1>Semiquaver</h1>
       <div>
-        <Route path="/mai/:nickname" component={Player} />
+        <Route path="/mai" component={Laundry} />
       </div>
     </div>
   );
