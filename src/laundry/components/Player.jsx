@@ -1,62 +1,77 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
+import { connect } from 'react-redux';
 import Class from './Class';
 import Flags from './Flags';
+import { getPlayer, getSongs } from '../actions';
 import './Player.css';
 
-export default class Player extends Component {
+class Player extends Component {
   static propTypes = {
     match: PropTypes.shape({ params: { nickname: PropTypes.string } }).isRequired,
+    getPlayer: PropTypes.func.isRequired,
+    getSongs: PropTypes.func.isRequired,
+    record: PropTypes.shape({
+      card_name: PropTypes.string,
+      class: PropTypes.string,
+      title: PropTypes.string,
+      rating: PropTypes.number,
+      max_rating: PropTypes.number,
+    }),
+    scores: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
+      flag: PropTypes.string.isRequired,
+      score: PropTypes.number.isRequired,
+    }))),
+    songs: PropTypes.arrayOf(PropTypes.shape({
+      category: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })),
   };
-  state = {
+  static defaultProps = {
     record: {},
-    scores: new Map(),
+    scores: {},
+    songs: [],
   };
   componentDidMount = async () => {
-    const songRes = await fetch('https://localhost:5000/api/mai/songs');
-    const songList = await songRes.json();
-    const scores = new Map();
-    for (let i = 0; i < songList.length; i += 1) {
-      scores.set(songList[i].id, { ...songList[i], difficulties: new Array(6) });
-    }
-    this.setState({ scores });
-
-    const res = await fetch(`https://localhost:5000/api/mai/${this.props.match.params.nickname}`);
-    const result = await res.json();
-
-    for (let i = 0; i < result.scores.length; i += 1) {
-      const score = result.scores[i];
-      scores.get(score.song_id).difficulties[score.difficulty] = score;
-    }
-    this.setState({ record: result.record, scores });
+    this.props.getSongs();
+    this.props.getPlayer(this.props.match.params.nickname);
   };
   render() {
-    const rows = [];
-    this.state.scores.forEach((scores, key) => {
-      rows.push((
-        /* eslint-disable-next-line react/no-array-index-key */
-        <tr key={key}>
-          <td className="song-name">{scores.name}</td>
-          { scores.difficulties.map((score, i) => (
-            (score) ? (
+    const rows = this.props.songs.map((song) => {
+      const scoresOutput = [];
+      if (this.props.scores[song.id]) {
+        const scores = this.props.scores[song.id];
+        for (let i = 0; i < scores.length; i += 1) {
+          if (scores[i]) {
+            const score = scores[i];
+            scoresOutput.push((
               <td
                 className={`difficulty-${i} score`}
                 style={{
                 textAlign: 'right',
                 }}
               >{ (score.score > 0) ? `${score.score.toFixed(2)}%` : '' } <Flags rawFlags={score.flag} />
-              </td>) : (<td />)
-          ))}
+              </td>
+            ));
+          } else {
+            scoresOutput.push((<td />));
+          }
+        }
+      }
+      return (
+        <tr key={song.id}>
+          <td className="song-name">{song.name}</td>
+          { scoresOutput }
         </tr>
-      ));
+      );
     });
     return (
       <div>
         <div className="player-info">
-          <h3 className="player-name">{this.state.record.card_name}</h3>
-          <Class rawClass={this.state.record.class} />
-          <p className="player-title">{this.state.record.title}</p>
-          <p className="player-rating">Rating {this.state.record.rating} (Max {this.state.record.max_rating})</p>
+          <h3 className="player-name">{this.props.record.card_name}</h3>
+          <Class rawClass={this.props.record.class} />
+          <p className="player-title">{this.props.record.title}</p>
+          <p className="player-rating">Rating {this.props.record.rating} (Max {this.props.record.max_rating})</p>
         </div>
         <table className="player-scores">
           <thead>
@@ -78,3 +93,20 @@ export default class Player extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  record: state.laundry.record,
+  scores: state.laundry.scores,
+  songs: state.laundry.songs,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getPlayer: (nickname) => {
+    dispatch(getPlayer(nickname));
+  },
+  getSongs: () => {
+    dispatch(getSongs());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
