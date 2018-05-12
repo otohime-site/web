@@ -5,7 +5,7 @@ import Timeline from './Timeline';
 export default function Laundry() {
   return (
     <div>
-      <Route path="/mai/:nickname/timelines" component={Timeline} />
+      <Route path="/mai/:nickname/timeline" component={Timeline} />
       <Route exact path="/mai/:nickname" component={Player} />
     </div>
   );

@@ -3,7 +3,7 @@ import './Flags.css';
 
 export default function Flags({ rawFlags }) {
   return (
-    <div>
+    <span className="flags">
       {rawFlags.split('|').map((flag) => {
         switch (flag) {
           case 'fc_silver':
@@ -18,7 +18,7 @@ export default function Flags({ rawFlags }) {
             return (<span>&nbsp;</span>);
         }
       })}
-    </div>
+    </span>
   );
 }
 

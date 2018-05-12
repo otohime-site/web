@@ -1,9 +1,8 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Class from './Class';
-import Flags from './Flags';
+import Score from './Score';
+import Record from './Record';
 import { getPlayer, getSongs } from '../actions';
 import './Player.css';
 
@@ -34,7 +33,9 @@ class Player extends Component {
     songs: [],
   };
   componentDidMount = async () => {
-    this.props.getSongs();
+    if (this.props.songs.length === 0) {
+      this.props.getSongs();
+    }
     this.props.getPlayer(this.props.match.params.nickname);
   };
   render() {
@@ -47,11 +48,11 @@ class Player extends Component {
             const score = scores[i];
             scoresOutput.push((
               <td
-                className={`difficulty-${i} score`}
+                className={`difficulty-${i}`}
                 style={{
                 textAlign: 'right',
                 }}
-              >{ (score.score > 0) ? `${score.score.toFixed(2)}%` : '' } <Flags rawFlags={score.flag} />
+              ><Score score={score} />
               </td>
             ));
           } else {
@@ -68,13 +69,7 @@ class Player extends Component {
     });
     return (
       <div>
-        <div className="player-info">
-          <h3 className="player-name">{this.props.record.card_name}</h3>
-          <Class rawClass={this.props.record.class} />
-          <p className="player-title">{this.props.record.title}</p>
-          <p className="player-rating">Rating {this.props.record.rating} (Max {this.props.record.max_rating})</p>
-          <Link to={`/mai/${this.props.match.params.nickname}/timelines`}>Histories</Link>
-        </div>
+        <Record record={this.props.record} />
         <table className="player-scores">
           <thead>
             <tr>
