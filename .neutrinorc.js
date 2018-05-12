@@ -31,6 +31,12 @@ module.exports = {
         },
         proxy: {
           "/api": "http://localhost:8585/"
+        },
+        historyApiFallback: {
+          rewrites: [{
+            from: '^\/mai\/.*$',
+            to: '/index.html'
+          }]
         }
       }
     ],
