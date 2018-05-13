@@ -23,6 +23,7 @@ class Timeline extends Component {
   render() {
     return (
       <div>
+        <Link to={encodeURI(`/mai/${this.props.match.params.nickname}`)}>&lt; Back</Link>
         <ul>
           {this.props.timeline.map(time => (
             <li key={time}><Link to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(new Date(Math.floor(time * 1000))).toString()}</Link></li>

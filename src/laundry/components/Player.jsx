@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Score from './Score';
 import Record from './Record';
 import { getPlayer, getSongs } from '../actions';
@@ -70,6 +71,7 @@ class Player extends Component {
     return (
       <div>
         <Record record={this.props.record} />
+        <Link to={`/mai/${this.props.match.params.nickname}/timeline`}>Timeline</Link>
         <table className="player-scores">
           <thead>
             <tr>
