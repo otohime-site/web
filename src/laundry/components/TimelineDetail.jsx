@@ -40,6 +40,11 @@ class TimelineDetail extends Component {
     }
     this.props.getTimelineDetail(this.props.match.params.nickname, this.props.match.params.time);
   };
+  componentDidUpdate(prevProps) {
+    if (prevProps.match !== this.props.match) {
+      this.props.getTimelineDetail(this.props.match.params.nickname, this.props.match.params.time);
+    }
+  }
   render() {
     const beforeRecord = this.props.timelineDetailRecords[0];
     const afterRecord = this.props.timelineDetailRecords[1];
