@@ -48,9 +48,20 @@
   display: block;
 }
 
+.player-record {
+  margin: 0;
+  vertical-align: middle;
+}
+.player-options {
+  font-size: 80%;
+  margin: 10px 0;
+}
+
 .player-name {
   display: inline-block;
   margin: 0 1em 0 0;
+  font-weight: bold;
+  font-size: 120%;
 }
 
 .player-class {

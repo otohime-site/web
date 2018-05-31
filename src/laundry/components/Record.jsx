@@ -2,8 +2,11 @@ import PropTypes from 'prop-types';
 import Class from './Class';
 
 export default function Record({ record }) {
+  if (!record.card_name) {
+    return <div className="player-record" />;
+  }
   return (
-    <div className="player-info">
+    <div className="player-record">
       <p className="player-name">{record.card_name}</p>
       <Class rawClass={record.class} />
       <p className="player-title">{record.title}</p>

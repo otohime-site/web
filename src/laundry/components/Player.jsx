@@ -71,7 +71,7 @@ class Player extends Component {
     return (
       <div>
         <Record record={this.props.record} />
-        <Link to={`/mai/${this.props.match.params.nickname}/timeline`}>Timeline</Link>
+        <p className="player-options"><Link to={`/mai/${this.props.match.params.nickname}/timeline`} className="btn">歷史紀錄</Link></p>
         <table className="player-scores">
           <thead>
             <tr>
