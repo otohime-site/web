@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import parser from 'semiquaver-parser/laundry';
 import './Book.css';
+import host from './host';
 
 export default class Book extends Component {
   state = {
@@ -18,7 +19,7 @@ export default class Book extends Component {
       nickname: this.state.newNickname,
       privacy: 'public',
     };
-    await fetch('https://localhost:5000/api/mai/new', {
+    await fetch(`https://${host}/api/mai/new`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
@@ -28,7 +29,7 @@ export default class Book extends Component {
   };
   handleGetNicknames = async () => {
     let loggedIn = false;
-    const res = await fetch('https://localhost:5000/api/mai/me', {
+    const res = await fetch(`https://${host}/api/mai/me`, {
       credentials: 'include',
     });
     if (!res.ok) {
@@ -47,7 +48,7 @@ export default class Book extends Component {
     try {
       const result = await parser(this.handleProgress); // eslint-disable-line no-unused-vars
       result.icon = 'na';
-      await fetch(`https://localhost:5000/api/mai/${this.state.nickname}`, {
+      await fetch(`https://${host}/api/mai/${this.state.nickname}`, {
         method: 'POST',
         body: JSON.stringify(result),
         headers: { 'Content-Type': 'application/json' },
@@ -81,7 +82,7 @@ export default class Book extends Component {
       return (
         <div className="Book">
           <h3>Updater</h3>
-          <a href="https://localhost:5000/api/connect/facebook" rel="noopener noreferrer" target="_blank">Log in </a>
+          <a href={`https://${host}/api/connect/facebook`} rel="noopener noreferrer" target="_blank">Log in </a>
         </div>);
     }
     return (
