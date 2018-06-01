@@ -6,7 +6,7 @@
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "neutrino build",
+    "build": "neutrino build && node build-bookmarklet.js",
     "start": "neutrino start",
     "lint": "neutrino lint",
     "test": "neutrino test"
