@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Rancho');
 
+@font-face {
+  font-family: 'Gen Jyuu Gothic P Heavy';
+  src: url('/static/genjyuu.ttf');
+}
+
 body {
   margin: 0;
   padding: 0;
