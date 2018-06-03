@@ -58,6 +58,7 @@
 }
 
 .player-name {
+  font-family: 'Gen Jyuu Gothic Heavy';
   display: inline-block;
   margin: 0 1em 0 0;
   font-weight: bold;
@@ -65,9 +66,10 @@
 }
 
 .player-class {
+  font-family: 'Gen Jyuu Gothic Heavy';
+  font-size: 125%;
   display: inline-block;
   margin-right: 1em;
-  font-size: 15px;
   font-weight: bold;
 }
 
