@@ -12,6 +12,10 @@ export default class Book extends Component {
     myNicknames: [],
   };
   componentDidMount = async () => {
+    if (document.location.href.indexOf('https://maimai-net.com/') !== 0) {
+      alert('請使用 Bookmarklet 形式觸發，並確定已經連上對應網站。'); // eslint-disable-line no-alert
+      return;
+    }
     this.handleGetNicknames();
   };
   handleAddNickname = async () => {
@@ -73,6 +77,11 @@ export default class Book extends Component {
   };
 
   render() {
+    if (document.location.href.indexOf('https://maimai-net.com/') !== 0) {
+      return (
+        <div />
+      );
+    }
     const radios = [];
     for (let i = 0; i < this.state.myNicknames.length; i += 1) {
       const nickname = this.state.myNicknames[i];
