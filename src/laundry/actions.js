@@ -1,3 +1,4 @@
+export const GET_ME = 'laundry/GET_ME';
 export const GET_SONGS = 'laundry/GET_SONGS';
 export const GET_PLAYER = 'laundry/GET_PLAYER';
 export const GET_TIMELINE = 'laundry/GET_TIMELINE';
@@ -12,6 +13,11 @@ const fetchPayload = url => (
     return res.json();
   }
 );
+
+export const getMe = () => ({
+  type: GET_ME,
+  payload: fetchPayload('/api/mai/me'),
+});
 
 export const getSongs = () => ({
   type: GET_SONGS,

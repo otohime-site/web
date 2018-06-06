@@ -1,7 +1,13 @@
-import { GET_PLAYER, GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL } from './actions';
+import { GET_ME, GET_PLAYER, GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL } from './actions';
 
 export default function laundryReducers(state = {}, action) {
   switch (action.type) {
+    case `${GET_ME}_FULFILLED`:
+      return { ...state, loggedIn: true, me: action.payload };
+
+    case `${GET_ME}_REJECTED`:
+      return { ...state, loggedIn: false, me: action.payload };
+
     case `${GET_PLAYER}_FULFILLED`: {
       const { record } = action.payload;
       const rawScores = action.payload.scores;
