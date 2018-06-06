@@ -26,7 +26,7 @@ class Timeline extends Component {
         <Link to={encodeURI(`/mai/${this.props.match.params.nickname}`)} className="btn">&lt; Back</Link>
         <ul>
           {this.props.timeline.map(time => (
-            <li key={time}><Link to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(new Date(Math.floor(time * 1000))).toString()}</Link></li>
+            <li key={time}><Link to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(new Date(time).toString())}</Link></li>
           ))}
         </ul>
         <div>
