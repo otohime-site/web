@@ -30,3 +30,17 @@
 .Book input[type=text] {
   width: 22em;
 }
+
+.Book a {
+  color: #333333;
+}
+
+.Book a.btn {
+  display: inline-block;
+  border: 1px solid #999999;
+  color: #333333;
+  padding: 5px 20px;
+  text-decoration: none;
+  background: #FAFAFA;
+  border-radius: 10px;
+}

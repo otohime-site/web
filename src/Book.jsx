@@ -17,6 +17,8 @@ export default class Book extends Component {
       return;
     }
     this.handleGetNicknames();
+    this.boundHandleGetNicknames = this.handleGetNicknames.bind(this);
+    window.addEventListener('focus', this.boundHandleGetNicknames, false);
   };
   handleAddNickname = async () => {
     const body = {
@@ -46,6 +48,7 @@ export default class Book extends Component {
     for (let i = 0; i < results.length; i += 1) {
       myNicknames.push(results[i].nickname);
     }
+    window.removeEventListener('focus', this.boundHandleGetNicknames, false);
     this.setState({ loggedIn, myNicknames });
   };
   handleUpdate = async () => {
@@ -85,26 +88,33 @@ export default class Book extends Component {
     const radios = [];
     for (let i = 0; i < this.state.myNicknames.length; i += 1) {
       const nickname = this.state.myNicknames[i];
-      radios.push(<p key={nickname}><input type="radio" name="nickname" value={nickname} onChange={this.handleRadioChange} /> {nickname}</p>);
+      radios.push((
+        <p key={nickname}>
+          <input type="radio" name="nickname" value={nickname} onChange={this.handleRadioChange} />
+          <a href={`https://${host}/mai/${nickname}`} rel="noopener noreferrer" target="_blank">{nickname}</a>
+        </p>));
     }
     if (!this.state.loggedIn) {
       return (
-        <div className="Book">
+        <div className="Book" lang="zh-TW">
           <h3>Updater</h3>
-          <a href={`https://${host}/api/connect/facebook`} rel="noopener noreferrer" target="_blank">Log in </a>
+          <p>請先以 Facebook 帳號登入 Semiquaver 以使用服務。</p>
+          <p>您的 Facebook 帳號將僅用於使用者認證，Semiquaver 團隊保證不會將您的 Facebook 帳號挪作他用或透漏給任何人。</p>
+          <a className="btn" href={`https://${host}/api/connect/facebook`} rel="noopener noreferrer" target="_blank">登入</a>
         </div>);
     }
     return (
-      <div className="Book">
+      <div className="Book" lang="zh-TW">
         <h3>Updater</h3>
-        <p>Nickname:</p>
+        <p>請選擇要更新的成績單：</p>
         { radios }
         <p>
           <button onClick={this.handleUpdate} disabled={!this.state.nickname}>Update</button>
           <progress value={this.state.progress} max="100" />
         </p>
         <hr />
-        <p>New Nickname:</p>
+        <h3>建立新的成績單</h3>
+        <p>請輸入暱稱：</p>
         <p>
           <input type="text" onChange={this.handleNewNicknameChange} />
           <button onClick={this.handleAddNickname} disabled={!this.state.newNickname}>Add</button>
