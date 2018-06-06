@@ -33,12 +33,17 @@ class Player extends Component {
     scores: {},
     songs: [],
   };
-  componentDidMount = async () => {
+  componentDidMount() {
     if (this.props.songs.length === 0) {
       this.props.getSongs();
     }
     this.props.getPlayer(this.props.match.params.nickname);
-  };
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.match !== this.props.match) {
+      this.props.getPlayer(this.props.match.params.nickname);
+    }
+  }
   render() {
     const rows = this.props.songs.map((song) => {
       const scoresOutput = [];

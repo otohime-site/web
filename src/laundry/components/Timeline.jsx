@@ -17,9 +17,14 @@ class Timeline extends Component {
   static defaultProps = {
     timeline: [],
   }
-  componentDidMount = async () => {
+  componentDidMount() {
     this.props.getTimeline(this.props.match.params.nickname);
-  };
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.match !== this.props.match) {
+      this.props.getTimeline(this.props.match.params.nickname);
+    }
+  }
   render() {
     return (
       <div>
