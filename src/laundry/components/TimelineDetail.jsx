@@ -73,7 +73,7 @@ class TimelineDetail extends Component {
       );
     });
     return (
-      <table>
+      <table lang="ja">
         <thead>
           <tr>
             <th>What</th>

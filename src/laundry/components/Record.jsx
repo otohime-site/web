@@ -6,7 +6,7 @@ export default function Record({ record }) {
     return <div className="player-record" />;
   }
   return (
-    <div className="player-record">
+    <div className="player-record" lang="ja">
       <p className="player-name">{record.card_name}</p>
       <Class rawClass={record.class} />
       <p className="player-title">{record.title}</p>
