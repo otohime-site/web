@@ -13,9 +13,7 @@ export default function App() {
       <Menu secondary fixed="top" id="header">
         <Container>
           <Menu.Item className="logo"><Link to="/">♬ Semiquaver</Link></Menu.Item>
-          <Menu.Menu position="right">
-            <UserBox />
-          </Menu.Menu>
+          <UserBox />
         </Container>
       </Menu>
       <Container id="container">

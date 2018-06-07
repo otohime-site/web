@@ -1,7 +1,8 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Menu, Icon } from 'semantic-ui-react';
+import { Dropdown, Menu, Icon } from 'semantic-ui-react';
 import { getMe } from './laundry/actions';
 
 class UserBox extends Component {
@@ -22,19 +23,26 @@ class UserBox extends Component {
     this.props.getMe();
   }
   render() {
-    console.log(this.props.me); // eslint-disable-line
-    let nav = (
-      <a href="/api/connect/facebook"><Icon name="user" />Login</a>
-    );
     if (this.props.loggedIn) {
-      nav = (
-        <a href="/api/logout">Logout</a>
+      return (
+        <Menu.Menu position="right">
+          <Dropdown item icon="user" text="我的成績單">
+            <Dropdown.Menu>
+              {this.props.me.map(player => (
+                <Dropdown.Item key={player.nickname} as={Link} to={`/mai/${player.nickname}`}>{player.nickname}</Dropdown.Item>
+              ))}
+              <Dropdown.Divider />
+              <Dropdown.Item>管理成績單</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Menu.Item as="a" href="/api/logout"><Icon name="sign out" /> 登出</Menu.Item>
+        </Menu.Menu>
       );
     }
     return (
-      <Menu.Item>
-        {nav}
-      </Menu.Item>
+      <Menu.Menu position="right">
+        <Menu.Item as="a" href="/api/connect/facebook"><Icon name="sign in" /> 登入</Menu.Item>
+      </Menu.Menu>
     );
   }
 }
