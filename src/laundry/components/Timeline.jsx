@@ -11,7 +11,7 @@ class Timeline extends Component {
       params: { nickname: PropTypes.string },
       url: PropTypes.string,
     }).isRequired,
-    timeline: PropTypes.arrayOf(PropTypes.number),
+    timeline: PropTypes.arrayOf(PropTypes.string),
     getTimeline: PropTypes.func.isRequired,
   };
   static defaultProps = {
