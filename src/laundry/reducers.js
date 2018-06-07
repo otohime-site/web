@@ -6,7 +6,7 @@ export default function laundryReducers(state = {}, action) {
       return { ...state, loggedIn: true, me: action.payload };
 
     case `${GET_ME}_REJECTED`:
-      return { ...state, loggedIn: false, me: action.payload };
+      return { ...state, loggedIn: false, me: [] };
 
     case `${GET_PLAYER}_FULFILLED`: {
       const { record } = action.payload;

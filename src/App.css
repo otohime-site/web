@@ -4,49 +4,22 @@
   font-family: 'Gen Jyuu Gothic Heavy';
   src: url('/static/genjyuu.ttf');
 }
-
-body {
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
-}
-
-p, h1, h2, h3, h4 {
-  margin: 0;
-}
-
-.App {
-  font-family: sans-serif;
+#container {
+  margin-top: 4.5em;
 }
 #header {
-  padding: 0.3em;
   background: #EFEFEF;
   border-bottom: 1px solid #CCCCCC;
-  height: 2em;
 }
-#header h1 {
-  float: left;
+
+.ui.secondary.menu .item.logo {
+  padding-left: 0;
+}
+
+.ui.secondary.menu .item.logo a {
   font-size: 1.5em;
-}
-#header h1 a {
   font-family: 'Rancho', cursive;
   color: #666666;
   text-decoration: none;
 }
-#header .nav {
-  float: right;
-  margin-top: 0.6em;
-}
-#container {
-  padding: 10px;
-}
 
-a.btn {
-  display: inline-block;
-  border: 1px solid #999999;
-  color: #333333;
-  padding: 5px 20px;
-  text-decoration: none;
-  background: #FAFAFA;
-  border-radius: 10px;
-}

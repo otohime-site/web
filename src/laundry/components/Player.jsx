@@ -2,6 +2,7 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Sticky, Table, Button } from 'semantic-ui-react';
 import Score from './Score';
 import Record from './Record';
 import { getPlayer, getSongs } from '../actions';
@@ -33,6 +34,8 @@ class Player extends Component {
     scores: {},
     songs: [],
   };
+  state = {};
+
   componentDidMount() {
     if (this.props.songs.length === 0) {
       this.props.getSongs();
@@ -44,7 +47,9 @@ class Player extends Component {
       this.props.getPlayer(this.props.match.params.nickname);
     }
   }
+  handleContextRef = contextRef => this.setState({ contextRef });
   render() {
+    const { contextRef } = this.state;
     const rows = this.props.songs.map((song) => {
       const scoresOutput = [];
       if (this.props.scores[song.id]) {
@@ -74,25 +79,25 @@ class Player extends Component {
       );
     });
     return (
-      <div>
+      <div ref={this.handleContextRef}>
         <Record record={this.props.record} />
-        <p className="player-options"><Link to={`/mai/${this.props.match.params.nickname}/timeline`} className="btn">歷史紀錄</Link></p>
-        <table className="player-scores" lang="ja">
-          <thead>
+        <p className="player-options"><Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button></p>
+        <Table className="player-scores" unstackable lang="ja">
+          <Table.Header>
             <tr>
-              <th>Name</th>
-              <th className="difficulty-0">Easy</th>
-              <th className="difficulty-1">Basic</th>
-              <th className="difficulty-2">Advanced</th>
-              <th className="difficulty-3">Expert</th>
-              <th className="difficulty-4">Master</th>
-              <th className="difficulty-5">Re:Master</th>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-0">Easy</Sticky>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-1">Basic</Sticky>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-2">Advanced</Sticky>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-3">Expert</Sticky>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-4">Master</Sticky>
+              <Sticky context={contextRef} as={Table.HeaderCell} className="difficulty-5">Re:Master</Sticky>
             </tr>
-          </thead>
-          <tbody>
+          </Table.Header>
+          <Table.Body>
             {rows}
-          </tbody>
-        </table>
+          </Table.Body>
+        </Table>
       </div>
     );
   }

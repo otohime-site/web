@@ -1,46 +1,32 @@
 
-.player-scores {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.player-scores th, td {
-  border-bottom: 1px solid #CCCCCC;
-  padding: 0.2em;
-}
-
-.player-scores th {
-  text-align: left;
-  color: #000033;
-  text-transform: uppercase;
-}
-
 .player-scores .song-name {
-  height: 2.5em;
+  height: 4em;
+}
+.player-scores td.difficulty-0,
+.player-scores td.difficulty-1,
+.player-scores td.difficulty-2,
+.player-scores td.difficulty-3,
+.player-scores td.difficulty-4,
+.player-scores td.difficulty-5 {
+  width: 6.5em;
 }
 
 .player-scores .difficulty-0 {
-  width: 5.5em;
   background: #F0FFFF;
 }
 .player-scores .difficulty-1 {
-  width: 5.5em;
   background: #FFFFF0;
 }
 .player-scores .difficulty-2 {
-  width: 5.5em;
   background: #FFFAF0;
 }
 .player-scores .difficulty-3 {
-  width: 5.5em;
   background: #FFF0F0;
 }
 .player-scores .difficulty-4 {
-  width: 5.5em;
   background: #FAF0FA;
 }
 .player-scores .difficulty-5 {
-  width: 5.5em;
   background: #FAF0FA;
 }
 
