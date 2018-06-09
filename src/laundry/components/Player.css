@@ -33,7 +33,7 @@
 }
 
 .player-record {
-  height: 3em;
+  min-height: 3em;
   margin: 0;
   vertical-align: middle;
 }
