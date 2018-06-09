@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Table, Button } from 'semantic-ui-react';
+import { Loader, Table, Button } from 'semantic-ui-react';
 import Score from './Score';
 import Record from './Record';
 import { getPlayer, getSongs } from '../actions';
@@ -79,6 +79,7 @@ class Player extends Component {
       <div ref={this.handleContextRef}>
         <Record record={this.props.record} />
         <p className="player-options"><Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button></p>
+        { Object.keys(this.props.scores).length === 0 ? (<Loader active />) : '' }
         <Table className="player-scores" unstackable lang="ja">
           <Table.Header>
             <tr>
