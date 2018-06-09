@@ -1,6 +1,7 @@
 import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Table } from 'semantic-ui-react';
 import { getTimelineDetail, getSongs } from '../actions';
 import { difficulties } from '../consts';
 import Record from './Record';
@@ -73,7 +74,7 @@ class TimelineDetail extends Component {
       );
     });
     return (
-      <table lang="ja">
+      <Table lang="ja">
         <thead>
           <tr>
             <th>What</th>
@@ -89,7 +90,7 @@ class TimelineDetail extends Component {
           </tr>
           { rows }
         </tbody>
-      </table>
+      </Table>
     );
   }
 }

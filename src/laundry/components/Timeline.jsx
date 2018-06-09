@@ -2,6 +2,8 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Route } from 'react-router-dom';
+import { Button, Grid, Menu } from 'semantic-ui-react';
+import moment from 'moment';
 import TimelineDetail from './TimelineDetail';
 import { getTimeline } from '../actions';
 
@@ -26,17 +28,22 @@ class Timeline extends Component {
     }
   }
   render() {
+    moment.locale('zh-TW');
     return (
       <div>
-        <Link to={encodeURI(`/mai/${this.props.match.params.nickname}`)} className="btn">&lt; Back</Link>
-        <ul>
-          {this.props.timeline.map(time => (
-            <li key={time}><Link to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(new Date(time).toString())}</Link></li>
-          ))}
-        </ul>
-        <div>
-          <Route path="/mai/:nickname/timeline/:time" component={TimelineDetail} />
-        </div>
+        <Button as={Link} to={encodeURI(`/mai/${this.props.match.params.nickname}`)}>&lt; Back</Button>
+        <Grid columns={2} stackable>
+          <Grid.Column width={4}>
+            <Menu vertical>
+              {this.props.timeline.map(time => (
+                <Menu.Item key={time} as={Link} to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</Menu.Item>
+              ))}
+            </Menu>
+          </Grid.Column>
+          <Grid.Column width={12}>
+            <Route path="/mai/:nickname/timeline/:time" component={TimelineDetail} />
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
