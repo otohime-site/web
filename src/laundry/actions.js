@@ -21,10 +21,11 @@ const fetchPayload = (url, values) => (
           method: 'POST',
           body: JSON.stringify(values),
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
         },
       );
     } else {
-      res = await fetch(url);
+      res = await fetch(url, { credentials: 'same-origin' });
     }
     if (!res.ok) {
       const err = new Error('request');
