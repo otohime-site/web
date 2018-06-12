@@ -1,5 +1,5 @@
 import { Route, Link } from 'react-router-dom';
-import { Menu, Container } from 'semantic-ui-react';
+import { Icon, Divider, Menu, Container } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.css';
 
 import Home from './Home';
@@ -19,6 +19,10 @@ export default function App() {
       <Container id="container">
         <Route path="/" exact component={Home} />
         <Route path="/mai" component={Laundry} />
+      </Container>
+      <Divider />
+      <Container id="footer">
+        <p>Powered by Semiquaver Team. <a href="https://github.com/semiquaver-moe/" target="_blank" rel="noopener noreferrer"><Icon name="github" /> GitHub</a></p>
       </Container>
     </div>
   );

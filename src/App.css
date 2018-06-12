@@ -5,13 +5,15 @@
   src: url('/static/genjyuu.ttf');
 }
 #container {
-  margin-top: 4.5em;
+  padding-top: 4.5em;
 }
 #header {
   background: #EFEFEF;
   border-bottom: 1px solid #CCCCCC;
 }
-
+#footer {
+  color: #999999;
+}
 .ui.secondary.menu .item.logo {
   padding-left: 0;
 }
