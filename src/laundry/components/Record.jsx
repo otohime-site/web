@@ -10,7 +10,7 @@ export default function Record({ record }) {
       <p className="player-name">{record.card_name}</p>
       <Class rawClass={record.class} />
       <p className="player-title">{record.title}</p>
-      <p className="player-rating">Rating {record.rating} (Max {record.max_rating})</p>
+      <p className="player-rating">Rating {record.rating.toFixed(2)} (Max {record.max_rating.toFixed(2)})</p>
     </div>
   );
 }
