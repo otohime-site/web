@@ -7,7 +7,6 @@ export default class Book extends Component {
   state = {
     progress: 0,
     loggedIn: false,
-    newNickname: '',
     nickname: '',
     myNicknames: [],
   };
@@ -17,22 +16,11 @@ export default class Book extends Component {
       return;
     }
     this.handleGetNicknames();
+    // Dirty helper :)
     this.boundHandleGetNicknames = this.handleGetNicknames.bind(this);
     window.addEventListener('focus', this.boundHandleGetNicknames, false);
   };
-  handleAddNickname = async () => {
-    const body = {
-      nickname: this.state.newNickname,
-      privacy: 'public',
-    };
-    await fetch(`https://${host}/api/mai/new`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    });
-    return this.handleGetNicknames();
-  };
+
   handleGetNicknames = async () => {
     let loggedIn = false;
     const res = await fetch(`https://${host}/api/mai/me`, {
@@ -48,7 +36,6 @@ export default class Book extends Component {
     for (let i = 0; i < results.length; i += 1) {
       myNicknames.push(results[i].nickname);
     }
-    window.removeEventListener('focus', this.boundHandleGetNicknames, false);
     this.setState({ loggedIn, myNicknames });
   };
   handleUpdate = async () => {
@@ -65,9 +52,6 @@ export default class Book extends Component {
     } catch (e) {
       alert('Error!'); // eslint-disable-line no-alert
     }
-  };
-  handleNewNicknameChange = (e) => {
-    this.setState({ newNickname: e.target.value });
   };
 
   handleRadioChange = (e) => {
@@ -89,14 +73,15 @@ export default class Book extends Component {
     for (let i = 0; i < this.state.myNicknames.length; i += 1) {
       const nickname = this.state.myNicknames[i];
       radios.push((
-        <p key={nickname}>
-          <input type="radio" name="nickname" value={nickname} onChange={this.handleRadioChange} />
-          <a href={`https://${host}/mai/${nickname}`} rel="noopener noreferrer" target="_blank">{nickname}</a>
+        <p key={nickname} className="nickname">
+          { /* eslint-disable-next-line jsx-a11y/label-has-for */ }
+          <label><input type="radio" name="nickname" value={nickname} onChange={this.handleRadioChange} /> {nickname}</label>
+          <a href={`https://${host}/mai/${nickname}`} rel="noopener noreferrer" target="_blank" title="新分頁打開網頁，檢視成績單">(檢視)</a>
         </p>));
     }
     if (!this.state.loggedIn) {
       return (
-        <div className="Book" lang="zh-TW">
+        <div className="smq-bookmarklet" lang="zh-TW">
           <h3>Updater</h3>
           <p>請先以 Facebook 帳號登入 Semiquaver 以使用服務。</p>
           <p>您的 Facebook 帳號將僅用於使用者認證，Semiquaver 團隊保證不會將您的 Facebook 帳號挪作他用或透漏給任何人。</p>
@@ -104,21 +89,18 @@ export default class Book extends Component {
         </div>);
     }
     return (
-      <div className="Book" lang="zh-TW">
+      <div className="smq-bookmarklet" lang="zh-TW">
         <h3>Updater</h3>
         <p>請選擇要更新的成績單：</p>
         { radios }
+        { (radios.length === 0) ? '您還沒有任何成績單。請從下面「管理成績單」頁面新增一個！' : '' }
         <p>
-          <button onClick={this.handleUpdate} disabled={!this.state.nickname}>Update</button>
+          <button onClick={this.handleUpdate} disabled={!this.state.nickname}>開始更新</button>
+        </p>
+        <p>
           <progress value={this.state.progress} max="100" />
         </p>
-        <hr />
-        <h3>建立新的成績單</h3>
-        <p>請輸入暱稱：</p>
-        <p>
-          <input type="text" onChange={this.handleNewNicknameChange} />
-          <button onClick={this.handleAddNickname} disabled={!this.state.newNickname}>Add</button>
-        </p>
+        <p><a href={`https://${host}/mai/me`} className="btn" rel="noopener noreferrer" target="_blank">管理成績單</a></p>
       </div>
     );
   }

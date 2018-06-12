@@ -1,6 +1,6 @@
-.Book {
-  width: 80%;
-  height: 80%;
+.smq-bookmarklet {
+  width: 480px;
+  height: 360px;
   position: fixed;
   top: 0;
   left: 0;
@@ -9,12 +9,13 @@
   background: white;
   color: black;
   border: 1px solid #333333;
+  border-radius: 15px;
   margin: auto;
   font-size: 15px;
   padding: .5em;
 }
 
-.Book h3 {
+.smq-bookmarklet h3 {
   border: 0;
   background: transparent;
   font-size: 22px;
@@ -23,24 +24,43 @@
   border: 0;
   text-align: left;
   position: static;
-  color: black;
+  color: #333333;
   cursor: auto;
 }
 
-.Book input[type=text] {
+.smq-bookmarklet input[type=text] {
   width: 22em;
 }
 
-.Book a {
-  color: #333333;
+.smq-bookmarklet a {
+  color: #6699CC;
 }
 
-.Book a.btn {
+.smq-bookmarklet a.btn, .smq-bookmarklet button.btn {
+  font-size: 14px;
   display: inline-block;
-  border: 1px solid #999999;
   color: #333333;
+  border: none;
   padding: 5px 20px;
   text-decoration: none;
-  background: #FAFAFA;
-  border-radius: 10px;
+  font-weight: bold;
+  background: #E0E1E2;
+  border-radius: 5px;
+}
+
+.smq-bookmarklet button {
+  font-size: 14px;
+  padding: 5px 20px;
+}
+.smq-bookmarklet progress {
+  width: 80%;
+  height: 5px;
+}
+
+.smq-bookmarklet .nickname {
+  font-size: 18px;
+}
+.smq-bookmarklet .nickname a {
+  padding-left: 1.5em;
+  font-size: 12px;
 }
