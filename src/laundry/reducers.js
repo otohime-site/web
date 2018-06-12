@@ -42,6 +42,8 @@ export default function laundryReducers(state = {}, action) {
     case `${DELETE_PLAYER}_REJECTED`:
       return { ...state, deletePlayerResult: { status: 'err', err: action.payload } };
 
+    case GET_PLAYER:
+      return { ...state, getPlayerResult: { status: 'pending' } };
 
     case `${GET_PLAYER}_FULFILLED`: {
       const { record } = action.payload;
@@ -54,8 +56,13 @@ export default function laundryReducers(state = {}, action) {
         }
         scores[score.song_id][score.difficulty] = score;
       }
-      return { ...state, record, scores };
+      return {
+        ...state, getPlayerResult: { status: 'ok' }, record, scores,
+      };
     }
+    case `${GET_PLAYER}_REJECTED`:
+      return { ...state, getPlayerResult: { status: 'err', err: action.payload } };
+
     case `${GET_SONGS}_FULFILLED`:
       return { ...state, songs: action.payload };
     case `${GET_TIMELINE}_FULFILLED`:

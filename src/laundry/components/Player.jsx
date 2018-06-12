@@ -28,11 +28,16 @@ class Player extends Component {
       category: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })),
+    getPlayerResult: PropTypes.shape({
+      status: PropTypes.string,
+      err: PropTypes.instanceOf(Error),
+    }),
   };
   static defaultProps = {
     record: {},
     scores: {},
     songs: [],
+    getPlayerResult: {},
   };
 
   componentDidMount() {
@@ -75,11 +80,18 @@ class Player extends Component {
         </tr>
       );
     });
+    if (this.props.getPlayerResult.status === 'err') {
+      if (this.props.getPlayerResult.err.code === 404) {
+        return <div>玩家不存在。</div>;
+      }
+      return <div>發生錯誤，請稍候再試。</div>;
+    } else if (this.props.getPlayerResult.status !== 'ok') {
+      return <Loader active />;
+    }
     return (
-      <div ref={this.handleContextRef}>
+      <div>
         <Record record={this.props.record} />
         <p className="player-options"><Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button></p>
-        { Object.keys(this.props.scores).length === 0 ? (<Loader active />) : '' }
         <Table className="player-scores" unstackable lang="ja">
           <Table.Header>
             <tr>
@@ -105,6 +117,7 @@ const mapStateToProps = state => ({
   record: state.laundry.record,
   scores: state.laundry.scores,
   songs: state.laundry.songs,
+  getPlayerResult: state.laundry.getPlayerResult,
 });
 
 const mapDispatchToProps = dispatch => ({
