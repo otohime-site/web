@@ -32,7 +32,7 @@ class UserBox extends Component {
                 <Dropdown.Item key={player.nickname} as={Link} to={`/mai/${player.nickname}`}>{player.nickname}</Dropdown.Item>
               ))}
               <Dropdown.Divider />
-              <Dropdown.Item>管理成績單</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/mai/me">管理成績單</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item as="a" href="/api/logout"><Icon name="sign out" /> 登出</Menu.Item>

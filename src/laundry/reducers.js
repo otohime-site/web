@@ -1,12 +1,47 @@
-import { GET_ME, GET_PLAYER, GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL } from './actions';
+import {
+  OPEN_USER_MODAL, CLOSE_USER_MODAL, OPEN_USER_DELETE_MODAL, CLOSE_USER_DELETE_MODAL,
+  GET_ME, GET_PLAYER, NEW_OR_UPDATE_PLAYER, DELETE_PLAYER,
+  GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL,
+} from './actions';
 
 export default function laundryReducers(state = {}, action) {
   switch (action.type) {
+    case OPEN_USER_MODAL:
+      return { ...state, userModal: { open: true, ...action.payload } };
+
+    case CLOSE_USER_MODAL:
+      return { ...state, userModal: { open: false } };
+
+    case OPEN_USER_DELETE_MODAL:
+      return { ...state, userDeleteModal: { open: true, nickname: action.payload } };
+
+    case CLOSE_USER_DELETE_MODAL:
+      return { ...state, userDeleteModal: { open: false } };
+
     case `${GET_ME}_FULFILLED`:
       return { ...state, loggedIn: true, me: action.payload };
 
     case `${GET_ME}_REJECTED`:
       return { ...state, loggedIn: false, me: [] };
+
+    case NEW_OR_UPDATE_PLAYER:
+      return { ...state, newOrUpdatePlayerResult: { status: 'pending' } };
+
+    case `${NEW_OR_UPDATE_PLAYER}_FULFILLED`:
+      return { ...state, newOrUpdatePlayerResult: { status: 'ok' } };
+
+    case `${NEW_OR_UPDATE_PLAYER}_REJECTED`:
+      return { ...state, newOrUpdatePlayerResult: { status: 'err', err: action.payload } };
+
+    case DELETE_PLAYER:
+      return { ...state, deletePlayerResult: { status: 'pending' } };
+
+    case `${DELETE_PLAYER}_FULFILLED`:
+      return { ...state, deletePlayerResult: { status: 'ok' } };
+
+    case `${DELETE_PLAYER}_REJECTED`:
+      return { ...state, deletePlayerResult: { status: 'err', err: action.payload } };
+
 
     case `${GET_PLAYER}_FULFILLED`: {
       const { record } = action.payload;

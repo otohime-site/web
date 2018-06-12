@@ -1,4 +1,5 @@
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import User from './User';
 import Player from './Player';
 import Timeline from './Timeline';
 
@@ -6,7 +7,11 @@ export default function Laundry() {
   return (
     <div>
       <Route path="/mai/:nickname/timeline" component={Timeline} />
-      <Route exact path="/mai/:nickname" component={Player} />
+      <Switch>
+        { /* Ambiguous Matches */ }
+        <Route exact path="/mai/me" component={User} />
+        <Route exact path="/mai/:nickname" component={Player} />
+      </Switch>
     </div>
   );
 }
