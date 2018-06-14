@@ -1,7 +1,7 @@
 import {
   OPEN_USER_MODAL, CLOSE_USER_MODAL, OPEN_USER_DELETE_MODAL, CLOSE_USER_DELETE_MODAL,
   GET_ME, GET_PLAYER, NEW_OR_UPDATE_PLAYER, DELETE_PLAYER,
-  GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL,
+  GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL, SET_SHOW_DIFFICULTIES,
 } from './actions';
 
 export default function laundryReducers(state = {}, action) {
@@ -96,6 +96,9 @@ export default function laundryReducers(state = {}, action) {
       }
       return { ...state, timelineDetailRecords, timelineDetailScores };
     }
+    case SET_SHOW_DIFFICULTIES:
+      return { ...state, showDifficulties: action.payload };
+
     default:
       return state;
   }

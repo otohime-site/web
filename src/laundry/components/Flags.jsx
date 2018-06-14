@@ -13,7 +13,7 @@ export default function Flags({ rawFlags }) {
           case 'ap':
             return (<span className="flag flag-ap">AP</span>);
           case '100':
-            return (<span className="flag flag-100">100%</span>);
+            return (<span className="flag flag-100">100</span>);
           default:
             return (<span>&nbsp;</span>);
         }

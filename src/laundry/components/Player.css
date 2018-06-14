@@ -3,33 +3,90 @@
   height: 4em;
 }
 
+.player-scores .score {
+  width: 6em;
+}
 .player-scores .difficulty-0 {
-  width: 6.5em;
-  background: #F0FFFF;
+  background: #F0FFFF !important;
 }
 .player-scores .difficulty-1 {
-  width: 6.5em;
-  background: #FFFFF0;
+  background: #FFFFF0 !important;
 }
 .player-scores .difficulty-2 {
-  width: 6.5em;
-  background: #FFFAF0;
+  background: #FFFAF0 !important;
 }
 .player-scores .difficulty-3 {
-  width: 6.5em;
-  background: #FFF0F0;
+  background: #FFF0F0 !important;
 }
 .player-scores .difficulty-4 {
-  width: 6.5em;
-  background: #FAF0FA;
+  background: #FAF0FA !important;
 }
 .player-scores .difficulty-5 {
-  width: 6.5em;
-  background: #FAF0FA;
+  background: #FAF0FA !important;
+}
+
+
+.player-scores.hide-difficulties .difficulty-0,
+.player-scores.hide-difficulties .difficulty-1,
+.player-scores.hide-difficulties .difficulty-2 {
+  display: none;
+}
+
+.player-scores.hide-difficulties .score {
+  width: 10em;
+}
+.player-scores.hide-difficulties .song-name {
+  height: 2em;
+}
+.player-scores.hide-difficulties .score .flags {
+  display: inline-block;
+  width: 4em;
 }
 
 .player-scores .flags {
   display: block;
+}
+@media only screen and (max-width: 767px) {
+  .ui.table.player-scores thead {
+    display: none !important;
+  }
+  .ui.table.player-scores tr > td.score.score-zero {
+    display: none !important;
+  }
+  .player-scores .song-name {
+    height: auto;
+  }
+  .player-scores.hide-difficulties .song-name {
+    height: auto;
+  }
+  .player-scores .score .flags {
+    display: inline-block;
+    width: 4em;
+  }
+  td.score.difficulty-0::before {
+    float: left;
+    content: "Easy";
+  }
+  td.score.difficulty-1::before {
+    float: left;
+    content: "Basic";
+  }
+  td.score.difficulty-2::before {
+    float: left;
+    content: "Advanced";
+  }
+  td.score.difficulty-3::before {
+    float: left;
+    content: "Expert";
+  }
+  td.score.difficulty-4::before {
+    float: left;
+    content: "Master";
+  }
+  td.score.difficulty-5::before {
+    float: left;
+    content: "Re:Master";
+  }
 }
 
 .player-record {

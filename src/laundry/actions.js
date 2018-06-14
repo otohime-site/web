@@ -10,6 +10,7 @@ export const GET_SONGS = 'laundry/GET_SONGS';
 export const GET_PLAYER = 'laundry/GET_PLAYER';
 export const GET_TIMELINE = 'laundry/GET_TIMELINE';
 export const GET_TIMELINE_DETAIL = 'laundry/GET_TIMELINE_DETAIL';
+export const SET_SHOW_DIFFICULTIES = 'laundry/SET_SHOW_DIFFICULTIES';
 
 const fetchPayload = (url, values) => (
   async () => {
@@ -88,4 +89,9 @@ export const getTimeline = nickname => ({
 export const getTimelineDetail = (nickname, time) => ({
   type: GET_TIMELINE_DETAIL,
   payload: fetchPayload(`/api/mai/${nickname}/timeline/${time}`),
+});
+
+export const setShowDifficulties = value => ({
+  type: SET_SHOW_DIFFICULTIES,
+  payload: !!value,
 });

@@ -2,10 +2,10 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Loader, Table, Button } from 'semantic-ui-react';
+import { Checkbox, Loader, Table, Button } from 'semantic-ui-react';
 import Score from './Score';
 import Record from './Record';
-import { getPlayer, getSongs } from '../actions';
+import { getPlayer, getSongs, setShowDifficulties } from '../actions';
 import './Player.css';
 
 class Player extends Component {
@@ -15,6 +15,7 @@ class Player extends Component {
     }).isRequired,
     getPlayer: PropTypes.func.isRequired,
     getSongs: PropTypes.func.isRequired,
+    setShowDifficulties: PropTypes.func.isRequired,
     record: PropTypes.shape({
       card_name: PropTypes.string,
       class: PropTypes.string,
@@ -34,12 +35,14 @@ class Player extends Component {
       status: PropTypes.string,
       err: PropTypes.instanceOf(Error),
     }),
+    showDifficulties: PropTypes.bool,
   };
   static defaultProps = {
     record: {},
     scores: {},
     songs: [],
     getPlayerResult: {},
+    showDifficulties: false,
   };
 
   componentDidMount() {
@@ -61,9 +64,14 @@ class Player extends Component {
         for (let i = 0; i < scores.length; i += 1) {
           if (scores[i]) {
             const score = scores[i];
+            let className = `score difficulty-${i}`;
+            if (score.score === 0) {
+              className += ' score-zero';
+            }
             scoresOutput.push((
               <td
-                className={`difficulty-${i}`}
+                className={className}
+                key={`difficulty-${i}`}
                 style={{
                 textAlign: 'right',
                 }}
@@ -71,7 +79,7 @@ class Player extends Component {
               </td>
             ));
           } else {
-            scoresOutput.push((<td />));
+            scoresOutput.push((<td key={`difficulty-${i}`} />));
           }
         }
       }
@@ -93,17 +101,20 @@ class Player extends Component {
     return (
       <div>
         <Record record={this.props.record} />
-        <p className="player-options"><Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button></p>
-        <Table className="player-scores" unstackable lang="ja">
+        <p className="player-options">
+          <Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button>
+          <Checkbox toggle label="顯示所有難易度" onChange={this.props.setShowDifficulties} />
+        </p>
+        <Table className={(this.props.showDifficulties) ? 'player-scores' : 'player-scores hide-difficulties'} lang="ja">
           <Table.Header>
             <tr>
               <th>Name</th>
-              <th className="difficulty-0">Easy</th>
-              <th className="difficulty-1">Basic</th>
-              <th className="difficulty-2">Advanced</th>
-              <th className="difficulty-3">Expert</th>
-              <th className="difficulty-4">Master</th>
-              <th className="difficulty-5">Re:Master</th>
+              <th className="score difficulty-0">Easy</th>
+              <th className="score difficulty-1">Basic</th>
+              <th className="score difficulty-2">Advanced</th>
+              <th className="score difficulty-3">Expert</th>
+              <th className="score difficulty-4">Master</th>
+              <th className="score difficulty-5">Re:Master</th>
             </tr>
           </Table.Header>
           <Table.Body>
@@ -120,6 +131,7 @@ const mapStateToProps = state => ({
   scores: state.laundry.scores,
   songs: state.laundry.songs,
   getPlayerResult: state.laundry.getPlayerResult,
+  showDifficulties: state.laundry.showDifficulties,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -129,6 +141,9 @@ const mapDispatchToProps = dispatch => ({
   getSongs: () => {
     dispatch(getSongs());
   },
+  setShowDifficulties: (e, data) => (
+    dispatch(setShowDifficulties(data.checked))
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
