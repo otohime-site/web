@@ -10,7 +10,7 @@ import { getTimeline } from '../actions';
 class Timeline extends Component {
   static propTypes = {
     match: PropTypes.shape({
-      params: { nickname: PropTypes.string },
+      params: PropTypes.shape({ nickname: PropTypes.string }),
       url: PropTypes.string,
     }).isRequired,
     timeline: PropTypes.arrayOf(PropTypes.string),

@@ -10,7 +10,7 @@ import Score from './Score';
 class TimelineDetail extends Component {
   static propTypes = {
     match: PropTypes.shape({
-      params: { nickname: PropTypes.string, time: PropTypes.string },
+      params: PropTypes.shape({ nickname: PropTypes.string, time: PropTypes.string }),
     }).isRequired,
     getTimelineDetail: PropTypes.func.isRequired,
     getSongs: PropTypes.func.isRequired,

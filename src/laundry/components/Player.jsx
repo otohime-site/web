@@ -10,7 +10,9 @@ import './Player.css';
 
 class Player extends Component {
   static propTypes = {
-    match: PropTypes.shape({ params: { nickname: PropTypes.string } }).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({ nickname: PropTypes.string }),
+    }).isRequired,
     getPlayer: PropTypes.func.isRequired,
     getSongs: PropTypes.func.isRequired,
     record: PropTypes.shape({
