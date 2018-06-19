@@ -12,7 +12,7 @@ export default function App() {
     <div className="App">
       <Menu secondary fixed="top" id="header">
         <Container>
-          <Menu.Item className="logo"><Link to="/">♬ Semiquaver</Link></Menu.Item>
+          <Menu.Item className="logo"><Link to="/"><Icon name="music" />Semiquaver</Link></Menu.Item>
           <UserBox />
         </Container>
       </Menu>
