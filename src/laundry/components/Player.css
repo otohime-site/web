@@ -6,7 +6,6 @@
 
 .player-scores tbody th {
   position: sticky;
-  position: -webkit-sticky;
   top: 51px;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
