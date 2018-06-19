@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Checkbox, Loader, Table, Button } from 'semantic-ui-react';
+import { Label, Checkbox, Loader, Table, Button } from 'semantic-ui-react';
 import Score from './Score';
 import Record from './Record';
 import { getPlayer, getSongs, setShowDifficulties } from '../actions';
@@ -57,38 +57,70 @@ class Player extends Component {
     }
   }
   render() {
-    const rows = this.props.songs.map((song) => {
-      const scoresOutput = [];
-      if (this.props.scores[song.id]) {
-        const scores = this.props.scores[song.id];
-        for (let i = 0; i < scores.length; i += 1) {
-          if (scores[i]) {
-            const score = scores[i];
-            let className = `score difficulty-${i}`;
-            if (score.score === 0) {
-              className += ' score-zero';
+    const tbodies = [];
+    const songGroups = new Map();
+    // XXX: After we have more grouping methods,
+    // move these to Redux reducer.
+    for (let i = 0; i < this.props.songs.length; i += 1) {
+      const song = this.props.songs[i];
+      const { category } = song;
+      if (!songGroups.has(category)) {
+        songGroups.set(category, []);
+      }
+      songGroups.get(category).push(song);
+    }
+    // Render song groups as <tbody>s.
+    songGroups.forEach((songs, category) => {
+      const rows = [];
+      rows.push(( // eslint-disable-next-line react/no-array-index-key
+        <tr key={category}>
+          <th><Label size="large" ribbon>{category}</Label></th>
+          <th className="score difficulty-0">Easy</th>
+          <th className="score difficulty-1">Basic</th>
+          <th className="score difficulty-2">Advanced</th>
+          <th className="score difficulty-3">Expert</th>
+          <th className="score difficulty-4">Master</th>
+          <th className="score difficulty-5">Re:Master</th>
+        </tr>
+      ));
+      songs.forEach((song) => {
+        const scoresOutput = [];
+        if (this.props.scores[song.id]) {
+          const scores = this.props.scores[song.id];
+          for (let j = 0; j < scores.length; j += 1) {
+            if (scores[j]) {
+              const score = scores[j];
+              let className = `score difficulty-${j}`;
+              if (score.score === 0) {
+                className += ' score-zero';
+              }
+              scoresOutput.push((
+                <td
+                  className={className}
+                  key={`difficulty-${j}`}
+                  style={{
+                  textAlign: 'right',
+                  }}
+                ><Score score={score} />
+                </td>
+              ));
+            } else {
+              scoresOutput.push((<td key={`difficulty-${j}`} />));
             }
-            scoresOutput.push((
-              <td
-                className={className}
-                key={`difficulty-${i}`}
-                style={{
-                textAlign: 'right',
-                }}
-              ><Score score={score} />
-              </td>
-            ));
-          } else {
-            scoresOutput.push((<td key={`difficulty-${i}`} />));
           }
         }
-      }
-      return (
-        <tr key={song.id}>
-          <td className="song-name">{song.name}</td>
-          { scoresOutput }
-        </tr>
-      );
+        rows.push((
+          <tr key={song.id}>
+            <td className="song-name">{song.name}</td>
+            { scoresOutput }
+          </tr>
+        ));
+      });
+      tbodies.push((
+        <tbody>
+          {rows}
+        </tbody>
+      ));
     });
     if (this.props.getPlayerResult.status === 'err') {
       if (this.props.getPlayerResult.err.code === 404) {
@@ -106,20 +138,7 @@ class Player extends Component {
           <Checkbox toggle label="顯示所有難易度" onChange={this.props.setShowDifficulties} />
         </p>
         <Table className={(this.props.showDifficulties) ? 'player-scores' : 'player-scores hide-difficulties'} lang="ja">
-          <Table.Header>
-            <tr>
-              <th>Name</th>
-              <th className="score difficulty-0">Easy</th>
-              <th className="score difficulty-1">Basic</th>
-              <th className="score difficulty-2">Advanced</th>
-              <th className="score difficulty-3">Expert</th>
-              <th className="score difficulty-4">Master</th>
-              <th className="score difficulty-5">Re:Master</th>
-            </tr>
-          </Table.Header>
-          <Table.Body>
-            {rows}
-          </Table.Body>
+          {tbodies}
         </Table>
       </div>
     );

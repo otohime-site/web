@@ -1,4 +1,18 @@
+.player-scores tbody th {
+  padding: 0.92857143em 0.78571429em;
+  color: rgba(0, 0, 0, 0.87);
+  border-top: 1px solid rgba(34, 36, 38, 0.1);
+}
 
+.player-scores tbody th {
+  position: sticky;
+  top: 51px;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+.player-scores tbody th:first-child .label {
+  width: 20em;
+}
 .player-scores .song-name {
   height: 4em;
 }
@@ -47,7 +61,7 @@
   display: block;
 }
 @media only screen and (max-width: 767px) {
-  .ui.table.player-scores thead {
+  .ui.table.player-scores th.score {
     display: none !important;
   }
   .ui.table.player-scores tr > td.score.score-zero {
