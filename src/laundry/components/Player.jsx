@@ -63,11 +63,13 @@ class Player extends Component {
     // move these to Redux reducer.
     for (let i = 0; i < this.props.songs.length; i += 1) {
       const song = this.props.songs[i];
-      const { category } = song;
+      const { active, category } = song;
       if (!songGroups.has(category)) {
         songGroups.set(category, []);
       }
-      songGroups.get(category).push(song);
+      if (active) {
+        songGroups.get(category).push(song);
+      }
     }
     // Render song groups as <tbody>s.
     songGroups.forEach((songs, category) => {
