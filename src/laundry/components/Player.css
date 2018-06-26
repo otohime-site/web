@@ -23,14 +23,14 @@
 }
 
 .player-scores .score {
-  width: 6em;
+  width: 6.5em;
 }
 .player-scores td.score {
   text-align: right;
 }
 .player-scores td.score .level {
   float: left;
-  margin-left: 0.5em;
+  margin-left: 0.2em;
   font-size: 75%;
   color: #AAAAAA;
 }
