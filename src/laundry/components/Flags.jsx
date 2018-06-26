@@ -12,6 +12,8 @@ export default function Flags({ rawFlags }) {
             return (<span className="flag flag-fc-gold">FC</span>);
           case 'ap':
             return (<span className="flag flag-ap">AP</span>);
+          case 'ap_plus':
+            return (<span className="flag flag-ap-plus">AP+</span>);
           case '100':
             return (<span className="flag flag-100">100</span>);
           default:

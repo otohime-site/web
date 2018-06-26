@@ -18,3 +18,10 @@
   color: #990000;
   font-weight: bold;
 }
+
+.flag.flag-ap-plus {
+  border: 1px solid #AA0000;
+  color: #AA0000;
+  background: white;
+  font-weight: bold;
+}
