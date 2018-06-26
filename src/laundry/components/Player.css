@@ -4,7 +4,7 @@
   border-top: 1px solid rgba(34, 36, 38, 0.1);
 }
 
-.player-scores tbody th {
+.player-scores tbody th:first-child {
   position: sticky;
   top: 51px;
   padding-top: 0.2em;
