@@ -17,6 +17,12 @@
   height: 4em;
 }
 
+.player-scores .song-name .english-name {
+  font-size: 75%;
+  margin-left: 0.2em;
+  color: #999999;
+}
+
 .player-scores .score {
   width: 6em;
 }

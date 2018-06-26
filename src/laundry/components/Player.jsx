@@ -30,6 +30,7 @@ class Player extends Component {
     songs: PropTypes.arrayOf(PropTypes.shape({
       category: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      english_name: PropTypes.string,
     })),
     getPlayerResult: PropTypes.shape({
       status: PropTypes.string,
@@ -113,7 +114,10 @@ class Player extends Component {
         }
         rows.push((
           <tr key={song.id}>
-            <td className="song-name">{song.name}</td>
+            <td className="song-name">
+              {song.name}
+              {(song.english_name) ? <span className="english-name">{song.english_name}</span> : ''}
+            </td>
             { scoresOutput }
           </tr>
         ));
