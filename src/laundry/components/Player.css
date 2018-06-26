@@ -4,9 +4,9 @@
   border-top: 1px solid rgba(34, 36, 38, 0.1);
 }
 
-.player-scores tbody th:first-child {
+.player-scores tbody th {
   position: sticky;
-  top: 51px;
+  top: 43px;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
 }
@@ -27,11 +27,10 @@
 }
 .player-scores td.score {
   text-align: right;
-  position: relative;
 }
 .player-scores td.score .level {
-  position: absolute;
-  left: 0.5em;
+  float: left;
+  margin-left: 0.5em;
   font-size: 75%;
   color: #AAAAAA;
 }
@@ -90,32 +89,26 @@
   td.score.difficulty-0::before {
     float: left;
     content: "Easy";
-    margin-left: 1.2em;
   }
   td.score.difficulty-1::before {
     float: left;
     content: "Basic";
-    margin-left: 1.2em;
   }
   td.score.difficulty-2::before {
     float: left;
     content: "Advanced";
-    margin-left: 1.2em;
   }
   td.score.difficulty-3::before {
     float: left;
     content: "Expert";
-    margin-left: 1.2em;
   }
   td.score.difficulty-4::before {
     float: left;
     content: "Master";
-    margin-left: 1.2em;
   }
   td.score.difficulty-5::before {
     float: left;
     content: "Re:Master";
-    margin-left: 1.2em;
   }
 }
 
