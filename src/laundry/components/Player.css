@@ -19,12 +19,21 @@
 
 .player-scores .song-name .english-name {
   font-size: 75%;
-  margin-left: 0.2em;
   color: #999999;
 }
 
 .player-scores .score {
   width: 6em;
+}
+.player-scores td.score {
+  text-align: right;
+  position: relative;
+}
+.player-scores td.score .level {
+  position: absolute;
+  left: 0.5em;
+  font-size: 75%;
+  color: #AAAAAA;
 }
 .player-scores .difficulty-0 {
   background: #F0FFFF !important;
@@ -53,16 +62,11 @@
 }
 
 .player-scores.hide-difficulties .score {
-  width: 10em;
+  width: 10.5em;
 }
 .player-scores.hide-difficulties .song-name {
   height: 2em;
 }
-.player-scores.hide-difficulties .score .flags {
-  display: inline-block;
-  width: 4em;
-}
-
 .player-scores .flags {
   display: block;
 }
@@ -86,26 +90,32 @@
   td.score.difficulty-0::before {
     float: left;
     content: "Easy";
+    margin-left: 1.2em;
   }
   td.score.difficulty-1::before {
     float: left;
     content: "Basic";
+    margin-left: 1.2em;
   }
   td.score.difficulty-2::before {
     float: left;
     content: "Advanced";
+    margin-left: 1.2em;
   }
   td.score.difficulty-3::before {
     float: left;
     content: "Expert";
+    margin-left: 1.2em;
   }
   td.score.difficulty-4::before {
     float: left;
     content: "Master";
+    margin-left: 1.2em;
   }
   td.score.difficulty-5::before {
     float: left;
     content: "Re:Master";
+    margin-left: 1.2em;
   }
 }
 

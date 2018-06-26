@@ -101,10 +101,9 @@ class Player extends Component {
                 <td
                   className={className}
                   key={`difficulty-${j}`}
-                  style={{
-                  textAlign: 'right',
-                  }}
-                ><Score score={score} />
+                >
+                  <span className="level">{song.levels[j]}</span>
+                  <Score score={score} />
                 </td>
               ));
             } else {
@@ -116,7 +115,7 @@ class Player extends Component {
           <tr key={song.id}>
             <td className="song-name">
               {song.name}
-              {(song.english_name) ? <span className="english-name">{song.english_name}</span> : ''}
+              {(song.english_name) ? <p className="english-name">{song.english_name}</p> : ''}
             </td>
             { scoresOutput }
           </tr>
