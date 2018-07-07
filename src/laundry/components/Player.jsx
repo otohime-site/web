@@ -102,7 +102,7 @@ class Player extends Component {
                   className={className}
                   key={`difficulty-${j}`}
                 >
-                  <span className="level">{song.levels[j]}</span>
+                  <span className="level">{(song.levels) ? song.levels[j] : ''}</span>
                   <Score score={score} />
                 </td>
               ));
