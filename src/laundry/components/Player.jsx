@@ -2,12 +2,38 @@ import { PropTypes } from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Label, Checkbox, Loader, Table, Button } from 'semantic-ui-react';
+import { Label, Checkbox, Loader, Table, Button, Dropdown } from 'semantic-ui-react';
 import Score from './Score';
 import Record from './Record';
-import { getPlayer, getSongs, setShowDifficulties } from '../actions';
+import { getPlayer, getSongs, setShowDifficulties, setSort } from '../actions';
 import './Player.css';
 
+const sortDropdownOptions = [
+  {
+    key: 'category',
+    text: '分類',
+    value: 'category',
+  },
+  {
+    key: 'version',
+    text: '版本',
+    value: 'version',
+  },
+];
+const versions = new Map([
+  [6.5, 'MiLK PLUS'],
+  [6, 'MiLK'],
+  [5.5, 'MURASAKi PLUS'],
+  [5, 'MURASAKi'],
+  [4.5, 'PiNK PLUS'],
+  [4, 'PiNK'],
+  [3.5, 'ORANGE PLUS'],
+  [3, 'ORANGE'],
+  [2.5, 'GreeN PLUS'],
+  [2, 'GreeN'],
+  [1.5, 'PLUS'],
+  [1, 'maimai'],
+]);
 class Player extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -16,6 +42,7 @@ class Player extends Component {
     getPlayer: PropTypes.func.isRequired,
     getSongs: PropTypes.func.isRequired,
     setShowDifficulties: PropTypes.func.isRequired,
+    setSort: PropTypes.func.isRequired,
     record: PropTypes.shape({
       card_name: PropTypes.string,
       class: PropTypes.string,
@@ -31,7 +58,10 @@ class Player extends Component {
       category: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       english_name: PropTypes.string,
+      japan_only: PropTypes.bool,
+      version: PropTypes.number,
     })),
+    sort: PropTypes.string,
     getPlayerResult: PropTypes.shape({
       status: PropTypes.string,
       err: PropTypes.instanceOf(Error),
@@ -43,6 +73,7 @@ class Player extends Component {
     scores: {},
     songs: [],
     getPlayerResult: {},
+    sort: 'category',
     showDifficulties: false,
   };
 
@@ -59,25 +90,33 @@ class Player extends Component {
   }
   render() {
     const tbodies = [];
-    const songGroups = new Map();
-    // XXX: After we have more grouping methods,
-    // move these to Redux reducer.
+    let songGroups = new Map();
+    // Assume sortBy to be 'category' for unexpected values.
+    const sortBy = this.props.sort;
+
     for (let i = 0; i < this.props.songs.length; i += 1) {
       const song = this.props.songs[i];
-      const { active, category } = song;
-      if (!songGroups.has(category)) {
-        songGroups.set(category, []);
+      const { active, category, version } = song;
+      let groupKey = category;
+      if (sortBy === 'version') {
+        groupKey = version;
+      }
+      if (!songGroups.has(groupKey)) {
+        songGroups.set(groupKey, []);
       }
       if (active) {
-        songGroups.get(category).push(song);
+        songGroups.get(groupKey).push(song);
       }
     }
+    if (sortBy === 'version') {
+      songGroups = new Map([...songGroups.entries()].sort());
+    }
     // Render song groups as <tbody>s.
-    songGroups.forEach((songs, category) => {
+    songGroups.forEach((songs, groupKey) => {
       const rows = [];
       rows.push(( // eslint-disable-next-line react/no-array-index-key
-        <tr key={category}>
-          <th><Label size="large" ribbon>{category}</Label></th>
+        <tr key={groupKey}>
+          <th><Label size="large" ribbon>{(sortBy === 'version') ? versions.get(groupKey) : groupKey}</Label></th>
           <th className="score difficulty-0">Easy</th>
           <th className="score difficulty-1">Basic</th>
           <th className="score difficulty-2">Advanced</th>
@@ -138,10 +177,11 @@ class Player extends Component {
     return (
       <div>
         <Record record={this.props.record} />
-        <p className="player-options">
+        <div className="player-options">
           <Button as={Link} to={`/mai/${this.props.match.params.nickname}/timeline`}>歷史紀錄</Button>
+          排序：<Dropdown selection options={sortDropdownOptions} defaultValue="category" onChange={this.props.setSort} />
           <Checkbox toggle label="顯示所有難易度" onChange={this.props.setShowDifficulties} />
-        </p>
+        </div>
         <Table className={(this.props.showDifficulties) ? 'player-scores' : 'player-scores hide-difficulties'} lang="ja">
           {tbodies}
         </Table>
@@ -156,6 +196,7 @@ const mapStateToProps = state => ({
   songs: state.laundry.songs,
   getPlayerResult: state.laundry.getPlayerResult,
   showDifficulties: state.laundry.showDifficulties,
+  sort: state.laundry.sort,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -167,6 +208,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setShowDifficulties: (e, data) => (
     dispatch(setShowDifficulties(data.checked))
+  ),
+  setSort: (e, { value }) => (
+    dispatch(setSort(value))
   ),
 });
 

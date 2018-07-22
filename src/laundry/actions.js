@@ -8,6 +8,7 @@ export const UPDATE_PLAYER = 'laundry/UPDATE_PLAYER';
 export const DELETE_PLAYER = 'laundry/DELETE_PLAYER';
 export const GET_SONGS = 'laundry/GET_SONGS';
 export const GET_PLAYER = 'laundry/GET_PLAYER';
+export const SET_SORT = 'laundry/SET_SORT';
 export const GET_TIMELINE = 'laundry/GET_TIMELINE';
 export const GET_TIMELINE_DETAIL = 'laundry/GET_TIMELINE_DETAIL';
 export const SET_SHOW_DIFFICULTIES = 'laundry/SET_SHOW_DIFFICULTIES';
@@ -79,6 +80,11 @@ export const getSongs = () => ({
 export const getPlayer = nickname => ({
   type: GET_PLAYER,
   payload: fetchPayload(`/api/mai/${nickname}`),
+});
+
+export const setSort = value => ({
+  type: SET_SORT,
+  payload: value,
 });
 
 export const getTimeline = nickname => ({

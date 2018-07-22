@@ -1,7 +1,7 @@
 import {
   OPEN_USER_MODAL, CLOSE_USER_MODAL, OPEN_USER_DELETE_MODAL, CLOSE_USER_DELETE_MODAL,
   GET_ME, GET_PLAYER, NEW_OR_UPDATE_PLAYER, DELETE_PLAYER,
-  GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL, SET_SHOW_DIFFICULTIES,
+  GET_SONGS, GET_TIMELINE, GET_TIMELINE_DETAIL, SET_SHOW_DIFFICULTIES, SET_SORT,
 } from './actions';
 
 export default function laundryReducers(state = {}, action) {
@@ -62,6 +62,9 @@ export default function laundryReducers(state = {}, action) {
     }
     case `${GET_PLAYER}_REJECTED`:
       return { ...state, getPlayerResult: { status: 'err', err: action.payload } };
+
+    case SET_SORT:
+      return { ...state, sort: action.payload };
 
     case `${GET_SONGS}_FULFILLED`:
       return { ...state, songs: action.payload };
