@@ -1,3 +1,4 @@
+import React from 'react';
 import host from './host';
 
 export default function home() {

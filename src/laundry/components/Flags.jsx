@@ -1,3 +1,4 @@
+import React from 'react';
 import propTypes from 'prop-types';
 import './Flags.css';
 

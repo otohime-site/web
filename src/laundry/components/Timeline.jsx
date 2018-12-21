@@ -1,5 +1,5 @@
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Route } from 'react-router-dom';
 import { Button, Grid, Menu } from 'semantic-ui-react';
@@ -14,29 +14,36 @@ class Timeline extends Component {
       url: PropTypes.string,
     }).isRequired,
     timeline: PropTypes.arrayOf(PropTypes.string),
-    getTimeline: PropTypes.func.isRequired,
+    dGetTimeline: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     timeline: [],
-  }
+  };
+
   componentDidMount() {
-    this.props.getTimeline(this.props.match.params.nickname);
+    const { match, dGetTimeline } = this.props;
+    dGetTimeline(match.params.nickname);
   }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.match !== this.props.match) {
-      this.props.getTimeline(this.props.match.params.nickname);
+    const { match, dGetTimeline } = this.props;
+    if (prevProps.match !== match) {
+      dGetTimeline(match.params.nickname);
     }
   }
+
   render() {
+    const { match, timeline } = this.props;
     moment.locale('zh-TW');
     return (
       <div>
-        <Button as={Link} to={encodeURI(`/mai/${this.props.match.params.nickname}`)}>&lt; Back</Button>
+        <Button as={Link} to={encodeURI(`/mai/${match.params.nickname}`)}>&lt; Back</Button>
         <Grid columns={2} stackable>
           <Grid.Column width={4}>
             <Menu vertical>
-              {this.props.timeline.map(time => (
-                <Menu.Item key={time} as={Link} to={encodeURI(`/mai/${this.props.match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</Menu.Item>
+              {timeline.map(time => (
+                <Menu.Item key={time} as={Link} to={encodeURI(`/mai/${match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</Menu.Item>
               ))}
             </Menu>
           </Grid.Column>
@@ -54,7 +61,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTimeline: (nickname) => {
+  dGetTimeline: (nickname) => {
     dispatch(getTimeline(nickname));
   },
 });

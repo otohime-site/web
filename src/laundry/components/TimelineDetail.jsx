@@ -1,5 +1,5 @@
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'semantic-ui-react';
 import { getTimelineDetail, getSongs } from '../actions';
@@ -12,8 +12,8 @@ class TimelineDetail extends Component {
     match: PropTypes.shape({
       params: PropTypes.shape({ nickname: PropTypes.string, time: PropTypes.string }),
     }).isRequired,
-    getTimelineDetail: PropTypes.func.isRequired,
-    getSongs: PropTypes.func.isRequired,
+    dGetTimelineDetail: PropTypes.func.isRequired,
+    dGetSongs: PropTypes.func.isRequired,
     timelineDetailRecords: PropTypes.arrayOf(PropTypes.shape({
       card_name: PropTypes.string,
       class: PropTypes.string,
@@ -30,38 +30,56 @@ class TimelineDetail extends Component {
       name: PropTypes.string.isRequired,
     })),
   };
+
   static defaultProps = {
     songs: [],
     timelineDetailRecords: [],
     timelineDetailScores: {},
-  }
-  componentDidMount = async () => {
-    if (this.props.songs.length === 0) {
-      this.props.getSongs();
-    }
-    this.props.getTimelineDetail(this.props.match.params.nickname, this.props.match.params.time);
   };
+
+  componentDidMount = async () => {
+    const {
+      songs, match,
+      dGetSongs, dGetTimelineDetail,
+    } = this.props;
+    if (songs.length === 0) {
+      dGetSongs();
+    }
+    dGetTimelineDetail(match.params.nickname, match.params.time);
+  };
+
   componentDidUpdate(prevProps) {
-    if (prevProps.match !== this.props.match) {
-      this.props.getTimelineDetail(this.props.match.params.nickname, this.props.match.params.time);
+    const {
+      match, dGetTimelineDetail,
+    } = this.props;
+    if (prevProps.match !== match) {
+      dGetTimelineDetail(match.params.nickname, match.params.time);
     }
   }
+
   render() {
-    const beforeRecord = this.props.timelineDetailRecords[0];
-    const afterRecord = this.props.timelineDetailRecords[1];
-    console.log(this.props.timelineDetailScores); // eslint-disable-line no-console
-    const rows = this.props.songs.map((song) => {
+    const {
+      songs, timelineDetailRecords, timelineDetailScores,
+    } = this.props;
+    const beforeRecord = timelineDetailRecords[0];
+    const afterRecord = timelineDetailRecords[1];
+    console.log(timelineDetailScores); // eslint-disable-line no-console
+    const rows = songs.map((song) => {
       const scoresOutput = [];
-      console.log(this.props.timelineDetailScores[song.id]); // eslint-disable-line no-console
-      if (this.props.timelineDetailScores[song.id]) {
-        const scores = this.props.timelineDetailScores[song.id];
+      console.log(timelineDetailScores[song.id]); // eslint-disable-line no-console
+      if (timelineDetailScores[song.id]) {
+        const scores = timelineDetailScores[song.id];
         for (let i = 0; i < scores.length; i += 1) {
           if (scores[i]) {
             const beforeScore = scores[i][0];
             const afterScore = scores[i][1];
             scoresOutput.push((
               <tr>
-                <td>{song.name} {difficulties[i]}</td>
+                <td>
+                  {song.name}
+                  {' '}
+                  {difficulties[i]}
+                </td>
                 <td>{(beforeScore) ? <Score score={beforeScore} /> : ''}</td>
                 <td>{(afterScore) ? <Score score={afterScore} /> : ''}</td>
               </tr>
@@ -101,10 +119,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getTimelineDetail: (nickname, time) => {
+  dGetTimelineDetail: (nickname, time) => {
     dispatch(getTimelineDetail(nickname, time));
   },
-  getSongs: () => {
+  dGetSongs: () => {
     dispatch(getSongs());
   },
 });

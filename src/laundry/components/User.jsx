@@ -1,8 +1,10 @@
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Modal, Message, Table, Button, Icon } from 'semantic-ui-react';
+import {
+  Modal, Message, Table, Button, Icon,
+} from 'semantic-ui-react';
 import { InputField, SelectField } from 'react-semantic-redux-form';
 import {
   getMe, openUserModal, closeUserModal,
@@ -76,13 +78,13 @@ UserDeleteForm = reduxForm({ form: 'laundryUserDeleteForm' })(UserDeleteForm);
 
 class User extends Component {
   static propTypes = {
-    getMe: PropTypes.func.isRequired,
-    openUserModal: PropTypes.func.isRequired,
-    closeUserModal: PropTypes.func.isRequired,
-    openUserDeleteModal: PropTypes.func.isRequired,
-    closeUserDeleteModal: PropTypes.func.isRequired,
-    newOrUpdatePlayer: PropTypes.func.isRequired,
-    deletePlayer: PropTypes.func.isRequired,
+    dGetMe: PropTypes.func.isRequired,
+    dOpenUserModal: PropTypes.func.isRequired,
+    dCloseUserModal: PropTypes.func.isRequired,
+    dOpenUserDeleteModal: PropTypes.func.isRequired,
+    dCloseUserDeleteModal: PropTypes.func.isRequired,
+    dNewOrUpdatePlayer: PropTypes.func.isRequired,
+    dDeletePlayer: PropTypes.func.isRequired,
     me: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       nickname: PropTypes.string.isRequired,
@@ -107,6 +109,7 @@ class User extends Component {
       err: PropTypes.instanceOf(Error),
     }),
   };
+
   static defaultProps = {
     me: [],
     loggedIn: false,
@@ -115,34 +118,54 @@ class User extends Component {
     newOrUpdatePlayerResult: {},
     deletePlayerResult: {},
   };
+
   componentDidMount() {
-    this.props.getMe();
+    const { dGetMe } = this.props;
+    dGetMe();
   }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.newOrUpdatePlayerResult !== this.props.newOrUpdatePlayerResult) {
-      if (this.props.newOrUpdatePlayerResult.status === 'ok') {
-        this.props.closeUserModal();
-        this.props.getMe();
+    const {
+      newOrUpdatePlayerResult, deletePlayerResult,
+      dCloseUserModal, dCloseUserDeleteModal, dGetMe,
+    } = this.props;
+    if (prevProps.newOrUpdatePlayerResult !== newOrUpdatePlayerResult) {
+      if (newOrUpdatePlayerResult.status === 'ok') {
+        dCloseUserModal();
+        dGetMe();
       }
     }
-    if (prevProps.deletePlayerResult !== this.props.deletePlayerResult) {
-      if (this.props.deletePlayerResult.status === 'ok') {
-        this.props.closeUserDeleteModal();
-        this.props.getMe();
+    if (prevProps.deletePlayerResult !== deletePlayerResult) {
+      if (deletePlayerResult.status === 'ok') {
+        dCloseUserDeleteModal();
+        dGetMe();
       }
     }
   }
+
   handleSubmit = (values) => {
-    this.props.newOrUpdatePlayer(this.props.userModal.nickname, values);
+    const { dNewOrUpdatePlayer, userModal } = this.props;
+    dNewOrUpdatePlayer(userModal.nickname, values);
   };
-  validateDeleteNickname = val => (
-    (val !== this.props.userDeleteModal.nickname) ? '暱稱不一致。' : undefined
-  );
+
+  validateDeleteNickname = (val) => {
+    const { userDeleteModal } = this.props;
+    return (val !== userDeleteModal.nickname) ? '暱稱不一致。' : undefined;
+  };
+
   handleDeleteSubmit = (values) => {
-    this.props.deletePlayer(this.props.userDeleteModal.nickname, values);
+    const { dDeletePlayer, userDeleteModal } = this.props;
+    dDeletePlayer(userDeleteModal.nickname, values);
   };
+
   render() {
-    if (!this.props.loggedIn) {
+    const {
+      loggedIn, me, userModal, userDeleteModal,
+      newOrUpdatePlayerResult, deletePlayerResult,
+      dOpenUserModal, dCloseUserModal,
+      dOpenUserDeleteModal, dCloseUserDeleteModal,
+    } = this.props;
+    if (!loggedIn) {
       return (
         <Message>
           請先登入。
@@ -154,12 +177,13 @@ class User extends Component {
         <h3>管理我的成績單</h3>
         <Button
           primary
-          onClick={this.props.openUserModal({
+          onClick={dOpenUserModal({
             nickname: '',
             privacy: 'public',
           })}
         >
-          <Icon name="plus" />新增成績單
+          <Icon name="plus" />
+新增成績單
         </Button>
         <Table>
           <thead>
@@ -170,7 +194,7 @@ class User extends Component {
             </tr>
           </thead>
           <tbody>
-            { (this.props.me.length > 0) ? (this.props.me.map(player => (
+            { (me.length > 0) ? (me.map(player => (
               <tr key={player.id}>
                 <td>{player.nickname}</td>
                 <td>{privacyOptions.get(player.privacy)}</td>
@@ -178,7 +202,7 @@ class User extends Component {
                   <Button
                     positive
                     onClick={
-                    this.props.openUserModal({
+                    dOpenUserModal({
                       nickname: player.nickname,
                       privacy: player.privacy,
                     })
@@ -188,50 +212,54 @@ class User extends Component {
                   </Button>
                   <Button
                     negative
-                    onClick={this.props.openUserDeleteModal(player.nickname)}
+                    onClick={dOpenUserDeleteModal(player.nickname)}
                   >
                       刪除
                   </Button>
                 </td>
               </tr>
-            ))) :
-            <tr><td colSpan="3">你還沒有成績單。新增一個吧！</td></tr>
+            )))
+              : <tr><td colSpan="3">你還沒有成績單。新增一個吧！</td></tr>
             }
           </tbody>
         </Table>
-        <Modal size="mini" open={this.props.userModal.open} onClose={this.props.closeUserModal}>
-          <Modal.Header>{(this.props.userModal.nickname) ? '編輯成績單' : '新增成績單'}</Modal.Header>
+        <Modal size="mini" open={userModal.open} onClose={dCloseUserModal}>
+          <Modal.Header>{(userModal.nickname) ? '編輯成績單' : '新增成績單'}</Modal.Header>
           <Modal.Content>
             <UserForm
               enableReinitialize
-              edit={!!this.props.userModal.nickname}
+              edit={!!userModal.nickname}
               onSubmit={this.handleSubmit}
               initialValues={{
-                nickname: this.props.userModal.nickname,
-                privacy: this.props.userModal.privacy,
+                nickname: userModal.nickname,
+                privacy: userModal.privacy,
               }}
             />
-            { (this.props.newOrUpdatePlayerResult.status === 'err') ? (
+            { (newOrUpdatePlayerResult.status === 'err') ? (
               <Message error>
-                { (this.props.newOrUpdatePlayerResult.err.content &&
-                   this.props.newOrUpdatePlayerResult.err.content.err === 'exists') ?
-                  '該暱稱已存在，請換一個。' : '發生錯誤，請通報 :('
+                { (newOrUpdatePlayerResult.err.content
+                   && newOrUpdatePlayerResult.err.content.err === 'exists')
+                  ? '該暱稱已存在，請換一個。' : '發生錯誤，請通報 :('
                 }
               </Message>
             ) : '' }
           </Modal.Content>
         </Modal>
-        <Modal size="mini" open={this.props.userDeleteModal.open} onClose={this.props.closeUserDeleteModal}>
+        <Modal size="mini" open={userDeleteModal.open} onClose={dCloseUserDeleteModal}>
           <Modal.Header>刪除成績單 </Modal.Header>
           <Modal.Content>
-            <p>您確定刪除成績單「{this.props.userDeleteModal.nickname}」嗎？</p>
+            <p>
+您確定刪除成績單「
+              {userDeleteModal.nickname}
+」嗎？
+            </p>
             <p><strong>所有此成績單的現有與歷史紀錄將被刪除，且無法復原。</strong></p>
             <p>如果你真的確定的話，請在下方重新輸入您的暱稱。</p>
             <UserDeleteForm
               validateNickname={this.validateDeleteNickname}
               onSubmit={this.handleDeleteSubmit}
             />
-            { (this.props.deletePlayerResult.status === 'err') ? (
+            { (deletePlayerResult.status === 'err') ? (
               <Message error>
                 發生錯誤，請通報 :(
               </Message>
@@ -251,25 +279,25 @@ const mapStateToProps = state => ({
   deletePlayerResult: state.laundry.deletePlayerResult,
 });
 const mapDispatchToProps = dispatch => ({
-  getMe: () => {
+  dGetMe: () => {
     dispatch(getMe());
   },
-  openUserModal: values => (
+  dOpenUserModal: values => (
     () => dispatch(openUserModal(values))
   ),
-  closeUserModal: () => {
+  dCloseUserModal: () => {
     dispatch(closeUserModal());
   },
-  openUserDeleteModal: nickname => (
+  dOpenUserDeleteModal: nickname => (
     () => dispatch(openUserDeleteModal(nickname))
   ),
-  closeUserDeleteModal: () => {
+  dCloseUserDeleteModal: () => {
     dispatch(closeUserDeleteModal());
   },
-  newOrUpdatePlayer: (nickname, values) => {
+  dNewOrUpdatePlayer: (nickname, values) => {
     dispatch(newOrUpdatePlayer(nickname, values));
   },
-  deletePlayer: (nickname, values) => {
+  dDeletePlayer: (nickname, values) => {
     dispatch(deletePlayer(nickname, values));
   },
 });

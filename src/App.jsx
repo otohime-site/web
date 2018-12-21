@@ -1,5 +1,10 @@
-import { Route, Link } from 'react-router-dom';
-import { Icon, Divider, Menu, Container } from 'semantic-ui-react';
+import React from 'react';
+import {
+  Route, Link,
+} from 'react-router-dom';
+import {
+  Icon, Divider, Menu, Container,
+} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.css';
 
 import Home from './Home';
@@ -12,7 +17,12 @@ export default function App() {
     <div className="App">
       <Menu secondary fixed="top" id="header">
         <Container>
-          <Menu.Item className="logo"><Link to="/"><Icon name="music" />Semiquaver</Link></Menu.Item>
+          <Menu.Item className="logo">
+            <Link to="/">
+              <Icon name="music" />
+Semiquaver
+            </Link>
+          </Menu.Item>
           <UserBox />
         </Container>
       </Menu>
@@ -22,7 +32,14 @@ export default function App() {
       </Container>
       <Divider />
       <Container id="footer">
-        <p>Powered by Semiquaver Team. <a href="https://github.com/semiquaver-moe/" target="_blank" rel="noopener noreferrer"><Icon name="github" /> GitHub</a></p>
+        <p>
+          Powered by Semiquaver Team.
+          <a href="https://github.com/semiquaver-moe/" target="_blank" rel="noopener noreferrer">
+            <Icon name="github" />
+            {' '}
+GitHub
+          </a>
+        </p>
       </Container>
     </div>
   );
