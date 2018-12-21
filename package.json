@@ -12,25 +12,25 @@
     "test": "neutrino test"
   },
   "dependencies": {
-    "moment": "^2.22.2",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-hot-loader": "^4.0.1",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
+    "moment": "^2.23.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-hot-loader": "^4.6.3",
+    "react-redux": "^6.0.0",
+    "react-router-dom": "^4.3.1",
     "react-semantic-redux-form": "^1.2.6",
     "redux": "^4.0.0",
-    "redux-form": "^7.3.0",
+    "redux-form": "^8.0.4",
     "redux-promise-middleware": "^5.1.1",
-    "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.81.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.84.0",
     "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git"
   },
   "devDependencies": {
-    "@neutrinojs/airbnb": "^8.2.2",
-    "@neutrinojs/jest": "^8.2.2",
-    "@neutrinojs/react": "^8.2.2",
-    "neutrino": "^8.2.2"
+    "@neutrinojs/airbnb": "^9.0.0-rc.0",
+    "@neutrinojs/jest": "^9.0.0-rc.0",
+    "@neutrinojs/react": "^9.0.0-rc.0",
+    "neutrino": "^9.0.0-rc.0"
   }
 }
