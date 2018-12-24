@@ -1,3 +1,5 @@
+const BookmarkletPlugin = require('./bookmarklet-plugin')
+
 module.exports = {
   use: [
     ['@neutrinojs/airbnb',
@@ -40,7 +42,10 @@ module.exports = {
         }
       }
     ],
-    '@neutrinojs/jest'
+    '@neutrinojs/jest',
+    (neutrino) => {
+      neutrino.config.plugin('bookmarklet').use(BookmarkletPlugin);
+    },
   ],
   options: {
     mains: {
