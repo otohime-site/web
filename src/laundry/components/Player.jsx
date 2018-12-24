@@ -25,6 +25,7 @@ const sortDropdownOptions = [
   },
 ];
 const versions = new Map([
+  [7, 'FiNALE'],
   [6.5, 'MiLK PLUS'],
   [6, 'MiLK'],
   [5.5, 'MURASAKi PLUS'],
