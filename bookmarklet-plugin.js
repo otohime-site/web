@@ -20,6 +20,7 @@ BookmarkletPlugin.prototype.apply = (compiler) => {
         let result = '';
         result += cssUrls.map(url => `
           var l = document.createElement('link');
+          l.rel = 'stylesheet';
           l.href = '${(production) ? 'https://smq.moe' : 'https://localhost:5000'}${url}';
           document.head.appendChild(l);
         `).join('\n');
