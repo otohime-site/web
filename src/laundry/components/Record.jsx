@@ -12,12 +12,13 @@ export default function Record({ record }) {
       <Class rawClass={record.class} />
       <p className="player-title">{record.title}</p>
       <p className="player-rating">
-Rating
+        Rating
+        {' '}
         {record.rating.toFixed(2)}
         {' '}
-(Max
+        (Max
         {record.max_rating.toFixed(2)}
-)
+        )
       </p>
     </div>
   );

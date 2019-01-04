@@ -29,7 +29,12 @@ export default function Class({ rawClass }) {
   const classParts = rawClass.split('_');
   const className = classNames[classParts[0]];
   const classLevel = classLevels[classParts[1]];
-  return (<span className={`player-class class-${classLevel}`}>{className}</span>);
+  return (
+    <svg className={`player-class class-${classLevel}`} width="60" height="28">
+      <text paintOrder="stroke" x="10" y="20">
+        {className}
+      </text>
+    </svg>);
 }
 
 Class.propTypes = {

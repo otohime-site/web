@@ -1,9 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Rancho');
+@import url('https://fonts.googleapis.com/css?family=Rancho|M+PLUS+Rounded+1c:400,700');
 
-@font-face {
-  font-family: 'Gen Jyuu Gothic Heavy';
-  src: url('/static/genjyuu.ttf');
-}
 #container {
   padding-top: 4.5em;
 }
