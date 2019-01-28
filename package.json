@@ -8,7 +8,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open",
-    "lint": "eslint --cache --format codeframe --ext mjs,jsx,js src",
+    "lint": "tslint 'src/**/*.ts?(x)'",
+    "lint:js": "eslint --cache --format codeframe --ext mjs,jsx,js src",
     "test": "jest"
   },
   "dependencies": {
@@ -28,12 +29,22 @@
     "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.1.0",
     "@neutrinojs/airbnb": "^9.0.0-rc.0",
     "@neutrinojs/jest": "^9.0.0-rc.0",
     "@neutrinojs/react": "^9.0.0-rc.0",
+    "@types/react": "^16.7.21",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-redux": "^7.0.1",
+    "@types/react-router-dom": "^4.3.1",
     "eslint": "^5.10.0",
+    "fork-ts-checker-webpack-plugin": "^0.5.2",
     "jest": "^23.6.0",
     "neutrino": "^9.0.0-rc.0",
+    "tslint": "^5.12.1",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.4",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"

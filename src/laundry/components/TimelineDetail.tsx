@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import { Table } from 'semantic-ui-react';
-import { getTimelineDetail, getSongs } from '../actions';
-import { difficulties } from '../consts';
-import Record from './Record';
-import Score from './Score';
+import React, { Component } from 'react'
+import { PropTypes } from 'prop-types'
+import { connect } from 'react-redux'
+import { Table } from 'semantic-ui-react'
+import { getTimelineDetail, getSongs } from '../actions'
+import { difficulties } from '../consts'
+import Record from './Record'
+import Score from './Score'
 
 class TimelineDetail extends Component {
   static propTypes = {
     match: PropTypes.shape({
-      params: PropTypes.shape({ nickname: PropTypes.string, time: PropTypes.string }),
+      params: PropTypes.shape({ nickname: PropTypes.string, time: PropTypes.string })
     }).isRequired,
     dGetTimelineDetail: PropTypes.func.isRequired,
     dGetSongs: PropTypes.func.isRequired,
@@ -19,60 +19,60 @@ class TimelineDetail extends Component {
       class: PropTypes.string,
       title: PropTypes.string,
       rating: PropTypes.number,
-      max_rating: PropTypes.number,
+      max_rating: PropTypes.number
     })),
     timelineDetailScores: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
       flag: PropTypes.string.isRequired,
-      score: PropTypes.number.isRequired,
+      score: PropTypes.number.isRequired
     })))),
     songs: PropTypes.arrayOf(PropTypes.shape({
       category: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })),
-  };
+      name: PropTypes.string.isRequired
+    }))
+  }
 
   static defaultProps = {
     songs: [],
     timelineDetailRecords: [],
-    timelineDetailScores: {},
-  };
+    timelineDetailScores: {}
+  }
 
   componentDidMount = async () => {
     const {
       songs, match,
-      dGetSongs, dGetTimelineDetail,
-    } = this.props;
+      dGetSongs, dGetTimelineDetail
+    } = this.props
     if (songs.length === 0) {
-      dGetSongs();
+      dGetSongs()
     }
-    dGetTimelineDetail(match.params.nickname, match.params.time);
-  };
+    dGetTimelineDetail(match.params.nickname, match.params.time)
+  }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     const {
-      match, dGetTimelineDetail,
-    } = this.props;
+      match, dGetTimelineDetail
+    } = this.props
     if (prevProps.match !== match) {
-      dGetTimelineDetail(match.params.nickname, match.params.time);
+      dGetTimelineDetail(match.params.nickname, match.params.time)
     }
   }
 
-  render() {
+  render () {
     const {
-      songs, timelineDetailRecords, timelineDetailScores,
-    } = this.props;
-    const beforeRecord = timelineDetailRecords[0];
-    const afterRecord = timelineDetailRecords[1];
-    console.log(timelineDetailScores); // eslint-disable-line no-console
+      songs, timelineDetailRecords, timelineDetailScores
+    } = this.props
+    const beforeRecord = timelineDetailRecords[0]
+    const afterRecord = timelineDetailRecords[1]
+    console.log(timelineDetailScores) // eslint-disable-line no-console
     const rows = songs.map((song) => {
-      const scoresOutput = [];
-      console.log(timelineDetailScores[song.id]); // eslint-disable-line no-console
+      const scoresOutput = []
+      console.log(timelineDetailScores[song.id]) // eslint-disable-line no-console
       if (timelineDetailScores[song.id]) {
-        const scores = timelineDetailScores[song.id];
+        const scores = timelineDetailScores[song.id]
         for (let i = 0; i < scores.length; i += 1) {
           if (scores[i]) {
-            const beforeScore = scores[i][0];
-            const afterScore = scores[i][1];
+            const beforeScore = scores[i][0]
+            const afterScore = scores[i][1]
             scoresOutput.push((
               <tr>
                 <td>
@@ -83,16 +83,16 @@ class TimelineDetail extends Component {
                 <td>{(beforeScore) ? <Score score={beforeScore} /> : ''}</td>
                 <td>{(afterScore) ? <Score score={afterScore} /> : ''}</td>
               </tr>
-            ));
+            ))
           }
         }
       }
       return (
         scoresOutput
-      );
-    });
+      )
+    })
     return (
-      <Table lang="ja">
+      <Table lang='ja'>
         <thead>
           <tr>
             <th>What</th>
@@ -103,28 +103,28 @@ class TimelineDetail extends Component {
         <tbody>
           <tr>
             <td>Record</td>
-            <td>{ (beforeRecord) ? <Record record={beforeRecord} /> : '' }</td>
-            <td>{ (afterRecord) ? <Record record={afterRecord} /> : ''}</td>
+            <td>{(beforeRecord) ? <Record record={beforeRecord} /> : ''}</td>
+            <td>{(afterRecord) ? <Record record={afterRecord} /> : ''}</td>
           </tr>
-          { rows }
+          {rows}
         </tbody>
       </Table>
-    );
+    )
   }
 }
 const mapStateToProps = state => ({
   timelineDetailRecords: state.laundry.timelineDetailRecords,
   timelineDetailScores: state.laundry.timelineDetailScores,
-  songs: state.laundry.songs,
-});
+  songs: state.laundry.songs
+})
 
 const mapDispatchToProps = dispatch => ({
   dGetTimelineDetail: (nickname, time) => {
-    dispatch(getTimelineDetail(nickname, time));
+    dispatch(getTimelineDetail(nickname, time))
   },
   dGetSongs: () => {
-    dispatch(getSongs());
-  },
-});
+    dispatch(getSongs())
+  }
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(TimelineDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineDetail)

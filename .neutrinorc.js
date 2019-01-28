@@ -1,25 +1,19 @@
-const BookmarkletPlugin = require('./bookmarklet-plugin')
+const BookmarkletPlugin = require('./bookmarklet-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+// https://github.com/neutrinojs/neutrino/issues/1269
 
 module.exports = {
   use: [
-    ['@neutrinojs/airbnb',
-      {
-        eslint: {
-          rules: {
-            'jsx-a11y/anchor-is-valid': [ "error", {
-              "specialLink": [ "to" ],
-            }]
-          }
-        }
-      }
-    ],
     [
       '@neutrinojs/react',
       {
         html: {
           title: 'Semiquaver'
         },
-        publicPath: "/"
+        publicPath: "/",
+        babel: {
+          presets: ['@babel/typescript']
+        }
       }
     ],
     [
@@ -45,6 +39,15 @@ module.exports = {
     '@neutrinojs/jest',
     (neutrino) => {
       neutrino.config.plugin('bookmarklet').use(BookmarkletPlugin);
+      neutrino.config.plugin('fork-ts-checker').use(ForkTsCheckerWebpackPlugin, [
+        {
+          checkSyntacticErrors: true,
+          tslint: true
+        }
+      ]);
+      neutrino.config.resolve.extensions.add('.tsx');
+      neutrino.config.resolve.extensions.add('.ts');
+      neutrino.config.module.rule('compile').test(/\.(wasm|mjs|jsx|js|tsx|ts)$/);
     },
   ],
   options: {
