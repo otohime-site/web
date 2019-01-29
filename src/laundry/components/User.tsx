@@ -295,10 +295,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(closeUserDeleteModal())
   },
   dNewOrUpdatePlayer: (nickname, values) => {
-    dispatch(newOrUpdatePlayer(nickname, values))
+    dispatch(newOrUpdatePlayer({nickname, values}))
   },
   dDeletePlayer: (nickname, values) => {
-    dispatch(deletePlayer(nickname, values))
+    dispatch(deletePlayer({nickname, values}))
   }
 })
 
