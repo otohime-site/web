@@ -15,18 +15,22 @@
   "dependencies": {
     "moment": "^2.23.0",
     "prop-types": "^15.6.2",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1",
     "react-hot-loader": "^4.6.3",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-semantic-redux-form": "^1.2.6",
     "redux": "^4.0.0",
     "redux-form": "^8.0.4",
+    "redux-observable": "^1.0.0",
     "redux-promise-middleware": "^5.1.1",
+    "redux-react-hook": "^3.0.2",
+    "rxjs": "^6.3.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.84.0",
-    "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git"
+    "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git",
+    "typesafe-actions": "^3.0.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.1.0",
