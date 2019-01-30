@@ -62,7 +62,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   dGetTimeline: (nickname) => {
-    dispatch(getTimeline(nickname))
+    dispatch(getTimeline.request(nickname))
   }
 })
 

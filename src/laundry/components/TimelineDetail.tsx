@@ -120,10 +120,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   dGetTimelineDetail: (nickname, time) => {
-    dispatch(getTimelineDetail(nickname, time))
+    dispatch(getTimelineDetail.request({ nickname, time }))
   },
   dGetSongs: () => {
-    dispatch(getSongs())
+    dispatch(getSongs.request())
   }
 })
 

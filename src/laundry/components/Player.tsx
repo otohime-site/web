@@ -218,10 +218,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   dGetPlayer: (nickname) => {
-    dispatch(getPlayer(nickname))
+    dispatch(getPlayer.request(nickname))
   },
   dGetSongs: () => {
-    dispatch(getSongs())
+    dispatch(getSongs.request())
   },
   dSetShowDifficulties: (e, data) => (
     dispatch(setShowDifficulties(data.checked))

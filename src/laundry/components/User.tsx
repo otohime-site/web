@@ -280,7 +280,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
   dGetMe: () => {
-    dispatch(getMe())
+    dispatch(getMe.request())
   },
   dOpenUserModal: values => (
     () => dispatch(openUserModal(values))
@@ -295,10 +295,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(closeUserDeleteModal())
   },
   dNewOrUpdatePlayer: (nickname, values) => {
-    dispatch(newOrUpdatePlayer({nickname, values}))
+    dispatch(newOrUpdatePlayer.request({ nickname, values }))
   },
   dDeletePlayer: (nickname, values) => {
-    dispatch(deletePlayer({nickname, values}))
+    dispatch(deletePlayer.request({ nickname, values }))
   }
 })
 

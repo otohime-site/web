@@ -890,6 +890,14 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/redux-form@^7.4.16":
+  version "7.4.16"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-7.4.16.tgz#042ac596e24815e09c40f83e246bdf424b4605f3"
+  integrity sha512-GWkDiyYoYbxLiNjzTBKW0eOEb1YpFuTBussorhAzirSfJ/ezbbiI91ExWE7YGZboWwlucaH+dkapcaKiCaIlng==
+  dependencies:
+    "@types/react" "*"
+    redux "^3.6.0 || ^4.0.0"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
@@ -6882,7 +6890,7 @@ redux-react-hook@^3.0.2:
   resolved "https://registry.yarnpkg.com/redux-react-hook/-/redux-react-hook-3.0.3.tgz#1619ff21a7fe64902a4d7d103ddef4f7632fbdb2"
   integrity sha512-Hq+yJcqTCLLD3SdpEF3dI9G4pzehvx7MuCzm2gr2fbP1K+jfWU8HC6qznWy9jhWXnhkL4oGieQAvSmUlFLN+dw==
 
-redux@^4.0.0:
+"redux@^3.6.0 || ^4.0.0", redux@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
   integrity sha512-R7bAtSkk7nY6O/OYMVR9RiBI+XghjF9rlbl5806HJbQph0LJVHZrU5oaO4q70eUKiqMRqm4y07KLTlMZ2BlVmg==

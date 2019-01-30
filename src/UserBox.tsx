@@ -65,9 +65,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
   dGetMe: () => {
-    dispatch(getMe())
+    dispatch(getMe.request())
   }
-
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserBox)

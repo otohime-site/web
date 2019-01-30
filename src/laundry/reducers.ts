@@ -127,6 +127,9 @@ export default (state: LaundryState = {
         if (!timelineDetailScores[score.song_id]) {
           timelineDetailScores[score.song_id] = []
         }
+        if (!timelineDetailScores[score.song_id][score.difficulty]) {
+          timelineDetailScores[score.song_id][score.difficulty] = []
+        }
         if (score.from === 'before') {
           timelineDetailScores[score.song_id][score.difficulty][0] = score
         } else {
