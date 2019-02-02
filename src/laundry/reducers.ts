@@ -1,35 +1,20 @@
 import { ActionType, getType } from 'typesafe-actions'
-import { Player, Record, Score, Sort, TimelineRecord, TimelineScore } from './types'
+import { Player, Record, Score, Sort, TimelineRecord, TimelineScore, Song } from './types'
 import * as laundry from './actions'
 
 type AsyncResult = 'pending' | 'ok' | 'err'
 
 export interface LaundryState {
-  me: Player[]
-  songs?: any
+  me: Player[],
+  loggedIn: boolean,
+  songs?: Song[]
   record?: Record,
   scores?: { [songId: number]: Score[] }
   timeline?: string[]
   timelineDetailRecords?: TimelineRecord[]
   timelineDetailScores?: { [songId: number]: TimelineScore[][] }
-  sort: Sort
-  userModal: {
-    open: boolean,
-    nickname?: string,
-    privacy?: string
-  }
-  userDeleteModal: {
-    open: boolean,
-    nickname?: string
-  }
-  newOrUpdatePlayerResult?: {
-    status: AsyncResult
-    err?: any
-  }
-  deletePlayerResult?: {
-    status: AsyncResult
-    err?: any
-  }
+  sort: Sort,
+  showDifficulties: boolean
   getPlayerResult?: {
     status: AsyncResult
     err?: any
@@ -39,47 +24,18 @@ export interface LaundryState {
 export type LaundryAction = ActionType<typeof laundry>
 
 export default (state: LaundryState = {
-  userModal: { open: false },
-  userDeleteModal: { open: false },
   me: [],
-  sort: 'category'
+  songs: [],
+  loggedIn: false,
+  sort: 'category',
+  showDifficulties: false
 }, action: LaundryAction) => {
   switch (action.type) {
-    case getType(laundry.openUserModal):
-      return { ...state, userModal: { open: true, ...action.payload } }
-
-    case getType(laundry.closeUserModal):
-      return { ...state, userModal: { open: false } }
-
-    case getType(laundry.openUserDeleteModal):
-      return { ...state, userDeleteModal: { open: true, nickname: action.payload } }
-
-    case getType(laundry.closeUserDeleteModal):
-      return { ...state, userDeleteModal: { open: false } }
-
     case getType(laundry.getMe.success):
       return { ...state, loggedIn: true, me: action.payload }
 
     case getType(laundry.getMe.failure):
       return { ...state, loggedIn: false, me: [] }
-
-    case getType(laundry.newOrUpdatePlayer.request):
-      return { ...state, newOrUpdatePlayerResult: { status: 'pending' as AsyncResult } }
-
-    case getType(laundry.newOrUpdatePlayer.success):
-      return { ...state, newOrUpdatePlayerResult: { status: 'ok' as AsyncResult } }
-
-    case getType(laundry.newOrUpdatePlayer.failure):
-      return { ...state, newOrUpdatePlayerResult: { status: 'err' as AsyncResult, err: action.payload } }
-
-    case getType(laundry.deletePlayer.request):
-      return { ...state, deletePlayerResult: { status: 'pending' as AsyncResult } }
-
-    case getType(laundry.deletePlayer.success):
-      return { ...state, deletePlayerResult: { status: 'ok' as AsyncResult } }
-
-    case getType(laundry.deletePlayer.failure):
-      return { ...state, deletePlayerResult: { status: 'err' as AsyncResult, err: action.payload } }
 
     case getType(laundry.getPlayer.request):
       return { ...state, getPlayerResult: { status: 'pending' as AsyncResult } }

@@ -1,10 +1,16 @@
+
 export class LaundryError extends Error {
-  content: any
-  code?: number
+  content: { err: string }
+  code: number
+  constructor (code: number, content: { err: string }) {
+    super('LaundryError')
+    this.content = content
+    this.code = code
+  }
 }
 
 export interface Player {
-  id: string
+  id?: string
   nickname: string
   privacy: 'public' | 'anonymous' | 'private'
 }

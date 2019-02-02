@@ -13,13 +13,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "formik": "^1.4.3",
+    "formik-semantic-ui": "^0.9.0",
     "moment": "^2.23.0",
     "prop-types": "^15.6.2",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",
     "react-hot-loader": "^4.6.3",
     "react-redux": "^6.0.0",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^4.4.0-beta.6",
     "react-semantic-redux-form": "^1.2.6",
     "redux": "^4.0.0",
     "redux-form": "^8.0.4",
@@ -30,7 +32,8 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.84.0",
     "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git",
-    "typesafe-actions": "^3.0.0"
+    "typesafe-actions": "^3.0.0",
+    "use-react-router": "^1.0.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.1.0",

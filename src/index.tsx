@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
+import { StoreContext } from 'redux-react-hook'
 import { createStore, applyMiddleware } from 'redux'
 import promiseMiddleware from 'redux-promise-middleware'
 import { createEpicMiddleware } from 'redux-observable'
@@ -20,10 +20,10 @@ epicMiddleware.run(rootEpics)
 const root = document.getElementById('root')
 render(
   (
-    <Provider store={store}>
+    <StoreContext.Provider value={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
+    </StoreContext.Provider>
   ), root
 )

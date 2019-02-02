@@ -1,8 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { FunctionComponent } from 'react'
 import Class from './Class'
+import { Record } from '../types'
 
-export default function Record ({ record }) {
+interface RecordProps {
+  record: Record
+}
+
+const RecordComponent: FunctionComponent<RecordProps> = ({ record }) => {
   if (!record.card_name) {
     return <div className='player-record' />
   }
@@ -23,13 +27,4 @@ export default function Record ({ record }) {
     </div>
   )
 }
-
-Record.propTypes = {
-  record: PropTypes.shape({
-    card_name: PropTypes.string,
-    class: PropTypes.string,
-    title: PropTypes.string,
-    rating: PropTypes.number,
-    max_rating: PropTypes.number
-  }).isRequired
-}
+export default RecordComponent

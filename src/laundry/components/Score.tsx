@@ -1,8 +1,12 @@
-import React from 'react'
-import { PropTypes } from 'prop-types'
+import React, { FunctionComponent } from 'react'
 import Flags from './Flags'
+import { Score } from '../types'
 
-export default function Score ({ score }) {
+interface ScoreProps {
+  score: Score
+}
+
+const ScoreComponent: FunctionComponent<ScoreProps> = ({ score }) => {
   return (
     <span>
       {(score.score > 0) ? `${score.score.toFixed(2)}%` : ''}
@@ -11,9 +15,5 @@ export default function Score ({ score }) {
     </span>
   )
 }
-Score.propTypes = {
-  score: PropTypes.shape({
-    flag: PropTypes.string.isRequired,
-    score: PropTypes.number.isRequired
-  }).isRequired
-}
+
+export default ScoreComponent
