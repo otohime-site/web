@@ -29,7 +29,7 @@ export interface Song {
   active: boolean
   japan_only: boolean
   version: number
-  levels: (string | null)[]
+  levels: (string | null)[] | null
 }
 
 export interface Record {

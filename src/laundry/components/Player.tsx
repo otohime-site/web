@@ -194,7 +194,7 @@ const PlayerComponent: FunctionComponent = () => {
         groupKeys = [ `${version}` ]
         break
       case 'level':
-        groupKeys = levels.filter(l => l).map(l => `${l}`)
+        groupKeys = (levels) ? levels.filter(l => l).map(l => `${l}`) : []
     }
     groupKeys.forEach((groupKey, index) => {
       const songWithDifficulty = {
