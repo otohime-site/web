@@ -1,21 +1,35 @@
-.player-scores {
+.player-scores, .accordion .title .ribbon {
   font-family: 'M PLUS Rounded 1c';
 }
 
-.player-scores tbody th {
+.accordion .title .ribbon {
+  width: 21em;
+}
+
+.accordion .title.active {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 43px;
+  z-index: 2;
+}
+.accordion .content.active {
+  position: relative;
+  top: -55px;
+  margin-bottom: -55px;
+}
+
+.player-scores thead th {
   padding: 0.92857143em 0.78571429em;
   color: rgba(0, 0, 0, 0.87);
   border-top: 1px solid rgba(34, 36, 38, 0.1);
 }
 
-.player-scores tbody th {
+.player-scores thead th {
+  position: -webkit-sticky;
   position: sticky;
   top: 43px;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
-}
-.player-scores tbody th:first-child .label {
-  width: 20em;
 }
 .player-scores .song-name {
   font-weight: bold;
@@ -115,6 +129,9 @@
   td.score.difficulty-5::before {
     float: left;
     content: "Re:Master";
+  }
+  .player-scores.sort-level .level {
+    display: none;
   }
 }
 
