@@ -1,13 +1,11 @@
 import React, { FunctionComponent } from 'react'
 import host from './host'
-import { TextArea, Form, Popup } from 'semantic-ui-react'
+import { TextArea, Form, Popup, Button, Icon } from 'semantic-ui-react'
+import * as clipboard from 'clipboard-polyfill'
 
 const HomeComponent: FunctionComponent = () => {
   const copyToClipboard = (e: React.MouseEvent) => {
-    if (!e.target) { return }
-    (e.target as HTMLTextAreaElement).select()
-    document.execCommand('copy');
-    (e.target as HTMLTextAreaElement).blur()
+    return clipboard.writeText(`javascript:var s=document.createElement("script");s.src="https://${host}/go.js";document.body.appendChild(s);void(0);`)
   }
   return (
     <div>
@@ -18,20 +16,12 @@ const HomeComponent: FunctionComponent = () => {
         <li>請先以 Facebook 登入之後，到「我的成績單 &gt; 管理成績單」新增成績單。</li>
         <li>新增完成後回到此頁，將此頁（或任何頁面）加入書籤。</li>
         <li>
-          編輯您剛剛加入的書籤，選一個方便識別的名稱，並將網址替換成以下 Bookmarklet 內容（點擊以複製到剪貼簿）：
+          編輯您剛剛加入的書籤，選一個方便識別的名稱，並將網址替換成複製的 Bookmarklet 內容：
           <Form>
             <Popup
               content='已複製'
               on='click'
-              // tslint:disable-next-line:jsx-no-multiline-js
-              trigger={(
-              <TextArea
-                style={{ cursor: 'pointer' }}
-                rows={1}
-                readOnly={true}
-                onClick={copyToClipboard}
-                value={`javascript:var s=document.createElement("script");s.src="https://${host}/go.js";document.body.appendChild(s);void(0);`}
-              />)}
+              trigger={(<Button icon={true} onClick={copyToClipboard}><Icon name='copy'/>複製到剪貼簿</Button>)}
             />
           </Form>
         </li>
