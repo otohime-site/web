@@ -27,14 +27,12 @@ export const getTimeline = createAsyncAction(
   'laundry/GET_TIMELINE_DONE',
   'laundry/GET_TIMELINE_FAIL'
 )<string, string[], LaundryError>()
-//  payload: fetchPayload(`/api/mai/${nickname}/timeline`)
 
 export const getTimelineDetail = createAsyncAction(
   'laundry/GET_TIMELINE_DETAIL',
   'laundry/GET_TIMELINE_DETAIL_DONE',
   'laundry/GET_TIMELINE_DETAIL_FAIL'
 )<{nickname: string, time: string}, TimelineDetail, LaundryError>()
-//  payload: fetchPayload(`/api/mai/${nickname}/timeline/${time}`)
 
 export const setShowDifficulties = createStandardAction(
   'laundry/SET_SHOW_DIFFICULTIES')<boolean>()
