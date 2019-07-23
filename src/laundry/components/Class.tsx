@@ -46,7 +46,8 @@ const Class: FunctionComponent<ClassProps> = ({ rawClass }) => {
       <text paintOrder='stroke' x='10' y='20'>
         {className}
       </text>
-    </svg>)
+    </svg>
+  )
 }
 
 export default Class

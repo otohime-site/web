@@ -84,7 +84,8 @@ const UserModal: FunctionComponent<UserModalProps> = ({ open, setClose, nickname
           <FormButton.Submit>{(nickname) ? '編輯' : '新增'}</FormButton.Submit>
         </Form>
       </Modal.Content>
-    </Modal>)
+    </Modal>
+  )
 }
 
 interface UserDeleteModalProps {
@@ -143,7 +144,8 @@ const UserDeleteModal: FunctionComponent<UserDeleteModalProps> = ({ open, setClo
           <FormButton.Submit negative={true}>確定刪除！</FormButton.Submit>
         </Form>
       </Modal.Content>
-    </Modal>)
+    </Modal>
+  )
 }
 const UserComponent: FunctionComponent = () => {
   const { me, loggedIn } = useMappedState(

@@ -79,7 +79,8 @@ const tableHeader = (sort: Sort) => {
       return (
         <th className={`score difficulty-${i}`} key={`difficulty-${i}`}>
           {d}
-        </th>)
+        </th>
+      )
     })
     return (
       <thead>

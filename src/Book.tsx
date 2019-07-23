@@ -79,7 +79,8 @@ const book: FunctionComponent = () => {
           {nickname}
         </label>
         <a href={`https://${host}/mai/${nickname}`} rel='noopener noreferrer' target='_blank' title='新分頁打開網頁，檢視成績單'>(檢視)</a>
-      </p>))
+      </p>
+    ))
   }
   if (!loggedIn) {
     return (
@@ -88,7 +89,8 @@ const book: FunctionComponent = () => {
         <p>請先以 Facebook 帳號登入 Semiquaver 以使用服務。</p>
         <p>您的 Facebook 帳號將僅用於使用者認證，Semiquaver 團隊保證不會將您的 Facebook 帳號挪作他用或透漏給任何人。</p>
         <a className='btn' href={`https://${host}/api/connect/facebook`} rel='noopener noreferrer' target='_blank'>登入</a>
-      </div>)
+      </div>
+    )
   }
   return (
     <div className='smq-bookmarklet' lang='zh-TW'>
