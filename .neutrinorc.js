@@ -1,7 +1,6 @@
 const react = require('@neutrinojs/react')
 const devServer = require('@neutrinojs/dev-server')
 const jest = require('@neutrinojs/jest')
-const cors = require('cors')
 const BookmarkletPlugin = require('./bookmarklet-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // https://github.com/neutrinojs/neutrino/issues/1269
@@ -19,13 +18,6 @@ module.exports = {
     }),
     devServer({
       https: true,
-      before: function(app, server) {
-        app.use(cors({
-          origin: ['https://maimai-net.com'],
-          allowedHeaders: 'Content-Type',
-          credentials: true
-        }))
-      },
       proxy: {
         "/api": "http://localhost:8585/"
       },
