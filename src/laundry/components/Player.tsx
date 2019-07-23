@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react'
-import { useMappedState, useDispatch } from 'redux-react-hook'
+import React, { FunctionComponent, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import useRouter from 'use-react-router'
 import { Accordion, Label, Checkbox, Loader, Table, Button,
@@ -139,16 +139,13 @@ const tableRow = (song: SongWithDifficulty, scores: Score[] = [], sort: Sort) =>
 
 const PlayerComponent: FunctionComponent = () => {
   const { match } = useRouter<{ nickname: string }>()
-  const { record, scores, songs, getPlayerResult, showDifficulties, sort } = useMappedState(
-    useCallback((state: RootState) => ({
-      record: state.laundry.record,
-      scores: state.laundry.scores,
-      songs: state.laundry.songs,
-      getPlayerResult: state.laundry.getPlayerResult,
-      showDifficulties: state.laundry.showDifficulties,
-      sort: state.laundry.sort
-    }), [])
-  )
+  const record = useSelector((state: RootState) => state.laundry.record)
+  const scores = useSelector((state: RootState) => state.laundry.scores)
+  const songs = useSelector((state: RootState) => state.laundry.songs)
+  const getPlayerResult = useSelector((state: RootState) => state.laundry.getPlayerResult)
+  const showDifficulties = useSelector((state: RootState) => state.laundry.showDifficulties)
+  const sort = useSelector((state: RootState) => state.laundry.sort)
+
   const dispatch = useDispatch()
   useEffect(() => {
     if (!songs || songs.length === 0) {

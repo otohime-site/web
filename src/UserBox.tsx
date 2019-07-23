@@ -1,17 +1,13 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Dropdown, Menu, Icon } from 'semantic-ui-react'
 import { getMe } from './laundry/actions'
-import { useMappedState, useDispatch } from 'redux-react-hook'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from './reducers'
 
 const UserBoxComponent: FunctionComponent = () => {
-  const { me, loggedIn } = useMappedState(
-    useCallback((state: RootState) => ({
-      me: state.laundry.me,
-      loggedIn: state.laundry.loggedIn
-    }), [])
-  )
+  const me = useSelector((state: RootState) => state.laundry.me)
+  const loggedIn = useSelector((state: RootState) => state.laundry.loggedIn)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getMe.request())

@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { FormikActions } from 'formik'
 import { Modal, Message, Table, Icon, Button } from 'semantic-ui-react'
 import { Form, Input, Dropdown, Button as FormButton } from 'formik-semantic-ui'
 import { getMe } from '../actions'
-import { useDispatch, useMappedState } from 'redux-react-hook'
+import { useSelector, useDispatch } from 'react-redux'
 import { fetchPromise } from '../utils'
 import { LaundryError } from '../types'
 import { RootState } from '../../reducers'
@@ -148,12 +148,8 @@ const UserDeleteModal: FunctionComponent<UserDeleteModalProps> = ({ open, setClo
   )
 }
 const UserComponent: FunctionComponent = () => {
-  const { me, loggedIn } = useMappedState(
-    useCallback((state: RootState) => ({
-      me: state.laundry.me,
-      loggedIn: state.laundry.loggedIn
-    }), [])
-  )
+  const me = useSelector((state: RootState) => state.laundry.me)
+  const loggedIn = useSelector((state: RootState) => state.laundry.loggedIn)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getMe.request())

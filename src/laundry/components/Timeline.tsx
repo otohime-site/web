@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react'
-import { useMappedState, useDispatch } from 'redux-react-hook'
+import React, { FunctionComponent, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
 import { Link, Route } from 'react-router-dom'
 import { Button, Grid, Menu } from 'semantic-ui-react'
@@ -10,11 +10,8 @@ import { RootState } from '../../reducers'
 
 const TimelineComponenet: FunctionComponent = () => {
   const { match } = useRouter<{ nickname: string }>()
-  const { timeline } = useMappedState(
-    useCallback((state: RootState) => ({
-      timeline: state.laundry.timeline
-    }), [])
-  )
+  const timeline = useSelector((state: RootState) => state.laundry.timeline)
+
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getTimeline.request(match.params.nickname))
