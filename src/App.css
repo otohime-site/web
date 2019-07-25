@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Rancho|M+PLUS+Rounded+1c:400,700');
+@import url('https://fonts.googleapis.com/css?family=Carter+One|M+PLUS+Rounded+1c:400,700');
 
 #container {
   padding-top: 4.5em;
 }
 #header {
-  background: #EFEFEF;
-  border-bottom: 1px solid #CCCCCC;
+  background: #eef6ff;
 }
 #footer {
   color: #999999;
@@ -16,8 +15,10 @@
 
 .ui.secondary.menu .item.logo a {
   font-size: 1.5em;
-  font-family: 'Rancho', cursive;
-  color: #666666;
+  font-family: 'Carter One';
+  color: #10235c;
   text-decoration: none;
 }
-
+.ui.secondary.menu .right.menu .item {
+  color: #051238;
+}
