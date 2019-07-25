@@ -1,17 +1,20 @@
 import React, { Component, FunctionComponent, useEffect, useState, ChangeEvent } from 'react'
-import parser from 'semiquaver-parser/laundry'
+import laundryParser from 'semiquaver-parser/laundry'
+import laundryDXParser from 'semiquaver-parser/laundry_dx'
 import './Book.css'
 import host from './host'
 
 const book: FunctionComponent = () => {
-  const noMaimaiNet = (document.location.href.indexOf('https://maimai-net.com/') !== 0)
+  const url = document.location.href
+  const noMaimaiNet = (url.indexOf('https://maimai-net.com/') !== 0 && url.indexOf('https://maimaidx.jp') !== 0)
+  const service = (url.indexOf('https://maimaidx.jp') === 0) ? 'mdx' : 'mai'
   const [loggedIn, setLoggedIn] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentNickname, setCurrentNickname] = useState('')
   const [myNicknames, setMyNicknames] = useState([] as string[])
 
   const handleGetNicknames = async () => {
-    const res = await fetch(`https://${host}/api/mai/me`, {
+    const res = await fetch(`https://${host}/api/${service}/me`, {
       credentials: 'include'
     })
     if (!res.ok) {
@@ -38,9 +41,9 @@ const book: FunctionComponent = () => {
 
   const handleUpdate = async () => {
     try {
+      const parser = (service === 'mdx') ? laundryDXParser : laundryParser
       const result = await parser(handleProgress) // eslint-disable-line no-unused-vars
-      result.icon = 'na'
-      await fetch(`https://${host}/api/mai/${currentNickname}`, {
+      await fetch(`https://${host}/api/${service}/${currentNickname}`, {
         method: 'POST',
         body: JSON.stringify(result),
         headers: { 'Content-Type': 'application/json' },
@@ -48,6 +51,7 @@ const book: FunctionComponent = () => {
       })
       alert('OK!')
     } catch (e) {
+      console.log(e)
       alert('Error!')
     }
   }
@@ -78,7 +82,7 @@ const book: FunctionComponent = () => {
           {' '}
           {nickname}
         </label>
-        <a href={`https://${host}/mai/${nickname}`} rel='noopener noreferrer' target='_blank' title='新分頁打開網頁，檢視成績單'>(檢視)</a>
+        <a href={`https://${host}/${service}/${nickname}`} rel='noopener noreferrer' target='_blank' title='新分頁打開網頁，檢視成績單'>(檢視)</a>
       </p>
     ))
   }
@@ -104,7 +108,7 @@ const book: FunctionComponent = () => {
       <p>
         <progress value={progress} max='100' />
       </p>
-      <p><a href={`https://${host}/mai/me`} className='btn' rel='noopener noreferrer' target='_blank'>管理成績單</a></p>
+      <p><a href={`https://${host}/${service}/me`} className='btn' rel='noopener noreferrer' target='_blank'>管理成績單</a></p>
     </div>
   )
 }
