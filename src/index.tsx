@@ -10,11 +10,10 @@ import { ThemeProvider, StylesProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { indigo, orange } from '@material-ui/core/colors'
 import App from './App'
-import rootReducer from './reducers'
 import rootEpics from './epics'
-import { LaundryAction, LaundryState } from './laundry/reducers'
+import rootReducer, { RootAction, RootState } from './reducers'
 
-const epicMiddleware = createEpicMiddleware<LaundryAction, LaundryAction, LaundryState>()
+const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>()
 const composedCreateStore = applyMiddleware(
   epicMiddleware
 )(createStore)

@@ -1,12 +1,12 @@
 import { getMe, getSongs, getPlayer, getTimeline, getTimelineDetail } from './actions'
 import { filter, switchMap, map, catchError } from 'rxjs/operators'
-import { LaundryAction, LaundryState } from './reducers'
+import { RootAction, RootState } from '../reducers'
 import { Epic } from 'redux-observable'
 import { isActionOf } from 'typesafe-actions'
 import { fetchPromise } from './utils'
 import { from, of } from 'rxjs'
 
-export const getMeEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (action$, store) => (
+export const getMeEpic: Epic<RootAction, RootAction, RootState> = (action$, store) => (
   action$.pipe(
     filter(isActionOf(getMe.request)),
     switchMap(() => (
@@ -18,7 +18,7 @@ export const getMeEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (acti
   )
 )
 
-export const getSongsEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (action$, store) => (
+export const getSongsEpic: Epic<RootAction, RootAction, RootState> = (action$, store) => (
   action$.pipe(
     filter(isActionOf(getSongs.request)),
     switchMap(() => (
@@ -30,7 +30,7 @@ export const getSongsEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (a
   )
 )
 
-export const getPlayerEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (action$, store) => (
+export const getPlayerEpic: Epic<RootAction, RootAction, RootState> = (action$, store) => (
   action$.pipe(
     filter(isActionOf(getPlayer.request)),
     switchMap(({ payload }) => (
@@ -42,7 +42,7 @@ export const getPlayerEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (
   )
 )
 
-export const getTimelineEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (action$, store) => (
+export const getTimelineEpic: Epic<RootAction, RootAction, RootState> = (action$, store) => (
   action$.pipe(
     filter(isActionOf(getTimeline.request)),
     switchMap(({ payload }) => (
@@ -54,7 +54,7 @@ export const getTimelineEpic: Epic<LaundryAction, LaundryAction, LaundryState> =
   )
 )
 
-export const getTimelineDetailEpic: Epic<LaundryAction, LaundryAction, LaundryState> = (action$, store) => (
+export const getTimelineDetailEpic: Epic<RootAction, RootAction, RootState> = (action$, store) => (
   action$.pipe(
     filter(isActionOf(getTimelineDetail.request)),
     switchMap(({ payload }) => (
