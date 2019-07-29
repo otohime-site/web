@@ -3658,6 +3658,11 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+formik-material-ui@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/formik-material-ui/-/formik-material-ui-0.0.20.tgz#1a98d6c31974afe7d1373a87b1d9671caecce093"
+  integrity sha512-SkHf0pehv4ipnviFB++CI7iXPRX+VI/BmjXXjqSxnaC1eUAz0InfKK6s0uK6hfO87boHTDfcPeECNh8prwUzEQ==
+
 formik-semantic-ui@^0.9.2:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/formik-semantic-ui/-/formik-semantic-ui-0.9.2.tgz#1259a5ce27c7fea8830e55066c6551dc7cc7b42a"
@@ -6721,10 +6726,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-dom@^16.8.6:
+"react-dom@npm:@hot-loader/react-dom":
   version "16.8.6"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.8.6.tgz#71d6303f631e8b0097f56165ef608f051ff6e10f"
-  integrity sha512-1nL7PIq9LTL3fthPqwkvr2zY7phIPjYrT0jp4HjyEQrEROnw4dG41VVwi/wfoCneoleqrNX7iAD+pXebJZwrwA==
+  resolved "https://registry.yarnpkg.com/@hot-loader/react-dom/-/react-dom-16.8.6.tgz#7923ba27db1563a7cc48d4e0b2879a140df461ea"
+  integrity sha512-+JHIYh33FVglJYZAUtRjfT5qZoT2mueJGNzU5weS2CVw26BgbxGKSujlJhO85BaRbg8sqNWyW1hYBILgK3ZCgA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

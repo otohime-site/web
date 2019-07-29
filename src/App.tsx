@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { hot } from 'react-hot-loader/root'
 import styled from 'styled-components'
 import { Route, Link } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Theme } from '@material-ui/core'
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => (
   })
 ))
 
-export default function App () {
+function App () {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const classes = useStyles()
 
@@ -81,3 +82,5 @@ export default function App () {
     </div>
   )
 }
+
+export default hot(App)
