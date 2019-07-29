@@ -1,24 +1,25 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
-import { FormikActions } from 'formik'
-import { Modal, Message, Table, Icon, Button } from 'semantic-ui-react'
-import { Form, Input, Dropdown, Button as FormButton } from 'formik-semantic-ui'
+import styled from 'styled-components'
+import { Formik, Field, Form, FormikActions } from 'formik'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
+         FormControl, InputLabel, Button, MenuItem, Paper,
+         Table, TableRow, TableCell, TableHead, TableBody, Typography } from '@material-ui/core'
+import { TextField, Select } from 'formik-material-ui'
 import { getMe } from '../actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchPromise } from '../utils'
 import { LaundryError } from '../types'
 import { RootState } from '../../reducers'
 
+const SpacedButton = styled(Button)`
+  margin: ${(props) => props.theme.spacing(1)}px;
+`
+
 const privacyOptions = {
   'public': '公開',
   'anonymous': '匿名',
   'private': '私人'
 }
-
-const privacyOptionsForForm = [
-  { key: 'public', value: 'public', text: privacyOptions['public'] },
-  { key: 'anonymous', value: 'anonymous', text: privacyOptions['anonymous'] },
-  { key: 'private', value: 'private', text: privacyOptions['private'] }
-]
 
 interface UserModalProps {
   open: boolean,
@@ -63,28 +64,41 @@ const UserModal: FunctionComponent<UserModalProps> = ({ open, setClose, nickname
     actions.setSubmitting(false)
   }
 
-  return (
-    <Modal size='mini' open={open} onClose={setClose}>
-      <Modal.Header>{(nickname) ? '編輯成績單' : '新增成績單'}</Modal.Header>
-      <Modal.Content>
-        <Form
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validate={validate}
-        >
-          <Input label='暱稱' name='nickname' />
-          <p>暱稱將會作為網址的一部分。</p>
-          <p>僅能使用小寫英數字、「-」或「_」。</p>
-          <Dropdown
-            options={privacyOptionsForForm}
+  const render = () => (
+    <Form>
+      <DialogContent>
+        <Field label='暱稱' name='nickname' component={TextField} />
+        <DialogContentText>暱稱將會作為網址的一部分。僅能使用小寫英數字、「-」或「_」。</DialogContentText>
+        <FormControl>
+          <InputLabel>隱私</InputLabel>
+          <Field
             name='privacy'
-            label='隱私'
-          />
-          <p>隱私會決定您的成績單是否會出現在排行榜或玩家搜尋介面等公開項目中。</p>
-          <FormButton.Submit>{(nickname) ? '編輯' : '新增'}</FormButton.Submit>
-        </Form>
-      </Modal.Content>
-    </Modal>
+            component={Select}
+          >
+            <MenuItem value='public'>{privacyOptions['public']}</MenuItem>
+            <MenuItem value='anonymous'>{privacyOptions['anonymous']}</MenuItem>
+            <MenuItem value='private'>{privacyOptions['private']}</MenuItem>
+          </Field>
+        </FormControl>
+        <DialogContentText>隱私會決定您的成績單是否會出現在排行榜或玩家搜尋介面等公開項目中。</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button color='primary' type='submit'>{(nickname) ? '編輯' : '新增'}</Button>
+        <Button onClick={setClose}>取消</Button>
+      </DialogActions>
+    </Form>
+  )
+
+  return (
+    <Dialog open={open} onClose={setClose}>
+      <DialogTitle>{(nickname) ? '編輯成績單' : '新增成績單'}</DialogTitle>
+      <Formik<Values>
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validate={validate}
+        render={render}
+      />
+    </Dialog>
   )
 }
 
@@ -124,27 +138,34 @@ const UserDeleteModal: FunctionComponent<UserDeleteModalProps> = ({ open, setClo
     actions.setSubmitting(false)
   }
 
-  return (
-    <Modal size='mini' open={open} onClose={setClose}>
-      <Modal.Header>刪除成績單 </Modal.Header>
-      <Modal.Content>
-        <p>
+  const render = () => (
+    <Form>
+      <DialogContent>
+        <DialogContentText>
           您確定刪除成績單「
             {nickname}
           」嗎？
-          </p>
-        <p><strong>所有此成績單的現有與歷史紀錄將被刪除，且無法復原。</strong></p>
-        <p>如果你真的確定的話，請在下方重新輸入您的暱稱。</p>
-        <Form
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validate={validate}
-        >
-          <Input label='暱稱' name='confirm_nickname' />
-          <FormButton.Submit negative={true}>確定刪除！</FormButton.Submit>
-        </Form>
-      </Modal.Content>
-    </Modal>
+          </DialogContentText>
+        <DialogContentText><strong>所有此成績單的現有與歷史紀錄將被刪除，且無法復原。</strong></DialogContentText>
+        <DialogContentText>如果你真的確定的話，請在下方重新輸入您的暱稱。</DialogContentText>
+        <Field label='暱稱' name='confirm_nickname' component={TextField} />
+      </DialogContent>
+      <DialogActions>
+        <Button color='secondary' type='submit'>確定刪除！</Button>
+        <Button onClick={setClose}>取消</Button>
+      </DialogActions>
+    </Form>
+  )
+  return (
+    <Dialog open={open} onClose={setClose}>
+      <DialogTitle>刪除成績單 </DialogTitle>
+      <Formik
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        validate={validate}
+        render={render}
+      />
+    </Dialog>
   )
 }
 const UserComponent: FunctionComponent = () => {
@@ -189,55 +210,56 @@ const UserComponent: FunctionComponent = () => {
   }
   if (!loggedIn) {
     return (
-      <Message>
-        請先登入。
-      </Message>
+        <p>請先登入。</p>
     )
   }
   return (
-    <div>
-      <h3>管理我的成績單</h3>
-      <Button
-        primary={true}
+    <React.Fragment>
+      <Typography component='h3'>管理我的成績單</Typography>
+      <SpacedButton
+        variant='contained'
+        color='primary'
         onClick={openUserModal('', 'public')}
       >
-        <Icon name='plus' />
         新增成績單
-      </Button>
-      <Table>
-        <thead>
-          <tr>
-            <th>暱稱</th>
-            <th>隱私設定</th>
-            <Table.HeaderCell width={4}>編輯/刪除</Table.HeaderCell>
-          </tr>
-        </thead>
-        <tbody>
-          {/* tslint:disable-next-line:jsx-no-multiline-js */}
-          {(me.length > 0) ? (me.map(player => (
-            <tr key={player.id}>
-              <td>{player.nickname}</td>
-              <td>{privacyOptions[player.privacy]}</td>
-              <td>
-                <Button
-                  positive={true}
-                  onClick={openUserModal(player.nickname, player.privacy)}
-                >
-                  編輯
-                </Button>
-                <Button
-                  negative={true}
-                  onClick={openUserDeleteModal(player.nickname)}
-                >
-                  刪除
-                </Button>
-              </td>
-            </tr>
-          )))
-            : <tr><td colSpan={3}>你還沒有成績單。新增一個吧！</td></tr>
-        }
-        </tbody>
-      </Table>
+      </SpacedButton>
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell component='th'>暱稱</TableCell>
+              <TableCell component='th'>隱私設定</TableCell>
+              <TableCell component='th'>編輯/刪除</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {/* tslint:disable-next-line:jsx-no-multiline-js */}
+            {(me.length > 0) ? (me.map(player => (
+              <TableRow key={player.id}>
+                <TableCell>{player.nickname}</TableCell>
+                <TableCell>{privacyOptions[player.privacy]}</TableCell>
+                <TableCell>
+                  <SpacedButton
+                    variant='outlined'
+                    onClick={openUserModal(player.nickname, player.privacy)}
+                  >
+                    編輯
+                  </SpacedButton>
+                  <SpacedButton
+                    variant='outlined'
+                    color='secondary'
+                    onClick={openUserDeleteModal(player.nickname)}
+                  >
+                    刪除
+                  </SpacedButton>
+                </TableCell>
+              </TableRow>
+            )))
+              : <TableRow><TableCell colSpan={3}>你還沒有成績單。新增一個吧！</TableCell></TableRow>
+          }
+          </TableBody>
+        </Table>
+      </Paper>
       <UserModal
         open={userModalOpened}
         setClose={closeUserModal}
@@ -249,7 +271,7 @@ const UserComponent: FunctionComponent = () => {
         setClose={closeUserDeleteModal}
         nickname={userDeleteModalNickname}
       />
-    </div>
+    </React.Fragment>
   )
 }
 
