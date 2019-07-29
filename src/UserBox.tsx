@@ -1,7 +1,4 @@
 import React, { FunctionComponent, useEffect } from 'react'
-import { AdapterLink } from './utils'
-import { Link as ReactRouterLink } from 'react-router-dom'
-import { Dropdown, Menu, Icon } from 'semantic-ui-react'
 import { getMe } from './laundry/actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from './reducers'
