@@ -1,12 +1,14 @@
 import React, { FunctionComponent, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { AdapterLink } from './utils'
+import { Link as ReactRouterLink } from 'react-router-dom'
 import { Dropdown, Menu, Icon } from 'semantic-ui-react'
 import { getMe } from './laundry/actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from './reducers'
+import { Button } from '@material-ui/core'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const UserBoxComponent: FunctionComponent = () => {
-  const me = useSelector((state: RootState) => state.laundry.me)
   const loggedIn = useSelector((state: RootState) => state.laundry.loggedIn)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -15,30 +17,20 @@ const UserBoxComponent: FunctionComponent = () => {
 
   if (loggedIn) {
     return (
-      <Menu.Menu position='right'>
-        <Dropdown item={true} icon='user' text='我的成績單'>
-          <Dropdown.Menu>
-            {me.map(player => (<Dropdown.Item key={player.nickname} as={Link} to={`/mai/${player.nickname}`}>{player.nickname}</Dropdown.Item>))}
-            <Dropdown.Divider />
-            <Dropdown.Item as={Link} to='/mai/me'>管理成績單</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Menu.Item as='a' href='/api/logout'>
-          <Icon name='sign out' />
-          {' '}
+      <React.Fragment>
+        <Button color='inherit' href='/api/logout'>
+          <ExitToAppIcon />
           登出
-          </Menu.Item>
-      </Menu.Menu>
+        </Button>
+      </React.Fragment>
     )
   }
   return (
-    <Menu.Menu position='right'>
-      <Menu.Item as='a' href='/api/connect/facebook'>
-        <Icon name='sign in' />
-        {' '}
+    <React.Fragment>
+      <Button color='inherit' href='/api/connect/facebook'>
         登入
-        </Menu.Item>
-    </Menu.Menu>
+      </Button>
+    </React.Fragment>
   )
 }
 

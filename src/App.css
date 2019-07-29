@@ -1,24 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Carter+One|M+PLUS+Rounded+1c:400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Material+Icons');
 
-#container {
-  padding-top: 4.5em;
-}
-#header {
-  background: #eef6ff;
-}
-#footer {
-  color: #999999;
-}
-.ui.secondary.menu .item.logo {
-  padding-left: 0;
-}
-
-.ui.secondary.menu .item.logo a {
-  font-size: 1.5em;
-  font-family: 'Carter One';
-  color: #10235c;
-  text-decoration: none;
-}
-.ui.secondary.menu .right.menu .item {
-  color: #051238;
+.App {
+  display: flex;
+  flex-grow: 1;
 }
