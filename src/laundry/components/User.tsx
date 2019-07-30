@@ -215,7 +215,7 @@ const UserComponent: FunctionComponent = () => {
   }
   return (
     <React.Fragment>
-      <Typography component='h3'>管理我的成績單</Typography>
+      <Typography variant='h5'>管理我的成績單</Typography>
       <SpacedButton
         variant='contained'
         color='primary'
