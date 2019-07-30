@@ -36,6 +36,7 @@ const StyledMain = styled('main')`
   margin-top: ${props => props.theme.spacing(6)}px;
   padding: ${props => props.theme.spacing(1)}px;
   flex: 1;
+  min-width: 0;
 `
 
 const useStyles = makeStyles((theme: Theme) => (

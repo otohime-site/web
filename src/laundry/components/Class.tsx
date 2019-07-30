@@ -1,4 +1,34 @@
+import styled from 'styled-components'
 import React, { FunctionComponent } from 'react'
+import { yellow, pink } from '@material-ui/core/colors'
+
+const StyledSVG = styled('svg')`
+  text {
+    font-family: 'M PLUS Rounded 1c';
+    font-size: 18px;
+    font-weight: bold;
+    stroke-width: 3px;
+  }
+  text.outer {
+    fill: none;
+    stroke-width: 5px;
+    stroke: #333333;
+  }
+  &.class-silver text.inner {
+    fill: white;
+  }
+  &.class-gold text.inner {
+    fill: ${yellow[300]};
+  }
+  &.class-gold-black text.inner {
+    fill: #333333;
+    stroke: ${yellow[200]};
+  }
+  &.class-gold-red text.inner {
+    fill: ${pink[800]};
+    stroke: ${yellow[200]};
+  }
+`
 
 const getClassName = (rawClassName: string) => {
   switch (rawClassName) {
@@ -42,11 +72,14 @@ const Class: FunctionComponent<ClassProps> = ({ rawClass }) => {
     return (<span />)
   }
   return (
-    <svg className={`player-class class-${classLevel}`} width='60' height='28'>
-      <text paintOrder='stroke' x='10' y='20'>
+    <StyledSVG className={`player-class class-silver`} width='60' height='28'>
+      <text className='outer' paintOrder='stroke' x='10' y='20'>
         {className}
       </text>
-    </svg>
+      <text className='inner' paintOrder='stroke' x='10' y='20'>
+        {className}
+      </text>
+    </StyledSVG>
   )
 }
 

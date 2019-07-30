@@ -1,9 +1,14 @@
+import styled from 'styled-components'
 import React, { FunctionComponent, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import useRouter from 'use-react-router'
-import { Accordion, Label, Checkbox, Loader, Table, Button,
-         Dropdown, CheckboxProps, DropdownProps } from 'semantic-ui-react'
+import { createMuiTheme, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
+         CircularProgress, Button, FormControl, InputLabel, Select, MenuItem, Switch, FormControlLabel,
+         Table, TableRow, TableCell, TableHead, TableBody, Typography, Card } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/styles'
+import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { AdapterLink } from '../../utils'
 import ScoreComponent from './Score'
 import RecordComponent from './Record'
 import {
@@ -13,6 +18,99 @@ import './Player.css'
 import { RootState } from '../../reducers'
 import { Sort, Song, Score } from '../types'
 import { difficulties } from '../consts'
+
+const laundryTheme = createMuiTheme({
+  palette: {
+    primary: indigo,
+    secondary: orange
+  },
+  typography: {
+    fontFamily: '"M PLUS Rounded 1c", "Roboto", "Helvetica", "Arial", sans-serif'
+  }
+})
+
+const SortFormControl = styled(FormControl)`
+  width: 8em;
+  margin-left: ${props => props.theme.spacing(2)}px;
+  margin-right: ${props => props.theme.spacing(2)}px;
+`
+
+const PlayerCard = styled(Card)`
+  margin-top: ${props => props.theme.spacing(2)}px;
+  margin-bottom: ${props => props.theme.spacing(2)}px;
+  padding: ${props => props.theme.spacing(1)}px;
+`
+
+const StyledExpansionPanelDetails = styled(ExpansionPanelDetails)`
+  padding: 0;
+`
+
+const ScoreTable = styled(Table)`
+
+  thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 48px;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    font-weight: bold;
+  }
+
+  .score {
+  }
+
+  .song-name {
+    color: #666666;
+    font-weight: bold;
+  }
+  .english-name {
+    color: #999999;
+    font-size: 75%;
+  }
+  td.score {
+    text-align: right;
+  }
+  td.score .level {
+    float: left;
+    margin-left: 0.2em;
+    font-size: 75%;
+    color: #AAAAAA;
+  }
+  .difficulty-0 {
+    background: ${blue[50]};
+  }
+  .difficulty-1 {
+    background: ${green[50]};
+  }
+  .difficulty-2 {
+    background: ${orange[50]};
+  }
+  .difficulty-3 {
+    background: ${red[50]};
+  }
+  .difficulty-4 {
+    background: ${deepPurple[50]};
+  }
+  .difficulty-5 {
+    background: ${purple[50]};
+  }
+
+
+  &.hide-difficulties .difficulty-0,
+  &.hide-difficulties .difficulty-1,
+  &.hide-difficulties .difficulty-2 {
+    display: none;
+  }
+
+  &.hide-difficulties .score {
+  }
+  &.hide-difficulties .song-name {
+    height: 2em;
+  }
+  .flags {
+    display: block;
+  }
+`
 
 const sortDropdownOptions = [
   {
@@ -67,28 +165,28 @@ interface SongWithDifficulty extends Song {
 const tableHeader = (sort: Sort) => {
   if (sort === 'level') {
     return (
-      <thead>
-        <tr>
-          <th />
-          <th className='score'>Score</th>
-        </tr>
-      </thead>
+      <TableHead>
+        <TableRow>
+          <TableCell component='th' />
+          <TableCell component='th' className='score'>Score</TableCell>
+        </TableRow>
+      </TableHead>
     )
   } else {
     const diffNodes = difficulties.map((d, i) => {
       return (
-        <th className={`score difficulty-${i}`} key={`difficulty-${i}`}>
+        <TableCell component='th' className={`score difficulty-${i}`} key={`difficulty-${i}`}>
           {d}
-        </th>
+        </TableCell>
       )
     })
     return (
-      <thead>
-        <tr>
-          <th />
+      <TableHead>
+        <TableRow>
+          <TableCell component='th' />
           {diffNodes}
-        </tr>
-      </thead>
+        </TableRow>
+      </TableHead>
     )
   }
 }
@@ -100,17 +198,17 @@ const scoreCell = (score: Score, label: string, i: number) => {
       className += ' score-zero'
     }
     return (
-      <td
+      <TableCell
         className={className}
         key={`difficulty-${i}`}
       >
         <span className='level'>{label}</span>
         <ScoreComponent score={score} />
-      </td>
+      </TableCell>
     )
 
   } else {
-    return (<td key={`difficulty-${i}`} />)
+    return (<TableCell key={`difficulty-${i}`} />)
   }
 }
 
@@ -127,13 +225,13 @@ const tableRow = (song: SongWithDifficulty, scores: Score[] = [], sort: Sort) =>
     ))
   }
   return (
-    <tr key={song.id}>
-      <td className='song-name'>
+    <TableRow key={song.id}>
+      <TableCell className='song-name'>
         {song.name}
-        {(song.english_name) ? <p className='english-name'>{song.english_name}</p> : ''}
-      </td>
+        {(song.english_name) ? <div className='english-name'>{song.english_name}</div> : ''}
+      </TableCell>
       {scoreCols}
-    </tr>
+    </TableRow>
   )
 }
 
@@ -155,11 +253,11 @@ const PlayerComponent: FunctionComponent = () => {
     dispatch(getPlayer.request(match.params.nickname))
   }, [match.params.nickname])
 
-  const changeShowDifficulties = (e: React.FormEvent, data: CheckboxProps) => (
-    dispatch(setShowDifficulties(!!data.checked))
+  const changeShowDifficulties = (e: React.ChangeEvent<HTMLInputElement>) => (
+    dispatch(setShowDifficulties(!!e.target.checked))
   )
-  const changeSort = (e: React.SyntheticEvent, { value }: DropdownProps) => (
-    dispatch(setSort(value as Sort))
+  const changeSort = (e: React.ChangeEvent<{ value: unknown }>) => (
+    dispatch(setSort(e.target.value as Sort))
   )
   if (getPlayerResult) {
     if (getPlayerResult.status === 'err') {
@@ -168,13 +266,13 @@ const PlayerComponent: FunctionComponent = () => {
       }
       return <div>發生錯誤，請稍候再試。</div>
     } if (getPlayerResult.status !== 'ok') {
-      return <Loader active={true} />
+      return <CircularProgress />
     }
   } else {
-    return <Loader active={true} />
+    return <CircularProgress />
   }
   if (!songs || !scores || !record) {
-    return <Loader active={true} />
+    return <CircularProgress />
   }
   const tbodies: JSX.Element[] = []
   // Arrange song groups based on what grouping we want.
@@ -226,37 +324,55 @@ const PlayerComponent: FunctionComponent = () => {
     const songRows = songInGroup.map(song => (
       tableRow(song, scores[song.id], sort)
     ))
-    return ({
-      key: groupKey,
-      title: { content: (
-        <Label size='large' ribbon={true}>
-          <i className='dropdown icon' />
-          {(sort === 'level') ? 'LEVEL ' : ''}
-          {(sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey}
-          {' '}({songRows.length})
-        </Label>
-      )},
-      content: { content: (
-        <Table className={(showDifficulties || sort === 'level') ? `player-scores sort-${sort}` : `player-scores sort-${sort} hide-difficulties`} lang='ja'>
-          {tableHeader(sort)}
-          <Table.Body>
-            {songRows}
-          </Table.Body>
-        </Table>
-      )}
-    })
+    return (
+      <ExpansionPanel key={groupKey} TransitionProps={{ timeout: 0 }}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>
+            {(sort === 'level') ? 'LEVEL ' : ''}
+            {(sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey}
+            {' '}({songRows.length})
+          </Typography>
+        </ExpansionPanelSummary>
+        <StyledExpansionPanelDetails>
+          <ScoreTable className={(showDifficulties || sort === 'level') ? `player-scores sort-${sort}` : `player-scores sort-${sort} hide-difficulties`} lang='ja'>
+            {tableHeader(sort)}
+            <TableBody>
+              {songRows}
+            </TableBody>
+          </ScoreTable>
+        </StyledExpansionPanelDetails>
+      </ExpansionPanel>
+    )
   })
   return (
-    <div>
-      <RecordComponent record={record} />
-      <div className='player-options'>
-        <Button as={Link} to={`/mai/${match.params.nickname}/timeline`}>歷史紀錄</Button>
-        排序：
-          <Dropdown selection={true} options={sortDropdownOptions} defaultValue='category' onChange={changeSort} />
-        {(sort !== 'level') ? <Checkbox toggle={true} label='顯示所有難易度' onChange={changeShowDifficulties} /> : <></>}
-      </div>
-      <Accordion panels={result} exclusive={false} fluid={true} />
-    </div>
+    <>
+      <PlayerCard>
+        <ThemeProvider theme={laundryTheme}>
+          <RecordComponent record={record} />
+        </ThemeProvider>
+        <div>
+          <Button variant='outlined' component={AdapterLink} to={`/mai/${match.params.nickname}/timeline`}>歷史紀錄</Button>
+          <SortFormControl>
+            <InputLabel>排序依照：</InputLabel>
+            <Select value={sort} onChange={changeSort}>
+              <MenuItem value='category'>分類</MenuItem>
+              <MenuItem value='version'>版本</MenuItem>
+              <MenuItem value='level'>樂曲等級</MenuItem>
+            </Select>
+          </SortFormControl>
+          {/* tslint:disable-next-line:jsx-no-multiline-js */}
+          {(sort !== 'level') ?
+            /* tslint:disable-next-line:jsx-no-multiline-js */
+            <FormControlLabel
+              control={<Switch checked={showDifficulties} onChange={changeShowDifficulties} />}
+              label='顯示所有難易度'
+            /> : <></>}
+        </div>
+      </PlayerCard>
+      <ThemeProvider theme={laundryTheme}>
+        {result}
+      </ThemeProvider>
+    </>
   )
 }
 export default PlayerComponent
