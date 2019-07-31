@@ -1,25 +1,61 @@
+import styled from 'styled-components'
 import React, { FunctionComponent } from 'react'
+import { indigo, amber, deepOrange } from '@material-ui/core/colors'
 import './Flags.css'
 
 interface FlagProps {
   rawFlags: string
 }
 
+const SingleFlag = styled('span')`
+  display: inline-block;
+  margin-left: 2px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 12px;
+  background: #FFFFFF;
+  opacity: 0.6;
+  font-size: 10px;
+  font-family: 'Roboto Slab';
+  font-weight: 700;
+
+  &.fc-silver {
+    color: ${indigo[500]};
+  }
+  &.fc-gold {
+    color: ${amber[800]};
+  }
+  &.ap {
+    color: ${deepOrange[500]};
+  }
+  &.ap-plus {
+    color: ${deepOrange[900]};
+  }
+`
+const EmptyFlag = styled('span')`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+`
 const Flags: FunctionComponent<FlagProps> = ({ rawFlags }) => {
   const getFlag = (flag: string) => {
     switch (flag) {
       case 'fc_silver':
-        return (<span key='fc-silver' className='flag flag-fc-silver'>FC</span>)
+        return (<SingleFlag key='fc-silver' className='flag fc-silver'>FC</SingleFlag>)
       case 'fc_gold':
-        return (<span key='fc-gold' className='flag flag-fc-gold'>FC</span>)
+        return (<SingleFlag key='fc-gold' className='flag fc-gold'>FC</SingleFlag>)
       case 'ap':
-        return (<span key='ap' className='flag flag-ap'>AP</span>)
+        return (<SingleFlag key='ap' className='flag ap'>AP</SingleFlag>)
       case 'ap_plus':
-        return (<span key='ap-plus' className='flag flag-ap-plus'>AP+</span>)
+        return (<SingleFlag key='ap-plus' className='flag ap-plus'>AP+</SingleFlag>)
       case '100':
-        return (<span key='100' className='flag flag-100'>100</span>)
+        return (<SingleFlag key='100' className='flag one-hundred'>100</SingleFlag>)
       default:
-        return (<span>&nbsp;</span>)
+        return (<EmptyFlag key='empty' />)
     }
   }
   return (

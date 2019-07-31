@@ -4,9 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
 import { createMuiTheme, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
          CircularProgress, Button, FormControl, InputLabel, Select, MenuItem, Switch, FormControlLabel,
-         Table, TableRow, TableCell, TableHead, TableBody, Typography, Card } from '@material-ui/core'
+         Table, TableRow, TableCell, TableHead, TableBody, Typography, Card, CardContent } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
 import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
+import HistoryIcon from '@material-ui/icons/History'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { AdapterLink } from '../../utils'
 import ScoreComponent from './Score'
@@ -30,36 +31,67 @@ const laundryTheme = createMuiTheme({
 })
 
 const SortFormControl = styled(FormControl)`
-  width: 8em;
-  margin-left: ${props => props.theme.spacing(2)}px;
-  margin-right: ${props => props.theme.spacing(2)}px;
+  width: 10rem;
 `
 
 const PlayerCard = styled(Card)`
   margin-top: ${props => props.theme.spacing(2)}px;
   margin-bottom: ${props => props.theme.spacing(2)}px;
+`
+const PlayerCardContent = styled(CardContent)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   padding: ${props => props.theme.spacing(1)}px;
+
+  &:last-child {
+    padding: ${props => props.theme.spacing(1)}px;
+  }
+
+  & > * {
+    margin-right: ${props => props.theme.spacing(4)}px;
+  }
+`
+const StyledExpansionPanel = styled(ExpansionPanel)`
+`
+
+const StyledExpansionPanelSummary = styled(ExpansionPanelSummary)`
+  flex-direction: row-reverse;
+  padding: 0;
+  &.Mui-expanded {
+    min-height: 48px;
+  }
+  position: sticky;
+  position: -webkit-sticky;
+  top: 48px;
+  background: white;
+  & > div, & > div.Mui-expanded {
+    margin: 0;
+  }
 `
 
 const StyledExpansionPanelDetails = styled(ExpansionPanelDetails)`
+  margin-top: -48px;
   padding: 0;
 `
 
 const ScoreTable = styled(Table)`
 
   thead th {
+    pointer-events: none;
     position: sticky;
     position: -webkit-sticky;
+    z-index: 1000;
     top: 48px;
+    height: 48px;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     font-weight: bold;
   }
 
-  .score {
-  }
-
   .song-name {
+    height: 48px;
     color: #666666;
     font-weight: bold;
   }
@@ -68,11 +100,20 @@ const ScoreTable = styled(Table)`
     font-size: 75%;
   }
   td.score {
-    text-align: right;
+    padding-right: 8px;
+  }
+  td.score:last-child {
+    padding-right: 8px;
+  }
+  td.score {
+    width: 8em;
+    position: relative;
+    padding-left: 2em;
   }
   td.score .level {
-    float: left;
-    margin-left: 0.2em;
+    position: absolute;
+    top: 1.3em;
+    left: 8px;
     font-size: 75%;
     color: #AAAAAA;
   }
@@ -101,34 +142,14 @@ const ScoreTable = styled(Table)`
   &.hide-difficulties .difficulty-2 {
     display: none;
   }
-
   &.hide-difficulties .score {
-  }
-  &.hide-difficulties .song-name {
-    height: 2em;
+    width: 12em;
   }
   .flags {
     display: block;
   }
 `
 
-const sortDropdownOptions = [
-  {
-    key: 'category',
-    text: '分類',
-    value: 'category'
-  },
-  {
-    key: 'version',
-    text: '版本',
-    value: 'version'
-  },
-  {
-    key: 'level',
-    text: '樂曲等級',
-    value: 'level'
-  }
-]
 const versions = new Map([
   [7, 'FiNALE'],
   [6.5, 'MiLK PLUS'],
@@ -325,33 +346,38 @@ const PlayerComponent: FunctionComponent = () => {
       tableRow(song, scores[song.id], sort)
     ))
     return (
-      <ExpansionPanel key={groupKey} TransitionProps={{ timeout: 0 }}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+      <StyledExpansionPanel key={groupKey} TransitionProps={{ timeout: 0 }}>
+        <StyledExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>
             {(sort === 'level') ? 'LEVEL ' : ''}
             {(sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey}
             {' '}({songRows.length})
           </Typography>
-        </ExpansionPanelSummary>
+        </StyledExpansionPanelSummary>
         <StyledExpansionPanelDetails>
-          <ScoreTable className={(showDifficulties || sort === 'level') ? `player-scores sort-${sort}` : `player-scores sort-${sort} hide-difficulties`} lang='ja'>
+          <ScoreTable size='small' className={(showDifficulties || sort === 'level') ? `player-scores sort-${sort}` : `player-scores sort-${sort} hide-difficulties`} lang='ja'>
             {tableHeader(sort)}
             <TableBody>
               {songRows}
             </TableBody>
           </ScoreTable>
         </StyledExpansionPanelDetails>
-      </ExpansionPanel>
+      </StyledExpansionPanel>
     )
   })
   return (
     <>
       <PlayerCard>
         <ThemeProvider theme={laundryTheme}>
-          <RecordComponent record={record} />
+          <PlayerCardContent>
+            <RecordComponent record={record} />
+          </PlayerCardContent>
         </ThemeProvider>
-        <div>
-          <Button variant='outlined' component={AdapterLink} to={`/mai/${match.params.nickname}/timeline`}>歷史紀錄</Button>
+        <PlayerCardContent>
+          <Button variant='contained' color='secondary' component={AdapterLink} to={`/mai/${match.params.nickname}/timeline`}>
+            <HistoryIcon />
+            歷史紀錄
+          </Button>
           <SortFormControl>
             <InputLabel>排序依照：</InputLabel>
             <Select value={sort} onChange={changeSort}>
@@ -367,7 +393,7 @@ const PlayerComponent: FunctionComponent = () => {
               control={<Switch checked={showDifficulties} onChange={changeShowDifficulties} />}
               label='顯示所有難易度'
             /> : <></>}
-        </div>
+        </PlayerCardContent>
       </PlayerCard>
       <ThemeProvider theme={laundryTheme}>
         {result}
