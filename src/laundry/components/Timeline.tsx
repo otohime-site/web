@@ -1,12 +1,13 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Button, List, ListItem, Grid } from '@material-ui/core'
 import useRouter from 'use-react-router'
-import { Link, Route } from 'react-router-dom'
-import { Button, Grid, Menu } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
 import moment from 'moment'
 import TimelineDetail from './TimelineDetail'
 import { getTimeline } from '../actions'
 import { RootState } from '../../reducers'
+import { AdapterLink } from '../../utils'
 
 const TimelineComponenet: FunctionComponent = () => {
   const { match } = useRouter<{ nickname: string }>()
@@ -18,22 +19,20 @@ const TimelineComponenet: FunctionComponent = () => {
   }, [match.params.nickname])
   moment.locale('zh-TW')
   return (
-    <div>
-      <Button as={Link} to={encodeURI(`/mai/${match.params.nickname}`)}>&lt; Back</Button>
-      <Grid columns={2} stackable={true}>
-        <Grid.Column width={4}>
-          <Menu vertical={true}>
-            {/* tslint:disable-next-line:jsx-no-multiline-js*/}
-            {(timeline) ? timeline.map(time => (
-              <Menu.Item key={time} as={Link} to={encodeURI(`/mai/${match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</Menu.Item>
-            )) : <></>}
-          </Menu>
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <Route path='/mai/:nickname/timeline/:time' component={TimelineDetail} />
-        </Grid.Column>
+    <Grid container={true}>
+      <Grid item={true} sm={2}>
+        <Button component={AdapterLink} to={encodeURI(`/mai/${match.params.nickname}`)}>&lt; Back</Button>
+        <List>
+          {/* tslint:disable-next-line:jsx-no-multiline-js*/}
+          {(timeline) ? timeline.map(time => (
+            <ListItem button={true} key={time} component={AdapterLink} to={encodeURI(`/mai/${match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</ListItem>
+          )) : <></>}
+        </List>
       </Grid>
-    </div>
+      <Grid item={true} sm={10}>
+        <Route path='/mai/:nickname/timeline/:time' component={TimelineDetail} />
+      </Grid>
+    </Grid>
   )
 }
 export default TimelineComponenet

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core'
 import { getTimelineDetail, getSongs } from '../actions'
 import { difficulties } from '../consts'
 import Record from './Record'
@@ -41,15 +41,15 @@ const TimelineDetailComponenet: FunctionComponent = () => {
           const beforeScore = scores[i][0]
           const afterScore = scores[i][1]
           scoresOutput.push((
-            <tr>
-              <td>
+            <TableRow>
+              <TableCell>
                 {song.name}
                 {' '}
                 {difficulties[i]}
-              </td>
-              <td>{(beforeScore) ? <Score score={beforeScore} /> : ''}</td>
-              <td>{(afterScore) ? <Score score={afterScore} /> : ''}</td>
-            </tr>
+              </TableCell>
+              <TableCell>{(beforeScore) ? <Score score={beforeScore} /> : ''}</TableCell>
+              <TableCell>{(afterScore) ? <Score score={afterScore} /> : ''}</TableCell>
+            </TableRow>
           ))
         }
       }
@@ -60,21 +60,21 @@ const TimelineDetailComponenet: FunctionComponent = () => {
   })
   return (
     <Table lang='ja'>
-      <thead>
-        <tr>
-          <th>What</th>
-          <th style={{ width: '20em' }}>Before</th>
-          <th style={{ width: '20em' }}>After</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Record</td>
-          <td>{(beforeRecord) ? <Record record={beforeRecord} /> : ''}</td>
-          <td>{(afterRecord) ? <Record record={afterRecord} /> : ''}</td>
-        </tr>
+      <TableHead>
+        <TableRow>
+          <TableCell component='th'>What</TableCell>
+          <TableCell component='th' style={{ width: '20em' }}>Before</TableCell>
+          <TableCell component='th' style={{ width: '20em' }}>After</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Record</TableCell>
+          <TableCell>{(beforeRecord) ? <Record record={beforeRecord} /> : ''}</TableCell>
+          <TableCell>{(afterRecord) ? <Record record={afterRecord} /> : ''}</TableCell>
+        </TableRow>
         {rows}
-      </tbody>
+      </TableBody>
     </Table>
   )
 }
