@@ -1,11 +1,17 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import host from './host'
-import { TextArea, Form, Popup, Button, Icon } from 'semantic-ui-react'
+import { Button, Snackbar } from '@material-ui/core'
 import * as clipboard from 'clipboard-polyfill'
 
 const HomeComponent: FunctionComponent = () => {
+  const [ snackbarOpen, setSnackbarOpen ] = useState(false)
   const copyToClipboard = (e: React.MouseEvent) => {
-    return clipboard.writeText(`javascript:var s=document.createElement("script");s.src="https://${host}/go.js";document.body.appendChild(s);void(0);`)
+    if (clipboard.writeText(`javascript:var s=document.createElement("script");s.src="https://${host}/go.js";document.body.appendChild(s);void(0);`)) {
+      setSnackbarOpen(true)
+    }
+  }
+  const closeSnackbar = () => {
+    setSnackbarOpen(false)
   }
   return (
     <div>
@@ -17,13 +23,16 @@ const HomeComponent: FunctionComponent = () => {
         <li>新增完成後回到此頁，將此頁（或任何頁面）加入書籤。</li>
         <li>
           編輯您剛剛加入的書籤，選一個方便識別的名稱，並將網址替換成複製的 Bookmarklet 內容：
-          <Form>
-            <Popup
-              content='已複製'
-              on='click'
-              trigger={(<Button icon={true} onClick={copyToClipboard}><Icon name='copy'/>複製到剪貼簿</Button>)}
-            />
-          </Form>
+          <p>
+            <Button color='primary' variant='contained' onClick={copyToClipboard}>複製到剪貼簿</Button>
+          </p>
+          <Snackbar
+            open={snackbarOpen}
+            onClose={closeSnackbar}
+            autoHideDuration={3000}
+            message='已複製'
+            action={<Button color='secondary' onClick={closeSnackbar}>OK</Button>}
+          />
         </li>
         <li>進到官方成績單網站，登入後以下列方式之一觸發成績更新方塊：
           <ol>
