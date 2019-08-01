@@ -33,6 +33,3 @@ export const getTimelineDetail = createAsyncAction(
   'laundry/GET_TIMELINE_DETAIL_DONE',
   'laundry/GET_TIMELINE_DETAIL_FAIL'
 )<{nickname: string, time: string}, TimelineDetail, LaundryError>()
-
-export const setShowDifficulties = createStandardAction(
-  'laundry/SET_SHOW_DIFFICULTIES')<boolean>()

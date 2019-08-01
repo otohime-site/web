@@ -1,10 +1,12 @@
 import styled from 'styled-components'
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
+import { WindowScroller, Table, AutoSizer, Column, TableCellRenderer, TableCellDataGetter, TableHeaderRenderer } from 'react-virtualized'
 import { createMuiTheme, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
-         CircularProgress, Button, FormControl, InputLabel, Select, MenuItem, Switch, FormControlLabel,
-         Table, TableRow, TableCell, TableHead, TableBody, Typography, Card, CardContent } from '@material-ui/core'
+         CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
+         TableCell, Typography, Hidden, Card, CardContent,
+         Tooltip, Tabs, Tab, useMediaQuery } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
 import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
 import HistoryIcon from '@material-ui/icons/History'
@@ -13,9 +15,10 @@ import { AdapterLink } from '../../utils'
 import ScoreComponent from './Score'
 import RecordComponent from './Record'
 import {
-  getPlayer, getSongs, setShowDifficulties, setSort, getMe
+  getPlayer, getSongs, setSort, getMe
 } from '../actions'
 import './Player.css'
+import 'react-virtualized/styles.css'
 import { RootState } from '../../reducers'
 import { Sort, Song, Score } from '../types'
 import { difficulties } from '../consts'
@@ -53,6 +56,18 @@ const PlayerCardContent = styled(CardContent)`
     margin-right: ${props => props.theme.spacing(4)}px;
   }
 `
+const StickyDiffculty = styled('div')`
+  background: ${props => props.theme.palette.background.default};
+  position: sticky;
+  position: -webkit-sticky;
+  top: 48px;
+  z-index: 1001;
+  margin-bottom: ${props => props.theme.spacing(1)}px; 
+  &.sort-level {
+    display: none;
+  }
+`
+
 const StyledExpansionPanel = styled(ExpansionPanel)`
 `
 
@@ -64,89 +79,123 @@ const StyledExpansionPanelSummary = styled(ExpansionPanelSummary)`
   }
   position: sticky;
   position: -webkit-sticky;
-  top: 48px;
+  z-index: 1000;
+  top: 96px;
   background: white;
+  &.sort-level {
+    top: 48px;
+  }
   & > div, & > div.Mui-expanded {
     margin: 0;
   }
 `
 
 const StyledExpansionPanelDetails = styled(ExpansionPanelDetails)`
-  margin-top: -48px;
   padding: 0;
 `
 
-const ScoreTable = styled(Table)`
-
-  thead th {
-    pointer-events: none;
-    position: sticky;
-    position: -webkit-sticky;
-    z-index: 1000;
-    top: 48px;
-    height: 48px;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    font-weight: bold;
+const FlexCellTable = styled(Table)`
+  .flex-cell {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
   }
-
-  .song-name {
-    height: 48px;
-    color: #666666;
-    font-weight: bold;
+  .flex-cell:first-of-type {
+    margin: 0;
   }
+`
+const HeaderCell = styled(TableCell)`
+  flex: 1;
+  .difficulty-0 & {
+    color: ${blue[700]};
+  }
+  .difficulty-1 & {
+    color: ${green[700]};
+  }
+  .difficulty-2 & {
+    color: ${orange[700]};
+  }
+  .difficulty-3 & {
+    color: ${red[700]};
+  }
+  .difficulty-4 & {
+    color: ${deepPurple[700]};
+  }
+  .difficulty-5 & {
+    color: ${purple[700]};
+  }
+`
+
+const SongCell = styled(TableCell)`
+  &.with-english {
+    padding-top: 6px;
+    padding-bottom: 7px;
+  }
+  flex: 1;
+  color: #666666;
+  font-weight: bold;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   .english-name {
+    margin: 0;
     color: #999999;
     font-size: 75%;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  td.score {
-    padding-right: 8px;
-  }
-  td.score:last-child {
-    padding-right: 8px;
-  }
-  td.score {
-    width: 8em;
-    position: relative;
-    padding-left: 2em;
-  }
-  td.score .level {
-    position: absolute;
-    top: 1.3em;
-    left: 8px;
-    font-size: 75%;
-    color: #AAAAAA;
-  }
-  .difficulty-0 {
-    background: ${blue[50]};
-  }
-  .difficulty-1 {
-    background: ${green[50]};
-  }
-  .difficulty-2 {
-    background: ${orange[50]};
-  }
-  .difficulty-3 {
-    background: ${red[50]};
-  }
-  .difficulty-4 {
-    background: ${deepPurple[50]};
-  }
-  .difficulty-5 {
-    background: ${purple[50]};
-  }
+`
 
+const ScoreCell = styled(TableCell)`
+  flex: 1;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  &.difficulty-0 {
+    border-bottom-color: ${blue[700]};
+  }
+  &.difficulty-1 {
+    border-bottom-color: ${green[700]};
+  }
+  &.difficulty-2 {
+    border-bottom-color: ${orange[700]};
+  }
+  &.difficulty-3 {
+    border-bottom-color: ${red[700]};
+  }
+  &.difficulty-4 {
+    border-bottom-color: ${deepPurple[700]};
+  }
+  &.difficulty-5 {
+    border-bottom-color: ${purple[700]};
+  }
+`
 
-  &.hide-difficulties .difficulty-0,
-  &.hide-difficulties .difficulty-1,
-  &.hide-difficulties .difficulty-2 {
-    display: none;
+const ScoreNote = styled('span')`
+  color: #999999;
+  width: 3.2em;
+  font-size: 8px;
+  text-transform: uppercase;
+  .difficulty-0 & {
+    color: ${blue[200]};
   }
-  &.hide-difficulties .score {
-    width: 12em;
+  .difficulty-1 & {
+    color: ${green[200]};
   }
-  .flags {
-    display: block;
+  .difficulty-2 & {
+    color: ${orange[200]};
+  }
+  .difficulty-3 & {
+    color: ${red[200]};
+  }
+  .difficulty-4 & {
+    color: ${deepPurple[200]};
+  }
+  .difficulty-5 & {
+    color: ${purple[200]};
   }
 `
 
@@ -183,78 +232,97 @@ interface SongWithDifficulty extends Song {
   difficulty?: number
 }
 
-const tableHeader = (sort: Sort) => {
-  if (sort === 'level') {
-    return (
-      <TableHead>
-        <TableRow>
-          <TableCell component='th' />
-          <TableCell component='th' className='score'>Score</TableCell>
-        </TableRow>
-      </TableHead>
-    )
-  } else {
-    const diffNodes = difficulties.map((d, i) => {
-      return (
-        <TableCell component='th' className={`score difficulty-${i}`} key={`difficulty-${i}`}>
-          {d}
-        </TableCell>
-      )
-    })
-    return (
-      <TableHead>
-        <TableRow>
-          <TableCell component='th' />
-          {diffNodes}
-        </TableRow>
-      </TableHead>
-    )
+const virtualizedTableColumns = (sort: Sort, showDifficulties: number[]) => {
+  const columns = [(
+    <Column
+      label='Name'
+      width={160}
+      flexGrow={2}
+      headerRenderer={headerRenderer}
+      cellRenderer={songRenderer}
+      dataKey='song'
+      className='flex-cell'
+      headerClassName='flex-cell name'
+    />
+  )]
+  if (sort !== 'level') {
+    return [
+      ...columns,
+      showDifficulties.map((index) => (
+        <Column
+          key={`difficulty-${index}`}
+          label={difficulties[index]}
+          width={160}
+          flexGrow={1}
+          headerRenderer={headerRenderer}
+          cellDataGetter={scoreDataGetter}
+          cellRenderer={scoreRenderer(index)}
+          dataKey='scores'
+          className='flex-cell'
+          headerClassName={`flex-cell difficulty-${index}`}
+        />
+      ))
+    ]
   }
+  return [
+    ...columns, (
+      <Column
+        label='Score'
+        width={160}
+        flexGrow={1}
+        headerRenderer={headerRenderer}
+        cellDataGetter={scoreDataGetter}
+        cellRenderer={scoreRenderer(-1)}
+        dataKey='scores'
+        className='flex-cell'
+        headerClassName={`flex-cell`}
+      />
+    )
+  ]
 }
 
-const scoreCell = (score: Score, label: string, i: number) => {
-  if (score) {
-    let className = `score difficulty-${i}`
-    if (score.score === 0) {
-      className += ' score-zero'
-    }
-    return (
-      <TableCell
-        className={className}
-        key={`difficulty-${i}`}
-      >
-        <span className='level'>{label}</span>
-        <ScoreComponent score={score} />
-      </TableCell>
-    )
+const scoreDataGetter: TableCellDataGetter = ({rowData}) => (rowData)
 
+const songRenderer: TableCellRenderer = ({ cellData }) => (
+  <SongCell component='div' className={(cellData.english_name) ? 'with-english' : ''}>
+    <Tooltip title={cellData.name}>
+      <span>
+        {cellData.name}
+      </span>
+    </Tooltip>
+    {/* tslint:disable-next-line:jsx-no-multiline-js */}
+    {(cellData.english_name) ?
+      <p className='english-name'>
+      <Tooltip title={cellData.english_name}>
+        <span>{cellData.english_name}</span>
+      </Tooltip>
+      </p> : ''}
+  </SongCell>
+)
+const scoreRenderer: (index: number) => TableCellRenderer =
+(index) => ({ cellData }) => {
+  let score
+  if (index < 0) {
+    score = cellData.scores[cellData.song.difficulty]
   } else {
-    return (<TableCell key={`difficulty-${i}`} />)
+    score = cellData.scores[index]
   }
-}
-
-const tableRow = (song: SongWithDifficulty, scores: Score[] = [], sort: Sort) => {
-  let scoreCols
-  if (sort === 'level') {
-    const difficulty = song.difficulty!
-    scoreCols = [scoreCell(scores[difficulty], difficulties[difficulty], difficulty)]
-  } else {
-    scoreCols = scores.map((score, i) => (
-      scoreCell(
-        score, (song.levels) ? song.levels[i] || '' : '', i
-      )
-    ))
-  }
+  if (!score) { return (<></>) }
   return (
-    <TableRow key={song.id}>
-      <TableCell className='song-name'>
-        {song.name}
-        {(song.english_name) ? <div className='english-name'>{song.english_name}</div> : ''}
-      </TableCell>
-      {scoreCols}
-    </TableRow>
+    <ScoreCell component='div' variant='body' className={`difficulty-${score.difficulty}`}>
+      <ScoreNote>
+        {(index < 0) ? (difficulties[score.difficulty] || '').substring(0, 3) : cellData.song.levels[score.difficulty] || ''}
+      </ScoreNote>
+      <ScoreComponent score={score} />
+    </ScoreCell>
   )
 }
+
+const headerRenderer: TableHeaderRenderer = ({ label, columnData }) => (
+  <HeaderCell component='div' variant='head'>
+    {label}
+  </HeaderCell>
+)
 
 const PlayerComponent: FunctionComponent = () => {
   const { match } = useRouter<{ nickname: string }>()
@@ -262,8 +330,17 @@ const PlayerComponent: FunctionComponent = () => {
   const scores = useSelector((state: RootState) => state.laundry.scores)
   const songs = useSelector((state: RootState) => state.laundry.songs)
   const getPlayerResult = useSelector((state: RootState) => state.laundry.getPlayerResult)
-  const showDifficulties = useSelector((state: RootState) => state.laundry.showDifficulties)
   const sort = useSelector((state: RootState) => state.laundry.sort)
+  // For smaller screen
+  const [ difficulty, setDifficulty ] = useState(3)
+  // For larger screen
+  const [ difficultySet, setDifficultySet ] = useState(1)
+  const useDifficultySet = useMediaQuery((theme: any) => theme.breakpoints.up('md'))
+
+  let showDifficulties = [difficulty]
+  if (useDifficultySet) {
+    showDifficulties = (difficultySet > 0) ? [3, 4, 5] : [0, 1, 2]
+  }
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -274,11 +351,14 @@ const PlayerComponent: FunctionComponent = () => {
     dispatch(getPlayer.request(match.params.nickname))
   }, [match.params.nickname])
 
-  const changeShowDifficulties = (e: React.ChangeEvent<HTMLInputElement>) => (
-    dispatch(setShowDifficulties(!!e.target.checked))
-  )
   const changeSort = (e: React.ChangeEvent<{ value: unknown }>) => (
     dispatch(setSort(e.target.value as Sort))
+  )
+  const changeDifficulty = (e: React.ChangeEvent<{}>, newValue: number) => (
+    setDifficulty(newValue)
+  )
+  const changeDifficultySet = (e: React.ChangeEvent<{}>, newValue: number) => (
+    setDifficultySet(newValue)
   )
   if (getPlayerResult) {
     if (getPlayerResult.status === 'err') {
@@ -342,25 +422,49 @@ const PlayerComponent: FunctionComponent = () => {
     if (sort === 'level') {
       songInGroup.sort(sameLevelSongSorter)
     }
-    const songRows = songInGroup.map(song => (
-      tableRow(song, scores[song.id], sort)
-    ))
+    const rowGetter = ({ index }: {index: number}) => {
+      const song = songInGroup[index]
+      return {
+        song: song,
+        scores: scores[song.id]
+      }
+    }
     return (
       <StyledExpansionPanel key={groupKey} TransitionProps={{ timeout: 0 }}>
-        <StyledExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <StyledExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className={`sort-${sort}`}>
           <Typography>
             {(sort === 'level') ? 'LEVEL ' : ''}
             {(sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey}
-            {' '}({songRows.length})
+            {' '}({songInGroup.length})
           </Typography>
         </StyledExpansionPanelSummary>
         <StyledExpansionPanelDetails>
-          <ScoreTable size='small' className={(showDifficulties || sort === 'level') ? `player-scores sort-${sort}` : `player-scores sort-${sort} hide-difficulties`} lang='ja'>
-            {tableHeader(sort)}
-            <TableBody>
-              {songRows}
-            </TableBody>
-          </ScoreTable>
+          <WindowScroller scrollElement={window}>
+            {/* tslint:disable-next-line:jsx-no-multiline-js */
+            ({ height, registerChild, isScrolling, onChildScroll, scrollTop }) => (
+              <AutoSizer disableHeight={true}>
+                {/* tslint:disable-next-line:jsx-no-multiline-js */
+                (({ width }) => (
+                  <div ref={(rel: any) => registerChild(rel)}>
+                    <FlexCellTable
+                      autoHeight={true}
+                      height={height}
+                      isScrolling={isScrolling}
+                      onScroll={onChildScroll}
+                      scrollTop={scrollTop}
+                      headerHeight={49}
+                      rowHeight={48}
+                      rowCount={songInGroup.length}
+                      rowGetter={rowGetter}
+                      width={width}
+                    >
+                      {virtualizedTableColumns(sort, showDifficulties)}
+                    </FlexCellTable>
+                  </div>
+                ))}
+              </AutoSizer>
+            )}
+          </WindowScroller>
         </StyledExpansionPanelDetails>
       </StyledExpansionPanel>
     )
@@ -386,16 +490,40 @@ const PlayerComponent: FunctionComponent = () => {
               <MenuItem value='level'>樂曲等級</MenuItem>
             </Select>
           </SortFormControl>
-          {/* tslint:disable-next-line:jsx-no-multiline-js */}
-          {(sort !== 'level') ?
-            /* tslint:disable-next-line:jsx-no-multiline-js */
-            <FormControlLabel
-              control={<Switch checked={showDifficulties} onChange={changeShowDifficulties} />}
-              label='顯示所有難易度'
-            /> : <></>}
         </PlayerCardContent>
       </PlayerCard>
       <ThemeProvider theme={laundryTheme}>
+        <StickyDiffculty className={`sort-${sort}`}>
+          <Hidden mdUp={true} implementation='css'>
+            <Tabs
+              value={difficulty}
+              onChange={changeDifficulty}
+              variant='scrollable'
+              scrollButtons='on'
+              aria-label='Select Difficulty'
+              indicatorColor='secondary'
+              textColor='secondary'
+            >
+              {/* tslint:disable-next-line:jsx-no-multiline-js */}
+              {difficulties.map((d, i) => (
+                <Tab key={`difficulty-${i}`} label={d} />
+              ))}
+            </Tabs>
+          </Hidden>
+          <Hidden smDown={true} implementation='css'>
+            <Tabs
+              value={difficultySet}
+              onChange={changeDifficultySet}
+              variant='scrollable'
+              aria-label='Select Difficulty'
+              indicatorColor='secondary'
+              textColor='secondary'
+            >
+              <Tab label={`${difficulties[0]}, ${difficulties[1]}, ${difficulties[2]}`} />
+              <Tab label={`${difficulties[3]}, ${difficulties[4]}, ${difficulties[5]}`} />
+            </Tabs>
+          </Hidden>
+        </StickyDiffculty>
         {result}
       </ThemeProvider>
     </>

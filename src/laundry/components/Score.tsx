@@ -8,14 +8,15 @@ interface ScoreProps {
 }
 
 const StyledScore = styled('div')`
+  flex: 1;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
+  height: 20px;
   align-items: center;
 `
 const ScoreValue = styled('span')`
-  width: 4.3em;
+  width: 6em;
   text-align: right;
 `
 

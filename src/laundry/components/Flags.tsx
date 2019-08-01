@@ -6,10 +6,14 @@ import './Flags.css'
 interface FlagProps {
   rawFlags: string
 }
+const FlagsRoot = styled('span')`
+  display: flex;
+  flex-direction: row;
+`
 
 const SingleFlag = styled('span')`
-  display: inline-block;
   margin-left: 2px;
+  letter-spacing: 0;
   width: 24px;
   height: 24px;
   line-height: 24px;
@@ -17,7 +21,8 @@ const SingleFlag = styled('span')`
   overflow-x: hidden;
   overflow-y: hidden;
   border-radius: 12px;
-  background: #FFFFFF;
+  background: #FAFAFA;
+  border: 1px solid #EEEEEE;
   opacity: 0.6;
   font-size: 10px;
   font-family: 'Roboto Slab';
@@ -37,31 +42,40 @@ const SingleFlag = styled('span')`
   }
 `
 const EmptyFlag = styled('span')`
-  display: inline-block;
+  margin-left: 2px;
   width: 24px;
   height: 24px;
+  border-radius: 12px;
+  background: #FAFAFA;
+  border: 1px solid #EEEEEE;
+  opacity: 0.6;
 `
 const Flags: FunctionComponent<FlagProps> = ({ rawFlags }) => {
-  const getFlag = (flag: string) => {
-    switch (flag) {
-      case 'fc_silver':
-        return (<SingleFlag key='fc-silver' className='flag fc-silver'>FC</SingleFlag>)
-      case 'fc_gold':
-        return (<SingleFlag key='fc-gold' className='flag fc-gold'>FC</SingleFlag>)
-      case 'ap':
-        return (<SingleFlag key='ap' className='flag ap'>AP</SingleFlag>)
-      case 'ap_plus':
-        return (<SingleFlag key='ap-plus' className='flag ap-plus'>AP+</SingleFlag>)
-      case '100':
-        return (<SingleFlag key='100' className='flag one-hundred'>100</SingleFlag>)
-      default:
-        return (<EmptyFlag key='empty' />)
-    }
+  let flagResults = []
+  const rawFlagList = rawFlags.split('|')
+  // Combo / Perfect
+  if (rawFlagList.indexOf('ap_plus') >= 0) {
+    flagResults.push(<SingleFlag className='flag ap-plus'>AP<sup>+</sup></SingleFlag>)
+  } else if (rawFlagList.indexOf('ap') >= 0) {
+    flagResults.push(<SingleFlag className='flag ap'>AP</SingleFlag>)
+  } else if (rawFlagList.indexOf('fc_gold') >= 0) {
+    flagResults.push(<SingleFlag className='flag fc-gold'>FC</SingleFlag>)
+  } else if (rawFlagList.indexOf('fc_silver') >= 0) {
+    flagResults.push(<SingleFlag className='flag fc-silver'>FC</SingleFlag>)
+  } else {
+    flagResults.push(<EmptyFlag />)
   }
+  // Sync
+  if (rawFlagList.indexOf('100') >= 0) {
+    flagResults.push(<SingleFlag className='flag one-hundred'>100</SingleFlag>)
+  } else {
+    flagResults.push(<EmptyFlag />)
+  }
+
   return (
-    <span className='flags'>
-      {rawFlags.split('|').map(getFlag)}
-    </span>
+    <FlagsRoot>
+      {flagResults}
+    </FlagsRoot>
   )
 }
 

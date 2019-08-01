@@ -14,7 +14,6 @@ export interface LaundryState {
   timelineDetailRecords?: TimelineRecord[]
   timelineDetailScores?: { [songId: number]: TimelineScore[][] }
   sort: Sort,
-  showDifficulties: boolean
   getPlayerResult?: {
     status: AsyncResult
     err?: any
@@ -28,7 +27,6 @@ export default (state: LaundryState = {
   songs: [],
   loggedIn: false,
   sort: 'category',
-  showDifficulties: false
 }, action: LaundryAction) => {
   switch (action.type) {
     case getType(laundry.getMe.success):
@@ -94,9 +92,6 @@ export default (state: LaundryState = {
       }
       return { ...state, timelineDetailRecords, timelineDetailScores }
     }
-    case getType(laundry.setShowDifficulties):
-      return { ...state, showDifficulties: action.payload }
-
     default:
       return state
   }
