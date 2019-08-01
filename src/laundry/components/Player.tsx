@@ -301,6 +301,7 @@ const songRenderer: TableCellRenderer = ({ cellData }) => (
 )
 const scoreRenderer: (index: number) => TableCellRenderer =
 (index) => ({ cellData }) => {
+  if (!cellData.scores) { return <></> }
   let score
   if (index < 0) {
     score = cellData.scores[cellData.song.difficulty]
