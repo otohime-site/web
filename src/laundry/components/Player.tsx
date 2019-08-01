@@ -62,7 +62,7 @@ const StickyDiffculty = styled('div')`
   position: -webkit-sticky;
   top: 48px;
   z-index: 1001;
-  margin-bottom: ${props => props.theme.spacing(1)}px; 
+  margin-bottom: ${props => props.theme.spacing(1)}px;
   &.sort-level {
     display: none;
   }
@@ -281,7 +281,7 @@ const virtualizedTableColumns = (sort: Sort, showDifficulties: number[]) => {
   ]
 }
 
-const scoreDataGetter: TableCellDataGetter = ({rowData}) => (rowData)
+const scoreDataGetter: TableCellDataGetter = ({ rowData }) => (rowData)
 
 const songRenderer: TableCellRenderer = ({ cellData }) => (
   <SongCell component='div' className={(cellData.english_name) ? 'with-english' : ''}>

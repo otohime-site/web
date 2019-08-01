@@ -26,7 +26,7 @@ export default (state: LaundryState = {
   me: [],
   songs: [],
   loggedIn: false,
-  sort: 'category',
+  sort: 'category'
 }, action: LaundryAction) => {
   switch (action.type) {
     case getType(laundry.getMe.success):
