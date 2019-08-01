@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { hot } from 'react-hot-loader/root'
 import styled from 'styled-components'
 import { Route } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, IconButton, Link } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import AppDrawer from './AppDrawer'
@@ -76,7 +76,12 @@ function App () {
           <UserBox />
         </Toolbar>
       </StyledAppBar>
-      <AppDrawer drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
+      <Hidden smUp={true}>
+        <AppDrawer variant='temporary' drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
+      </Hidden>
+      <Hidden xsDown={true} implementation='css'>
+        <AppDrawer variant='permanent' drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
+      </Hidden>
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
         <Route path='/mai' component={Laundry} />

@@ -39,19 +39,24 @@ const StyledBadge = styled(Badge)`
 */
 
 const AppDrawer: FunctionComponent<{
+  variant: 'permanent' | 'temporary'
   drawerOpen: boolean
   toggleDrawerOpen: () => void
-}> = ({ drawerOpen, toggleDrawerOpen }) => {
+}> = ({ variant, drawerOpen, toggleDrawerOpen }) => {
   const me = useSelector((state: RootState) => state.laundry.me)
+  function handleListClick (e: React.MouseEvent) {
+    toggleDrawerOpen()
+  }
   return (
     <StyledDrawer
       anchor='left'
-      variant='permanent'
+      variant={variant}
       open={drawerOpen}
+      onClose={toggleDrawerOpen}
       className={(drawerOpen) ? 'open' : ''}
       classes={{ paper: 'paper' }}
     >
-      <List>
+      <List onClick={handleListClick}>
         <ListItem button={true} component={AdapterLink} to='/'>
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary='首頁' />
@@ -60,7 +65,7 @@ const AppDrawer: FunctionComponent<{
           <ListItemIcon><ListIcon /></ListItemIcon>
           <ListItemText primary='管理成績單' />
         </ListItem>
-        <ListItem button={true} onClick={toggleDrawerOpen}>
+        <ListItem button={true}>
           <ListItemIcon><LaundryOutlinedIcon /></ListItemIcon>
           <ListItemText primary='maimai' />
         </ListItem>
