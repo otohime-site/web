@@ -22,8 +22,8 @@ import 'react-virtualized/styles.css'
 import { RootState } from '../../reducers'
 import { Sort, Song, Score } from '../types'
 import { difficulties } from '../consts'
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, sampleTime } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs'
+import { takeUntil, sampleTime } from 'rxjs/operators'
 
 const laundryTheme = createMuiTheme({
   palette: {
