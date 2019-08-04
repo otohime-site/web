@@ -77,7 +77,7 @@ const Section = styled('div')`
 
 const SpanAnchor = styled('span')`
   position: absolute;
-  top: -132px;
+  top: -148px;
   ${props => props.theme.breakpoints.up('md')} {
     top: -100px;
   }
@@ -369,7 +369,7 @@ const PlayerComponent: FunctionComponent = () => {
     if (!folderRefs.current) {
       return
     }
-    const offset = (largerThenMd) ? 96 : 128
+    const offset = (largerThenMd) ? 101 : 149
     let active = 0
     for (let i = 0; i < folderRefs.current.length; i++) {
       const refWrapper = folderRefs.current[i]
