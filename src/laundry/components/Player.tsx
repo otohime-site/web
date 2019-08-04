@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
 import { WindowScroller, Table, AutoSizer, Column, TableCellRenderer, TableCellDataGetter, TableHeaderRenderer } from 'react-virtualized'
 import { createMuiTheme, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
          CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
-         TableCell, Typography, Hidden, Card, CardContent,
+         TableCell, Grid, Hidden, Card, CardContent,
          Tooltip, Tabs, Tab, useMediaQuery } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
 import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
@@ -22,6 +22,8 @@ import 'react-virtualized/styles.css'
 import { RootState } from '../../reducers'
 import { Sort, Song, Score } from '../types'
 import { difficulties } from '../consts'
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, sampleTime } from 'rxjs/operators';
 
 const laundryTheme = createMuiTheme({
   palette: {
@@ -68,30 +70,17 @@ const StickyDiffculty = styled('div')`
   }
 `
 
-const StyledExpansionPanel = styled(ExpansionPanel)`
+const Section = styled('div')`
+  position: relative;
+  margin-bottom: 48px;
 `
 
-const StyledExpansionPanelSummary = styled(ExpansionPanelSummary)`
-  flex-direction: row-reverse;
-  padding: 0;
-  &.Mui-expanded {
-    min-height: 48px;
+const SpanAnchor = styled('span')`
+  position: absolute;
+  top: -132px;
+  ${props => props.theme.breakpoints.up('md')} {
+    top: -100px;
   }
-  position: sticky;
-  position: -webkit-sticky;
-  z-index: 1000;
-  top: 96px;
-  background: white;
-  &.sort-level {
-    top: 48px;
-  }
-  & > div, & > div.Mui-expanded {
-    margin: 0;
-  }
-`
-
-const StyledExpansionPanelDetails = styled(ExpansionPanelDetails)`
-  padding: 0;
 `
 
 const FlexCellTable = styled(Table)`
@@ -106,6 +95,9 @@ const FlexCellTable = styled(Table)`
 `
 const HeaderCell = styled(TableCell)`
   flex: 1;
+  .name & {
+    font-weight: bold;
+  }
   .difficulty-0 & {
     color: ${blue[700]};
   }
@@ -155,22 +147,22 @@ const ScoreCell = styled(TableCell)`
   justify-content: space-between;
   align-items: center;
   &.difficulty-0 {
-    border-bottom-color: ${blue[700]};
+    border-bottom-color: ${blue[100]};
   }
   &.difficulty-1 {
-    border-bottom-color: ${green[700]};
+    border-bottom-color: ${green[100]};
   }
   &.difficulty-2 {
-    border-bottom-color: ${orange[700]};
+    border-bottom-color: ${orange[100]};
   }
   &.difficulty-3 {
-    border-bottom-color: ${red[700]};
+    border-bottom-color: ${red[100]};
   }
   &.difficulty-4 {
-    border-bottom-color: ${deepPurple[700]};
+    border-bottom-color: ${deepPurple[100]};
   }
   &.difficulty-5 {
-    border-bottom-color: ${purple[700]};
+    border-bottom-color: ${purple[100]};
   }
 `
 
@@ -232,10 +224,10 @@ interface SongWithDifficulty extends Song {
   difficulty?: number
 }
 
-const virtualizedTableColumns = (sort: Sort, showDifficulties: number[]) => {
+const virtualizedTableColumns = (sort: Sort, showDifficulties: number[], nameTitle: string) => {
   const columns = [(
     <Column
-      label='Name'
+      label={nameTitle}
       width={160}
       flexGrow={2}
       headerRenderer={headerRenderer}
@@ -336,10 +328,12 @@ const PlayerComponent: FunctionComponent = () => {
   const [ difficulty, setDifficulty ] = useState(3)
   // For larger screen
   const [ difficultySet, setDifficultySet ] = useState(1)
-  const useDifficultySet = useMediaQuery((theme: any) => theme.breakpoints.up('md'))
+  const largerThenMd = useMediaQuery((theme: any) => theme.breakpoints.up('md'))
 
+  const [ activeFolder, setActiveFolder ] = useState(0)
+  const folderRefs = useRef<React.RefObject<HTMLDivElement>[]>([])
   let showDifficulties = [difficulty]
-  if (useDifficultySet) {
+  if (largerThenMd) {
     showDifficulties = (difficultySet > 0) ? [3, 4, 5] : [0, 1, 2]
   }
 
@@ -350,6 +344,16 @@ const PlayerComponent: FunctionComponent = () => {
     }
     dispatch(getMe.request())
     dispatch(getPlayer.request(match.params.nickname))
+    // Pool man's scrollspy...
+    const mounted$ = new Subject<boolean>()
+    fromEvent(window, 'scroll').pipe(
+      takeUntil(mounted$),
+      sampleTime(1000)
+    ).subscribe(changeScrollSpy)
+    return () => {
+      mounted$.next(true)
+      mounted$.complete()
+    }
   }, [match.params.nickname])
 
   const changeSort = (e: React.ChangeEvent<{ value: unknown }>) => (
@@ -361,6 +365,22 @@ const PlayerComponent: FunctionComponent = () => {
   const changeDifficultySet = (e: React.ChangeEvent<{}>, newValue: number) => (
     setDifficultySet(newValue)
   )
+  const changeScrollSpy = () => {
+    if (!folderRefs.current) {
+      return
+    }
+    const offset = (largerThenMd) ? 96 : 128
+    let active = 0
+    for (let i = 0; i < folderRefs.current.length; i++) {
+      const refWrapper = folderRefs.current[i]
+      const ref = (refWrapper) ? refWrapper.current : undefined
+      if (ref && ref.getBoundingClientRect().top < offset) {
+        active = i
+      }
+      setActiveFolder(active)
+    }
+  }
+
   if (getPlayerResult) {
     if (getPlayerResult.status === 'err') {
       if (getPlayerResult.err.code === 404) {
@@ -376,7 +396,6 @@ const PlayerComponent: FunctionComponent = () => {
   if (!songs || !scores || !record) {
     return <CircularProgress />
   }
-  const tbodies: JSX.Element[] = []
   // Arrange song groups based on what grouping we want.
   let songGroups = songs.reduce((group, song) => {
     const { active, category, version, levels } = song
@@ -417,8 +436,18 @@ const PlayerComponent: FunctionComponent = () => {
     songGroupKeys.sort()
   }
 
-  // Render song groups with scores.
-  const result = songGroupKeys.map((groupKey) => {
+  const getTitle = (groupKey: string, count: number) => (
+    ((sort === 'level') ? 'LEVEL ' : '') +
+    ((sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey) +
+    ` (${count})`
+  )
+  const tabs = songGroupKeys.map((groupKey, index) => {
+    const songInGroup = songGroups.get(groupKey)!
+    return (
+      <Tab key={groupKey} component='a' href={`#section-${index}`} label={getTitle(groupKey, songInGroup.length)} />
+    )
+  })
+  const result = songGroupKeys.map((groupKey, index) => {
     const songInGroup = songGroups.get(groupKey)!
     if (sort === 'level') {
       songInGroup.sort(sameLevelSongSorter)
@@ -430,18 +459,12 @@ const PlayerComponent: FunctionComponent = () => {
         scores: scores[song.id]
       }
     }
+    folderRefs.current[index] = createRef<HTMLDivElement>()
     return (
-      <StyledExpansionPanel key={groupKey} TransitionProps={{ timeout: 0 }}>
-        <StyledExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className={`sort-${sort}`}>
-          <Typography>
-            {(sort === 'level') ? 'LEVEL ' : ''}
-            {(sort === 'version') ? versions.get(parseFloat(groupKey)) : groupKey}
-            {' '}({songInGroup.length})
-          </Typography>
-        </StyledExpansionPanelSummary>
-        <StyledExpansionPanelDetails>
-          <WindowScroller scrollElement={window}>
-            {/* tslint:disable-next-line:jsx-no-multiline-js */
+      <Section ref={folderRefs.current[index]} key={groupKey}>
+        <SpanAnchor id={`section-${index}`} />
+        <WindowScroller scrollElement={window}>
+          {/* tslint:disable-next-line:jsx-no-multiline-js */
             ({ height, registerChild, isScrolling, onChildScroll, scrollTop }) => (
               <AutoSizer disableHeight={true}>
                 {/* tslint:disable-next-line:jsx-no-multiline-js */
@@ -453,21 +476,20 @@ const PlayerComponent: FunctionComponent = () => {
                       isScrolling={isScrolling}
                       onScroll={onChildScroll}
                       scrollTop={scrollTop}
-                      headerHeight={49}
-                      rowHeight={48}
+                      headerHeight={50}
+                      rowHeight={50}
                       rowCount={songInGroup.length}
                       rowGetter={rowGetter}
                       width={width}
                     >
-                      {virtualizedTableColumns(sort, showDifficulties)}
+                      {virtualizedTableColumns(sort, showDifficulties, getTitle(groupKey, songInGroup.length))}
                     </FlexCellTable>
                   </div>
                 ))}
               </AutoSizer>
             )}
-          </WindowScroller>
-        </StyledExpansionPanelDetails>
-      </StyledExpansionPanel>
+        </WindowScroller>
+      </Section>
     )
   })
   return (
@@ -495,35 +517,52 @@ const PlayerComponent: FunctionComponent = () => {
       </PlayerCard>
       <ThemeProvider theme={laundryTheme}>
         <StickyDiffculty className={`sort-${sort}`}>
-          <Hidden mdUp={true} implementation='css'>
-            <Tabs
-              value={difficulty}
-              onChange={changeDifficulty}
-              variant='scrollable'
-              scrollButtons='on'
-              aria-label='Select Difficulty'
-              indicatorColor='secondary'
-              textColor='secondary'
-            >
-              {/* tslint:disable-next-line:jsx-no-multiline-js */}
-              {difficulties.map((d, i) => (
-                <Tab key={`difficulty-${i}`} label={d} />
-              ))}
-            </Tabs>
-          </Hidden>
-          <Hidden smDown={true} implementation='css'>
-            <Tabs
-              value={difficultySet}
-              onChange={changeDifficultySet}
-              variant='scrollable'
-              aria-label='Select Difficulty'
-              indicatorColor='secondary'
-              textColor='secondary'
-            >
-              <Tab label={`${difficulties[0]}, ${difficulties[1]}, ${difficulties[2]}`} />
-              <Tab label={`${difficulties[3]}, ${difficulties[4]}, ${difficulties[5]}`} />
-            </Tabs>
-          </Hidden>
+          <Grid container={true}>
+            <Grid item={true} xs={12} md={8}>
+              <Tabs
+                value={activeFolder}
+                aria-label='Select folder'
+                variant='scrollable'
+                scrollButtons='on'
+                indicatorColor='primary'
+                textColor='primary'
+              >
+                {tabs}
+              </Tabs>
+            </Grid>
+            <Grid item={true} xs={12} md={4}>
+              <Hidden mdUp={true} implementation='css'>
+                <Tabs
+                  value={difficulty}
+                  onChange={changeDifficulty}
+                  variant='scrollable'
+                  scrollButtons='on'
+                  aria-label='Select Difficulty'
+                  indicatorColor='secondary'
+                  textColor='secondary'
+                >
+                  {/* tslint:disable-next-line:jsx-no-multiline-js */}
+                  {difficulties.map((d, i) => (
+                    <Tab key={`difficulty-${i}`} label={d} />
+                  ))}
+                </Tabs>
+              </Hidden>
+              <Hidden smDown={true} implementation='css'>
+                <Tabs
+                  value={difficultySet}
+                  onChange={changeDifficultySet}
+                  variant='scrollable'
+                  scrollButtons='on'
+                  aria-label='Select Difficulty'
+                  indicatorColor='secondary'
+                  textColor='secondary'
+                >
+                  <Tab label={`${difficulties[0]}, ${difficulties[1]}, ${difficulties[2]}`} />
+                  <Tab label={`${difficulties[3]}, ${difficulties[4]}, ${difficulties[5]}`} />
+                </Tabs>
+              </Hidden>
+            </Grid>
+          </Grid>
         </StickyDiffculty>
         {result}
       </ThemeProvider>
