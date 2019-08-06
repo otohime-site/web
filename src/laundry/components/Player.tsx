@@ -3,8 +3,7 @@ import React, { FunctionComponent, useEffect, useState, useRef, createRef } from
 import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
 import { WindowScroller, Table, AutoSizer, Column, TableCellRenderer, TableCellDataGetter, TableHeaderRenderer } from 'react-virtualized'
-import { createMuiTheme, 
-         CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
+import { createMuiTheme, CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
          TableCell, Grid, Hidden, Card, CardContent,
          Tooltip, Tabs, Tab, useMediaQuery } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
