@@ -3,14 +3,13 @@ import React, { FunctionComponent, useEffect, useState, useRef, createRef } from
 import { useSelector, useDispatch } from 'react-redux'
 import useRouter from 'use-react-router'
 import { WindowScroller, Table, AutoSizer, Column, TableCellRenderer, TableCellDataGetter, TableHeaderRenderer } from 'react-virtualized'
-import { createMuiTheme, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails,
+import { createMuiTheme, 
          CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
          TableCell, Grid, Hidden, Card, CardContent,
          Tooltip, Tabs, Tab, useMediaQuery } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles'
 import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
 import HistoryIcon from '@material-ui/icons/History'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { AdapterLink } from '../../utils'
 import ScoreComponent from './Score'
 import RecordComponent from './Record'
@@ -344,16 +343,6 @@ const PlayerComponent: FunctionComponent = () => {
     }
     dispatch(getMe.request())
     dispatch(getPlayer.request(match.params.nickname))
-    // Pool man's scrollspy...
-    const mounted$ = new Subject<boolean>()
-    fromEvent(window, 'scroll').pipe(
-      takeUntil(mounted$),
-      sampleTime(1000)
-    ).subscribe(changeScrollSpy)
-    return () => {
-      mounted$.next(true)
-      mounted$.complete()
-    }
   }, [match.params.nickname])
 
   const changeSort = (e: React.ChangeEvent<{ value: unknown }>) => (
@@ -377,9 +366,21 @@ const PlayerComponent: FunctionComponent = () => {
       if (ref && ref.getBoundingClientRect().top < offset) {
         active = i
       }
-      setActiveFolder(active)
     }
+    setActiveFolder(active)
   }
+  useEffect(() => {
+    // Pool man's scrollspy...
+    const mounted$ = new Subject<boolean>()
+    fromEvent(window, 'scroll').pipe(
+      takeUntil(mounted$),
+      sampleTime(1000)
+    ).subscribe(changeScrollSpy)
+    return () => {
+      mounted$.next(true)
+      mounted$.complete()
+    }
+  }, [changeScrollSpy])
 
   if (getPlayerResult) {
     if (getPlayerResult.status === 'err') {
