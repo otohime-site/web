@@ -121,6 +121,9 @@ const SongCell = styled(TableCell)`
   &.with-english {
     padding-top: 6px;
     padding-bottom: 7px;
+    .english-name {
+      display: block;
+    }
   }
   flex: 1;
   color: #666666;
@@ -129,6 +132,7 @@ const SongCell = styled(TableCell)`
   text-overflow: ellipsis;
   white-space: nowrap;
   .english-name {
+    display: none;
     margin: 0;
     color: #999999;
     font-size: 75%;
@@ -281,13 +285,11 @@ const songRenderer: TableCellRenderer = ({ cellData }) => (
         {cellData.name}
       </span>
     </Tooltip>
-    {/* tslint:disable-next-line:jsx-no-multiline-js */}
-    {(cellData.english_name) ?
-      <p className='english-name'>
+    <p className='english-name'>
       <Tooltip title={cellData.english_name}>
         <span>{cellData.english_name}</span>
       </Tooltip>
-      </p> : ''}
+    </p>
   </SongCell>
 )
 const scoreRenderer: (index: number) => TableCellRenderer =

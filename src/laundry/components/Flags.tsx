@@ -29,52 +29,58 @@ const SingleFlag = styled('span')`
   font-weight: 700;
 
   &.fc-silver {
-    color: ${indigo[500]};
+    :after {
+      content: 'FC';
+      color: ${indigo[500]};
+    }
   }
   &.fc-gold {
-    color: ${amber[800]};
+    :after {
+      content: 'FC';
+      color: ${amber[800]};
+    }
   }
   &.ap {
-    color: ${deepOrange[500]};
+    :after {
+      content: 'AP';
+      color: ${deepOrange[500]};
+    }
   }
   &.ap-plus {
-    color: ${deepOrange[900]};
+    :after {
+      content: 'AP+';
+      color: ${deepOrange[900]};
+    }
   }
-`
-const EmptyFlag = styled('span')`
-  margin-left: 2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
-  background: #FAFAFA;
-  border: 1px solid #EEEEEE;
-  opacity: 0.6;
+  &.one-hundred {
+    :after {
+      content: '100'
+    }
+  }
 `
 const Flags: FunctionComponent<FlagProps> = ({ rawFlags }) => {
   let flagResults = []
   const rawFlagList = rawFlags.split('|')
+  let firstFlagClass = ''
+  let secondFlagClass = ''
   // Combo / Perfect
   if (rawFlagList.indexOf('ap_plus') >= 0) {
-    flagResults.push(<SingleFlag className='flag ap-plus'>AP<sup>+</sup></SingleFlag>)
+    firstFlagClass = 'ap-plus'
   } else if (rawFlagList.indexOf('ap') >= 0) {
-    flagResults.push(<SingleFlag className='flag ap'>AP</SingleFlag>)
+    firstFlagClass = 'ap'
   } else if (rawFlagList.indexOf('fc_gold') >= 0) {
-    flagResults.push(<SingleFlag className='flag fc-gold'>FC</SingleFlag>)
+    firstFlagClass = 'fc-gold'
   } else if (rawFlagList.indexOf('fc_silver') >= 0) {
-    flagResults.push(<SingleFlag className='flag fc-silver'>FC</SingleFlag>)
-  } else {
-    flagResults.push(<EmptyFlag />)
+    firstFlagClass = 'fc-silver'
   }
-  // Sync
+   // Sync
   if (rawFlagList.indexOf('100') >= 0) {
-    flagResults.push(<SingleFlag className='flag one-hundred'>100</SingleFlag>)
-  } else {
-    flagResults.push(<EmptyFlag />)
+    secondFlagClass = 'one-hundred'
   }
-
   return (
     <FlagsRoot>
-      {flagResults}
+      <SingleFlag className={firstFlagClass}/>
+      <SingleFlag className={secondFlagClass}/>
     </FlagsRoot>
   )
 }
