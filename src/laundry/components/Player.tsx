@@ -63,9 +63,6 @@ const StickyDiffculty = styled('div')`
   top: 48px;
   z-index: 1001;
   margin-bottom: ${props => props.theme.spacing(1)}px;
-  &.sort-level {
-    display: none;
-  }
 `
 
 const Section = styled('div')`
@@ -518,9 +515,9 @@ const PlayerComponent: FunctionComponent = () => {
         </PlayerCardContent>
       </PlayerCard>
       <ThemeProvider theme={laundryTheme}>
-        <StickyDiffculty className={`sort-${sort}`}>
+        <StickyDiffculty>
           <Grid container={true}>
-            <Grid item={true} xs={12} md={8}>
+            <Grid item={true} xs={12} md={(sort === 'level') ? 12 : 8}>
               <Tabs
                 value={activeFolder}
                 aria-label='Select folder'
@@ -532,6 +529,7 @@ const PlayerComponent: FunctionComponent = () => {
                 {tabs}
               </Tabs>
             </Grid>
+            {(sort !== 'level') ?
             <Grid item={true} xs={12} md={4}>
               <Hidden mdUp={true} implementation='css'>
                 <Tabs
@@ -563,7 +561,7 @@ const PlayerComponent: FunctionComponent = () => {
                   <Tab label={`${difficulties[3]}, ${difficulties[4]}, ${difficulties[5]}`} />
                 </Tabs>
               </Hidden>
-            </Grid>
+            </Grid>: ''}
           </Grid>
         </StickyDiffculty>
         {result}
