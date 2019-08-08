@@ -561,7 +561,7 @@ const PlayerComponent: FunctionComponent = () => {
                   <Tab label={`${difficulties[3]}, ${difficulties[4]}, ${difficulties[5]}`} />
                 </Tabs>
               </Hidden>
-            </Grid>: ''}
+            </Grid> : ''}
           </Grid>
         </StickyDiffculty>
         {result}
