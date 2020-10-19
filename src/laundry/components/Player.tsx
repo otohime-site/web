@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { FunctionComponent, useEffect, useState, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import useRouter from 'use-react-router'
+import { useParams } from 'react-router-dom'
 import { WindowScroller, Table, AutoSizer, Column, TableCellRenderer, TableCellDataGetter, TableHeaderRenderer } from 'react-virtualized'
 import { createMuiTheme, CircularProgress, Button, FormControl, InputLabel, Select, MenuItem,
          TableCell, Grid, Hidden, Card, CardContent,
@@ -315,7 +315,7 @@ const headerRenderer: TableHeaderRenderer = ({ label, columnData }) => (
 )
 
 const PlayerComponent: FunctionComponent = () => {
-  const { match } = useRouter<{ nickname: string }>()
+  const params = useParams<{ nickname: string }>()
   const record = useSelector((state: RootState) => state.laundry.record)
   const scores = useSelector((state: RootState) => state.laundry.scores)
   const songs = useSelector((state: RootState) => state.laundry.songs)
@@ -340,8 +340,8 @@ const PlayerComponent: FunctionComponent = () => {
       dispatch(getSongs.request())
     }
     dispatch(getMe.request())
-    dispatch(getPlayer.request(match.params.nickname))
-  }, [match.params.nickname])
+    dispatch(getPlayer.request(params.nickname))
+  }, [params.nickname])
 
   const changeSort = (e: React.ChangeEvent<{ value: unknown }>) => (
     dispatch(setSort(e.target.value as Sort))

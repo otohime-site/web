@@ -4,12 +4,12 @@ import { getTimelineDetail, getSongs } from '../actions'
 import { difficulties } from '../consts'
 import Record from './Record'
 import Score from './Score'
-import useRouter from 'use-react-router'
+import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../reducers'
 
 const TimelineDetailComponenet: FunctionComponent = () => {
-  const { match } = useRouter<{ nickname: string, time: string }>()
+  const params = useParams<{ nickname: string, time: string }>()
   const timelineDetailRecords = useSelector((state: RootState) => state.laundry.timelineDetailRecords)
   const timelineDetailScores = useSelector((state: RootState) => state.laundry.timelineDetailScores)
   const songs = useSelector((state: RootState) => state.laundry.songs)
@@ -19,10 +19,10 @@ const TimelineDetailComponenet: FunctionComponent = () => {
       dispatch(getSongs.request())
     }
     dispatch(getTimelineDetail.request({
-      nickname: match.params.nickname,
-      time: match.params.time
+      nickname: params.nickname,
+      time: params.time
     }))
-  }, [match.params.nickname, match.params.time])
+  }, [params.nickname, params.time])
 
   if (!songs || !timelineDetailRecords || !timelineDetailScores) {
     return <></>

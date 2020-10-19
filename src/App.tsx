@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { hot } from 'react-hot-loader/root'
 import styled from 'styled-components'
 import { Route } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
@@ -98,4 +97,4 @@ function App () {
   )
 }
 
-export default hot(App)
+export default App
