@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '../../styled'
 import React, { FunctionComponent, useEffect, useState, useRef, createRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -500,7 +500,7 @@ const PlayerComponent: FunctionComponent = () => {
           </PlayerCardContent>
         </ThemeProvider>
         <PlayerCardContent>
-          <Button variant='contained' color='secondary' component={AdapterLink} to={`/mai/${match.params.nickname}/timeline`}>
+          <Button variant='contained' color='secondary' component={AdapterLink} to={`/mai/${params.nickname}/timeline`}>
             <HistoryIcon />
             歷史紀錄
           </Button>

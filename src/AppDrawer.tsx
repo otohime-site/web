@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from './styled'
 import React, { FunctionComponent } from 'react'
 import { useSelector } from 'react-redux'
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Badge } from '@material-ui/core'

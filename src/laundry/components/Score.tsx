@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '../../styled'
 import React, { FunctionComponent } from 'react'
 import Flags from './Flags'
 import { Score } from '../types'

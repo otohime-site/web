@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '../../styled'
 import React, { FunctionComponent } from 'react'
 import { yellow, pink } from '@material-ui/core/colors'
 

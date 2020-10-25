@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import Class from './Class'
 import { Record } from '../types'
-import styled from 'styled-components'
+import styled from '../../styled'
 import { Typography } from '@material-ui/core'
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline'
 import ShowChartIcon from '@material-ui/icons/ShowChart'

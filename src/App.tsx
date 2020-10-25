@@ -1,5 +1,5 @@
+import styled from './styled'
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { Route } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'

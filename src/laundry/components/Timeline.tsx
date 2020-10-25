@@ -24,7 +24,7 @@ const TimelineComponenet: FunctionComponent = () => {
         <List>
           {/* tslint:disable-next-line:jsx-no-multiline-js*/}
           {(timeline) ? timeline.map(time => (
-            <ListItem button={true} key={time} component={AdapterLink} to={encodeURI(`/mai/${match.params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</ListItem>
+            <ListItem button={true} key={time} component={AdapterLink} to={encodeURI(`/mai/${params.nickname}/timeline/${time}`)}>{(moment(time).format('LLL'))}</ListItem>
           )) : <></>}
         </List>
       </Grid>

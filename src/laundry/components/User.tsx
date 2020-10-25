@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Formik, Field, Form, FormikActions } from 'formik'
+import styled from '../../styled'
+import { Formik, Field, Form, FormikHelpers } from 'formik'
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
          FormControl, InputLabel, Button, MenuItem, Paper,
          Table, TableRow, TableCell, TableHead, TableBody, Typography } from '@material-ui/core'
@@ -47,7 +47,7 @@ const UserModal: FunctionComponent<UserModalProps> = ({ open, setClose, nickname
     }
     return errors
   }
-  const handleSubmit = async (values: Values, actions: FormikActions<Values>) => {
+  const handleSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
     try {
       await fetchPromise(
         (nickname) ? `/api/mai/${nickname}/update` : '/api/mai/new',
@@ -125,9 +125,9 @@ const UserDeleteModal: FunctionComponent<UserDeleteModalProps> = ({ open, setClo
     }
     return errors
   }
-  const handleSubmit = async (values: Values, actions: FormikActions<Values>) => {
+  const handleSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
     try {
-      await fetchPromise(
+      await fetchPromise( 
         `/api/mai/${nickname}/delete`,
         values
       )

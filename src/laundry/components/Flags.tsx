@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '../../styled'
 import React, { FunctionComponent } from 'react'
 import { indigo, amber, deepOrange } from '@material-ui/core/colors'
 import './Flags.css'
