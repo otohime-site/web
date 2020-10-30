@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // eslint-disable-line import/no-extraneous-dependencies
-const cheerio = require('react-native-cheerio'); // eslint-disable-line import/no-extraneous-dependencies
+const cheerio = require('cheerio'); // eslint-disable-line import/no-extraneous-dependencies
 
 function BookmarkletPlugin() {
 
