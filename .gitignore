@@ -58,3 +58,4 @@ typings/
 .env
 
 web_modules/
+src/firebase.ts
