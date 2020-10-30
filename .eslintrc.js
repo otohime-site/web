@@ -1,3 +1,8 @@
-const neutrino = require('neutrino');
-
-module.exports = neutrino().eslintrc();
+module.exports = {
+    extends: [
+      'standard-with-typescript'
+    ],
+    parserOptions: {
+      project: 'tsconfig.json'
+    }
+  }
