@@ -1,3 +1,5 @@
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import { ThemeProvider as EMThemeProvider } from 'emotion-theming'
 import React from 'react'
 import { render } from 'react-dom'
@@ -10,8 +12,11 @@ import { ThemeProvider, StylesProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { indigo, orange } from '@material-ui/core/colors'
 import App from './App'
+import firebaseConfig from './firebase'
 import rootEpics from './epics'
 import rootReducer, { RootAction, RootState } from './reducers'
+
+firebase.initializeApp(firebaseConfig)
 
 const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>()
 const composedCreateStore = applyMiddleware(
