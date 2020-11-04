@@ -1,13 +1,12 @@
 {
   "name": "otohime-web",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "git@github.com:otohime-site/web.git",
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "snowpack": "snowpack",
-    "build": "webpack --mode production",
+    "start": "parcel serve ./src/index.html ./src/go.tsx --https",
+    "build": "parcel build ./src/index.html ./src/go.tsx",
     "lint": "tslint 'src/**/*.ts?(x)'",
     "lint:js": "eslint --cache --format codeframe --ext mjs,jsx,js src",
     "test": "jest"
@@ -40,6 +39,7 @@
     "typesafe-actions": "^4.4.2"
   },
   "devDependencies": {
+    "@types/node": "^14.14.6",
     "@types/react": "^16.9.51",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
