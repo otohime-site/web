@@ -57,5 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-web_modules/
 src/firebase.ts
+.parcel-cache/
+dist/
