@@ -17,6 +17,7 @@ import rootEpics from './epics'
 import rootReducer, { RootAction, RootState } from './reducers'
 
 firebase.initializeApp(firebaseConfig)
+firebase.auth().getRedirectResult().then(() => {}, () => {})
 
 const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>()
 const composedCreateStore = applyMiddleware(
