@@ -22,7 +22,7 @@ const StyledAppBar = styled(AppBar)`
 
 const Title = styled(Typography)`
   flex-grow: 1;
-  font-family: 'Carter One';
+  font-family: 'McLaren', cursive;
   a {
     color: white;
     text-decoration: none;
@@ -69,7 +69,7 @@ function App () {
           </AppMenuButton>
           <Title variant='h6'>
             <Link component={AdapterLink} to='/'>
-              Semiquaver
+              Otohime 
             </Link>
           </Title>
           <UserBox />

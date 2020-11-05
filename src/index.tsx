@@ -10,7 +10,7 @@ import { BrowserRouter } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider, StylesProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
-import { indigo, orange } from '@material-ui/core/colors'
+import { purple, lime } from '@material-ui/core/colors'
 import App from './App'
 import firebaseConfig from './firebase'
 import rootEpics from './epics'
@@ -28,8 +28,8 @@ epicMiddleware.run(rootEpics)
 
 const theme = createMuiTheme({
   palette: {
-    primary: indigo,
-    secondary: orange
+    primary: purple,
+    secondary: lime
   }
 
 })
