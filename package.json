@@ -19,13 +19,13 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@types/react-redux": "^7.1.9",
     "@types/react-virtualized": "^9.21.10",
-    "cheerio": "^1.0.0-rc.3",
     "clipboard-polyfill": "^3.0.1",
     "emotion-reset": "^2.0.7",
     "emotion-theming": "^10.0.27",
     "firebase": "^8.0.0",
     "formik": "^2.1.7",
     "formik-material-ui": "^3.0.0",
+    "graphql": "^15.4.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -37,7 +37,8 @@
     "redux-observable": "^1.2.0",
     "rxjs": "^6.6.3",
     "semiquaver-parser": "https://github.com/semiquaver-moe/parser.git",
-    "typesafe-actions": "^4.4.2"
+    "typesafe-actions": "^4.4.2",
+    "urql": "^1.10.3"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
