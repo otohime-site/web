@@ -1,15 +1,12 @@
 import styled from './styled'
 import React, { FunctionComponent } from 'react'
-import { useSelector } from 'react-redux'
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Badge } from '@material-ui/core'
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core'
 import CardIcon from '@material-ui/icons/CreditCard'
 import ListIcon from '@material-ui/icons/List'
 import HomeIcon from '@material-ui/icons/Home'
-import LaundryIcon from '@material-ui/icons/LocalLaundryService'
 import LaundryOutlinedIcon from '@material-ui/icons/LocalLaundryServiceOutlined'
 
 import { AdapterLink } from './utils'
-import { RootState } from './reducers'
 
 const StyledDrawer = styled(Drawer)`
   width: ${props => props.theme.spacing(7) + 1}px;
@@ -43,8 +40,7 @@ const AppDrawer: FunctionComponent<{
   drawerOpen: boolean
   toggleDrawerOpen: () => void
 }> = ({ variant, drawerOpen, toggleDrawerOpen }) => {
-  const me = useSelector((state: RootState) => state.laundry.me)
-  function handleListClick (e: React.MouseEvent) {
+  function handleListClick (e: React.MouseEvent): void {
     toggleDrawerOpen()
   }
   return (
@@ -69,22 +65,6 @@ const AppDrawer: FunctionComponent<{
           <ListItemIcon><LaundryOutlinedIcon /></ListItemIcon>
           <ListItemText primary='maimai' />
         </ListItem>
-        <Collapse in={drawerOpen} timeout='auto' unmountOnExit={true}>
-          <NestedList disablePadding={true}>
-            {/* tslint:disable-next-line: jsx-no-multiline-js */}
-            { me.map(player => (
-              <ListItem
-                button={true}
-                key={player.id}
-                component={AdapterLink}
-                to={`/mai/${player.nickname}`}
-              >
-                <ListItemIcon><CardIcon /></ListItemIcon>
-                <ListItemText primary={player.nickname} />
-              </ListItem>
-            ))}
-          </NestedList>
-        </Collapse>
       </List>
     </StyledDrawer>
   )

@@ -1,8 +1,9 @@
 import styled from './styled'
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { Route } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
+import GitHubIcon from '@material-ui/icons/GitHub'
 
 import AppDrawer from './AppDrawer'
 import Home from './Home'
@@ -32,7 +33,7 @@ const Title = styled(Typography)`
   }
 `
 const AppMenuButton = styled(IconButton)`
-  margin-right: ${props => props.theme.spacing(2) }px;
+  margin-right: ${props => props.theme.spacing(2)}px;
 `
 const StyledMain = styled('main')`
   margin-top: ${props => props.theme.spacing(6)}px;
@@ -53,10 +54,10 @@ const StyledLink = styled(Link)`
   margin: 0 ${props => props.theme.spacing(2)}px;
 `
 
-function App () {
+const App: FunctionComponent = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  function toggleDrawerOpen () {
+  function toggleDrawerOpen (): void {
     setDrawerOpen(!drawerOpen)
   }
 
@@ -69,7 +70,7 @@ function App () {
           </AppMenuButton>
           <Title variant='h6'>
             <Link component={AdapterLink} to='/'>
-              Otohime 
+              Otohime
             </Link>
           </Title>
           <UserBox />
@@ -86,8 +87,8 @@ function App () {
         <Route path='/mai' component={Laundry} />
         <StyledFooter>
           <Typography variant='body2'>
-            Powered by Semiquaver Team.
-            <StyledLink href='https://github.com/semiquaver-moe/' target='_blank' rel='noopener noreferrer'>
+            <StyledLink href='https://github.com/otohime-site/' target='_blank' rel='noopener noreferrer'>
+              <GitHubIcon fontSize='inherit' />
               GitHub
             </StyledLink>
           </Typography>
