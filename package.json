@@ -10,7 +10,7 @@
     "lint": "tslint 'src/**/*.ts?(x)'",
     "lint:js": "eslint --cache --format codeframe --ext mjs,jsx,js src",
     "test": "jest",
-    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@emotion/core": "^10.0.35",
