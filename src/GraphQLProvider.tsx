@@ -8,8 +8,6 @@ import { useAuth } from './auth'
 const GraphQLProvider: FunctionComponent = ({ children }) => {
   const auth = firebase.auth()
   const [user, loading] = useAuth(auth)
-  console.log(user)
-  console.log(loading)
   const client = useMemo(() => (
     createClient({
       url: '/graphql',
