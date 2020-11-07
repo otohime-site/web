@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider, StylesProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
-import { purple, lime } from '@material-ui/core/colors'
+import { pink, lime } from '@material-ui/core/colors'
 import App from './App'
 import GraphQLProvider from './GraphQLProvider'
 import firebaseConfig from './firebase'
@@ -17,7 +17,7 @@ firebase.auth().getRedirectResult().then(() => {}, () => {})
 
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
+    primary: pink,
     secondary: lime
   }
 
