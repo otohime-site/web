@@ -1,0 +1,8 @@
+query userPlayers($userId: String) {
+  dx_intl_players(where: {user_id: {_eq: $userId}}) {
+    id
+    nickname
+    private
+    created_at
+  }
+}

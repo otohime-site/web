@@ -1,5 +1,6 @@
-query findUser {
-  users {
+query Tokens {
+  tokens {
     id
+    created_at
   }
-}
+} 
