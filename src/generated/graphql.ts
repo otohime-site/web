@@ -1,8 +1,6 @@
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -111,6 +109,7 @@ export type Dx_Intl_Combo_Flag_Comparison_Exp = {
 /** columns and relationships of "dx_intl_notes" */
 export type Dx_Intl_Notes = {
   __typename?: 'dx_intl_notes';
+  active: Scalars['Boolean'];
   deluxe: Scalars['Boolean'];
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>;
@@ -215,6 +214,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>;
   _not?: Maybe<Dx_Intl_Notes_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>;
+  active?: Maybe<Boolean_Comparison_Exp>;
   deluxe?: Maybe<Boolean_Comparison_Exp>;
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Bool_Exp>;
   dx_intl_song?: Maybe<Dx_Intl_Songs_Bool_Exp>;
@@ -241,6 +241,7 @@ export type Dx_Intl_Notes_Inc_Input = {
 
 /** input type for inserting data into table "dx_intl_notes" */
 export type Dx_Intl_Notes_Insert_Input = {
+  active?: Maybe<Scalars['Boolean']>;
   deluxe?: Maybe<Scalars['Boolean']>;
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Arr_Rel_Insert_Input>;
   dx_intl_song?: Maybe<Dx_Intl_Songs_Obj_Rel_Insert_Input>;
@@ -304,6 +305,7 @@ export type Dx_Intl_Notes_On_Conflict = {
 
 /** ordering options when selecting data from "dx_intl_notes" */
 export type Dx_Intl_Notes_Order_By = {
+  active?: Maybe<Order_By>;
   deluxe?: Maybe<Order_By>;
   dx_intl_scores_aggregate?: Maybe<Dx_Intl_Scores_Aggregate_Order_By>;
   dx_intl_song?: Maybe<Dx_Intl_Songs_Order_By>;
@@ -321,6 +323,8 @@ export type Dx_Intl_Notes_Pk_Columns_Input = {
 /** select columns of table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Select_Column {
   /** column name */
+  Active = 'active',
+  /** column name */
   Deluxe = 'deluxe',
   /** column name */
   Id = 'id',
@@ -334,6 +338,7 @@ export enum Dx_Intl_Notes_Select_Column {
 
 /** input type for updating data in table "dx_intl_notes" */
 export type Dx_Intl_Notes_Set_Input = {
+  active?: Maybe<Scalars['Boolean']>;
   deluxe?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['Int']>;
   levels?: Maybe<Scalars['_dx_intl_level']>;
@@ -403,6 +408,8 @@ export type Dx_Intl_Notes_Sum_Order_By = {
 
 /** update columns of table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Update_Column {
+  /** column name */
+  Active = 'active',
   /** column name */
   Deluxe = 'deluxe',
   /** column name */
@@ -4009,29 +4016,5 @@ export type UserPlayersQuery = (
 );
 
 
-export const TokensDocument = gql`
-    query Tokens {
-  tokens {
-    id
-    created_at
-  }
-}
-    `;
-
-export function useTokensQuery(options: Omit<Urql.UseQueryArgs<TokensQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<TokensQuery>({ query: TokensDocument, ...options });
-};
-export const UserPlayersDocument = gql`
-    query userPlayers($userId: String) {
-  dx_intl_players(where: {user_id: {_eq: $userId}}) {
-    id
-    nickname
-    private
-    created_at
-  }
-}
-    `;
-
-export function useUserPlayersQuery(options: Omit<Urql.UseQueryArgs<UserPlayersQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<UserPlayersQuery>({ query: UserPlayersDocument, ...options });
-};
+export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tokens"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokens"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
+export const UserPlayersDocument: DocumentNode<UserPlayersQuery, UserPlayersQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userPlayers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"nickname"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};

@@ -9,7 +9,7 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-urql'
+      - 'typed-document-node'
   ./graphql.schema.json:
     plugins:
       - 'introspection'
