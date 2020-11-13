@@ -5,7 +5,7 @@
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve ./src/index.html ./src/go.tsx --https",
+    "start": "parcel serve ./src/index.html ./src/go.tsx --https --no-cache",
     "build": "parcel build ./src/index.html ./src/go.tsx",
     "lint": "tslint 'src/**/*.ts?(x)'",
     "lint:js": "eslint --cache --format codeframe --ext mjs,jsx,js src",
@@ -25,8 +25,8 @@
     "clipboard-polyfill": "^3.0.1",
     "emotion-reset": "^2.0.7",
     "emotion-theming": "^10.0.27",
-    "firebase": "^8.0.1",
-    "formik": "^2.2.3",
+    "firebase": "^8.0.2",
+    "formik": "^2.2.5",
     "formik-material-ui": "^3.0.0",
     "graphql": "^15.4.0",
     "moment": "^2.29.1",
@@ -41,7 +41,7 @@
     "rxjs": "^6.6.3",
     "semiquaver-parser": "git+https://github.com/semiquaver-moe/parser.git",
     "typesafe-actions": "^4.4.2",
-    "urql": "^1.11.1"
+    "urql": "^1.11.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.19.1",
@@ -53,7 +53,6 @@
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
     "@types/react-router-dom": "^5.1.6",
-    "@types/snowpack-env": "^2.3.1",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
     "eslint": "^7.13.0",
@@ -62,7 +61,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
-    "parcel": "^2.0.0-nightly.443",
+    "parcel": "^2.0.0-nightly.445",
     "typescript": "^4.0.5"
   }
 }
