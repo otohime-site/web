@@ -7,6 +7,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 
 const config: Configuration = {
   mode: 'development',
+  watch: false,
   entry: {
     index: './src/index.tsx',
     go: './src/go.tsx'
@@ -49,7 +50,7 @@ const config: Configuration = {
         target: 'http://localhost:8580/',
         pathRewrite: {
           '^/graphql': '/v1/graphql'
-        },
+        }
       }
     }
   },
