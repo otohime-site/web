@@ -1,13 +1,32 @@
 import firebase from 'firebase/app'
 import React, { FunctionComponent, useMemo } from 'react'
 import { createClient, Provider as UrqlProvider } from 'urql'
-import { cacheExchange, dedupExchange, fetchExchange, makeOperation } from '@urql/core'
+import { subscriptionExchange, cacheExchange, dedupExchange, fetchExchange, makeOperation } from '@urql/core'
 import { authExchange } from '@urql/exchange-auth'
 import { useAuth } from './auth'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 const GraphQLProvider: FunctionComponent = ({ children }) => {
   const auth = firebase.auth()
   const [user, loading] = useAuth(auth)
+  const subscriptionClient = useMemo(() => {
+    const subscriptionClient = new SubscriptionClient(
+      `wss://${location.host}/graphql`,
+      {
+        reconnect: true,
+        timeout: 30000,
+        connectionParams: async () => ((user !== null)
+          ? {
+            headers: {
+              Authorization: `Bearer ${await user.getIdToken()}`
+            }
+          }
+          : {}
+        )
+      }
+    )
+    return subscriptionClient
+  }, [user])
   const client = useMemo(() => (
     createClient({
       url: '/graphql',
@@ -23,7 +42,7 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
             return { token }
           },
           addAuthToOperation: ({ authState, operation }) => {
-            if (authState == null || authState.token == null) {
+            if (authState == null || authState.token == null || operation.kind === 'subscription') {
               return operation
             }
             const fetchOptions = typeof operation.context.fetchOptions === 'function'
@@ -42,7 +61,12 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
             })
           }
         }),
-        fetchExchange
+        fetchExchange,
+        subscriptionExchange({
+          forwardSubscription (operation) {
+            return subscriptionClient.request(operation)
+          }
+        })
       ]
     })
   ), [user])
