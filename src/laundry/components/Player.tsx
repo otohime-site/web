@@ -9,7 +9,7 @@ import { createMuiTheme, CircularProgress, Button, FormControl, InputLabel, Sele
 import { ThemeProvider } from '@material-ui/styles'
 import { indigo, blue, green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
 import HistoryIcon from '@material-ui/icons/History'
-import { AdapterLink } from '../../utils'
+import { Link as RouterLink } from 'react-router-dom'
 import ScoreComponent from './Score'
 import RecordComponent from './Record'
 import {
@@ -500,7 +500,7 @@ const PlayerComponent: FunctionComponent = () => {
           </PlayerCardContent>
         </ThemeProvider>
         <PlayerCardContent>
-          <Button variant='contained' color='secondary' component={AdapterLink} to={`/mai/${params.nickname}/timeline`}>
+          <Button variant='contained' color='secondary' component={RouterLink} to={`/mai/${params.nickname}/timeline`}>
             <HistoryIcon />
             歷史紀錄
           </Button>

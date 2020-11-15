@@ -6,7 +6,7 @@ import ListIcon from '@material-ui/icons/List'
 import HomeIcon from '@material-ui/icons/Home'
 import LaundryOutlinedIcon from '@material-ui/icons/LocalLaundryServiceOutlined'
 
-import { AdapterLink } from './utils'
+import { Link as RouterLink } from 'react-router-dom'
 
 const StyledDrawer = styled(Drawer)`
   width: ${props => props.theme.spacing(7) + 1}px;
@@ -53,11 +53,11 @@ const AppDrawer: FunctionComponent<{
       classes={{ paper: 'paper' }}
     >
       <List onClick={handleListClick}>
-        <ListItem button={true} component={AdapterLink} to='/'>
+        <ListItem button={true} component={RouterLink} to='/'>
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary='首頁' />
         </ListItem>
-        <ListItem button={true} component={AdapterLink} to='/mai/me'>
+        <ListItem button={true} component={RouterLink} to='/mai/me'>
           <ListItemIcon><ListIcon /></ListItemIcon>
           <ListItemText primary='管理成績單' />
         </ListItem>

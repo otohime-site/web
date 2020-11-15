@@ -9,7 +9,8 @@ import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
 import Laundry from './laundry/components/Laundry'
-import { AdapterLink } from './utils'
+
+import { Link as RouterLink } from 'react-router-dom'
 import './App.css'
 
 const StyledAppBar = styled(AppBar)`
@@ -69,7 +70,7 @@ const App: FunctionComponent = () => {
             <MenuIcon />
           </AppMenuButton>
           <Title variant='h6'>
-            <Link component={AdapterLink} to='/'>
+            <Link component={RouterLink} to='/'>
               Otohime
             </Link>
           </Title>
@@ -84,6 +85,7 @@ const App: FunctionComponent = () => {
       </Hidden>
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
+        <Route path='/user' component={User} />
         <Route path='/mai' component={Laundry} />
         <StyledFooter>
           <Typography variant='body2'>
