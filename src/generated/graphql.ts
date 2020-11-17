@@ -8,15 +8,16 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _dx_intl_level: any;
-  bigint: any;
-  dx_intl_combo_flag: any;
-  dx_intl_sync_flag: any;
-  dx_intl_trophy: any;
-  numeric: any;
-  smallint: any;
-  timestamptz: any;
-  uuid: any;
+  _dx_intl_level: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '7+' | '8' | '8+' | '9' | '9+' | '10' | '10+' | '11' | '11+' | '12' | '12+' | '13' | '13+' | '14' | '14+' | '15'
+;
+  bigint: number;
+  dx_intl_combo_flag: '' | 'fc' | 'fc+' | 'ap' | 'ap+';
+  dx_intl_sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+';
+  dx_intl_trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow';
+  numeric: number;
+  smallint: number;
+  timestamptz: string;
+  uuid: string;
 };
 
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
@@ -4002,12 +4003,26 @@ export type TokensQuery = (
   )> }
 );
 
-export type UserPlayersQueryVariables = Exact<{
+export type RegenerateTokenMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RegenerateTokenMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_tokens?: Maybe<(
+    { __typename?: 'tokens_mutation_response' }
+    & Pick<Tokens_Mutation_Response, 'affected_rows'>
+  )>, insert_tokens_one?: Maybe<(
+    { __typename?: 'tokens' }
+    & Pick<Tokens, 'id'>
+  )> }
+);
+
+export type DxIntlPlayersQueryVariables = Exact<{
   userId?: Maybe<Scalars['String']>;
 }>;
 
 
-export type UserPlayersQuery = (
+export type DxIntlPlayersQuery = (
   { __typename?: 'query_root' }
   & { dx_intl_players: Array<(
     { __typename?: 'dx_intl_players' }
@@ -4015,6 +4030,52 @@ export type UserPlayersQuery = (
   )> }
 );
 
+export type InsertDxIntlPlayerMutationVariables = Exact<{
+  nickname?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type InsertDxIntlPlayerMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_dx_intl_players_one?: Maybe<(
+    { __typename?: 'dx_intl_players' }
+    & Pick<Dx_Intl_Players, 'id'>
+  )> }
+);
+
+export type UpdateDxIntlPlayerMutationVariables = Exact<{
+  pk: Scalars['Int'];
+  nickname?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type UpdateDxIntlPlayerMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_dx_intl_players_by_pk?: Maybe<(
+    { __typename?: 'dx_intl_players' }
+    & Pick<Dx_Intl_Players, 'id'>
+  )> }
+);
+
+export type DeleteDxIntlPlayerMutationVariables = Exact<{
+  pk: Scalars['Int'];
+}>;
+
+
+export type DeleteDxIntlPlayerMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_dx_intl_players_by_pk?: Maybe<(
+    { __typename?: 'dx_intl_players' }
+    & Pick<Dx_Intl_Players, 'id'>
+  )> }
+);
+
 
 export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tokens"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokens"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
-export const UserPlayersDocument: DocumentNode<UserPlayersQuery, UserPlayersQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userPlayers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"nickname"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
+export const RegenerateTokenDocument: DocumentNode<RegenerateTokenMutation, RegenerateTokenMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"regenerateToken"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_tokens"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_tokens_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
+export const DxIntlPlayersDocument: DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"nickname"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
+export const InsertDxIntlPlayerDocument: DocumentNode<InsertDxIntlPlayerMutation, InsertDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"insertDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_players_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
+export const UpdateDxIntlPlayerDocument: DocumentNode<UpdateDxIntlPlayerMutation, UpdateDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
+export const DeleteDxIntlPlayerDocument: DocumentNode<DeleteDxIntlPlayerMutation, DeleteDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};

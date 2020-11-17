@@ -1,8 +1,31 @@
-query userPlayers($userId: String) {
+query dxIntlPlayers($userId: String) {
   dx_intl_players(where: {user_id: {_eq: $userId}}) {
     id
     nickname
     private
     created_at
+  }
+}
+mutation insertDxIntlPlayer($nickname: String, $private: Boolean) {
+  insert_dx_intl_players_one(object: {
+    nickname: $nickname,
+    private: $private
+  }) {
+    id
+  }
+}
+mutation updateDxIntlPlayer($pk: Int!, $nickname: String, $private: Boolean) {
+  update_dx_intl_players_by_pk(
+    pk_columns: {id: $pk},
+		_set: {
+    	nickname: $nickname,
+    	private: $private
+  	}) {
+    id
+  }
+}
+mutation deleteDxIntlPlayer($pk: Int!) {
+  delete_dx_intl_players_by_pk(id: $pk) {
+    id
   }
 }

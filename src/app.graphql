@@ -3,4 +3,14 @@ query Tokens {
     id
     created_at
   }
-} 
+}
+mutation regenerateToken {
+  delete_tokens(where: {}) {
+    affected_rows
+  }
+  insert_tokens_one(
+    object: {}
+  ) {
+    id
+  }
+}
