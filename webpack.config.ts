@@ -3,7 +3,7 @@ import { Configuration } from 'webpack'
 import 'webpack-dev-server'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HTMLWebpackPlugin from 'html-webpack-plugin'
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import { BookmarkletPlugin } from './bookmarklet-plugin'
 
 const config: Configuration = {
   mode: 'development',
@@ -14,7 +14,7 @@ const config: Configuration = {
   },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].bundle.js'
   },
   plugins: [
     new MiniCssExtractPlugin(),
@@ -22,7 +22,7 @@ const config: Configuration = {
       template: resolve(__dirname, './src/index.html'),
       chunks: ['index']
     }),
-    new BundleAnalyzerPlugin()
+    new BookmarkletPlugin()
   ],
   module: {
     rules: [
@@ -50,8 +50,14 @@ const config: Configuration = {
         target: 'http://localhost:8580/',
         pathRewrite: {
           '^/graphql': '/v1/graphql'
-        }
+        },
+        ws: true
       }
+    },
+    headers: {
+      'Access-Control-Allow-Origin': 'https://maimaidx-eng.com',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     }
   },
   optimization: {
