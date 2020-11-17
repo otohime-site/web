@@ -1,6 +1,6 @@
 import styled from './styled'
 import React, { FunctionComponent, useState } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Link as RouterLink } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import GitHubIcon from '@material-ui/icons/GitHub'
@@ -8,9 +8,9 @@ import GitHubIcon from '@material-ui/icons/GitHub'
 import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
+import User from './user/User'
 import Laundry from './laundry/components/Laundry'
 
-import { Link as RouterLink } from 'react-router-dom'
 import './App.css'
 
 const StyledAppBar = styled(AppBar)`
