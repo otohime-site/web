@@ -8,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { ThemeProvider, StylesProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
 import { pink, orange } from '@material-ui/core/colors'
+import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
 import GraphQLProvider from './GraphQLProvider'
 import firebaseConfig from './firebase'
@@ -26,16 +27,18 @@ const theme = createMuiTheme({
 const root = document.getElementById('root')
 render(
   <BrowserRouter>
-    <StylesProvider injectFirst={true}>
-      <EMThemeProvider theme={theme}>
-        <ThemeProvider theme={theme}>
-          <GraphQLProvider>
-            <CssBaseline />
-            <App />
-          </GraphQLProvider>
-        </ThemeProvider>
-      </EMThemeProvider>
-    </StylesProvider>
+    <HelmetProvider>
+      <StylesProvider injectFirst={true}>
+        <EMThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <GraphQLProvider>
+              <CssBaseline />
+              <App />
+            </GraphQLProvider>
+          </ThemeProvider>
+        </EMThemeProvider>
+      </StylesProvider>
+    </HelmetProvider>
   </BrowserRouter>
   , root
 )
