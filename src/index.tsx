@@ -25,17 +25,17 @@ const theme = createMuiTheme({
 
 const root = document.getElementById('root')
 render(
-  <GraphQLProvider>
-    <BrowserRouter>
-      <StylesProvider injectFirst={true}>
-        <EMThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
+  <BrowserRouter>
+    <StylesProvider injectFirst={true}>
+      <EMThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <GraphQLProvider>
             <CssBaseline />
             <App />
-          </ThemeProvider>
-        </EMThemeProvider>
-      </StylesProvider>
-    </BrowserRouter>
-  </GraphQLProvider>
+          </GraphQLProvider>
+        </ThemeProvider>
+      </EMThemeProvider>
+    </StylesProvider>
+  </BrowserRouter>
   , root
 )

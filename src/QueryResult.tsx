@@ -11,12 +11,12 @@ interface Props {
 }
 
 export const QueryResult: FunctionComponent<Props> = (
-  { result, errorMsg = '發生問題，請重試。', skeletonVariant = 'text', skeletonWidth, skeletonHeight, children }) => {
+  { result, errorMsg, skeletonVariant, skeletonWidth, skeletonHeight, children }) => {
   if (result.fetching) {
-    return <Skeleton variant={skeletonVariant} width={skeletonWidth} height={skeletonHeight} />
+    return <Skeleton variant={skeletonVariant ?? 'text'} width={skeletonWidth} height={skeletonHeight} />
   }
   if (result.error != null) {
-    return <Alert severity="error">{errorMsg}</Alert>
+    return <Alert severity="error">{errorMsg ?? '發生問題，請重試。'}</Alert>
   }
   return <>{children}</>
 }

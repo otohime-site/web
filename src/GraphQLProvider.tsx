@@ -5,6 +5,8 @@ import { subscriptionExchange, cacheExchange, dedupExchange, fetchExchange, make
 import { authExchange } from '@urql/exchange-auth'
 import { useAuth } from './auth'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import host from './host'
+import AppBar from './AppBar'
 
 const GraphQLProvider: FunctionComponent = ({ children }) => {
   const auth = firebase.auth()
@@ -29,7 +31,7 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
   }, [user])
   const client = useMemo(() => (
     createClient({
-      url: '/graphql',
+      url: `https://${location.host}/graphql`,
       exchanges: [
         dedupExchange,
         cacheExchange,
@@ -72,10 +74,31 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
   ), [user])
 
   if (loading) {
-    return (
-      <></>
-    )
+    return (<AppBar></AppBar>)
   }
+  return (
+    <UrqlProvider value={client}>
+      {children}
+    </UrqlProvider>
+  )
+}
+export const GraphQLBookmarkletProvider: FunctionComponent<{token: string}> = ({ token, children }) => {
+  const client = useMemo(() => (
+    createClient({
+      url: `https://${host}/graphql`,
+      fetchOptions: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      },
+      exchanges: [
+        dedupExchange,
+        cacheExchange,
+        fetchExchange
+      ]
+    })
+  ), [token])
+
   return (
     <UrqlProvider value={client}>
       {children}

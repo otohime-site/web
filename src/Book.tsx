@@ -1,115 +1,84 @@
-import React, { Component, FunctionComponent, useEffect, useState, ChangeEvent } from 'react'
-import laundryParser from 'semiquaver-parser/laundry'
-import laundryDXParser from 'semiquaver-parser/laundry_dx'
-import './Book.css'
-import host from './host'
+import React, { FunctionComponent, useState } from 'react'
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+// import host from './host'
+import { useObservableState } from 'observable-hooks'
+import { parsePlayer, parseScores } from '@otohime-site/parser/dx_intl'
+import { DxIntlPlayersDocument } from './generated/graphql'
+import { useQuery } from 'urql'
+import { QueryResult } from './QueryResult'
+import { map, switchMap } from 'rxjs/operators'
+import { fromFetch } from 'rxjs/fetch'
+import { Alert } from '@material-ui/lab'
+import { ScoresParseEntry } from '@otohime-site/parser/dx_intl/scores'
 
 const book: FunctionComponent = () => {
-  const url = document.location.href
-  const noMaimaiNet = (url.indexOf('https://maimai-net.com/') !== 0 && url.indexOf('https://maimaidx.jp') !== 0)
-  const service = (url.indexOf('https://maimaidx.jp') === 0) ? 'mdx' : 'mai'
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [currentNickname, setCurrentNickname] = useState('')
-  const [myNicknames, setMyNicknames] = useState([] as string[])
-
-  const handleGetNicknames = async () => {
-    const res = await fetch(`https://${host}/api/${service}/me`, {
-      credentials: 'include'
-    })
-    if (!res.ok) {
-      setLoggedIn(false)
-      return
-    }
-    const results = await res.json()
-    const myNicknames = []
-    for (let i = 0; i < results.length; i += 1) {
-      myNicknames.push(results[i].nickname)
-    }
-    setLoggedIn(true)
-    setMyNicknames(myNicknames)
-  }
-
-  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCurrentNickname(e.target.value)
-  }
-
-  const handleProgress = async (progress: number) => {
-    setProgress(progress)
-    return new Promise(resolve => setTimeout(resolve, 1000))
-  }
-
-  const handleUpdate = async () => {
+  const player = (() => {
     try {
-      const parser = (service === 'mdx') ? laundryDXParser : laundryParser
-      const result = await parser(handleProgress) // eslint-disable-line no-unused-vars
-      await fetch(`https://${host}/api/${service}/${currentNickname}`, {
-        method: 'POST',
-        body: JSON.stringify(result),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      })
-      alert('OK!')
-    } catch (e) {
-      console.log(e)
-      alert('Error!')
+      return parsePlayer(document)
+    } catch {
+      return undefined
     }
+  })()
+  const [open, setOpen] = useState(true)
+  const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
+  const [fetchResult, handleFetch] = useObservableState<ScoresParseEntry[] | null, React.MouseEvent>(
+    (event$) => (
+      event$.pipe(
+        switchMap(() => fromFetch('/maimai-mobile/record/musicGenre/search/?genre=99&diff=2')),
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
+        switchMap(resp => {
+          if (!resp.ok) { throw new Error('Network Error!') }
+          return resp.text()
+        }),
+        map(text => parseScores(text))
+      )
+    ),
+    null
+  )
+  const handleClose = (): void => {
+    setOpen(false)
+    window.location.href = '/'
   }
-
-  useEffect(() => {
-    if (noMaimaiNet) {
-      alert('請使用 Bookmarklet 形式觸發，並確定已經連上對應網站。')
-      return
-    }
-    window.addEventListener('focus', handleGetNicknames, false)
-    return () => {
-      window.removeEventListener('focus', handleGetNicknames, false)
-    }
-  }, [])
-  if (noMaimaiNet) {
+  const players = dxIntlPlayersResult.data?.dx_intl_players
+  if (document.location.pathname !== '/maimai-mobile/home/') {
     return (
-      <></>
+      <Dialog lang='zh-TW' disableEscapeKeyDown={true} open={open} onClose={handleClose}>
+        <Alert severity='info'>您必須先回到官方成績單首頁。按一下「OK」帶你去！</Alert>
+        <DialogActions>
+          <Button color='primary' onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
     )
   }
-  const radios = []
-  for (let i = 0; i < myNicknames.length; i += 1) {
-    const nickname = myNicknames[i]
-    radios.push((
-      <p key={nickname} className='nickname'>
-        {/* eslint-disable-next-line */}
-        <label>
-          <input type='radio' name='nickname' value={nickname} onChange={handleRadioChange} />
-          {' '}
-          {nickname}
-        </label>
-        <a href={`https://${host}/${service}/${nickname}`} rel='noopener noreferrer' target='_blank' title='新分頁打開網頁，檢視成績單'>(檢視)</a>
-      </p>
-    ))
-  }
-  if (!loggedIn) {
+  if (player === undefined) {
     return (
-      <div className='smq-bookmarklet' lang='zh-TW'>
-        <h3>Updater</h3>
-        <p>請先以 Facebook 帳號登入 Semiquaver 以使用服務。</p>
-        <p>您的 Facebook 帳號將僅用於使用者認證，Semiquaver 團隊保證不會將您的 Facebook 帳號挪作他用或透漏給任何人。</p>
-        <a className='btn' href={`https://${host}/api/connect/facebook`} rel='noopener noreferrer' target='_blank'>登入</a>
-      </div>
+      <Dialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
+        <Alert severity='error'>無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。</Alert>
+      </Dialog>
     )
   }
   return (
-    <div className='smq-bookmarklet' lang='zh-TW'>
-      <h3>Updater</h3>
-      <p>請選擇要更新的成績單：</p>
-      {radios}
-      {(radios.length === 0) ? '您還沒有任何成績單。請從下面「管理成績單」頁面新增一個！' : ''}
-      <p>
-        <button type='button' onClick={handleUpdate} disabled={!currentNickname}>開始更新</button>
-      </p>
-      <p>
-        <progress value={progress} max='100' />
-      </p>
-      <p><a href={`https://${host}/${service}/me`} className='btn' rel='noopener noreferrer' target='_blank'>管理成績單</a></p>
-    </div>
+    <Dialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
+      <DialogTitle>更新成績</DialogTitle>
+      <QueryResult
+        result={dxIntlPlayersResult}
+        errorMsg='無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。'
+      >
+        {(players == null || players.length === 0)
+          ? '請到 Otohime 網站上新增一個玩家。'
+          : <DialogContent>
+            <DialogContentText>請選擇要更新的玩家資料：</DialogContentText>
+            {players.map(player => player.nickname)}
+            <p>{JSON.stringify(player)}</p>
+            <p>{JSON.stringify(fetchResult)}</p>
+          </DialogContent>
+        }
+      </QueryResult>
+      <DialogActions>
+        <Button color='primary' onClick={handleFetch}>上傳成績</Button>
+        <Button onClick={handleClose}>關閉</Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 export default book

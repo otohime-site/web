@@ -1,26 +1,17 @@
 import styled from './styled'
 import React, { FunctionComponent, useState } from 'react'
 import { Route, Link as RouterLink } from 'react-router-dom'
-import { AppBar, Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
+import { Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import GitHubIcon from '@material-ui/icons/GitHub'
 
+import AppBar from './AppBar'
 import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
-import User from './user/User'
 import Laundry from './laundry/components/Laundry'
 
 import './App.css'
-
-const StyledAppBar = styled(AppBar)`
-  z-index: ${props => props.theme.zIndex.drawer + 1};
-
-  .MuiToolbar-regular {
-    height: ${props => props.theme.spacing(6)}px;
-    min-height: ${props => props.theme.spacing(6)}px;
-  }
-`
 
 const Title = styled(Typography)`
   flex-grow: 1;
@@ -64,7 +55,7 @@ const App: FunctionComponent = () => {
 
   return (
     <div className='App'>
-      <StyledAppBar position='fixed' className={(drawerOpen) ? 'open' : ''}>
+      <AppBar position='fixed' className={(drawerOpen) ? 'open' : ''}>
         <Toolbar>
           <AppMenuButton edge='start' color='inherit' aria-label='menu' onClick={toggleDrawerOpen}>
             <MenuIcon />
@@ -76,7 +67,7 @@ const App: FunctionComponent = () => {
           </Title>
           <UserBox />
         </Toolbar>
-      </StyledAppBar>
+      </AppBar>
       <Hidden smUp={true}>
         <AppDrawer variant='temporary' drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
       </Hidden>
@@ -85,7 +76,6 @@ const App: FunctionComponent = () => {
       </Hidden>
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
-        <Route path='/user' component={User} />
         <Route path='/mai' component={Laundry} />
         <StyledFooter>
           <Typography variant='body2'>
