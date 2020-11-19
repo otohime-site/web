@@ -4,5 +4,8 @@ module.exports = {
   ],
   parserOptions: {
     project: 'tsconfig.json'
+  },
+  rules: {
+    'react/prop-types': 'off'
   }
 }
