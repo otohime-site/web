@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useState } from 'react'
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, List } from '@material-ui/core'
-// import host from './host'
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, List, LinearProgress, Link, Typography } from '@material-ui/core'
+import host from './host'
 import { useObservableState } from 'observable-hooks'
 import { parsePlayer, parseScores } from '@otohime-site/parser/dx_intl'
 import { DxIntlPlayersDocument } from './generated/graphql'
 import { useQuery } from 'urql'
 import { QueryResult } from './QueryResult'
-import { from, of } from 'rxjs'
-import { mergeMap, map, switchMap, delay, scan } from 'rxjs/operators'
+import { concat, from, of } from 'rxjs'
+import { mergeMap, map, switchMap, delay, scan, startWith, tap } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 import { Alert } from '@material-ui/lab'
 import { ScoresParseEntry } from '@otohime-site/parser/dx_intl/scores'
@@ -33,32 +33,34 @@ const book: FunctionComponent = () => {
   const [open, setOpen] = useState(true)
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(undefined)
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
-  const [fetchProgress, handleFetch] = useObservableState<number, React.MouseEvent>(
+  const [fetchProgress, handleFetch] = useObservableState<number | null, React.MouseEvent>(
     (event$) => (
       event$.pipe(
-        switchMap(() => from(DIFFICULTIES)),
-        mergeMap((difficulty) =>
-          fromFetch(`/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`).pipe(
-            // eslint-disable-next-line @typescript-eslint/promise-function-async
-            switchMap(resp => {
-              if (!resp.ok) { throw new Error('Network Error!') }
-              return resp.text()
-            }),
-            map(text => parseScores(text)),
-            delay(1000)
+        switchMap(() => concat(
+          of(0),
+          from(DIFFICULTIES).pipe(
+            mergeMap((difficulty) =>
+              fromFetch(`/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`).pipe(
+                // eslint-disable-next-line @typescript-eslint/promise-function-async
+                switchMap(resp => {
+                  if (!resp.ok) { throw new Error('Network Error!') }
+                  return resp.text()
+                }),
+                map(text => parseScores(text)),
+                delay(1000)
+              ), 1),
+            scan<ScoresParseEntry[], [ScoresParseEntry[], number]>((prev, curr) =>
+              [[...prev[0], ...curr], prev[1] + 1], [[], 0]),
+            switchMap(([entries, progress]) => {
+              if (progress < DIFFICULTIES.length) {
+                return of(progress)
+              }
+              return of(progress)
+            })
           )
-        , 1),
-        scan<ScoresParseEntry[], [ScoresParseEntry[], number]>((prev, curr) =>
-          [[...prev[0], ...curr], prev[1] + 1], [[], 0]),
-        switchMap(([entries, progress]) => {
-          if (progress < DIFFICULTIES.length) {
-            return of(progress)
-          }
-          return of(Infinity)
-        })
+        ))
       )
-    ),
-    0
+    ), null
   )
   const handleClose = (): void => {
     setOpen(false)
@@ -85,30 +87,43 @@ const book: FunctionComponent = () => {
   return (
     <ResetDialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
       <DialogTitle>更新成績</DialogTitle>
-      <QueryResult
-        result={dxIntlPlayersResult}
-        errorMsg='無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。'
-      >
-        {(players == null || players.length === 0)
-          ? '請到 Otohime 網站上新增一個玩家。'
-          : <DialogContent>
-            <DialogContentText>請選擇要更新的玩家資料：</DialogContentText>
-            <List>
-              {players.map((player) =>
-                <PlayerListItem
-                  key={player.id}
-                  player={player}
-                  selected={selectedPlayerId === player.id}
-                  onSelect={setSelectedPlayerId}
-                />)
-              }
-            </List>
-          </DialogContent>
-        }
-      </QueryResult>
+      {(fetchProgress != null)
+        ? <DialogContent>
+          <Typography variant='body2'>
+            {(fetchProgress < DIFFICULTIES.length) ? '擷取成績中...' : '正在上傳成績單...'}
+          </Typography>
+          <LinearProgress
+            variant={(fetchProgress < DIFFICULTIES.length) ? 'determinate' : 'indeterminate'}
+            value={(fetchProgress < DIFFICULTIES.length) ? fetchProgress / DIFFICULTIES.length * 100 : undefined} />
+        </DialogContent>
+        : <QueryResult
+          result={dxIntlPlayersResult}
+          errorMsg='無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。'
+        >
+          {(players == null || players.length === 0)
+            ? <Alert severity='warning'>
+              請到 Otohime 網站上
+              <Link target='_blank' href={`${host}/dxi/up/new`} rel='noopener'>新增一個成績單。</Link>
+            </Alert>
+            : <DialogContent>
+              <DialogContentText>請選擇要更新的成績單：</DialogContentText>
+              <List>
+                {players.map((player) =>
+                  <PlayerListItem
+                    key={player.id}
+                    player={player}
+                    selected={selectedPlayerId === player.id}
+                    onSelect={setSelectedPlayerId}
+                  />)
+                }
+              </List>
+            </DialogContent>
+          }
+        </QueryResult>
+      }
       <DialogActions>
-        <Button color='primary' variant='text' disabled={selectedPlayerId === undefined} onClick={handleFetch}>上傳成績 ({fetchProgress})</Button>
-        <Button onClick={handleClose}>關閉</Button>
+        <Button color='primary' variant='text' disabled={fetchProgress != null || selectedPlayerId === undefined} onClick={handleFetch}>上傳成績</Button>
+        <Button disabled={fetchProgress != null && isFinite(fetchProgress)} onClick={handleClose}>關閉</Button>
       </DialogActions>
     </ResetDialog>
   )
