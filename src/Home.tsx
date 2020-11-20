@@ -11,7 +11,7 @@ import DxUserPlayers from './dx_intl/UserPlayers'
 const PaddedPaper = styled(Paper)`
   padding: ${props => props.theme.spacing(2)}px;
 `
-const Header = styled(Typography)`
+const SpacedTypo = styled(Typography)`
   margin-bottom: ${props => props.theme.spacing(2)}px;
 `
 
@@ -23,15 +23,15 @@ const HomeComponent: FunctionComponent = () => {
       <Helmet>
         <title>&#x1F3B5; Otohime: 音 Game 成績單網站</title>
       </Helmet>
-      <Header variant='h5'>
+      <SpacedTypo variant='h5'>
         Otohime - 音 Game 成績單網站
-      </Header>
+      </SpacedTypo>
       <Typography variant='body1'>
         目前支援 maimai DX 國際版的成績集記與排名。
       </Typography>
-      <Header variant='h6'>
+      <SpacedTypo variant='h6'>
         如何使用
-      </Header>
+      </SpacedTypo>
       <Stepper orientation='vertical' activeStep={-1}>
         <Step>
           <StepLabel>到官方成績單網站註冊，並登錄卡片</StepLabel>
@@ -59,7 +59,7 @@ const HomeComponent: FunctionComponent = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <PaddedPaper>
-            <Header variant='h6'>您的玩家資料</Header>
+            <SpacedTypo variant='h6'>您的成績單</SpacedTypo>
             <TabContext value={tabValue}>
               <Tabs value={tabValue} textColor='secondary' variant='fullWidth' onChange={(_, val): void => setTabValue(val)}>
                 <Tab value='dx' label='maimai DX 國際版' />
@@ -77,7 +77,11 @@ const HomeComponent: FunctionComponent = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <PaddedPaper>
-            <Header variant='h6'>Bookmarklet</Header>
+            <SpacedTypo variant='h6'>Bookmarklet</SpacedTypo>
+            <SpacedTypo variant='body1'>
+              新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。
+              <Link>需要詳細說明？</Link>
+            </SpacedTypo>
             <Token />
           </PaddedPaper>
         </Grid>

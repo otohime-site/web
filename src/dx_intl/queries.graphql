@@ -4,6 +4,9 @@ query dxIntlPlayers($userId: String) {
     nickname
     private
     created_at
+    dx_intl_record {
+      card_name
+    }
   }
 }
 mutation insertDxIntlPlayer($nickname: String, $private: Boolean) {

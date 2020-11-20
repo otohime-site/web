@@ -1,18 +1,29 @@
 import React, { FunctionComponent, useState } from 'react'
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, List } from '@material-ui/core'
 // import host from './host'
 import { useObservableState } from 'observable-hooks'
 import { parsePlayer, parseScores } from '@otohime-site/parser/dx_intl'
 import { DxIntlPlayersDocument } from './generated/graphql'
 import { useQuery } from 'urql'
 import { QueryResult } from './QueryResult'
-import { map, switchMap } from 'rxjs/operators'
+import { from, of } from 'rxjs'
+import { mergeMap, map, switchMap, delay, scan } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 import { Alert } from '@material-ui/lab'
 import { ScoresParseEntry } from '@otohime-site/parser/dx_intl/scores'
+import PlayerListItem from './dx_intl/PlayerListItem'
+import styled from './styled'
+
+const DIFFICULTIES = [0, 1, 2, 3, 4]
+
+const ResetDialog = styled(Dialog)`
+  *:disabled {
+    background-color: unset;
+  }
+`
 
 const book: FunctionComponent = () => {
-  const player = (() => {
+  const parsedPlayer = (() => {
     try {
       return parsePlayer(document)
     } catch {
@@ -20,20 +31,34 @@ const book: FunctionComponent = () => {
     }
   })()
   const [open, setOpen] = useState(true)
+  const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(undefined)
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
-  const [fetchResult, handleFetch] = useObservableState<ScoresParseEntry[] | null, React.MouseEvent>(
+  const [fetchProgress, handleFetch] = useObservableState<number, React.MouseEvent>(
     (event$) => (
       event$.pipe(
-        switchMap(() => fromFetch('/maimai-mobile/record/musicGenre/search/?genre=99&diff=2')),
-        // eslint-disable-next-line @typescript-eslint/promise-function-async
-        switchMap(resp => {
-          if (!resp.ok) { throw new Error('Network Error!') }
-          return resp.text()
-        }),
-        map(text => parseScores(text))
+        switchMap(() => from(DIFFICULTIES)),
+        mergeMap((difficulty) =>
+          fromFetch(`/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`).pipe(
+            // eslint-disable-next-line @typescript-eslint/promise-function-async
+            switchMap(resp => {
+              if (!resp.ok) { throw new Error('Network Error!') }
+              return resp.text()
+            }),
+            map(text => parseScores(text)),
+            delay(1000)
+          )
+        , 1),
+        scan<ScoresParseEntry[], [ScoresParseEntry[], number]>((prev, curr) =>
+          [[...prev[0], ...curr], prev[1] + 1], [[], 0]),
+        switchMap(([entries, progress]) => {
+          if (progress < DIFFICULTIES.length) {
+            return of(progress)
+          }
+          return of(Infinity)
+        })
       )
     ),
-    null
+    0
   )
   const handleClose = (): void => {
     setOpen(false)
@@ -42,23 +67,23 @@ const book: FunctionComponent = () => {
   const players = dxIntlPlayersResult.data?.dx_intl_players
   if (document.location.pathname !== '/maimai-mobile/home/') {
     return (
-      <Dialog lang='zh-TW' disableEscapeKeyDown={true} open={open} onClose={handleClose}>
+      <ResetDialog lang='zh-TW' disableEscapeKeyDown={true} open={open} onClose={handleClose}>
         <Alert severity='info'>您必須先回到官方成績單首頁。按一下「OK」帶你去！</Alert>
         <DialogActions>
           <Button color='primary' onClick={handleClose}>OK</Button>
         </DialogActions>
-      </Dialog>
+      </ResetDialog>
     )
   }
-  if (player === undefined) {
+  if (parsedPlayer === undefined) {
     return (
-      <Dialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
+      <ResetDialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
         <Alert severity='error'>無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。</Alert>
-      </Dialog>
+      </ResetDialog>
     )
   }
   return (
-    <Dialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
+    <ResetDialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
       <DialogTitle>更新成績</DialogTitle>
       <QueryResult
         result={dxIntlPlayersResult}
@@ -68,17 +93,24 @@ const book: FunctionComponent = () => {
           ? '請到 Otohime 網站上新增一個玩家。'
           : <DialogContent>
             <DialogContentText>請選擇要更新的玩家資料：</DialogContentText>
-            {players.map(player => player.nickname)}
-            <p>{JSON.stringify(player)}</p>
-            <p>{JSON.stringify(fetchResult)}</p>
+            <List>
+              {players.map((player) =>
+                <PlayerListItem
+                  key={player.id}
+                  player={player}
+                  selected={selectedPlayerId === player.id}
+                  onSelect={setSelectedPlayerId}
+                />)
+              }
+            </List>
           </DialogContent>
         }
       </QueryResult>
       <DialogActions>
-        <Button color='primary' onClick={handleFetch}>上傳成績</Button>
+        <Button color='primary' variant='text' disabled={selectedPlayerId === undefined} onClick={handleFetch}>上傳成績 ({fetchProgress})</Button>
         <Button onClick={handleClose}>關閉</Button>
       </DialogActions>
-    </Dialog>
+    </ResetDialog>
   )
 }
 export default book
