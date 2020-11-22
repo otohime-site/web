@@ -32,3 +32,62 @@ mutation deleteDxIntlPlayer($pk: Int!) {
     id
   }
 }
+
+query dxIntlSongs {
+  dx_intl_songs(order_by: [
+    {category: asc},
+    {order: asc}
+  ]) {
+    category
+    title
+    order
+    dx_intl_variants {
+      deluxe
+      version
+      active
+      dx_intl_notes {
+        difficulty
+        level
+      }
+    }
+  }
+}
+query dxIntlRecordWithScores($nickname: String!) {
+  dx_intl_records(where: {dx_intl_player: {nickname: {_eq: $nickname}}}) {
+    card_name
+    title
+    trophy
+    rating
+    max_rating
+    grade
+  }
+  dx_intl_scores(where: {dx_intl_player: {nickname: {_eq: $nickname}}}) {
+    note_id
+    score
+    combo_flag
+    sync_flag
+  }
+}
+mutation InsertDxIntlRecordWithScores(
+  $record: dx_intl_records_insert_input!,
+  $scores: [dx_intl_scores_insert_input!]!,
+) {
+  insert_dx_intl_records_one(
+    object: $record,
+    on_conflict: {
+      constraint: dx_intl_records_player_id_key,
+      update_columns: [card_name, title, trophy, rating, max_rating]
+    }
+  ) {
+    id
+  }
+  insert_dx_intl_scores(
+    objects: $scores,
+    on_conflict: {
+      constraint: dx_intl_scores_player_id_note_id_key,
+      update_columns: [score, combo_flag, sync_flag]
+    }
+  ) {
+    returning { id }
+  }
+}

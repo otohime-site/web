@@ -8,10 +8,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _dx_intl_level: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '7+' | '8' | '8+' | '9' | '9+' | '10' | '10+' | '11' | '11+' | '12' | '12+' | '13' | '13+' | '14' | '14+' | '15'
-;
   bigint: number;
   dx_intl_combo_flag: '' | 'fc' | 'fc+' | 'ap' | 'ap+';
+  dx_intl_level: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '7+' | '8' | '8+' | '9' | '9+' | '10' | '10+' | '11' | '11+' | '12' | '12+' | '13' | '13+' | '14' | '14+' | '15'
+;
   dx_intl_sync_flag: '' | 'fs' | 'fs+' | 'fdx' | 'fdx+';
   dx_intl_trophy: 'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow';
   numeric: number;
@@ -66,20 +66,6 @@ export type String_Comparison_Exp = {
 };
 
 
-/** expression to compare columns of type _dx_intl_level. All fields are combined with logical 'AND'. */
-export type _Dx_Intl_Level_Comparison_Exp = {
-  _eq?: Maybe<Scalars['_dx_intl_level']>;
-  _gt?: Maybe<Scalars['_dx_intl_level']>;
-  _gte?: Maybe<Scalars['_dx_intl_level']>;
-  _in?: Maybe<Array<Scalars['_dx_intl_level']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['_dx_intl_level']>;
-  _lte?: Maybe<Scalars['_dx_intl_level']>;
-  _neq?: Maybe<Scalars['_dx_intl_level']>;
-  _nin?: Maybe<Array<Scalars['_dx_intl_level']>>;
-};
-
-
 /** expression to compare columns of type bigint. All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
   _eq?: Maybe<Scalars['bigint']>;
@@ -107,21 +93,34 @@ export type Dx_Intl_Combo_Flag_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['dx_intl_combo_flag']>>;
 };
 
+
+/** expression to compare columns of type dx_intl_level. All fields are combined with logical 'AND'. */
+export type Dx_Intl_Level_Comparison_Exp = {
+  _eq?: Maybe<Scalars['dx_intl_level']>;
+  _gt?: Maybe<Scalars['dx_intl_level']>;
+  _gte?: Maybe<Scalars['dx_intl_level']>;
+  _in?: Maybe<Array<Scalars['dx_intl_level']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['dx_intl_level']>;
+  _lte?: Maybe<Scalars['dx_intl_level']>;
+  _neq?: Maybe<Scalars['dx_intl_level']>;
+  _nin?: Maybe<Array<Scalars['dx_intl_level']>>;
+};
+
 /** columns and relationships of "dx_intl_notes" */
 export type Dx_Intl_Notes = {
   __typename?: 'dx_intl_notes';
-  active: Scalars['Boolean'];
   deluxe: Scalars['Boolean'];
+  difficulty: Scalars['smallint'];
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>;
   /** An aggregated array relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate;
   /** An object relationship */
-  dx_intl_song?: Maybe<Dx_Intl_Songs>;
+  dx_intl_variant?: Maybe<Dx_Intl_Variants>;
   id: Scalars['Int'];
-  levels?: Maybe<Scalars['_dx_intl_level']>;
+  level?: Maybe<Scalars['dx_intl_level']>;
   song_id?: Maybe<Scalars['Int']>;
-  version: Scalars['smallint'];
 };
 
 
@@ -198,16 +197,16 @@ export type Dx_Intl_Notes_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Dx_Intl_Notes_Avg_Fields = {
   __typename?: 'dx_intl_notes_avg_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Avg_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "dx_intl_notes". All fields are combined with a logical 'AND'. */
@@ -215,14 +214,13 @@ export type Dx_Intl_Notes_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>;
   _not?: Maybe<Dx_Intl_Notes_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>;
-  active?: Maybe<Boolean_Comparison_Exp>;
   deluxe?: Maybe<Boolean_Comparison_Exp>;
+  difficulty?: Maybe<Smallint_Comparison_Exp>;
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Bool_Exp>;
-  dx_intl_song?: Maybe<Dx_Intl_Songs_Bool_Exp>;
+  dx_intl_variant?: Maybe<Dx_Intl_Variants_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
-  levels?: Maybe<_Dx_Intl_Level_Comparison_Exp>;
+  level?: Maybe<Dx_Intl_Level_Comparison_Exp>;
   song_id?: Maybe<Int_Comparison_Exp>;
-  version?: Maybe<Smallint_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "dx_intl_notes" */
@@ -230,56 +228,55 @@ export enum Dx_Intl_Notes_Constraint {
   /** unique or primary key constraint */
   DxIntlNotesPkey = 'dx_intl_notes_pkey',
   /** unique or primary key constraint */
-  DxIntlNotesSongIdDeluxeKey = 'dx_intl_notes_song_id_deluxe_key'
+  DxIntlNotesSongIdDeluxeDifficultyKey = 'dx_intl_notes_song_id_deluxe_difficulty_key'
 }
 
 /** input type for incrementing integer column in table "dx_intl_notes" */
 export type Dx_Intl_Notes_Inc_Input = {
+  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** input type for inserting data into table "dx_intl_notes" */
 export type Dx_Intl_Notes_Insert_Input = {
-  active?: Maybe<Scalars['Boolean']>;
   deluxe?: Maybe<Scalars['Boolean']>;
+  difficulty?: Maybe<Scalars['smallint']>;
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Arr_Rel_Insert_Input>;
-  dx_intl_song?: Maybe<Dx_Intl_Songs_Obj_Rel_Insert_Input>;
+  dx_intl_variant?: Maybe<Dx_Intl_Variants_Obj_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
-  levels?: Maybe<Scalars['_dx_intl_level']>;
+  level?: Maybe<Scalars['dx_intl_level']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate max on columns */
 export type Dx_Intl_Notes_Max_Fields = {
   __typename?: 'dx_intl_notes_max_fields';
+  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** order by max() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Max_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Dx_Intl_Notes_Min_Fields = {
   __typename?: 'dx_intl_notes_min_fields';
+  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** order by min() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Min_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "dx_intl_notes" */
@@ -306,14 +303,13 @@ export type Dx_Intl_Notes_On_Conflict = {
 
 /** ordering options when selecting data from "dx_intl_notes" */
 export type Dx_Intl_Notes_Order_By = {
-  active?: Maybe<Order_By>;
   deluxe?: Maybe<Order_By>;
+  difficulty?: Maybe<Order_By>;
   dx_intl_scores_aggregate?: Maybe<Dx_Intl_Scores_Aggregate_Order_By>;
-  dx_intl_song?: Maybe<Dx_Intl_Songs_Order_By>;
+  dx_intl_variant?: Maybe<Dx_Intl_Variants_Order_By>;
   id?: Maybe<Order_By>;
-  levels?: Maybe<Order_By>;
+  level?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "dx_intl_notes" */
@@ -324,148 +320,143 @@ export type Dx_Intl_Notes_Pk_Columns_Input = {
 /** select columns of table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Select_Column {
   /** column name */
-  Active = 'active',
-  /** column name */
   Deluxe = 'deluxe',
+  /** column name */
+  Difficulty = 'difficulty',
   /** column name */
   Id = 'id',
   /** column name */
-  Levels = 'levels',
+  Level = 'level',
   /** column name */
-  SongId = 'song_id',
-  /** column name */
-  Version = 'version'
+  SongId = 'song_id'
 }
 
 /** input type for updating data in table "dx_intl_notes" */
 export type Dx_Intl_Notes_Set_Input = {
-  active?: Maybe<Scalars['Boolean']>;
   deluxe?: Maybe<Scalars['Boolean']>;
+  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
-  levels?: Maybe<Scalars['_dx_intl_level']>;
+  level?: Maybe<Scalars['dx_intl_level']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** aggregate stddev on columns */
 export type Dx_Intl_Notes_Stddev_Fields = {
   __typename?: 'dx_intl_notes_stddev_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Notes_Stddev_Pop_Fields = {
   __typename?: 'dx_intl_notes_stddev_pop_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Pop_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Notes_Stddev_Samp_Fields = {
   __typename?: 'dx_intl_notes_stddev_samp_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Samp_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Dx_Intl_Notes_Sum_Fields = {
   __typename?: 'dx_intl_notes_sum_fields';
+  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
   song_id?: Maybe<Scalars['Int']>;
-  version?: Maybe<Scalars['smallint']>;
 };
 
 /** order by sum() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Sum_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** update columns of table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Update_Column {
   /** column name */
-  Active = 'active',
-  /** column name */
   Deluxe = 'deluxe',
+  /** column name */
+  Difficulty = 'difficulty',
   /** column name */
   Id = 'id',
   /** column name */
-  Levels = 'levels',
+  Level = 'level',
   /** column name */
-  SongId = 'song_id',
-  /** column name */
-  Version = 'version'
+  SongId = 'song_id'
 }
 
 /** aggregate var_pop on columns */
 export type Dx_Intl_Notes_Var_Pop_Fields = {
   __typename?: 'dx_intl_notes_var_pop_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Var_Pop_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Dx_Intl_Notes_Var_Samp_Fields = {
   __typename?: 'dx_intl_notes_var_samp_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Var_Samp_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Dx_Intl_Notes_Variance_Fields = {
   __typename?: 'dx_intl_notes_variance_fields';
+  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   song_id?: Maybe<Scalars['Float']>;
-  version?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Variance_Order_By = {
+  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   song_id?: Maybe<Order_By>;
-  version?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "dx_intl_players" */
@@ -483,7 +474,7 @@ export type Dx_Intl_Players = {
   /** An aggregated array relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate;
   id: Scalars['Int'];
-  nickname?: Maybe<Scalars['String']>;
+  nickname: Scalars['String'];
   private: Scalars['Boolean'];
   /** An object relationship */
   user: Users;
@@ -1579,7 +1570,6 @@ export type Dx_Intl_Records_With_History_Variance_Order_By = {
 export type Dx_Intl_Scores = {
   __typename?: 'dx_intl_scores';
   combo_flag: Scalars['dx_intl_combo_flag'];
-  difficulty: Scalars['smallint'];
   /** An object relationship */
   dx_intl_note: Dx_Intl_Notes;
   /** An object relationship */
@@ -1647,7 +1637,6 @@ export type Dx_Intl_Scores_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Dx_Intl_Scores_Avg_Fields = {
   __typename?: 'dx_intl_scores_avg_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1656,7 +1645,6 @@ export type Dx_Intl_Scores_Avg_Fields = {
 
 /** order by avg() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Avg_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1669,7 +1657,6 @@ export type Dx_Intl_Scores_Bool_Exp = {
   _not?: Maybe<Dx_Intl_Scores_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Dx_Intl_Scores_Bool_Exp>>>;
   combo_flag?: Maybe<Dx_Intl_Combo_Flag_Comparison_Exp>;
-  difficulty?: Maybe<Smallint_Comparison_Exp>;
   dx_intl_note?: Maybe<Dx_Intl_Notes_Bool_Exp>;
   dx_intl_player?: Maybe<Dx_Intl_Players_Bool_Exp>;
   end?: Maybe<Timestamptz_Comparison_Exp>;
@@ -1686,12 +1673,11 @@ export enum Dx_Intl_Scores_Constraint {
   /** unique or primary key constraint */
   DxIntlScoresPkey = 'dx_intl_scores_pkey',
   /** unique or primary key constraint */
-  DxIntlScoresPlayerIdNoteIdDifficultyKey = 'dx_intl_scores_player_id_note_id_difficulty_key'
+  DxIntlScoresPlayerIdNoteIdKey = 'dx_intl_scores_player_id_note_id_key'
 }
 
 /** input type for incrementing integer column in table "dx_intl_scores" */
 export type Dx_Intl_Scores_Inc_Input = {
-  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
   player_id?: Maybe<Scalars['Int']>;
@@ -1701,7 +1687,6 @@ export type Dx_Intl_Scores_Inc_Input = {
 /** input type for inserting data into table "dx_intl_scores" */
 export type Dx_Intl_Scores_Insert_Input = {
   combo_flag?: Maybe<Scalars['dx_intl_combo_flag']>;
-  difficulty?: Maybe<Scalars['smallint']>;
   dx_intl_note?: Maybe<Dx_Intl_Notes_Obj_Rel_Insert_Input>;
   dx_intl_player?: Maybe<Dx_Intl_Players_Obj_Rel_Insert_Input>;
   end?: Maybe<Scalars['timestamptz']>;
@@ -1716,7 +1701,6 @@ export type Dx_Intl_Scores_Insert_Input = {
 /** aggregate max on columns */
 export type Dx_Intl_Scores_Max_Fields = {
   __typename?: 'dx_intl_scores_max_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   end?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
@@ -1727,7 +1711,6 @@ export type Dx_Intl_Scores_Max_Fields = {
 
 /** order by max() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Max_Order_By = {
-  difficulty?: Maybe<Order_By>;
   end?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
@@ -1739,7 +1722,6 @@ export type Dx_Intl_Scores_Max_Order_By = {
 /** aggregate min on columns */
 export type Dx_Intl_Scores_Min_Fields = {
   __typename?: 'dx_intl_scores_min_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   end?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
@@ -1750,7 +1732,6 @@ export type Dx_Intl_Scores_Min_Fields = {
 
 /** order by min() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Min_Order_By = {
-  difficulty?: Maybe<Order_By>;
   end?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
@@ -1784,7 +1765,6 @@ export type Dx_Intl_Scores_On_Conflict = {
 /** ordering options when selecting data from "dx_intl_scores" */
 export type Dx_Intl_Scores_Order_By = {
   combo_flag?: Maybe<Order_By>;
-  difficulty?: Maybe<Order_By>;
   dx_intl_note?: Maybe<Dx_Intl_Notes_Order_By>;
   dx_intl_player?: Maybe<Dx_Intl_Players_Order_By>;
   end?: Maybe<Order_By>;
@@ -1806,8 +1786,6 @@ export enum Dx_Intl_Scores_Select_Column {
   /** column name */
   ComboFlag = 'combo_flag',
   /** column name */
-  Difficulty = 'difficulty',
-  /** column name */
   End = 'end',
   /** column name */
   Id = 'id',
@@ -1826,7 +1804,6 @@ export enum Dx_Intl_Scores_Select_Column {
 /** input type for updating data in table "dx_intl_scores" */
 export type Dx_Intl_Scores_Set_Input = {
   combo_flag?: Maybe<Scalars['dx_intl_combo_flag']>;
-  difficulty?: Maybe<Scalars['smallint']>;
   end?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
@@ -1839,7 +1816,6 @@ export type Dx_Intl_Scores_Set_Input = {
 /** aggregate stddev on columns */
 export type Dx_Intl_Scores_Stddev_Fields = {
   __typename?: 'dx_intl_scores_stddev_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1848,7 +1824,6 @@ export type Dx_Intl_Scores_Stddev_Fields = {
 
 /** order by stddev() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Stddev_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1858,7 +1833,6 @@ export type Dx_Intl_Scores_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Scores_Stddev_Pop_Fields = {
   __typename?: 'dx_intl_scores_stddev_pop_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1867,7 +1841,6 @@ export type Dx_Intl_Scores_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Stddev_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1877,7 +1850,6 @@ export type Dx_Intl_Scores_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Scores_Stddev_Samp_Fields = {
   __typename?: 'dx_intl_scores_stddev_samp_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1886,7 +1858,6 @@ export type Dx_Intl_Scores_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Stddev_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1896,7 +1867,6 @@ export type Dx_Intl_Scores_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_Sum_Fields = {
   __typename?: 'dx_intl_scores_sum_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
   player_id?: Maybe<Scalars['Int']>;
@@ -1905,7 +1875,6 @@ export type Dx_Intl_Scores_Sum_Fields = {
 
 /** order by sum() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Sum_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1916,8 +1885,6 @@ export type Dx_Intl_Scores_Sum_Order_By = {
 export enum Dx_Intl_Scores_Update_Column {
   /** column name */
   ComboFlag = 'combo_flag',
-  /** column name */
-  Difficulty = 'difficulty',
   /** column name */
   End = 'end',
   /** column name */
@@ -1937,7 +1904,6 @@ export enum Dx_Intl_Scores_Update_Column {
 /** aggregate var_pop on columns */
 export type Dx_Intl_Scores_Var_Pop_Fields = {
   __typename?: 'dx_intl_scores_var_pop_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1946,7 +1912,6 @@ export type Dx_Intl_Scores_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Var_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1956,7 +1921,6 @@ export type Dx_Intl_Scores_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Dx_Intl_Scores_Var_Samp_Fields = {
   __typename?: 'dx_intl_scores_var_samp_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1965,7 +1929,6 @@ export type Dx_Intl_Scores_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Var_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1975,7 +1938,6 @@ export type Dx_Intl_Scores_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Dx_Intl_Scores_Variance_Fields = {
   __typename?: 'dx_intl_scores_variance_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -1984,7 +1946,6 @@ export type Dx_Intl_Scores_Variance_Fields = {
 
 /** order by variance() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Variance_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -1995,7 +1956,6 @@ export type Dx_Intl_Scores_Variance_Order_By = {
 export type Dx_Intl_Scores_With_History = {
   __typename?: 'dx_intl_scores_with_history';
   combo_flag?: Maybe<Scalars['dx_intl_combo_flag']>;
-  difficulty?: Maybe<Scalars['smallint']>;
   /** An object relationship */
   dx_intl_note?: Maybe<Dx_Intl_Notes>;
   /** An object relationship */
@@ -2057,7 +2017,6 @@ export type Dx_Intl_Scores_With_History_Aggregate_Order_By = {
 /** aggregate avg on columns */
 export type Dx_Intl_Scores_With_History_Avg_Fields = {
   __typename?: 'dx_intl_scores_with_history_avg_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2066,7 +2025,6 @@ export type Dx_Intl_Scores_With_History_Avg_Fields = {
 
 /** order by avg() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Avg_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2079,7 +2037,6 @@ export type Dx_Intl_Scores_With_History_Bool_Exp = {
   _not?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Dx_Intl_Scores_With_History_Bool_Exp>>>;
   combo_flag?: Maybe<Dx_Intl_Combo_Flag_Comparison_Exp>;
-  difficulty?: Maybe<Smallint_Comparison_Exp>;
   dx_intl_note?: Maybe<Dx_Intl_Notes_Bool_Exp>;
   dx_intl_player?: Maybe<Dx_Intl_Players_Bool_Exp>;
   end?: Maybe<Timestamptz_Comparison_Exp>;
@@ -2094,7 +2051,6 @@ export type Dx_Intl_Scores_With_History_Bool_Exp = {
 /** aggregate max on columns */
 export type Dx_Intl_Scores_With_History_Max_Fields = {
   __typename?: 'dx_intl_scores_with_history_max_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   end?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
@@ -2105,7 +2061,6 @@ export type Dx_Intl_Scores_With_History_Max_Fields = {
 
 /** order by max() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Max_Order_By = {
-  difficulty?: Maybe<Order_By>;
   end?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
@@ -2117,7 +2072,6 @@ export type Dx_Intl_Scores_With_History_Max_Order_By = {
 /** aggregate min on columns */
 export type Dx_Intl_Scores_With_History_Min_Fields = {
   __typename?: 'dx_intl_scores_with_history_min_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   end?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
@@ -2128,7 +2082,6 @@ export type Dx_Intl_Scores_With_History_Min_Fields = {
 
 /** order by min() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Min_Order_By = {
-  difficulty?: Maybe<Order_By>;
   end?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
@@ -2140,7 +2093,6 @@ export type Dx_Intl_Scores_With_History_Min_Order_By = {
 /** ordering options when selecting data from "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Order_By = {
   combo_flag?: Maybe<Order_By>;
-  difficulty?: Maybe<Order_By>;
   dx_intl_note?: Maybe<Dx_Intl_Notes_Order_By>;
   dx_intl_player?: Maybe<Dx_Intl_Players_Order_By>;
   end?: Maybe<Order_By>;
@@ -2156,8 +2108,6 @@ export type Dx_Intl_Scores_With_History_Order_By = {
 export enum Dx_Intl_Scores_With_History_Select_Column {
   /** column name */
   ComboFlag = 'combo_flag',
-  /** column name */
-  Difficulty = 'difficulty',
   /** column name */
   End = 'end',
   /** column name */
@@ -2177,7 +2127,6 @@ export enum Dx_Intl_Scores_With_History_Select_Column {
 /** aggregate stddev on columns */
 export type Dx_Intl_Scores_With_History_Stddev_Fields = {
   __typename?: 'dx_intl_scores_with_history_stddev_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2186,7 +2135,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Fields = {
 
 /** order by stddev() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Stddev_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2196,7 +2144,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Scores_With_History_Stddev_Pop_Fields = {
   __typename?: 'dx_intl_scores_with_history_stddev_pop_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2205,7 +2152,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Stddev_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2215,7 +2161,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Scores_With_History_Stddev_Samp_Fields = {
   __typename?: 'dx_intl_scores_with_history_stddev_samp_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2224,7 +2169,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Stddev_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2234,7 +2178,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_With_History_Sum_Fields = {
   __typename?: 'dx_intl_scores_with_history_sum_fields';
-  difficulty?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['bigint']>;
   note_id?: Maybe<Scalars['Int']>;
   player_id?: Maybe<Scalars['Int']>;
@@ -2243,7 +2186,6 @@ export type Dx_Intl_Scores_With_History_Sum_Fields = {
 
 /** order by sum() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Sum_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2253,7 +2195,6 @@ export type Dx_Intl_Scores_With_History_Sum_Order_By = {
 /** aggregate var_pop on columns */
 export type Dx_Intl_Scores_With_History_Var_Pop_Fields = {
   __typename?: 'dx_intl_scores_with_history_var_pop_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2262,7 +2203,6 @@ export type Dx_Intl_Scores_With_History_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Var_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2272,7 +2212,6 @@ export type Dx_Intl_Scores_With_History_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Dx_Intl_Scores_With_History_Var_Samp_Fields = {
   __typename?: 'dx_intl_scores_with_history_var_samp_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2281,7 +2220,6 @@ export type Dx_Intl_Scores_With_History_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Var_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2291,7 +2229,6 @@ export type Dx_Intl_Scores_With_History_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Dx_Intl_Scores_With_History_Variance_Fields = {
   __typename?: 'dx_intl_scores_with_history_variance_fields';
-  difficulty?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   note_id?: Maybe<Scalars['Float']>;
   player_id?: Maybe<Scalars['Float']>;
@@ -2300,7 +2237,6 @@ export type Dx_Intl_Scores_With_History_Variance_Fields = {
 
 /** order by variance() on columns of table "dx_intl_scores_with_history" */
 export type Dx_Intl_Scores_With_History_Variance_Order_By = {
-  difficulty?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   note_id?: Maybe<Order_By>;
   player_id?: Maybe<Order_By>;
@@ -2312,31 +2248,32 @@ export type Dx_Intl_Songs = {
   __typename?: 'dx_intl_songs';
   category: Scalars['smallint'];
   /** An array relationship */
-  dx_intl_notes: Array<Dx_Intl_Notes>;
+  dx_intl_variants: Array<Dx_Intl_Variants>;
   /** An aggregated array relationship */
-  dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate;
+  dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate;
   id: Scalars['Int'];
+  order: Scalars['smallint'];
   title: Scalars['String'];
 };
 
 
 /** columns and relationships of "dx_intl_songs" */
-export type Dx_Intl_SongsDx_Intl_NotesArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>;
+export type Dx_Intl_SongsDx_Intl_VariantsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Dx_Intl_Notes_Order_By>>;
-  where?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
 };
 
 
 /** columns and relationships of "dx_intl_songs" */
-export type Dx_Intl_SongsDx_Intl_Notes_AggregateArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>;
+export type Dx_Intl_SongsDx_Intl_Variants_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Dx_Intl_Notes_Order_By>>;
-  where?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
 };
 
 /** aggregated selection of "dx_intl_songs" */
@@ -2395,12 +2332,14 @@ export type Dx_Intl_Songs_Avg_Fields = {
   __typename?: 'dx_intl_songs_avg_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Avg_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "dx_intl_songs". All fields are combined with a logical 'AND'. */
@@ -2409,8 +2348,9 @@ export type Dx_Intl_Songs_Bool_Exp = {
   _not?: Maybe<Dx_Intl_Songs_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Dx_Intl_Songs_Bool_Exp>>>;
   category?: Maybe<Smallint_Comparison_Exp>;
-  dx_intl_notes?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+  dx_intl_variants?: Maybe<Dx_Intl_Variants_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  order?: Maybe<Smallint_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
 };
 
@@ -2426,13 +2366,15 @@ export enum Dx_Intl_Songs_Constraint {
 export type Dx_Intl_Songs_Inc_Input = {
   category?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
 };
 
 /** input type for inserting data into table "dx_intl_songs" */
 export type Dx_Intl_Songs_Insert_Input = {
   category?: Maybe<Scalars['smallint']>;
-  dx_intl_notes?: Maybe<Dx_Intl_Notes_Arr_Rel_Insert_Input>;
+  dx_intl_variants?: Maybe<Dx_Intl_Variants_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2441,6 +2383,7 @@ export type Dx_Intl_Songs_Max_Fields = {
   __typename?: 'dx_intl_songs_max_fields';
   category?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2448,6 +2391,7 @@ export type Dx_Intl_Songs_Max_Fields = {
 export type Dx_Intl_Songs_Max_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
 };
 
@@ -2456,6 +2400,7 @@ export type Dx_Intl_Songs_Min_Fields = {
   __typename?: 'dx_intl_songs_min_fields';
   category?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2463,6 +2408,7 @@ export type Dx_Intl_Songs_Min_Fields = {
 export type Dx_Intl_Songs_Min_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
 };
 
@@ -2491,8 +2437,9 @@ export type Dx_Intl_Songs_On_Conflict = {
 /** ordering options when selecting data from "dx_intl_songs" */
 export type Dx_Intl_Songs_Order_By = {
   category?: Maybe<Order_By>;
-  dx_intl_notes_aggregate?: Maybe<Dx_Intl_Notes_Aggregate_Order_By>;
+  dx_intl_variants_aggregate?: Maybe<Dx_Intl_Variants_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
 };
 
@@ -2508,6 +2455,8 @@ export enum Dx_Intl_Songs_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Order = 'order',
+  /** column name */
   Title = 'title'
 }
 
@@ -2515,6 +2464,7 @@ export enum Dx_Intl_Songs_Select_Column {
 export type Dx_Intl_Songs_Set_Input = {
   category?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -2523,12 +2473,14 @@ export type Dx_Intl_Songs_Stddev_Fields = {
   __typename?: 'dx_intl_songs_stddev_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Stddev_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -2536,12 +2488,14 @@ export type Dx_Intl_Songs_Stddev_Pop_Fields = {
   __typename?: 'dx_intl_songs_stddev_pop_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Stddev_Pop_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -2549,12 +2503,14 @@ export type Dx_Intl_Songs_Stddev_Samp_Fields = {
   __typename?: 'dx_intl_songs_stddev_samp_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Stddev_Samp_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -2562,12 +2518,14 @@ export type Dx_Intl_Songs_Sum_Fields = {
   __typename?: 'dx_intl_songs_sum_fields';
   category?: Maybe<Scalars['smallint']>;
   id?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['smallint']>;
 };
 
 /** order by sum() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Sum_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** update columns of table "dx_intl_songs" */
@@ -2577,6 +2535,8 @@ export enum Dx_Intl_Songs_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Order = 'order',
+  /** column name */
   Title = 'title'
 }
 
@@ -2585,12 +2545,14 @@ export type Dx_Intl_Songs_Var_Pop_Fields = {
   __typename?: 'dx_intl_songs_var_pop_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Var_Pop_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -2598,12 +2560,14 @@ export type Dx_Intl_Songs_Var_Samp_Fields = {
   __typename?: 'dx_intl_songs_var_samp_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Var_Samp_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -2611,12 +2575,14 @@ export type Dx_Intl_Songs_Variance_Fields = {
   __typename?: 'dx_intl_songs_variance_fields';
   category?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "dx_intl_songs" */
 export type Dx_Intl_Songs_Variance_Order_By = {
   category?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 
@@ -2647,6 +2613,327 @@ export type Dx_Intl_Trophy_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['dx_intl_trophy']>>;
 };
 
+/** columns and relationships of "dx_intl_variants" */
+export type Dx_Intl_Variants = {
+  __typename?: 'dx_intl_variants';
+  active: Scalars['Boolean'];
+  deluxe: Scalars['Boolean'];
+  /** An array relationship */
+  dx_intl_notes: Array<Dx_Intl_Notes>;
+  /** An aggregated array relationship */
+  dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate;
+  /** An object relationship */
+  dx_intl_song: Dx_Intl_Songs;
+  song_id: Scalars['Int'];
+  version: Scalars['smallint'];
+};
+
+
+/** columns and relationships of "dx_intl_variants" */
+export type Dx_Intl_VariantsDx_Intl_NotesArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Notes_Order_By>>;
+  where?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "dx_intl_variants" */
+export type Dx_Intl_VariantsDx_Intl_Notes_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Notes_Order_By>>;
+  where?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+};
+
+/** aggregated selection of "dx_intl_variants" */
+export type Dx_Intl_Variants_Aggregate = {
+  __typename?: 'dx_intl_variants_aggregate';
+  aggregate?: Maybe<Dx_Intl_Variants_Aggregate_Fields>;
+  nodes: Array<Dx_Intl_Variants>;
+};
+
+/** aggregate fields of "dx_intl_variants" */
+export type Dx_Intl_Variants_Aggregate_Fields = {
+  __typename?: 'dx_intl_variants_aggregate_fields';
+  avg?: Maybe<Dx_Intl_Variants_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Dx_Intl_Variants_Max_Fields>;
+  min?: Maybe<Dx_Intl_Variants_Min_Fields>;
+  stddev?: Maybe<Dx_Intl_Variants_Stddev_Fields>;
+  stddev_pop?: Maybe<Dx_Intl_Variants_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Dx_Intl_Variants_Stddev_Samp_Fields>;
+  sum?: Maybe<Dx_Intl_Variants_Sum_Fields>;
+  var_pop?: Maybe<Dx_Intl_Variants_Var_Pop_Fields>;
+  var_samp?: Maybe<Dx_Intl_Variants_Var_Samp_Fields>;
+  variance?: Maybe<Dx_Intl_Variants_Variance_Fields>;
+};
+
+
+/** aggregate fields of "dx_intl_variants" */
+export type Dx_Intl_Variants_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Aggregate_Order_By = {
+  avg?: Maybe<Dx_Intl_Variants_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Dx_Intl_Variants_Max_Order_By>;
+  min?: Maybe<Dx_Intl_Variants_Min_Order_By>;
+  stddev?: Maybe<Dx_Intl_Variants_Stddev_Order_By>;
+  stddev_pop?: Maybe<Dx_Intl_Variants_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Dx_Intl_Variants_Stddev_Samp_Order_By>;
+  sum?: Maybe<Dx_Intl_Variants_Sum_Order_By>;
+  var_pop?: Maybe<Dx_Intl_Variants_Var_Pop_Order_By>;
+  var_samp?: Maybe<Dx_Intl_Variants_Var_Samp_Order_By>;
+  variance?: Maybe<Dx_Intl_Variants_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "dx_intl_variants" */
+export type Dx_Intl_Variants_Arr_Rel_Insert_Input = {
+  data: Array<Dx_Intl_Variants_Insert_Input>;
+  on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Dx_Intl_Variants_Avg_Fields = {
+  __typename?: 'dx_intl_variants_avg_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Avg_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "dx_intl_variants". All fields are combined with a logical 'AND'. */
+export type Dx_Intl_Variants_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Dx_Intl_Variants_Bool_Exp>>>;
+  _not?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Dx_Intl_Variants_Bool_Exp>>>;
+  active?: Maybe<Boolean_Comparison_Exp>;
+  deluxe?: Maybe<Boolean_Comparison_Exp>;
+  dx_intl_notes?: Maybe<Dx_Intl_Notes_Bool_Exp>;
+  dx_intl_song?: Maybe<Dx_Intl_Songs_Bool_Exp>;
+  song_id?: Maybe<Int_Comparison_Exp>;
+  version?: Maybe<Smallint_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "dx_intl_variants" */
+export enum Dx_Intl_Variants_Constraint {
+  /** unique or primary key constraint */
+  DxIntlVariantsPkey = 'dx_intl_variants_pkey'
+}
+
+/** input type for incrementing integer column in table "dx_intl_variants" */
+export type Dx_Intl_Variants_Inc_Input = {
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** input type for inserting data into table "dx_intl_variants" */
+export type Dx_Intl_Variants_Insert_Input = {
+  active?: Maybe<Scalars['Boolean']>;
+  deluxe?: Maybe<Scalars['Boolean']>;
+  dx_intl_notes?: Maybe<Dx_Intl_Notes_Arr_Rel_Insert_Input>;
+  dx_intl_song?: Maybe<Dx_Intl_Songs_Obj_Rel_Insert_Input>;
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** aggregate max on columns */
+export type Dx_Intl_Variants_Max_Fields = {
+  __typename?: 'dx_intl_variants_max_fields';
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** order by max() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Max_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Dx_Intl_Variants_Min_Fields = {
+  __typename?: 'dx_intl_variants_min_fields';
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** order by min() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Min_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "dx_intl_variants" */
+export type Dx_Intl_Variants_Mutation_Response = {
+  __typename?: 'dx_intl_variants_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Dx_Intl_Variants>;
+};
+
+/** input type for inserting object relation for remote table "dx_intl_variants" */
+export type Dx_Intl_Variants_Obj_Rel_Insert_Input = {
+  data: Dx_Intl_Variants_Insert_Input;
+  on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>;
+};
+
+/** on conflict condition type for table "dx_intl_variants" */
+export type Dx_Intl_Variants_On_Conflict = {
+  constraint: Dx_Intl_Variants_Constraint;
+  update_columns: Array<Dx_Intl_Variants_Update_Column>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "dx_intl_variants" */
+export type Dx_Intl_Variants_Order_By = {
+  active?: Maybe<Order_By>;
+  deluxe?: Maybe<Order_By>;
+  dx_intl_notes_aggregate?: Maybe<Dx_Intl_Notes_Aggregate_Order_By>;
+  dx_intl_song?: Maybe<Dx_Intl_Songs_Order_By>;
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "dx_intl_variants" */
+export type Dx_Intl_Variants_Pk_Columns_Input = {
+  deluxe: Scalars['Boolean'];
+  song_id: Scalars['Int'];
+};
+
+/** select columns of table "dx_intl_variants" */
+export enum Dx_Intl_Variants_Select_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Deluxe = 'deluxe',
+  /** column name */
+  SongId = 'song_id',
+  /** column name */
+  Version = 'version'
+}
+
+/** input type for updating data in table "dx_intl_variants" */
+export type Dx_Intl_Variants_Set_Input = {
+  active?: Maybe<Scalars['Boolean']>;
+  deluxe?: Maybe<Scalars['Boolean']>;
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** aggregate stddev on columns */
+export type Dx_Intl_Variants_Stddev_Fields = {
+  __typename?: 'dx_intl_variants_stddev_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Stddev_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Dx_Intl_Variants_Stddev_Pop_Fields = {
+  __typename?: 'dx_intl_variants_stddev_pop_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Stddev_Pop_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Dx_Intl_Variants_Stddev_Samp_Fields = {
+  __typename?: 'dx_intl_variants_stddev_samp_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Stddev_Samp_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Dx_Intl_Variants_Sum_Fields = {
+  __typename?: 'dx_intl_variants_sum_fields';
+  song_id?: Maybe<Scalars['Int']>;
+  version?: Maybe<Scalars['smallint']>;
+};
+
+/** order by sum() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Sum_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** update columns of table "dx_intl_variants" */
+export enum Dx_Intl_Variants_Update_Column {
+  /** column name */
+  Active = 'active',
+  /** column name */
+  Deluxe = 'deluxe',
+  /** column name */
+  SongId = 'song_id',
+  /** column name */
+  Version = 'version'
+}
+
+/** aggregate var_pop on columns */
+export type Dx_Intl_Variants_Var_Pop_Fields = {
+  __typename?: 'dx_intl_variants_var_pop_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Var_Pop_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Dx_Intl_Variants_Var_Samp_Fields = {
+  __typename?: 'dx_intl_variants_var_samp_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Var_Samp_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Dx_Intl_Variants_Variance_Fields = {
+  __typename?: 'dx_intl_variants_variance_fields';
+  song_id?: Maybe<Scalars['Float']>;
+  version?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "dx_intl_variants" */
+export type Dx_Intl_Variants_Variance_Order_By = {
+  song_id?: Maybe<Order_By>;
+  version?: Maybe<Order_By>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -2670,6 +2957,10 @@ export type Mutation_Root = {
   delete_dx_intl_songs?: Maybe<Dx_Intl_Songs_Mutation_Response>;
   /** delete single row from the table: "dx_intl_songs" */
   delete_dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>;
+  /** delete data from the table: "dx_intl_variants" */
+  delete_dx_intl_variants?: Maybe<Dx_Intl_Variants_Mutation_Response>;
+  /** delete single row from the table: "dx_intl_variants" */
+  delete_dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>;
   /** delete data from the table: "tokens" */
   delete_tokens?: Maybe<Tokens_Mutation_Response>;
   /** delete single row from the table: "tokens" */
@@ -2698,6 +2989,10 @@ export type Mutation_Root = {
   insert_dx_intl_songs?: Maybe<Dx_Intl_Songs_Mutation_Response>;
   /** insert a single row into the table: "dx_intl_songs" */
   insert_dx_intl_songs_one?: Maybe<Dx_Intl_Songs>;
+  /** insert data into the table: "dx_intl_variants" */
+  insert_dx_intl_variants?: Maybe<Dx_Intl_Variants_Mutation_Response>;
+  /** insert a single row into the table: "dx_intl_variants" */
+  insert_dx_intl_variants_one?: Maybe<Dx_Intl_Variants>;
   /** insert data into the table: "tokens" */
   insert_tokens?: Maybe<Tokens_Mutation_Response>;
   /** insert a single row into the table: "tokens" */
@@ -2726,6 +3021,10 @@ export type Mutation_Root = {
   update_dx_intl_songs?: Maybe<Dx_Intl_Songs_Mutation_Response>;
   /** update single row of the table: "dx_intl_songs" */
   update_dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>;
+  /** update data of the table: "dx_intl_variants" */
+  update_dx_intl_variants?: Maybe<Dx_Intl_Variants_Mutation_Response>;
+  /** update single row of the table: "dx_intl_variants" */
+  update_dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>;
   /** update data of the table: "tokens" */
   update_tokens?: Maybe<Tokens_Mutation_Response>;
   /** update single row of the table: "tokens" */
@@ -2794,6 +3093,19 @@ export type Mutation_RootDelete_Dx_Intl_SongsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Dx_Intl_Songs_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Dx_Intl_VariantsArgs = {
+  where: Dx_Intl_Variants_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Dx_Intl_Variants_By_PkArgs = {
+  deluxe: Scalars['Boolean'];
+  song_id: Scalars['Int'];
 };
 
 
@@ -2888,6 +3200,20 @@ export type Mutation_RootInsert_Dx_Intl_SongsArgs = {
 export type Mutation_RootInsert_Dx_Intl_Songs_OneArgs = {
   object: Dx_Intl_Songs_Insert_Input;
   on_conflict?: Maybe<Dx_Intl_Songs_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Dx_Intl_VariantsArgs = {
+  objects: Array<Dx_Intl_Variants_Insert_Input>;
+  on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Dx_Intl_Variants_OneArgs = {
+  object: Dx_Intl_Variants_Insert_Input;
+  on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>;
 };
 
 
@@ -3000,6 +3326,22 @@ export type Mutation_RootUpdate_Dx_Intl_Songs_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_VariantsArgs = {
+  _inc?: Maybe<Dx_Intl_Variants_Inc_Input>;
+  _set?: Maybe<Dx_Intl_Variants_Set_Input>;
+  where: Dx_Intl_Variants_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Variants_By_PkArgs = {
+  _inc?: Maybe<Dx_Intl_Variants_Inc_Input>;
+  _set?: Maybe<Dx_Intl_Variants_Set_Input>;
+  pk_columns: Dx_Intl_Variants_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TokensArgs = {
   _set?: Maybe<Tokens_Set_Input>;
   where: Tokens_Bool_Exp;
@@ -3097,6 +3439,12 @@ export type Query_Root = {
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate;
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>;
+  /** fetch data from the table: "dx_intl_variants" */
+  dx_intl_variants: Array<Dx_Intl_Variants>;
+  /** fetch aggregated fields from the table: "dx_intl_variants" */
+  dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate;
+  /** fetch data from the table: "dx_intl_variants" using primary key columns */
+  dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>;
   /** fetch data from the table: "tokens" */
   tokens: Array<Tokens>;
   /** fetch aggregated fields from the table: "tokens" */
@@ -3283,6 +3631,33 @@ export type Query_RootDx_Intl_Songs_By_PkArgs = {
 
 
 /** query root */
+export type Query_RootDx_Intl_VariantsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootDx_Intl_Variants_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootDx_Intl_Variants_By_PkArgs = {
+  deluxe: Scalars['Boolean'];
+  song_id: Scalars['Int'];
+};
+
+
+/** query root */
 export type Query_RootTokensArgs = {
   distinct_on?: Maybe<Array<Tokens_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3388,6 +3763,12 @@ export type Subscription_Root = {
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate;
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>;
+  /** fetch data from the table: "dx_intl_variants" */
+  dx_intl_variants: Array<Dx_Intl_Variants>;
+  /** fetch aggregated fields from the table: "dx_intl_variants" */
+  dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate;
+  /** fetch data from the table: "dx_intl_variants" using primary key columns */
+  dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>;
   /** fetch data from the table: "tokens" */
   tokens: Array<Tokens>;
   /** fetch aggregated fields from the table: "tokens" */
@@ -3570,6 +3951,33 @@ export type Subscription_RootDx_Intl_Songs_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootDx_Intl_Songs_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_VariantsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Variants_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Variants_Order_By>>;
+  where?: Maybe<Dx_Intl_Variants_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Variants_By_PkArgs = {
+  deluxe: Scalars['Boolean'];
+  song_id: Scalars['Int'];
 };
 
 
@@ -4076,6 +4484,61 @@ export type DeleteDxIntlPlayerMutation = (
   )> }
 );
 
+export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DxIntlSongsQuery = (
+  { __typename?: 'query_root' }
+  & { dx_intl_songs: Array<(
+    { __typename?: 'dx_intl_songs' }
+    & Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'>
+    & { dx_intl_variants: Array<(
+      { __typename?: 'dx_intl_variants' }
+      & Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'>
+      & { dx_intl_notes: Array<(
+        { __typename?: 'dx_intl_notes' }
+        & Pick<Dx_Intl_Notes, 'difficulty' | 'level'>
+      )> }
+    )> }
+  )> }
+);
+
+export type DxIntlRecordWithScoresQueryVariables = Exact<{
+  nickname: Scalars['String'];
+}>;
+
+
+export type DxIntlRecordWithScoresQuery = (
+  { __typename?: 'query_root' }
+  & { dx_intl_records: Array<(
+    { __typename?: 'dx_intl_records' }
+    & Pick<Dx_Intl_Records, 'card_name' | 'title' | 'trophy' | 'rating' | 'max_rating' | 'grade'>
+  )>, dx_intl_scores: Array<(
+    { __typename?: 'dx_intl_scores' }
+    & Pick<Dx_Intl_Scores, 'note_id' | 'score' | 'combo_flag' | 'sync_flag'>
+  )> }
+);
+
+export type InsertDxIntlRecordWithScoresMutationVariables = Exact<{
+  record: Dx_Intl_Records_Insert_Input;
+  scores: Array<Dx_Intl_Scores_Insert_Input>;
+}>;
+
+
+export type InsertDxIntlRecordWithScoresMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_dx_intl_records_one?: Maybe<(
+    { __typename?: 'dx_intl_records' }
+    & Pick<Dx_Intl_Records, 'id'>
+  )>, insert_dx_intl_scores?: Maybe<(
+    { __typename?: 'dx_intl_scores_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'dx_intl_scores' }
+      & Pick<Dx_Intl_Scores, 'id'>
+    )> }
+  )> }
+);
+
 
 export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tokens"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokens"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
 export const RegenerateTokenDocument: DocumentNode<RegenerateTokenMutation, RegenerateTokenMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"regenerateToken"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_tokens"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_tokens_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
@@ -4083,3 +4546,6 @@ export const DxIntlPlayersDocument: DocumentNode<DxIntlPlayersQuery, DxIntlPlaye
 export const InsertDxIntlPlayerDocument: DocumentNode<InsertDxIntlPlayerMutation, InsertDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"insertDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_players_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
 export const UpdateDxIntlPlayerDocument: DocumentNode<UpdateDxIntlPlayerMutation, UpdateDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
 export const DeleteDxIntlPlayerDocument: DocumentNode<DeleteDxIntlPlayerMutation, DeleteDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
+export const DxIntlSongsDocument: DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlSongs"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_songs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"order"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_variants"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deluxe"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"version"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"active"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_notes"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"difficulty"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"level"},"arguments":[],"directives":[]}]}}]}}]}}]}}]};
+export const DxIntlRecordWithScoresDocument: DocumentNode<DxIntlRecordWithScoresQuery, DxIntlRecordWithScoresQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_records"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"card_name"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"trophy"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"max_rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"grade"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_scores"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"score"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"combo_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"sync_flag"},"arguments":[],"directives":[]}]}}]}}]};
+export const InsertDxIntlRecordWithScoresDocument: DocumentNode<InsertDxIntlRecordWithScoresMutation, InsertDxIntlRecordWithScoresMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertDxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"record"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_records_insert_input"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"scores"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_scores_insert_input"}}}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_records_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"record"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_records_player_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"card_name"},{"kind":"EnumValue","value":"title"},{"kind":"EnumValue","value":"trophy"},{"kind":"EnumValue","value":"rating"},{"kind":"EnumValue","value":"max_rating"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_scores"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"scores"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_scores_player_id_note_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"score"},{"kind":"EnumValue","value":"combo_flag"},{"kind":"EnumValue","value":"sync_flag"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]}}]};
