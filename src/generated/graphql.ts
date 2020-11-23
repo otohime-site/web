@@ -820,11 +820,11 @@ export type Dx_Intl_Records = {
   /** An object relationship */
   dx_intl_player: Dx_Intl_Players;
   end: Scalars['timestamptz'];
-  grade?: Maybe<Scalars['Int']>;
+  grade: Scalars['Int'];
   id: Scalars['Int'];
-  max_rating?: Maybe<Scalars['smallint']>;
+  max_rating: Scalars['smallint'];
   player_id: Scalars['Int'];
-  rating?: Maybe<Scalars['smallint']>;
+  rating: Scalars['smallint'];
   start: Scalars['timestamptz'];
   title: Scalars['String'];
   trophy: Scalars['dx_intl_trophy'];
