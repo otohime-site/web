@@ -19,9 +19,7 @@ const PlayerListItem: FunctionComponent<{
   const props = (addLink ?? false)
     ? {
       component: RouterLink,
-      to: (player.private || player.nickname == null)
-        ? `/dxi/up/${player.id}`
-        : `/dxi/p/${player.nickname}`
+      to: `/dxi/p/${player.nickname}`
     }
     : {}
   return (
@@ -30,16 +28,20 @@ const PlayerListItem: FunctionComponent<{
         {(player.private) ? <LockIcon /> : <PublicIcon /> }
       </ListItemIcon>
       <ListItemText
-        primary={
-          player.nickname ?? '私人成績單'
-        }
+        primary={ player.nickname }
         secondary={
           (player.dx_intl_record == null)
             ? <Typography variant='body2' color='textSecondary'>
+              尚無紀錄，
               {formatDistance(new Date(player.created_at), new Date(), { locale: zhTW })}
-              前建立，尚未有紀錄
+              前建立
             </Typography>
-            : <></>
+            : <Typography variant='body2' color='textSecondary'>
+              {player.dx_intl_record.card_name} /
+              {' '}{player.dx_intl_record.rating} /{' '}
+              {formatDistance(new Date(player.dx_intl_record.start), new Date(), { locale: zhTW })}
+              前更新
+            </Typography>
         }
       />
     </ListItem>

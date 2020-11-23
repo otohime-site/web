@@ -5,7 +5,10 @@ query dxIntlPlayers($userId: String) {
     private
     created_at
     dx_intl_record {
+      start
       card_name
+      rating
+      grade
     }
   }
 }
@@ -61,12 +64,14 @@ query dxIntlRecordWithScores($nickname: String!) {
     rating
     max_rating
     grade
+    start
   }
   dx_intl_scores(where: {dx_intl_player: {nickname: {_eq: $nickname}}}) {
     note_id
     score
     combo_flag
     sync_flag
+    start
   }
 }
 mutation InsertDxIntlRecordWithScores(

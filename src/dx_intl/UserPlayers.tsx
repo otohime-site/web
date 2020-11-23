@@ -21,7 +21,7 @@ const UserPlayers: FunctionComponent = () => {
         ? <List>{players.map(p => <PlayerListItem key={p.id} player={p} addLink />)}</List>
         : '目前沒有成績單。請新增一個！'
       }
-      <Button component={RouterLink} to='/dxi/up/new' variant='contained' color='secondary' startIcon={<AddIcon />}>新增成績單</Button>
+      <Button component={RouterLink} to='/dxi/p/new' variant='contained' color='secondary' startIcon={<AddIcon />}>新增成績單</Button>
     </QueryResult>
   )
 }
