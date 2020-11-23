@@ -23,7 +23,7 @@ const UserPlayers: FunctionComponent = () => {
       }
       <Button component={RouterLink} to='/dxi/up/new' variant='contained' color='secondary' startIcon={<AddIcon />}>新增成績單</Button>
     </QueryResult>
-  ) 
+  )
 }
 
 export default UserPlayers

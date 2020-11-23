@@ -46,6 +46,7 @@ query dxIntlSongs {
       version
       active
       dx_intl_notes {
+        id
         difficulty
         level
       }
@@ -79,7 +80,7 @@ mutation InsertDxIntlRecordWithScores(
       update_columns: [card_name, title, trophy, rating, max_rating]
     }
   ) {
-    id
+    __typename
   }
   insert_dx_intl_scores(
     objects: $scores,
@@ -88,6 +89,6 @@ mutation InsertDxIntlRecordWithScores(
       update_columns: [score, combo_flag, sync_flag]
     }
   ) {
-    returning { id }
+    affected_rows
   }
 }
