@@ -8,6 +8,10 @@ import styled from './styled'
 import { TabContext, TabPanel } from '@material-ui/lab'
 import DxUserPlayers from './dx_intl/UserPlayers'
 
+const SpacedContainer = styled('div')`
+  padding: 8px;
+`
+
 const PaddedPaper = styled(Paper)`
   padding: ${props => props.theme.spacing(2)}px;
 `
@@ -52,11 +56,11 @@ const HomeComponent: FunctionComponent = () => {
     </>)
   }
   return (
-    <>
+    <SpacedContainer>
       <Helmet>
         <title>首頁 - Otohime</title>
       </Helmet>
-      <Grid container spacing={3}>
+      <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <PaddedPaper>
             <SpacedTypo variant='h6'>您的成績單</SpacedTypo>
@@ -86,7 +90,7 @@ const HomeComponent: FunctionComponent = () => {
           </PaddedPaper>
         </Grid>
       </Grid>
-    </>
+    </SpacedContainer>
   )
 }
 export default HomeComponent
