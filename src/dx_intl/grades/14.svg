@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 41" width="88" height="41">
+  <defs>
+    <radialGradient id="patternGradient">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="fillPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect x="3" y="3" width="4" height="4" fill="url(#patternGradient)" /> 
+      <rect x="13" y="13" width="4" height="4" fill="url(#patternGradient)" /> 
+    </pattern>
+    <linearGradient id="outerFillGradient" x1="0" y1="0" x2="100%" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="15%" stop-color="#FFEEBB" />
+      <stop offset="50%" stop-color="#EEDD66" />
+      <stop offset="85%" stop-color="#FFEEBB" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+    <radialGradient id="fillGradient" cx="10%" cy="15%">
+      <stop offset="25%" stop-color="#fffa5d" />
+      <stop offset="95%" stop-color="#EEAA00" />
+    </radialGradient>
+    <linearGradient id="strokeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="10%" stop-color="#c75d36" />
+      <stop offset="95%" stop-color="#670000" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="50%" spreadMethod="reflect">
+      <stop offset="30%" stop-color="#ca7800" />
+      <stop offset="95%" stop-color="#5d0000" />
+    </linearGradient>
+    <linearGradient id="textStrokeGradient">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFFF8E" />
+    </linearGradient>
+    <filter id="textShadow" height="150%">
+      <feDropShadow dx="0" dy="3" flood-color="#900000" flood-opacity="0.85" stdDeviation="0" />       
+    </filter>
+  </defs>
+  <polygon points="2,21 14,3 74,3 86,21 74,39 14,39" stroke="url(#strokeGradient)" fill="url(#outerFillGradient)"/>
+  <polygon points="2,21 14,3 74,3 86,21 74,39 14,39" stroke="url(#strokeGradient)" stroke-opacity="0.5" fill="url(#fillGradient)" transform="scale(0.9 0.88)" transform-origin="center"/>
+  <polygon points="2,21 14,3 74,3 86,21 74,39 14,39" stroke-width="0" fill="url(#fillPattern)" transform="scale(0.9 0.88)" transform-origin="center"/>
+  <g id="svgGroup" fill="url(#textGradient)" stroke-linecap="round" fill-rule="evenodd" stroke="url(#textStrokeGradient)" stroke-width="4" paint-order="stroke" filter="url(#textShadow)">
+    <path transform="translate(20, 8)" d="M 36.168 13.56 L 34.08 13.56 L 34.08 10.2 L 34.872 10.2 L 33.552 9 L 29.04 9 L 29.04 10.32 L 33.6 10.32 L 33.6 13.56 L 29.04 13.56 L 29.04 15.048 Q 30.363 14.864 32.403 14.512 A 227.316 227.316 0 0 0 33.72 14.28 L 33.96 17.76 Q 31.464 18.24 29.04 18.576 L 29.04 22.32 L 24.72 22.32 L 24.72 19.104 A 1.697 1.697 0 0 0 24.613 19.108 Q 24.461 19.118 24.228 19.152 Q 23.904 19.2 23.76 19.2 L 23.52 15.72 Q 23.685 15.702 23.956 15.676 A 61.726 61.726 0 0 1 24.132 15.66 A 39.709 39.709 0 0 0 24.317 15.643 Q 24.576 15.618 24.72 15.6 L 24.72 2.04 Q 28.824 1.488 33.12 0.24 L 34.2 3.84 Q 31.392 4.608 29.04 5.04 L 29.04 5.76 L 33.6 5.76 L 33.6 7.296 A 5.129 5.129 0 0 0 34.19 6.019 Q 34.601 4.729 34.667 2.8 A 22.223 22.223 0 0 0 34.68 2.04 L 34.68 0.72 L 43.2 0.72 L 43.2 5.88 A 2.283 2.283 0 0 0 43.202 5.971 Q 43.209 6.153 43.248 6.192 A 0.094 0.094 0 0 0 43.281 6.211 Q 43.338 6.233 43.469 6.238 A 2.287 2.287 0 0 0 43.56 6.24 A 0.464 0.464 0 0 0 43.728 6.212 Q 43.916 6.139 43.968 5.88 A 2.649 2.649 0 0 0 43.997 5.682 Q 44.051 5.217 44.126 3.952 A 149.28 149.28 0 0 0 44.16 3.36 L 47.04 3.84 Q 46.994 4.857 46.97 5.35 A 150.584 150.584 0 0 1 46.968 5.388 Q 46.952 5.726 46.901 6.167 A 20.742 20.742 0 0 1 46.848 6.588 A 69.282 69.282 0 0 0 46.807 6.895 Q 46.761 7.25 46.739 7.451 A 6.789 6.789 0 0 0 46.728 7.56 A 1.102 1.102 0 0 1 46.694 7.741 Q 46.637 7.959 46.488 8.256 A 14.068 14.068 0 0 1 46.412 8.407 Q 46.294 8.634 46.227 8.74 A 0.761 0.761 0 0 1 46.188 8.796 A 0.376 0.376 0 0 1 46.137 8.848 Q 46.04 8.932 45.816 9.056 A 5.847 5.847 0 0 1 45.72 9.108 Q 45.422 9.267 45.232 9.316 A 0.734 0.734 0 0 1 45.132 9.336 Q 44.928 9.36 44.304 9.42 Q 43.68 9.48 43.284 9.48 L 42 9.48 A 12.635 12.635 0 0 1 41.36 9.465 Q 40.314 9.412 39.948 9.168 Q 39.531 8.89 39.486 8.023 A 4.236 4.236 0 0 1 39.48 7.8 L 39.48 4.08 L 38.28 4.08 A 11.134 11.134 0 0 1 38.032 6.506 Q 37.675 8.106 36.803 9.282 A 6.454 6.454 0 0 1 35.976 10.2 L 45.6 10.2 L 45.6 13.56 Q 44.496 15.72 42.816 17.352 A 23.533 23.533 0 0 0 45.287 18.248 A 29.406 29.406 0 0 0 47.04 18.72 L 45.72 22.32 Q 42.312 21.576 39.384 19.872 Q 37.552 20.898 34.938 21.784 A 44.596 44.596 0 0 1 33.24 22.32 L 31.56 18.84 Q 33.912 18.336 36 17.4 A 19.975 19.975 0 0 1 35 16.391 Q 34.398 15.736 33.96 15.12 L 36.168 13.56 Z M 13.68 8.64 L 22.56 8.64 L 22.56 12.72 L 13.68 12.72 L 13.68 22.56 L 8.88 22.56 L 8.88 12.72 L 0 12.72 L 0 8.64 L 8.88 8.64 L 8.88 0 L 13.68 0 L 13.68 8.64 Z M 41.088 13.56 L 37.248 13.56 Q 38.16 14.592 39.288 15.408 Q 40.296 14.568 41.088 13.56 Z" vector-effect="non-scaling-stroke"/>
+  </g>
+</svg>
