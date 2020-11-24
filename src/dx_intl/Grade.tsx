@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import styled from '../styled'
+import Grade13 from './grades/13.svg'
 import Grade14 from './grades/14.svg'
 
 export const gradeNames = [
@@ -16,10 +17,20 @@ const GradeContainer = styled('img')`
   height: 2em;
 `
 
+const getGradeImage = (grade: number): any => {
+  switch (grade) {
+    case 13:
+      return Grade13
+    case 14:
+      return Grade14
+  }
+  return ''
+}
+
 const Grade: FunctionComponent<{
   grade: number
 }> = ({ grade }) => (
-  <GradeContainer src={Grade14} />
+  <GradeContainer src={getGradeImage(grade)} />
 )
 
 export default Grade
