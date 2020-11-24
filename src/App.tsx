@@ -80,11 +80,19 @@ const App: FunctionComponent = () => {
         <Route path='/mai' component={Laundry} />
         <Route path='/dxi' component={DxIntl} />
         <StyledFooter>
-          <Typography variant='body2'>
+          <Typography variant='body2' color='textSecondary'>
+            &copy; 2020 Otohime Team。Otohime 是一個開源專案。
             <StyledLink href='https://github.com/otohime-site/' target='_blank' rel='noopener noreferrer'>
-              <GitHubIcon fontSize='inherit' />
+              <GitHubIcon style={{marginRight: '8px'}} fontSize='inherit' />
               GitHub
             </StyledLink>
+            <StyledLink>關於我們</StyledLink>
+          </Typography>
+          <Typography variant='body2' color='textSecondary'>
+            Otohime 團隊與本站中所支援遊戲的相關遊戲公司皆無關聯。我們不為任何造成的問題提供擔保。
+          </Typography>
+          <Typography variant='body2' color='textSecondary'>
+            您在本站中的個人資料受台灣《個人資料保護法》和/或您居住地的個資法律保護。
           </Typography>
         </StyledFooter>
       </StyledMain>

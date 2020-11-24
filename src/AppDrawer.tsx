@@ -57,14 +57,6 @@ const AppDrawer: FunctionComponent<{
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary='首頁' />
         </ListItem>
-        <ListItem button={true} component={RouterLink} to='/mai/me'>
-          <ListItemIcon><ListIcon /></ListItemIcon>
-          <ListItemText primary='管理成績單' />
-        </ListItem>
-        <ListItem button={true}>
-          <ListItemIcon><LaundryOutlinedIcon /></ListItemIcon>
-          <ListItemText primary='maimai' />
-        </ListItem>
       </List>
     </StyledDrawer>
   )
