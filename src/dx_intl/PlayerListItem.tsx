@@ -6,6 +6,7 @@ import PublicIcon from '@material-ui/icons/Public'
 import LockIcon from '@material-ui/icons/Lock'
 import { formatDistance } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
+import { gradeNames } from './Grade'
 
 const PlayerListItem: FunctionComponent<{
   player: DxIntlPlayersQuery['dx_intl_players'][0]
@@ -39,6 +40,7 @@ const PlayerListItem: FunctionComponent<{
             : <Typography variant='body2' color='textSecondary'>
               {player.dx_intl_record.card_name} /
               {' '}{player.dx_intl_record.rating} /{' '}
+              {' '}{gradeNames[player.dx_intl_record.grade]} /{' '}
               {formatDistance(new Date(player.dx_intl_record.start), new Date(), { locale: zhTW })}
               前更新
             </Typography>

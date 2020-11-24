@@ -10,6 +10,7 @@ import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
 import Laundry from './laundry/components/Laundry'
+import DxIntl from './dx_intl/index'
 
 import './App.css'
 
@@ -77,6 +78,7 @@ const App: FunctionComponent = () => {
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
         <Route path='/mai' component={Laundry} />
+        <Route path='/dxi' component={DxIntl} />
         <StyledFooter>
           <Typography variant='body2'>
             <StyledLink href='https://github.com/otohime-site/' target='_blank' rel='noopener noreferrer'>

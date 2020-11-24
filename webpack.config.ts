@@ -14,7 +14,8 @@ const config: Configuration = {
   },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
+    publicPath: '/'
   },
   plugins: [
     new MiniCssExtractPlugin(),
@@ -34,6 +35,10 @@ const config: Configuration = {
       {
         test: /\.css?$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.svg?$/,
+        type: 'asset/resource'
       }
     ]
   },
