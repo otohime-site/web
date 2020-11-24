@@ -9,7 +9,6 @@ const Subtitle = styled('div')`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
   width: 20em;
 `
 
@@ -20,13 +19,12 @@ const CardName = styled('div')`
   background: white;
   border: 0.1em solid #CCCCCC;
   border-radius: 0.2em;
-  font-size: 16px;
+  font-size: 133%;
   font-weight: bold;
   font-family: 'Kosugi Maru';
 `
 
 const Title = styled('div')`
-  font-size: 12px;
   width: 20em;
   text-align: center;
   overflow: hidden;
@@ -36,6 +34,7 @@ const Title = styled('div')`
   -webkit-text-stroke: 0.06em #000000;
   font-weight: bold;
   font-family: 'Kosugi Maru';
+  margin-bottom: 0.5em;
   &.normal {
     background: linear-gradient(#F9F9F9 0%, #F9F9F9 60%, #DADADA 60%, #DADADA 100%);
     border-color: #B8B8B8;
@@ -97,7 +96,7 @@ const Title = styled('div')`
     background-size: auto 50%, auto 50%, auto 0.2em, 19em auto;
     border-color: transparent;
     border-bottom-width: 0.3em;
-    margin-bottom: -0.2em;
+    margin-bottom: 0.3em;
   }
 `
 
@@ -110,14 +109,15 @@ const Rating = styled('div')`
   font-weight: 900;
   color: #EECC66;
   text-align: right;
+  cursor: pointer;
 `
 
 const Record: FunctionComponent<{
   record: DxIntlRecordWithScoresQuery['dx_intl_records'][0]
 }> = ({ record }) => (
-  <>
+  <div>
     <Subtitle>
-      <Tooltip title={`Max Rating: ${record.max_rating}`}>
+      <Tooltip title={`Max: ${record.max_rating}`}>
         <Rating>{record.rating}</Rating>
       </Tooltip>
       <Grade grade={record.grade} />
@@ -126,7 +126,7 @@ const Record: FunctionComponent<{
     <Tooltip title={record.title}>
       <Title className={record.trophy}>{record.title}</Title>
     </Tooltip>
-  </>
+  </div>
 )
 
 export default Record
