@@ -9,7 +9,6 @@ import AppBar from './AppBar'
 import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
-import Laundry from './laundry/components/Laundry'
 import DxIntl from './dx_intl/index'
 
 import './App.css'
@@ -77,13 +76,12 @@ const App: FunctionComponent = () => {
       </Hidden>
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
-        <Route path='/mai' component={Laundry} />
         <Route path='/dxi' component={DxIntl} />
         <StyledFooter>
           <Typography variant='body2' color='textSecondary'>
             &copy; 2020 Otohime Team。Otohime 是一個開源專案。
             <StyledLink href='https://github.com/otohime-site/' target='_blank' rel='noopener noreferrer'>
-              <GitHubIcon style={{marginRight: '8px'}} fontSize='inherit' />
+              <GitHubIcon style={{ marginRight: '8px' }} fontSize='inherit' />
               GitHub
             </StyledLink>
             <StyledLink>關於我們</StyledLink>
