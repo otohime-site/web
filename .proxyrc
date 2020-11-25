@@ -1,8 +1,0 @@
-{
-    "/graphql": {
-        "target": "http://localhost:8580/",
-        "pathRewrite": {
-            "^/graphql": "/v1/graphql"
-        }
-    }
-}
