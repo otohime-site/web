@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react'
 import { DxIntlRecordWithScoresQuery } from '../generated/graphql'
 import styled from '../styled'
 import Grade from './Grade'
+import Rating from './Rating'
 
 const Subtitle = styled('div')`
   display: flex;
@@ -100,26 +101,13 @@ const Title = styled('div')`
   }
 `
 
-const Rating = styled('div')`
-  background: linear-gradient(#333333 0, #333333 50%, #666666 50%, #666666 100%);
-  border-radius: 0.3em;
-  border: 0.1em solid #000000;
-  width: 4em;
-  font-family: 'M plus 1p';
-  font-weight: 900;
-  color: #EECC66;
-  text-align: right;
-  cursor: pointer;
-`
-
 const Record: FunctionComponent<{
   record: DxIntlRecordWithScoresQuery['dx_intl_records'][0]
 }> = ({ record }) => (
   <div>
     <Subtitle>
-      <Tooltip title={`Max: ${record.max_rating}`}>
-        <Rating>{record.rating}</Rating>
-      </Tooltip>
+      <Rating rating={record.rating} />
+      (Max: {record.max_rating})
       <Grade grade={record.grade} />
     </Subtitle>
     <CardName>{record.card_name}</CardName>

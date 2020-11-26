@@ -26,8 +26,8 @@ import Grade23 from './grades/23.svg'
 import Grade24 from './grades/24.svg'
 import Grade25 from './grades/25.svg'
 
-export const gradeNames = [
-  '', // start from 1 :(
+// eslint-disable-next-line no-sparse-arrays
+export const gradeNames = [, // start from 1
   '初心者', '見習い', '駆け出し', '修行中',
   '初段', '二段', '三段', '四段', '五段',
   '六段', '七段', '八段', '九段', '十段',
