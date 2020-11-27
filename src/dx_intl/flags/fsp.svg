@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
+  <defs>
+    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="white" />
+      <stop offset="100%" stop-color="#C5FFE3" />
+    </linearGradient>
+    <filter id="textShadow" height="150%">
+      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
+    </filter>
+    <filter id="circleShadow" height="150%">
+      <feDropShadow dx="0" dy="3" flood-color="#5579FF" flood-opacity="1" stdDeviation="0" />
+    </filter>
+  </defs>
+  <circle cx="16" cy="18" r="15" fill="#65DDFF" stroke="#5579FF" stroke-width="#999999" filter="url(#circleShadow)" />
+  <g transform="translate(5,10), scale(0.95)" stroke-linecap="round" fill-rule="evenodd" stroke="#698AF6" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
+    <path d="M 17.616 0.8 L 17.056 3.28 Q 15.44 2.48 13.776 2.48 A 3.431 3.431 0 0 0 13.362 2.503 Q 12.91 2.558 12.64 2.744 A 0.97 0.97 0 0 0 12.414 2.956 A 0.779 0.779 0 0 0 12.256 3.44 A 0.774 0.774 0 0 0 12.576 4.067 Q 12.712 4.176 12.907 4.263 A 2.754 2.754 0 0 0 13.296 4.4 A 16.858 16.858 0 0 1 14.575 4.793 Q 16.092 5.332 16.832 6.008 A 3.07 3.07 0 0 1 17.853 8.242 A 4.023 4.023 0 0 1 17.856 8.4 A 4.055 4.055 0 0 1 17.712 9.511 A 2.917 2.917 0 0 1 16.64 11.08 Q 15.424 12 12.976 12 Q 11.952 12 10.776 11.656 Q 9.876 11.393 9.252 11.031 A 4.119 4.119 0 0 1 8.896 10.8 L 9.616 8.32 Q 10.432 8.88 11.384 9.2 A 6.708 6.708 0 0 0 12.216 9.424 Q 12.661 9.513 13.067 9.52 A 4.05 4.05 0 0 0 13.136 9.52 A 2.937 2.937 0 0 0 13.653 9.479 Q 14.554 9.317 14.575 8.519 A 1.46 1.46 0 0 0 14.576 8.48 A 0.716 0.716 0 0 0 14.34 7.959 Q 14.096 7.719 13.6 7.538 A 4.646 4.646 0 0 0 13.296 7.44 A 15.02 15.02 0 0 1 12.088 7.041 Q 10.681 6.503 9.968 5.824 A 3.133 3.133 0 0 1 8.977 3.541 A 4.106 4.106 0 0 1 8.976 3.44 A 3.334 3.334 0 0 1 9.189 2.225 A 2.981 2.981 0 0 1 10.184 0.928 Q 11.127 0.204 12.688 0.045 A 9.166 9.166 0 0 1 13.616 0 A 11.648 11.648 0 0 1 15.402 0.13 Q 16.641 0.322 17.616 0.8 Z M 3.2 4.96 L 7.2 4.96 L 7.2 7.36 L 3.2 7.36 L 3.2 11.84 L 0 11.84 L 0 0.16 L 7.52 0.16 L 7.52 2.72 L 3.2 2.72 L 3.2 4.96 Z" />
+  </g>
+  <g transform="translate(24, 8)" stroke-linecap="round" fill-rule="evenodd" stroke="#698AF6" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
+    <path d="M 4.56 2.58 L 7.2 2.58 L 7.2 4.38 L 4.56 4.38 L 4.56 6.96 L 2.64 6.96 L 2.64 4.38 L 0 4.38 L 0 2.58 L 2.64 2.58 L 2.64 0 L 4.56 0 L 4.56 2.58 Z" />
+  </g>
+</svg>

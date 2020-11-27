@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
+  <defs>
+    <filter id="circleShadow" height="150%">
+      <feDropShadow dx="0" dy="3" flood-color="#CCCCCC" flood-opacity="1" stdDeviation="0" />
+    </filter>
+  </defs>
+  <circle cx="16" cy="18" r="15" fill="#FAFAFA" stroke="#CCCCCC" stroke-width="#999999" filter="url(#circleShadow)" />
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
+  <defs>
+    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EDFFEF" />
+      <stop offset="100%" stop-color="#FF9E2E" />
+    </linearGradient>
+    <filter id="textShadow" height="150%">
+      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
+    </filter>
+    <filter id="circleShadow" height="150%">
+      <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0" />
+    </filter>
+  </defs>
+  <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#circleShadow)" />
+  <g transform="translate(5, 10)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
+    <path d="M 7.104 9.6 L 3.856 9.6 L 3.328 11.84 L 0 11.84 L 3.84 0.16 L 7.2 0.16 L 11.04 11.84 L 7.648 11.84 L 7.104 9.6 Z M 15.696 8.192 L 15.696 11.84 L 12.576 11.84 L 12.576 0.24 A 22.891 22.891 0 0 1 14.723 0.034 A 27.307 27.307 0 0 1 16.096 0 Q 21.536 0 21.536 3.92 A 5.902 5.902 0 0 1 21.41 5.178 Q 21.236 5.98 20.817 6.576 A 3.321 3.321 0 0 1 20.312 7.144 A 3.908 3.908 0 0 1 18.917 7.931 Q 17.986 8.24 16.736 8.24 Q 16.287 8.24 15.946 8.216 A 5.961 5.961 0 0 1 15.696 8.192 Z M 15.696 2.48 L 15.696 5.872 Q 16 5.92 16.416 5.92 A 3.615 3.615 0 0 0 17.033 5.871 Q 17.635 5.767 18.016 5.44 Q 18.576 4.96 18.576 4.08 A 1.837 1.837 0 0 0 18.432 3.326 Q 18.019 2.4 16.416 2.4 A 3.34 3.34 0 0 0 15.788 2.462 A 3.733 3.733 0 0 0 15.696 2.48 Z M 5.472 2.88 L 4.432 7.2 L 6.544 7.2 L 5.504 2.88 L 5.472 2.88 Z" />
+  </g>
+</svg>

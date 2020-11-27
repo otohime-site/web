@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
+  <defs>
+    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EDFFEF" />
+      <stop offset="100%" stop-color="#FF9E2E" />
+    </linearGradient>
+    <filter id="textShadow" height="150%">
+      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
+    </filter>
+    <filter id="circleShadow" height="150%">
+      <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0" />
+    </filter>
+  </defs>
+  <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#circleShadow)" />
+  <g transform="translate(2,13), scale(0.9)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
+    <path d="M 23.03 10.36 L 21.644 6.72 L 21.616 6.72 L 20.23 10.36 L 17.178 10.36 L 19.768 5.18 L 17.248 0.14 L 20.286 0.14 L 21.672 3.64 L 21.7 3.64 L 23.086 0.14 L 26.068 0.14 L 23.548 5.18 L 26.138 10.36 L 23.03 10.36 Z M 2.8 4.34 L 6.3 4.34 L 6.3 6.44 L 2.8 6.44 L 2.8 10.36 L 0 10.36 L 0 0.14 L 6.58 0.14 L 6.58 2.38 L 2.8 2.38 L 2.8 4.34 Z M 8.414 10.29 L 8.414 0.21 A 20.03 20.03 0 0 1 10.293 0.03 A 23.894 23.894 0 0 1 11.494 0 Q 13.565 0 14.903 0.882 A 4.437 4.437 0 0 1 15.512 1.365 Q 16.954 2.73 16.954 5.11 A 7.299 7.299 0 0 1 16.786 6.727 Q 16.461 8.156 15.512 9.086 Q 14.14 10.431 11.743 10.497 A 9.089 9.089 0 0 1 11.494 10.5 A 22.728 22.728 0 0 1 9.429 10.41 A 19.077 19.077 0 0 1 8.414 10.29 Z M 11.144 2.24 L 11.144 8.26 A 3.003 3.003 0 0 0 11.687 8.329 A 2.737 2.737 0 0 0 11.774 8.33 A 2.772 2.772 0 0 0 12.904 8.117 Q 14.294 7.502 14.294 5.11 A 4.995 4.995 0 0 0 14.183 4.005 Q 13.765 2.17 11.774 2.17 A 2.922 2.922 0 0 0 11.224 2.224 A 3.266 3.266 0 0 0 11.144 2.24 Z" />
+  </g>
+  <g transform="translate(24, 8), scale(0.9)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
+    <path d="M 4.56 2.58 L 7.2 2.58 L 7.2 4.38 L 4.56 4.38 L 4.56 6.96 L 2.64 6.96 L 2.64 4.38 L 0 4.38 L 0 2.58 L 2.64 2.58 L 2.64 0 L 4.56 0 L 4.56 2.58 Z" />
+  </g>
+</svg>
