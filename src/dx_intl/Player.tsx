@@ -19,6 +19,8 @@ import styled from '../styled'
 import { formatDistance } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
 import { categories, versions, levels, difficulties, comboFlags, syncFlags } from './helper'
+import { ComboFlag, SyncFlag } from './flags'
+import Variant from './Variant'
 
 // Use to flatten the song list
 type FlattenedVariant = (
@@ -106,12 +108,62 @@ const HeaderCell = styled(TableCell)`
     }
   }
 `
-const Anchor = styled('span')`
-  position: relative;
-  top: -144px;
-  ${props => props.theme.breakpoints.up('md')} {
-    top: -96px;
+const ScoreCell = styled(TableCell)`
+  &.difficulty-0 {
+    border-bottom-color: ${green[100]};
   }
+  &.difficulty-1 {
+    border-bottom-color: ${orange[100]};
+  }
+  &.difficulty-2 {
+    border-bottom-color: ${red[100]};
+  }
+  &.difficulty-3 {
+    border-bottom-color: ${deepPurple[100]};
+  }
+  &.difficulty-4 {
+    border-bottom-color: ${purple[100]};
+  }
+`
+const ScoreCellInner = styled('div')`
+  margin-left: -8px;
+  margin-right: -8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const ScoreLevel = styled('span')`
+  color: #999999;
+  width: 2.4em;
+  font-size: 8px;
+  text-transform: uppercase;
+  .difficulty-0 & {
+    color: ${green[200]};
+  }
+  .difficulty-1 & {
+    color: ${orange[200]};
+  }
+  .difficulty-2 & {
+    color: ${red[200]};
+  }
+  .difficulty-3 & {
+    color: ${deepPurple[200]};
+  }
+  .difficulty-4 & {
+    color: ${purple[200]};
+  }
+`
+const ActualScore = styled('span')`
+  width: 6em;
+  text-align: right;
+  overflow: hidden;
+`
+const FlagContainer = styled('span')`
+  width: 4em;
+  font-size: 80%;
+  overflow: hidden;
 `
 
 const Player: FunctionComponent = () => {
@@ -258,24 +310,29 @@ const Player: FunctionComponent = () => {
       []).map(variants =>
       (orderBy === 'default')
         ? (orderByDesc) ? variants.reverse() : variants
-        : variants.sort((a, b) => sortNote(a.dx_intl_notes[difficulty], b.dx_intl_notes[difficulty]))
+        : variants.sort((a, b) => sortNote(
+          a.dx_intl_notes[difficulty] ?? { level: -1, id: -1, difficulty: -1 },
+          b.dx_intl_notes[difficulty] ?? { level: -1, id: -1, difficulty: -1 }
+        ))
     )
 
   const currentTabRows = groupedRows[currentTab]
   const getNoteScoreCell = (note: Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>): JSX.Element => {
     const score = scoreMap.get(note.id)
-    return <TableCell>
-      <span>{note.level}</span>
-      {(score != null)
-        ? <>
-          <span>{score.score.toFixed(4)}%</span>
-          <span>
-            {score.combo_flag}
-            {score.sync_flag}
-          </span>
-        </>
-        : ''}
-    </TableCell>
+    return <ScoreCell className={`difficulty-${note.difficulty}`}>
+      <ScoreCellInner>
+        <ScoreLevel>{note.level}</ScoreLevel>
+        {(score != null)
+          ? <>
+            <ActualScore>{score.score.toFixed(4)}%</ActualScore>
+            <FlagContainer>
+              <ComboFlag flag={score.combo_flag} />
+              <SyncFlag flag={score.sync_flag} />
+            </FlagContainer>
+          </>
+          : ''}
+      </ScoreCellInner>
+    </ScoreCell>
   }
 
   return <>
@@ -373,7 +430,7 @@ const Player: FunctionComponent = () => {
       <TableBody>
         {currentTabRows.map(row => <TableRow key={`${row.category}/${row.title}/${row.deluxe ? 'true' : 'false'}/${('difficulty' in row) ? row.difficulty : ''}`}>
           <TableCell>{row.title}</TableCell>
-          <TableCell>{(row.deluxe) ? '[DX]' : '[STD]'}</TableCell>
+          <TableCell><Variant deluxe={row.deluxe} /></TableCell>
           {('difficulty' in row)
             ? getNoteScoreCell(row)
             : (difficulties.map((d, i) =>
