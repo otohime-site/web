@@ -68,6 +68,7 @@ const UppercaseTabs = styled(StyledTabs)`
 const ScoreTable = styled(Table)`
   .MuiTableCell-root {
     font-family: 'M PLUS 1p';
+    padding: 8px;
   }
   .MuiTableCell-head {
     font-weight: 700;
@@ -126,8 +127,6 @@ const ScoreCell = styled(TableCell)`
   }
 `
 const ScoreCellInner = styled('div')`
-  margin-left: -8px;
-  margin-right: -8px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -139,6 +138,11 @@ const ScoreLevel = styled('span')`
   width: 2.4em;
   font-size: 8px;
   text-transform: uppercase;
+
+  &.diff {
+    width: 3em;
+  }
+
   .difficulty-0 & {
     color: ${green[200]};
   }
@@ -263,6 +267,16 @@ const Player: FunctionComponent = () => {
         return 0
     }
   }
+  const sortNoteWithLevelDefault = (
+    noteA: Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'> & { deluxe: boolean },
+    noteB: Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'> & { deluxe: boolean }
+  ): number => {
+    const factor = (orderByDesc) ? -1 : 1
+    if (noteA.difficulty !== noteB.difficulty) {
+      return (noteA.difficulty - noteB.difficulty) * factor
+    }
+    return ((noteA.deluxe ? 1 : 0) - (noteB.deluxe ? 1 : 0)) * factor
+  }
   const groupedRows: Array<Array<FlattenedVariant | FlattenedNote>> = (groupBy === 'level')
     ? songs.reduce<FlattenedNote[]>(
       (accr, song) => [...accr, ...song.dx_intl_variants.reduce<FlattenedNote[]>(
@@ -288,7 +302,7 @@ const Player: FunctionComponent = () => {
       },
       []).map(notes =>
       (orderBy === 'default')
-        ? (orderByDesc) ? notes.reverse() : notes
+        ? notes.sort(sortNoteWithLevelDefault)
         : notes.sort(sortNote)
     )
     : songs.reduce<FlattenedVariant[]>(
@@ -321,7 +335,11 @@ const Player: FunctionComponent = () => {
     const score = scoreMap.get(note.id)
     return <ScoreCell className={`difficulty-${note.difficulty}`}>
       <ScoreCellInner>
-        <ScoreLevel>{note.level}</ScoreLevel>
+        <ScoreLevel className={(groupBy === 'level') ? 'diff' : ''}>
+          {(groupBy === 'level')
+            ? difficulties[note.difficulty].substring(0, 3)
+            : note.level}
+        </ScoreLevel>
         {(score != null)
           ? <>
             <ActualScore>{score.score.toFixed(4)}%</ActualScore>
@@ -402,9 +420,9 @@ const Player: FunctionComponent = () => {
     <ScoreTable lang='ja'>
       <colgroup>
         <col />
-        <col style={{ width: '4em' }} />
+        <col style={{ width: '3em' }} />
         {(groupBy === 'level')
-          ? <col style={{ width: '45%' }} />
+          ? <col style={{ width: '55%' }} />
           : difficulties.map((d, i) => <col key={i} style={{ width: '12em' }} />)
         }
       </colgroup>
