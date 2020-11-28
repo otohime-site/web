@@ -51,10 +51,20 @@ const SizedSelect = styled(Select)`
   width: 12em;
 `
 
+const StyledCard = styled(Card)`
+  .MuiCardContent-root {
+    padding: 8px;
+  }
+  .MuiCardContent-root:last-child {
+    padding-bottom: 8px;
+  }
+`
+
 const TabContainer = styled('div')`
+  margin-top: 8px;
   position: sticky;
   top: 48px;
-  background: white;
+  background: ${props => props.theme.palette.background.default};
   ${props => props.theme.breakpoints.up('md')} {
     display: flex;
     flex-direction: row;
@@ -384,7 +394,7 @@ const Player: FunctionComponent = () => {
     <Helmet>
       <title>{record.card_name} - maimai DX 成績單 - Otohime</title>
     </Helmet>
-    <Card>
+    <StyledCard>
       <CardContent>
         <Container>
           <div>
@@ -426,7 +436,7 @@ const Player: FunctionComponent = () => {
           </div>
         </Container>
       </CardContent>
-    </Card>
+    </StyledCard>
     <TabContainer>
       <StyledTabs
         value={currentTab}
