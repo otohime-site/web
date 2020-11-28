@@ -1,6 +1,6 @@
 import { Tooltip } from '@material-ui/core'
 import React, { FunctionComponent } from 'react'
-import { DxIntlRecordWithScoresQuery } from '../generated/graphql'
+import { Dx_Intl_Records } from '../generated/graphql'
 import styled from '../styled'
 import Grade from './Grade'
 import Rating from './Rating'
@@ -104,7 +104,7 @@ const Title = styled('div')`
 `
 
 const Record: FunctionComponent<{
-  record: DxIntlRecordWithScoresQuery['dx_intl_records'][0]
+  record: Pick<Dx_Intl_Records, 'card_name' | 'title' | 'trophy' | 'rating' | 'max_rating' | 'grade'>
 }> = ({ record }) => (
   <div>
     <Subtitle>

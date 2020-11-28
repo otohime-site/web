@@ -1,11 +1,11 @@
-query dxIntlPlayers($userId: String) {
-  dx_intl_players(where: {user_id: {_eq: $userId}}) {
+query dxIntlPlayers($userId: String, $nickname: String) {
+  dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
     id
     nickname
     private
     created_at
+    updated_at
     dx_intl_record {
-      start
       card_name
       rating
       grade
@@ -57,23 +57,26 @@ query dxIntlSongs {
   }
 }
 query dxIntlRecordWithScores($nickname: String!) {
-  dx_intl_records(where: {dx_intl_player: {nickname: {_eq: $nickname}}}) {
-    card_name
-    title
-    trophy
-    rating
-    max_rating
-    grade
-    start
-  }
-  dx_intl_scores(where: {dx_intl_player: {nickname: {_eq: $nickname}}}) {
-    note_id
-    score
-    combo_flag
-    sync_flag
-    start
+  dx_intl_players(where: {nickname: {_eq: $nickname}}) {
+    updated_at
+    dx_intl_record {
+      card_name
+      title
+      trophy
+      rating
+      max_rating
+      grade
+    }
+    dx_intl_scores {
+      note_id
+      score
+      combo_flag
+      sync_flag
+      start
+    }
   }
 }
+
 mutation InsertDxIntlRecordWithScores(
   $record: dx_intl_records_insert_input!,
   $scores: [dx_intl_scores_insert_input!]!,

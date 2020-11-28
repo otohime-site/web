@@ -264,12 +264,17 @@ const Player: FunctionComponent = () => {
     songsResult.data == null || songsResult.data == null) {
     return <></>
   }
-  if (recordResult.data.dx_intl_records.length === 0) {
+  if (recordResult.data.dx_intl_players.length === 0) {
     return <></>
   }
   const songs = songsResult.data.dx_intl_songs
-  const record = recordResult.data.dx_intl_records[0]
-  const scores = recordResult.data.dx_intl_scores
+  const player = recordResult.data.dx_intl_players[0]
+  const record = player.dx_intl_record
+  const scores = player.dx_intl_scores
+
+  if (record == null) {
+    return <></>
+  }
 
   // First use groupBy to group all song list
   const scoreMap = new Map(
@@ -400,7 +405,7 @@ const Player: FunctionComponent = () => {
           <div>
             <Record record={record} />
             <Typography variant='body2'>
-              {formatDistance(new Date(record.start), new Date(), { locale: zhTW })}前更新
+              {formatDistance(new Date(), new Date(), { locale: zhTW })}前更新
             </Typography>
           </div>
           <div>

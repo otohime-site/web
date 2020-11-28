@@ -3464,6 +3464,18 @@
             "deprecationReason": null
           },
           {
+            "name": "updated_at",
+            "description": "A computed field, executes function \"dx_intl_players_updated_at\"",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamptz",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": "An object relationship",
             "args": [],

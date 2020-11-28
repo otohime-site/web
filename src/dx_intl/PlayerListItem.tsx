@@ -41,7 +41,10 @@ const PlayerListItem: FunctionComponent<{
               {player.dx_intl_record.card_name} /
               {' '}{player.dx_intl_record.rating} /{' '}
               {' '}{gradeNames[player.dx_intl_record.grade]} /{' '}
-              {formatDistance(new Date(player.dx_intl_record.start), new Date(), { locale: zhTW })}
+              {(player.updated_at != null)
+                ? formatDistance(new Date(player.updated_at), new Date(), { locale: zhTW })
+                : '?'
+              }
               前更新
             </Typography>
         }
