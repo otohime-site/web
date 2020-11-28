@@ -470,19 +470,22 @@ const Player: FunctionComponent = () => {
           <Tab label={`${difficulties[2]} - ${difficulties[4]}`} />
         </DifficultySetTabs>
       </Hidden>
-      <Hidden mdUp={true} implementation='css'>
-        <DifficultyTabs
-          value={difficulty}
-          onChange={handleChangeDifficulty}
-          variant='scrollable'
-          scrollButtons='on'
-          aria-label='Select Difficulty'
-          indicatorColor='secondary'
-          textColor='secondary'
-        >
-          { difficulties.map(difficulty => <Tab key={difficulty} label={difficulty} />) }
-        </DifficultyTabs>
-      </Hidden>
+      {(groupBy !== 'level')
+        ? <Hidden mdUp={true} implementation='css'>
+          <DifficultyTabs
+            value={difficulty}
+            onChange={handleChangeDifficulty}
+            variant='scrollable'
+            scrollButtons='on'
+            aria-label='Select Difficulty'
+            indicatorColor='secondary'
+            textColor='secondary'
+          >
+            { difficulties.map(difficulty => <Tab key={difficulty} label={difficulty} />) }
+          </DifficultyTabs>
+        </Hidden>
+        : ''
+      }
     </TabContainer>
     <ScoreTable lang='ja'>
       <colgroup>
