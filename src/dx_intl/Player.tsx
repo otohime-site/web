@@ -1,7 +1,7 @@
 import {
   Card, CardContent, Button, Typography, FormControl, InputLabel, Select,
   MenuItem, Tabs, Tab, ButtonGroup, Table, TableHead, TableBody, TableRow, TableCell,
-  useMediaQuery, Theme, IconButton, Tooltip
+  useMediaQuery, Theme, IconButton, Tooltip, Hidden
 } from '@material-ui/core'
 import { green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
 import React, { FunctionComponent, useState } from 'react'
@@ -51,6 +51,16 @@ const SizedSelect = styled(Select)`
   width: 12em;
 `
 
+const TabContainer = styled('div')`
+  position: sticky;
+  top: 48px;
+  background: white;
+  ${props => props.theme.breakpoints.up('md')} {
+    display: flex;
+    flex-direction: row;
+  }
+`
+
 const StyledTabs = styled(Tabs)`
   .MuiTab-root {
     font-family: 'M PLUS 1p';
@@ -59,10 +69,18 @@ const StyledTabs = styled(Tabs)`
     text-transform: none;
   }
 `
-const UppercaseTabs = styled(StyledTabs)`
+const DifficultyTabs = styled(StyledTabs)`
   .MuiTab-root {
     text-transform: uppercase;
   }
+`
+
+const DifficultySetTabs = styled(StyledTabs)`
+  .MuiTab-root {
+    text-transform: uppercase;
+  }
+  width: 24em;
+  background: #EEEEEE;
 `
 
 const ScoreTable = styled(Table)`
@@ -136,7 +154,7 @@ const ScoreCellInner = styled('div')`
 const ScoreLevel = styled('span')`
   color: #999999;
   width: 2.4em;
-  font-size: 8px;
+  font-size: 80%;
   text-transform: uppercase;
 
   &.diff {
@@ -160,13 +178,13 @@ const ScoreLevel = styled('span')`
   }
 `
 const ActualScore = styled('span')`
-  width: 6em;
+  width: 5.5em;
   text-align: right;
   overflow: hidden;
 `
 const FlagContainer = styled('span')`
   width: 4em;
-  font-size: 80%;
+  font-size: 75%;
   overflow: hidden;
 `
 
@@ -185,7 +203,8 @@ const Player: FunctionComponent = () => {
     variables: { ...params }
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
-  const largerThenMd = useMediaQuery<Theme>(theme => theme.breakpoints.up('md'))
+  const useDiffSetLayout = useMediaQuery<Theme>(theme => theme.breakpoints.between('sm', 'lg'))
+  const useSingleDiffLayout = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'))
   const getHeader = (sparsedIndex: number): string => (
     (groupBy === 'category')
       ? (categories[sparsedIndex] ?? '')
@@ -213,6 +232,9 @@ const Player: FunctionComponent = () => {
   }
   const handleChangeDifficultySet = (event: React.ChangeEvent<{}>, val: number): void => {
     setDifficultySet(val)
+  }
+  const handleChangeDifficulty = (event: React.ChangeEvent<{}>, val: number): void => {
+    setDifficulty(val)
   }
   const handleChangeOrderBy = (event: React.ChangeEvent<{ value: unknown }>): void => {
     const { value } = event.target
@@ -331,6 +353,11 @@ const Player: FunctionComponent = () => {
     )
 
   const currentTabRows = groupedRows[currentTab]
+  const shownDifficulties = (useSingleDiffLayout)
+    ? Array(difficulty).concat([difficulties[difficulty]])
+    : (useDiffSetLayout)
+      ? Array(2 * difficultySet).concat(difficulties.slice(2 * difficultySet, 2 * difficultySet + 3))
+      : [...difficulties]
   const getNoteScoreCell = (note: Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>): JSX.Element => {
     const score = scoreMap.get(note.id)
     return <ScoreCell className={`difficulty-${note.difficulty}`}>
@@ -400,7 +427,7 @@ const Player: FunctionComponent = () => {
         </Container>
       </CardContent>
     </Card>
-    <div style={{ position: 'sticky', top: '48px', background: 'white' }}>
+    <TabContainer>
       <StyledTabs
         value={currentTab}
         onChange={handleChangeTab}
@@ -411,19 +438,44 @@ const Player: FunctionComponent = () => {
       >
         {groupedRows.map((row, sparsedIndex) =>
           <Tab key={sparsedIndex} value={sparsedIndex} label={`
-            ${getHeader(sparsedIndex)} (${row.length}) 
-          `}
+              ${getHeader(sparsedIndex)} (${row.length}) 
+            `}
           />)
         }
       </StyledTabs>
-    </div>
+      <Hidden smDown={true} lgUp={true} implementation='css'>
+        <DifficultySetTabs
+          value={difficultySet}
+          onChange={handleChangeDifficultySet}
+          aria-label='Select Difficulty'
+          indicatorColor='secondary'
+          textColor='secondary'
+        >
+          <Tab label={`${difficulties[0]} - ${difficulties[2]}`} />
+          <Tab label={`${difficulties[2]} - ${difficulties[4]}`} />
+        </DifficultySetTabs>
+      </Hidden>
+      <Hidden mdUp={true} implementation='css'>
+        <DifficultyTabs
+          value={difficulty}
+          onChange={handleChangeDifficulty}
+          variant='scrollable'
+          scrollButtons='on'
+          aria-label='Select Difficulty'
+          indicatorColor='secondary'
+          textColor='secondary'
+        >
+          { difficulties.map(difficulty => <Tab key={difficulty} label={difficulty} />) }
+        </DifficultyTabs>
+      </Hidden>
+    </TabContainer>
     <ScoreTable lang='ja'>
       <colgroup>
         <col />
         <col style={{ width: '3em' }} />
         {(groupBy === 'level')
           ? <col style={{ width: '55%' }} />
-          : difficulties.map((d, i) => <col key={i} style={{ width: '12em' }} />)
+          : shownDifficulties.map((d, i) => <col key={i} style={{ width: '12em' }} />)
         }
       </colgroup>
       <TableHead>
@@ -433,7 +485,7 @@ const Player: FunctionComponent = () => {
           </TableCell>
           {(groupBy === 'level')
             ? <TableCell component='th'>Score</TableCell>
-            : (difficulties.map((d, i) =>
+            : (shownDifficulties.map((d, i) =>
               <HeaderCell
                 component='th'
                 className={`difficulty-${i}${(i === difficulty) ? ' selected' : ''}`}
@@ -451,7 +503,7 @@ const Player: FunctionComponent = () => {
           <TableCell><Variant deluxe={row.deluxe} /></TableCell>
           {('difficulty' in row)
             ? getNoteScoreCell(row)
-            : (difficulties.map((d, i) =>
+            : (shownDifficulties.map((d, i) =>
               (i in row.dx_intl_notes)
                 ? getNoteScoreCell(row.dx_intl_notes[i])
                 : ''
