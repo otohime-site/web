@@ -29,6 +29,8 @@ const Title = styled('div')`
   width: 20em;
   text-align: center;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   border-radius: 0.4em;
   border: 0.1em solid;
   color: white;
