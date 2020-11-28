@@ -213,7 +213,7 @@ const Player: FunctionComponent = () => {
     variables: { ...params }
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
-  const useDiffSetLayout = useMediaQuery<Theme>(theme => theme.breakpoints.between('sm', 'lg'))
+  const useDiffSetLayout = useMediaQuery<Theme>(theme => theme.breakpoints.between('sm', 'md'))
   const useSingleDiffLayout = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'))
   const getHeader = (sparsedIndex: number): string => (
     (groupBy === 'category')
