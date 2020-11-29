@@ -1,5 +1,5 @@
-query dxIntlPlayers($userId: String, $nickname: String) {
-  dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
+query dxIntlPlayers($userId: String) {
+  dx_intl_players(where: {user_id: {_eq: $userId}}) {
     id
     nickname
     private
@@ -74,6 +74,13 @@ query dxIntlRecordWithScores($nickname: String!) {
       sync_flag
       start
     }
+  }
+}
+query dxIntlPlayersEditable($userId: String, $nickname: String) {
+  dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
+    id
+    nickname
+    private
   }
 }
 
