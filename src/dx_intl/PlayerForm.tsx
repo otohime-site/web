@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router'
 import { useMutation, useQuery } from 'urql'
-import { DxIntlPlayersEditableDocument, InsertDxIntlPlayerDocument, UpdateDxIntlPlayerDocument } from '../generated/graphql'
+import { DeleteDxIntlPlayerDocument, DxIntlPlayersEditableDocument, InsertDxIntlPlayerDocument, UpdateDxIntlPlayerDocument } from '../generated/graphql'
 import firebase from 'firebase/app'
 import { useAuth } from '../auth'
 import { FormLabel, RadioGroup, Radio, FormControlLabel, Typography, FormControl, FormHelperText, Input, InputLabel, Button, Container } from '@material-ui/core'
@@ -42,6 +42,7 @@ const PlayerForm: FunctionComponent = () => {
   const history = useHistory()
   const [, insertPlayer] = useMutation(InsertDxIntlPlayerDocument)
   const [, updatePlayer] = useMutation(UpdateDxIntlPlayerDocument)
+  const [, deletePlayer] = useMutation(DeleteDxIntlPlayerDocument)
   const [playerResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? '', nickname: params.nickname ?? '' },
@@ -90,6 +91,24 @@ const PlayerForm: FunctionComponent = () => {
     }
     history.push(`/dxi/p/${data.nickname}`)
   }
+
+  const handleDeletePlayer = async (): Promise<void> => {
+    if (prompt(`
+是否確定要移除成績單？成績單與你在網站上的歷史紀錄將被移除。
+此動作無法復原！
+如果你只是希望隱藏你的成績單只讓自己看，你可以調整為私人成績單。
+
+如果您已經確定了，請在下面重新輸入你的成績單暱稱（${params.nickname ?? ''}）。`) !== params.nickname) {
+      return
+    }
+    const playerId = playerResult.data?.dx_intl_players[0]?.id
+    if (playerId == null) {
+      throw new Error('No Player ID!')
+    }
+    await deletePlayer({ pk: playerId })
+    history.push('/')
+  }
+
   if (user == null) {
     return (<>請先登入。</>)
   }
@@ -136,7 +155,7 @@ const PlayerForm: FunctionComponent = () => {
         ? <Button variant='contained' type='submit' color='primary'>新增成績單</Button>
         : <ActionsContainer>
           <Button variant='contained' type='submit' color='primary'>編輯成績單</Button>
-          <Button variant='contained'>刪除成績單</Button>
+          <Button variant='contained' onClick={handleDeletePlayer}>刪除成績單</Button>
         </ActionsContainer>
       }
     </form>
