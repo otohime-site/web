@@ -9,8 +9,9 @@ import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router'
 import { Link as RouterLink } from 'react-router-dom'
 import { useQuery } from 'urql'
-import { DxIntlRecordWithScoresDocument, DxIntlSongsDocument, Dx_Intl_Songs, Dx_Intl_Variants, Dx_Intl_Notes } from '../generated/graphql'
+import { DxIntlRecordWithScoresDocument, DxIntlSongsDocument, Dx_Intl_Songs, Dx_Intl_Variants, Dx_Intl_Notes, DxIntlPlayersEditableDocument } from '../generated/graphql'
 import Record from './Record'
+import EditIcon from '@material-ui/icons/Edit'
 import RefreshIcon from '@material-ui/icons/Refresh'
 import HistoryIcon from '@material-ui/icons/History'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
@@ -21,6 +22,8 @@ import { zhTW } from 'date-fns/locale'
 import { categories, versions, levels, difficulties, comboFlags, syncFlags } from './helper'
 import { ComboFlag, SyncFlag } from './flags'
 import Variant from './Variant'
+import firebase from 'firebase/app'
+import { useAuth } from '../auth'
 
 // Use to flatten the song list
 type FlattenedVariant = (
@@ -199,6 +202,7 @@ const FlagContainer = styled('span')`
 `
 
 const Player: FunctionComponent = () => {
+  const [user] = useAuth(firebase.auth())
   const [currentTab, setCurrentTab] = useState(1)
   const [groupBy, setGroupBy] = useState<'category' | 'version' | 'level'>('category')
   const [orderBy, setOrderBy] = useState<
@@ -208,6 +212,11 @@ const Player: FunctionComponent = () => {
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
   const params = useParams<{ nickname: string }>()
+  const [editableResult] = useQuery({
+    query: DxIntlPlayersEditableDocument,
+    variables: { userId: user?.uid },
+    pause: (user == null)
+  })
   const [recordResult, refetchRecord] = useQuery({
     query: DxIntlRecordWithScoresDocument,
     variables: { ...params }
@@ -412,6 +421,10 @@ const Player: FunctionComponent = () => {
             <ButtonGroup variant='contained'>
               <Button color='secondary' onClick={handleRefresh}><RefreshIcon /></Button>
               <Button component={RouterLink} to={`/dxi/p/${params.nickname}/history`} startIcon={<HistoryIcon />}>歷史紀錄</Button>
+              { (editableResult.error == null && (editableResult.data?.dx_intl_players?.length ?? 0) > 0)
+                ? <Button component={RouterLink} to={`/dxi/p/${params.nickname}/edit`} startIcon={<EditIcon />}>編輯</Button>
+                : ''
+              }
             </ButtonGroup>
             <p>
               <FormControl>
