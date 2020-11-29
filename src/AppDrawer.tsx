@@ -38,17 +38,17 @@ const StyledBadge = styled(Badge)`
 const AppDrawer: FunctionComponent<{
   variant: 'permanent' | 'temporary'
   drawerOpen: boolean
-  toggleDrawerOpen: () => void
-}> = ({ variant, drawerOpen, toggleDrawerOpen }) => {
+  closeDrawer: () => void
+}> = ({ variant, drawerOpen, closeDrawer }) => {
   function handleListClick (e: React.MouseEvent): void {
-    toggleDrawerOpen()
+    closeDrawer()
   }
   return (
     <StyledDrawer
       anchor='left'
       variant={variant}
       open={drawerOpen}
-      onClose={toggleDrawerOpen}
+      onClose={closeDrawer}
       className={(drawerOpen) ? 'open' : ''}
       classes={{ paper: 'paper' }}
     >

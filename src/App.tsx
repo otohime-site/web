@@ -53,6 +53,10 @@ const App: FunctionComponent = () => {
     setDrawerOpen(!drawerOpen)
   }
 
+  const closeDrawer = (): void => {
+    setDrawerOpen(false)
+  }
+
   return (
     <div className='App'>
       <AppBar position='fixed' className={(drawerOpen) ? 'open' : ''}>
@@ -69,10 +73,10 @@ const App: FunctionComponent = () => {
         </Toolbar>
       </AppBar>
       <Hidden smUp={true}>
-        <AppDrawer variant='temporary' drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
+        <AppDrawer variant='temporary' drawerOpen={drawerOpen} closeDrawer={closeDrawer} />
       </Hidden>
       <Hidden xsDown={true} implementation='css'>
-        <AppDrawer variant='permanent' drawerOpen={drawerOpen} toggleDrawerOpen={toggleDrawerOpen} />
+        <AppDrawer variant='permanent' drawerOpen={drawerOpen} closeDrawer={closeDrawer} />
       </Hidden>
       <StyledMain>
         <Route path='/' exact={true} component={Home} />
