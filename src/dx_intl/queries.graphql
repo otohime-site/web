@@ -76,6 +76,13 @@ query dxIntlRecordWithScores($nickname: String!) {
     }
   }
 }
+
+query dxIntlPlayersTimelines($nickname: String) {
+  dx_intl_players_timelines(where: {player: {nickname: {_eq: $nickname}}}) {
+    timelines
+  }
+}
+
 query dxIntlPlayersEditable($userId: String, $nickname: String) {
   dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
     id

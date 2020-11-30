@@ -8,6 +8,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _timestamptz: string[];
   bigint: number;
   dx_intl_combo_flag: '' | 'fc' | 'fc+' | 'ap' | 'ap+';
   dx_intl_level: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '7+' | '8' | '8+' | '9' | '9+' | '10' | '10+' | '11' | '11+' | '12' | '12+' | '13' | '13+' | '14' | '14+' | '15'
@@ -63,6 +64,20 @@ export type String_Comparison_Exp = {
   _nlike?: Maybe<Scalars['String']>;
   _nsimilar?: Maybe<Scalars['String']>;
   _similar?: Maybe<Scalars['String']>;
+};
+
+
+/** expression to compare columns of type _timestamptz. All fields are combined with logical 'AND'. */
+export type _Timestamptz_Comparison_Exp = {
+  _eq?: Maybe<Scalars['_timestamptz']>;
+  _gt?: Maybe<Scalars['_timestamptz']>;
+  _gte?: Maybe<Scalars['_timestamptz']>;
+  _in?: Maybe<Array<Scalars['_timestamptz']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['_timestamptz']>;
+  _lte?: Maybe<Scalars['_timestamptz']>;
+  _neq?: Maybe<Scalars['_timestamptz']>;
+  _nin?: Maybe<Array<Scalars['_timestamptz']>>;
 };
 
 
@@ -476,6 +491,8 @@ export type Dx_Intl_Players = {
   id: Scalars['Int'];
   nickname: Scalars['String'];
   private: Scalars['Boolean'];
+  /** An object relationship */
+  timelines?: Maybe<Dx_Intl_Players_Timelines>;
   /** A computed field, executes function "dx_intl_players_updated_at" */
   updated_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
@@ -597,6 +614,7 @@ export type Dx_Intl_Players_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   nickname?: Maybe<String_Comparison_Exp>;
   private?: Maybe<Boolean_Comparison_Exp>;
+  timelines?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
   user?: Maybe<Users_Bool_Exp>;
   user_id?: Maybe<String_Comparison_Exp>;
 };
@@ -692,6 +710,7 @@ export type Dx_Intl_Players_Order_By = {
   id?: Maybe<Order_By>;
   nickname?: Maybe<Order_By>;
   private?: Maybe<Order_By>;
+  timelines?: Maybe<Dx_Intl_Players_Timelines_Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
 };
@@ -765,6 +784,204 @@ export type Dx_Intl_Players_Sum_Fields = {
 
 /** order by sum() on columns of table "dx_intl_players" */
 export type Dx_Intl_Players_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** columns and relationships of "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines = {
+  __typename?: 'dx_intl_players_timelines';
+  id?: Maybe<Scalars['Int']>;
+  nickname?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  player?: Maybe<Dx_Intl_Players>;
+  timelines?: Maybe<Scalars['_timestamptz']>;
+};
+
+/** aggregated selection of "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Aggregate = {
+  __typename?: 'dx_intl_players_timelines_aggregate';
+  aggregate?: Maybe<Dx_Intl_Players_Timelines_Aggregate_Fields>;
+  nodes: Array<Dx_Intl_Players_Timelines>;
+};
+
+/** aggregate fields of "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Aggregate_Fields = {
+  __typename?: 'dx_intl_players_timelines_aggregate_fields';
+  avg?: Maybe<Dx_Intl_Players_Timelines_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Dx_Intl_Players_Timelines_Max_Fields>;
+  min?: Maybe<Dx_Intl_Players_Timelines_Min_Fields>;
+  stddev?: Maybe<Dx_Intl_Players_Timelines_Stddev_Fields>;
+  stddev_pop?: Maybe<Dx_Intl_Players_Timelines_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Dx_Intl_Players_Timelines_Stddev_Samp_Fields>;
+  sum?: Maybe<Dx_Intl_Players_Timelines_Sum_Fields>;
+  var_pop?: Maybe<Dx_Intl_Players_Timelines_Var_Pop_Fields>;
+  var_samp?: Maybe<Dx_Intl_Players_Timelines_Var_Samp_Fields>;
+  variance?: Maybe<Dx_Intl_Players_Timelines_Variance_Fields>;
+};
+
+
+/** aggregate fields of "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Aggregate_Order_By = {
+  avg?: Maybe<Dx_Intl_Players_Timelines_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Dx_Intl_Players_Timelines_Max_Order_By>;
+  min?: Maybe<Dx_Intl_Players_Timelines_Min_Order_By>;
+  stddev?: Maybe<Dx_Intl_Players_Timelines_Stddev_Order_By>;
+  stddev_pop?: Maybe<Dx_Intl_Players_Timelines_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Dx_Intl_Players_Timelines_Stddev_Samp_Order_By>;
+  sum?: Maybe<Dx_Intl_Players_Timelines_Sum_Order_By>;
+  var_pop?: Maybe<Dx_Intl_Players_Timelines_Var_Pop_Order_By>;
+  var_samp?: Maybe<Dx_Intl_Players_Timelines_Var_Samp_Order_By>;
+  variance?: Maybe<Dx_Intl_Players_Timelines_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type Dx_Intl_Players_Timelines_Avg_Fields = {
+  __typename?: 'dx_intl_players_timelines_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "dx_intl_players_timelines". All fields are combined with a logical 'AND'. */
+export type Dx_Intl_Players_Timelines_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Dx_Intl_Players_Timelines_Bool_Exp>>>;
+  _not?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Dx_Intl_Players_Timelines_Bool_Exp>>>;
+  id?: Maybe<Int_Comparison_Exp>;
+  nickname?: Maybe<String_Comparison_Exp>;
+  player?: Maybe<Dx_Intl_Players_Bool_Exp>;
+  timelines?: Maybe<_Timestamptz_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Dx_Intl_Players_Timelines_Max_Fields = {
+  __typename?: 'dx_intl_players_timelines_max_fields';
+  id?: Maybe<Scalars['Int']>;
+  nickname?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Max_Order_By = {
+  id?: Maybe<Order_By>;
+  nickname?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Dx_Intl_Players_Timelines_Min_Fields = {
+  __typename?: 'dx_intl_players_timelines_min_fields';
+  id?: Maybe<Scalars['Int']>;
+  nickname?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Min_Order_By = {
+  id?: Maybe<Order_By>;
+  nickname?: Maybe<Order_By>;
+};
+
+/** ordering options when selecting data from "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Order_By = {
+  id?: Maybe<Order_By>;
+  nickname?: Maybe<Order_By>;
+  player?: Maybe<Dx_Intl_Players_Order_By>;
+  timelines?: Maybe<Order_By>;
+};
+
+/** select columns of table "dx_intl_players_timelines" */
+export enum Dx_Intl_Players_Timelines_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Nickname = 'nickname',
+  /** column name */
+  Timelines = 'timelines'
+}
+
+/** aggregate stddev on columns */
+export type Dx_Intl_Players_Timelines_Stddev_Fields = {
+  __typename?: 'dx_intl_players_timelines_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Dx_Intl_Players_Timelines_Stddev_Pop_Fields = {
+  __typename?: 'dx_intl_players_timelines_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Dx_Intl_Players_Timelines_Stddev_Samp_Fields = {
+  __typename?: 'dx_intl_players_timelines_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Dx_Intl_Players_Timelines_Sum_Fields = {
+  __typename?: 'dx_intl_players_timelines_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Dx_Intl_Players_Timelines_Var_Pop_Fields = {
+  __typename?: 'dx_intl_players_timelines_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Dx_Intl_Players_Timelines_Var_Samp_Fields = {
+  __typename?: 'dx_intl_players_timelines_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Dx_Intl_Players_Timelines_Variance_Fields = {
+  __typename?: 'dx_intl_players_timelines_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Variance_Order_By = {
   id?: Maybe<Order_By>;
 };
 
@@ -3415,6 +3632,10 @@ export type Query_Root = {
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate;
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>;
+  /** fetch data from the table: "dx_intl_players_timelines" */
+  dx_intl_players_timelines: Array<Dx_Intl_Players_Timelines>;
+  /** fetch aggregated fields from the table: "dx_intl_players_timelines" */
+  dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate;
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>;
   /** fetch aggregated fields from the table: "dx_intl_records" */
@@ -3511,6 +3732,26 @@ export type Query_RootDx_Intl_Players_AggregateArgs = {
 /** query root */
 export type Query_RootDx_Intl_Players_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootDx_Intl_Players_TimelinesArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Players_Timelines_Order_By>>;
+  where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootDx_Intl_Players_Timelines_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Players_Timelines_Order_By>>;
+  where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
 };
 
 
@@ -3739,6 +3980,10 @@ export type Subscription_Root = {
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate;
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>;
+  /** fetch data from the table: "dx_intl_players_timelines" */
+  dx_intl_players_timelines: Array<Dx_Intl_Players_Timelines>;
+  /** fetch aggregated fields from the table: "dx_intl_players_timelines" */
+  dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate;
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>;
   /** fetch aggregated fields from the table: "dx_intl_records" */
@@ -3835,6 +4080,26 @@ export type Subscription_RootDx_Intl_Players_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootDx_Intl_Players_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Players_TimelinesArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Players_Timelines_Order_By>>;
+  where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Players_Timelines_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Players_Timelines_Order_By>>;
+  where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>;
 };
 
 
@@ -4525,6 +4790,19 @@ export type DxIntlRecordWithScoresQuery = (
   )> }
 );
 
+export type DxIntlPlayersTimelinesQueryVariables = Exact<{
+  nickname?: Maybe<Scalars['String']>;
+}>;
+
+
+export type DxIntlPlayersTimelinesQuery = (
+  { __typename?: 'query_root' }
+  & { dx_intl_players_timelines: Array<(
+    { __typename?: 'dx_intl_players_timelines' }
+    & Pick<Dx_Intl_Players_Timelines, 'timelines'>
+  )> }
+);
+
 export type DxIntlPlayersEditableQueryVariables = Exact<{
   userId?: Maybe<Scalars['String']>;
   nickname?: Maybe<Scalars['String']>;
@@ -4562,5 +4840,6 @@ export const UpdateDxIntlPlayerDocument: DocumentNode<UpdateDxIntlPlayerMutation
 export const DeleteDxIntlPlayerDocument: DocumentNode<DeleteDxIntlPlayerMutation, DeleteDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
 export const DxIntlSongsDocument: DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlSongs"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_songs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"order"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"deluxe"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deluxe"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"version"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"active"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_notes"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"difficulty"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"level"},"arguments":[],"directives":[]}]}}]}}]}}]}}]};
 export const DxIntlRecordWithScoresDocument: DocumentNode<DxIntlRecordWithScoresQuery, DxIntlRecordWithScoresQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updated_at"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_record"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"card_name"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"trophy"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"max_rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"grade"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_scores"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"score"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"combo_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"sync_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"start"},"arguments":[],"directives":[]}]}}]}}]}}]};
+export const DxIntlPlayersTimelinesDocument: DocumentNode<DxIntlPlayersTimelinesQuery, DxIntlPlayersTimelinesQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayersTimelines"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players_timelines"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"timelines"},"arguments":[],"directives":[]}]}}]}}]};
 export const DxIntlPlayersEditableDocument: DocumentNode<DxIntlPlayersEditableQuery, DxIntlPlayersEditableQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayersEditable"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"nickname"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]}]}}]}}]};
 export const InsertDxIntlRecordWithScoresDocument: DocumentNode<InsertDxIntlRecordWithScoresMutation, InsertDxIntlRecordWithScoresMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertDxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"record"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_records_insert_input"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"scores"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_scores_insert_input"}}}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_records_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"record"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_records_player_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"card_name"},{"kind":"EnumValue","value":"title"},{"kind":"EnumValue","value":"trophy"},{"kind":"EnumValue","value":"rating"},{"kind":"EnumValue","value":"max_rating"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_scores"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"scores"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_scores_player_id_note_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"score"},{"kind":"EnumValue","value":"combo_flag"},{"kind":"EnumValue","value":"sync_flag"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"},"arguments":[],"directives":[]}]}}]}}]};

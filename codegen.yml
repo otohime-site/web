@@ -27,4 +27,5 @@ config:
     numeric: number
     smallint: number
     timestamptz: string
+    _timestamptz: string[]
     uuid: string
