@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router'
+import { Link as RouterLink } from 'react-router-dom'
 import { useMutation, useQuery } from 'urql'
 import { DeleteDxIntlPlayerDocument, DxIntlPlayersEditableDocument, InsertDxIntlPlayerDocument, UpdateDxIntlPlayerDocument } from '../generated/graphql'
 import firebase from 'firebase/app'
@@ -8,6 +9,7 @@ import { FormLabel, RadioGroup, Radio, FormControlLabel, Typography, FormControl
 import { useForm, Controller } from 'react-hook-form'
 import PublicIcon from '@material-ui/icons/Public'
 import LockIcon from '@material-ui/icons/Lock'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import styled from '../styled'
 
 const StyledFormControl = styled(FormControl)`
@@ -28,6 +30,10 @@ const ActionsContainer = styled('div')`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`
+
+const SpacedTypo = styled(Typography)`
+  margin-left: 8px;
 `
 
 interface FormParams {
@@ -113,16 +119,22 @@ const PlayerForm: FunctionComponent = () => {
     return (<>請先登入。</>)
   }
   return <Container component='main' maxWidth='sm'>
-    <Typography variant='h6'>{(params.nickname == null) ? '新增成績單' : '編輯成績單' }</Typography>
+    <LabelContainer>
+      {(params.nickname != null)
+        ? <Button variant='contained' startIcon={<ArrowBackIcon />} component={RouterLink} to={`/dxi/p/${params.nickname}`}>回成績單</Button>
+        : <Button variant='contained' startIcon={<ArrowBackIcon />} component={RouterLink} to='/'>回首頁</Button>
+      }
+      <SpacedTypo variant='h6'>{(params.nickname == null) ? '新增成績單' : '編輯成績單' }</SpacedTypo>
+    </LabelContainer>
     <form onSubmit={handleSubmit(onSubmit)}>
       <StyledFormControl fullWidth error={errors.nickname != null}>
         <InputLabel htmlFor='nickname'>暱稱</InputLabel>
         <Controller as={Input} name='nickname' id='nickname' control={control} defaultValue='' rules={{
           required: { value: true, message: '請輸入暱稱。' },
-          pattern: { value: /^[0-9a-z]{1,20}$/, message: '暱稱格式不正確。' }
+          pattern: { value: /^[0-9a-z\-_]{2,20}$/, message: '暱稱格式不正確。' }
         }} />
         {(errors.nickname == null)
-          ? <FormHelperText>小寫英數字，將成為成績單網址一部分。</FormHelperText>
+          ? <FormHelperText>可包含小寫英數字與「-」、「_」，將成為成績單網址一部分。</FormHelperText>
           : <FormHelperText>{errors.nickname.message}</FormHelperText>
         }
       </StyledFormControl>
@@ -133,8 +145,8 @@ const PlayerForm: FunctionComponent = () => {
             <FormControlLabel value='public' control={<Radio />} label={<LabelContainer><PublicIcon /> 公開</LabelContainer>} />
             <FormHelperText>
               <StyledList>
-                <li>任何擁有成績單網址的人都能瀏覽。</li>
-                <li>同時會將你的成績與 Rating 加入全站排行中（敬請期待！）</li>
+                <li>任何擁有成績單網址的人都能瀏覽。<i>別人將也能用卡名或暱稱搜尋到你的成績單。</i></li>
+                <li><i>同時會將你的成績與 Rating 加入全站排行中（敬請期待！）</i></li>
               </StyledList>
             </FormHelperText>
             <FormControlLabel value='private' control={<Radio />} label={<LabelContainer><LockIcon /> 私人</LabelContainer>} />
