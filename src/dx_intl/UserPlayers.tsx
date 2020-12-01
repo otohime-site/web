@@ -11,7 +11,7 @@ import PlayerListItem from './PlayerListItem'
 
 const UserPlayers: FunctionComponent = () => {
   const [user] = useAuth(firebase.auth())
-  const [playersResult] = useQuery({ query: DxIntlPlayersDocument, variables: { userId: user?.uid } })
+  const [playersResult] = useQuery({ query: DxIntlPlayersDocument, variables: { userId: user?.uid }, requestPolicy: 'network-only' })
   const players = playersResult.data?.dx_intl_players
 
   if (user == null) { return <></> }
