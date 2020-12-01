@@ -83,6 +83,37 @@ query dxIntlPlayersTimelines($nickname: String) {
   }
 }
 
+query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
+  beforeRecord: dx_intl_records_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, end: { _eq: $time } }) {
+    card_name
+    title
+    trophy
+    rating
+    max_rating
+    grade
+  }
+  afterRecord: dx_intl_records_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, start: { _eq: $time } }) {
+    card_name
+    title
+    trophy
+    rating
+    max_rating
+    grade
+  }
+  beforeScores: dx_intl_scores_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, end: { _eq: $time } }) {
+    note_id
+    score
+    combo_flag
+    sync_flag
+  }
+  afterScores: dx_intl_scores_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, start: { _eq: $time } }) {
+    note_id
+    score
+    combo_flag
+    sync_flag
+  }
+}
+
 query dxIntlPlayersEditable($userId: String, $nickname: String) {
   dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
     id
