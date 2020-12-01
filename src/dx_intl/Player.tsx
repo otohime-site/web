@@ -424,7 +424,7 @@ const Player: FunctionComponent = () => {
             <Record record={record} />
             <AlignedTypo variant='body2'>
               {player.private ? <LockIcon /> : <PublicIcon />}
-              {formatDistance(new Date(), new Date(), { locale: zhTW })}前更新
+              {(player.updated_at != null) ? formatDistance(new Date(player.updated_at), new Date(), { locale: zhTW }) : ''}前更新
             </AlignedTypo>
           </div>
           <div>
