@@ -16,6 +16,8 @@ import RefreshIcon from '@material-ui/icons/Refresh'
 import HistoryIcon from '@material-ui/icons/History'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import PublicIcon from '@material-ui/icons/Public'
+import LockIcon from '@material-ui/icons/Lock'
 import styled from '../styled'
 import { formatDistance } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
@@ -57,6 +59,12 @@ const StyledCard = styled(Card)`
   .MuiCardContent-root:last-child {
     padding-bottom: 8px;
   }
+`
+
+const AlignedTypo = styled(Typography)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 
 const TabContainer = styled('div')`
@@ -411,9 +419,10 @@ const Player: FunctionComponent = () => {
         <Container>
           <div>
             <Record record={record} />
-            <Typography variant='body2'>
+            <AlignedTypo variant='body2'>
+              {player.private ? <LockIcon /> : <PublicIcon />}
               {formatDistance(new Date(), new Date(), { locale: zhTW })}前更新
-            </Typography>
+            </AlignedTypo>
           </div>
           <div>
             <ButtonGroup variant='contained'>
