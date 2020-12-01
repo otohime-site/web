@@ -14,3 +14,9 @@ mutation regenerateToken {
     id
   }
 }
+
+mutation deleteUser {
+  delete_users(where: {}) {
+    affected_rows
+  }
+}
