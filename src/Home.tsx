@@ -1,6 +1,7 @@
-import { Typography, Stepper, Step, StepLabel, Paper, Grid, Tabs, Tab, Link } from '@material-ui/core'
+import { Typography, Stepper, Step, StepLabel, Paper, Grid, Tabs, Tab, Link, Button } from '@material-ui/core'
 import firebase from 'firebase/app'
 import React, { FunctionComponent, useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useAuth } from './auth'
 import Token from './Token'
@@ -77,15 +78,19 @@ const HomeComponent: FunctionComponent = () => {
                 我們將會於近期開放您匯入之前您在該網站上的成績。
               </TabPanel>
             </TabContext>
+            <Button variant='contained' component={RouterLink} to='/forget'>忘記我</Button>
           </PaddedPaper>
         </Grid>
         <Grid item xs={12} md={4}>
           <PaddedPaper>
             <SpacedTypo variant='h6'>Bookmarklet</SpacedTypo>
             <SpacedTypo variant='body1'>
-              新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。
-              <Link>需要詳細說明？</Link>
+              新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。請先產生隨機的權杖，然後：
             </SpacedTypo>
+            <ul>
+              <li>電腦：將更新成績按鈕拖曳到書籤列，進入官方成績單網站時點擊書籤即可。</li>
+              <li>手機：以瀏覽器瀏覽本頁，點擊更新成績按鈕。</li>
+            </ul>
             <Token />
           </PaddedPaper>
         </Grid>

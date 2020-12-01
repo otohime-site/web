@@ -1,15 +1,16 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import * as clipboard from 'clipboard-polyfill'
 import firebase from 'firebase/app'
 import { useAuth } from './auth'
 import { useQuery, useMutation } from 'urql'
 import { TokensDocument, RegenerateTokenDocument } from './generated/graphql'
-import { Tooltip, Button, ButtonGroup } from '@material-ui/core'
+import { Tooltip, Button, ButtonGroup, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@material-ui/core'
 import { QueryResult } from './QueryResult'
 import host from './host'
 import LinkIcon from '@material-ui/icons/Link'
 import RefreshIcon from '@material-ui/icons/Refresh'
 import { Alert } from '@material-ui/lab'
+import { Helmet } from 'react-helmet-async'
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -23,6 +24,8 @@ const User: FunctionComponent = () => {
   const [user] = useAuth(firebase.auth())
   const [tokensResult, refetchTokens] = useQuery({ query: TokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(RegenerateTokenDocument)
+  const [bookDialogOpen, setBookDialogOpen] = useState(false)
+  const handleClose = (): void => setBookDialogOpen(false)
   const generateToken = async (): Promise<void> => {
     if (confirm('您舊的 Bookmarklet 連結將會失效。確定要重新產生權杖？')) {
       await regenerateToken()
@@ -33,7 +36,7 @@ const User: FunctionComponent = () => {
     e.preventDefault()
     try {
       await clipboard.writeText(bookmarkletContent(token))
-      alert('已經複製到剪貼簿。請使用瀏覽器的「編輯書籤」功能將網址貼上。')
+      setBookDialogOpen(true)
     } catch {
       alert('無法複製到剪貼簿。')
     }
@@ -53,6 +56,28 @@ const User: FunctionComponent = () => {
     : tokensResult.data.tokens[0].id
   return (
     <div>
+      {(bookDialogOpen)
+        ? <Helmet><title>更新 Otohime 成績</title></Helmet>
+        : <></>
+      }
+      <Dialog open={bookDialogOpen} onClose={handleClose}>
+        <DialogTitle>Bookmarklet 操作說明</DialogTitle>
+        <DialogContent>
+          <Typography variant='body2'>連結已經複製到剪貼簿！接下來的步驟大致如下：</Typography>
+          <ol>
+            <li>將這個網頁加入書籤。（標題已經幫你改好了）</li>
+            <li>打開瀏覽器的書籤，並選擇編輯書籤。</li>
+            <li>將剛加入的書籤網址清空，將剪貼簿的內容貼上於網址中即可。</li>
+          </ol>
+          <Typography variant='body2'>
+            接下來只要進到官方成績單網站後，選開書籤，點擊「更新 Otohime 成績」即可。
+            但如果你使用 Android 的 Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>關閉</Button>
+        </DialogActions>
+      </Dialog>
       <QueryResult result={tokensResult} skeletonVariant='rect' skeletonHeight={36}>
         {(token.length === 0)
           ? <Button
@@ -61,16 +86,14 @@ const User: FunctionComponent = () => {
             產生權杖
           </Button>
           : <ButtonGroup>
-            <Tooltip title="把我拖曳到書籤列，或著按一下我複製到剪貼簿！">
-              <Button
-                variant='contained' color='primary'
-                href={bookmarkletContent(token)}
-                onClick={async (e) => await copyBookmarklet(e, token)}
-                startIcon={<LinkIcon />}
-              >
-               更新 Otohime 成績
-              </Button>
-            </Tooltip>
+            <Button
+              variant='contained' color='primary'
+              href={bookmarkletContent(token)}
+              onClick={async (e) => await copyBookmarklet(e, token)}
+              startIcon={<LinkIcon />}
+            >
+              更新 Otohime 成績
+            </Button>
             <Tooltip title="重新產生權杖">
               <Button variant='contained' color='secondary'
                 disabled={regenerateTokenResult.fetching} onClick={generateToken}>

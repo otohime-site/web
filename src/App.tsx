@@ -1,6 +1,6 @@
 import styled from './styled'
 import React, { FunctionComponent, useState } from 'react'
-import { Route, Link as RouterLink } from 'react-router-dom'
+import { Route, Link as RouterLink, Switch } from 'react-router-dom'
 import { Toolbar, Typography, IconButton, Link, Hidden } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import GitHubIcon from '@material-ui/icons/GitHub'
@@ -9,6 +9,7 @@ import AppBar from './AppBar'
 import AppDrawer from './AppDrawer'
 import Home from './Home'
 import UserBox from './UserBox'
+import Forget from './Forget'
 import DxIntl from './dx_intl/index'
 
 import './App.css'
@@ -79,8 +80,11 @@ const App: FunctionComponent = () => {
         <AppDrawer variant='permanent' drawerOpen={drawerOpen} closeDrawer={closeDrawer} />
       </Hidden>
       <StyledMain>
-        <Route path='/' exact={true} component={Home} />
-        <Route path='/dxi' component={DxIntl} />
+        <Switch>
+          <Route path='/' exact={true} component={Home} />
+          <Route path='/forget' exact={true} component={Forget} />
+          <Route path='/dxi' component={DxIntl} />
+        </Switch>
         <StyledFooter>
           <Typography variant='body2' color='textSecondary'>
             &copy; 2020 Otohime Team。Otohime 是一個開源專案。
