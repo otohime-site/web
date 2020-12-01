@@ -10,7 +10,7 @@ const UserBoxComponent: FunctionComponent = () => {
   const provider = new firebase.auth.FacebookAuthProvider()
   const [user, loading] = useAuth(auth)
   const handleLogin = async (): Promise<void> => {
-    await auth.signInWithPopup(provider)
+    await auth.signInWithRedirect(provider)
   }
   const handleLogout = async (): Promise<void> => {
     await auth.signOut()
