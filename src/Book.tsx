@@ -36,7 +36,16 @@ const book: FunctionComponent = () => {
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
   const client$ = useObservable(pluckFirst, [useClient()])
   const [fetchState, setFetchState] = useState<'idle' | 'fetching' | 'done'>('idle')
-  const handleFetch = (): void => setFetchState('fetching')
+  const handleFetch = (): void => {
+    const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(p => p.id === selectedPlayerId)
+    if (player == null) {
+      return
+    }
+    if (player.dx_intl_record?.card_name !== parsedPlayer?.card_name && !confirm('卡名似乎不一致。仍然確定要更新？')) {
+      return
+    }
+    setFetchState('fetching')
+  }
   const fetchState$ = useObservable(pluckFirst, [fetchState])
   const selectedPlayerId$ = useObservable(pluckFirst, [selectedPlayerId])
   const fetchResult$ = useObservable(() => fetchState$.pipe(
@@ -140,7 +149,7 @@ const book: FunctionComponent = () => {
   return (
     <ResetDialog lang='zh-TW' disableEscapeKeyDown={true} fullWidth={true} maxWidth='md' open={open} onClose={handleClose}>
       <DialogTitle>更新成績</DialogTitle>
-      {(fetchState === 'fetching')
+      { (fetchState === 'fetching')
         ? <DialogContent>
           <Typography variant='body2'>
             {(fetchProgress < DIFFICULTIES.length) ? '擷取成績中...' : '正在上傳成績單...'}
@@ -149,34 +158,43 @@ const book: FunctionComponent = () => {
             variant={(fetchProgress < DIFFICULTIES.length) ? 'determinate' : 'indeterminate'}
             value={(fetchProgress < DIFFICULTIES.length) ? fetchProgress / DIFFICULTIES.length * 100 : undefined} />
         </DialogContent>
-        : <QueryResult
-          result={dxIntlPlayersResult}
-          errorMsg='無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。'
-        >
-          {(players == null || players.length === 0)
-            ? <Alert severity='warning'>
-              請到 Otohime 網站上
-              <Link target='_blank' href={`${host}/dxi/up/new`} rel='noopener'>新增一個成績單。</Link>
-            </Alert>
-            : <DialogContent>
-              <DialogContentText>請選擇要更新的成績單：</DialogContentText>
-              <List>
-                {players.map((player) =>
-                  <PlayerListItem
-                    key={player.id}
-                    player={player}
-                    selected={selectedPlayerId === player.id}
-                    onSelect={setSelectedPlayerId}
-                  />)
-                }
-              </List>
-            </DialogContent>
-          }
-        </QueryResult>
+        : (fetchState === 'done')
+          ? <DialogContent>
+            <Typography variant='body2'>上傳完成！</Typography>
+            <Typography variant='body2'>您現在可以在 Otohime 網站上檢視你的成績單了。</Typography>
+            <Button
+              variant='contained' color='primary'
+              target='_blank' href={`https://${host}/dxi/p/${(players ?? []).find(p => p.id === selectedPlayerId)?.nickname ?? ''}`}
+            >檢視成績單</Button>
+          </DialogContent>
+          : <QueryResult
+            result={dxIntlPlayersResult}
+            errorMsg='無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。'
+          >
+            {(players == null || players.length === 0)
+              ? <Alert severity='warning'>
+                請到 Otohime 網站上
+                <Link target='_blank' href={`https://${host}/dxi/p/new`} rel='noopener'>新增一個成績單。</Link>
+              </Alert>
+              : <DialogContent>
+                <DialogContentText>請選擇要更新的成績單：</DialogContentText>
+                <List>
+                  {players.map((player) =>
+                    <PlayerListItem
+                      key={player.id}
+                      player={player}
+                      selected={selectedPlayerId === player.id}
+                      onSelect={setSelectedPlayerId}
+                    />)
+                  }
+                </List>
+              </DialogContent>
+            }
+          </QueryResult>
       }
       <DialogActions>
         <Button color='primary' variant='text' disabled={fetchState !== 'idle' || selectedPlayerId === undefined} onClick={handleFetch}>上傳成績</Button>
-        <Button disabled={fetchProgress != null && isFinite(fetchProgress)} onClick={handleClose}>關閉</Button>
+        <Button disabled={fetchState === 'fetching'} onClick={handleClose}>關閉</Button>
       </DialogActions>
     </ResetDialog>
   )
