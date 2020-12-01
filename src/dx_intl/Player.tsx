@@ -84,6 +84,10 @@ const StyledTabs = styled(Tabs)`
     font-weight: 700;
     text-transform: none;
   }
+  .MuiTab-wrapper {
+    /* Prevent iOS trying to wrap due to strange issues */
+    white-space: nowrap;
+  }
 `
 const DifficultyTabs = styled(StyledTabs)`
   .MuiTab-root {
