@@ -1,4 +1,4 @@
-import { DxIntlSongsQuery, Scalars } from '../generated/graphql'
+import { DxIntlSongsQuery, Scalars, Dx_Intl_Songs, Dx_Intl_Variants, Dx_Intl_Notes } from '../generated/graphql'
 
 // eslint-disable-next-line no-sparse-arrays
 export const categories = [, // start from 1
@@ -77,4 +77,10 @@ export const constructSongs = (songs: DxIntlSongsQuery['dx_intl_songs']): Constr
     accr[curr.category] = categoryMap
     return accr
   }, [])
+)
+
+export type FlattenedNote = (
+  Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'> &
+  Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'> &
+  Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>
 )

@@ -19,11 +19,12 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import styled from '../styled'
 import { formatDistance } from 'date-fns'
 import { zhTW } from 'date-fns/locale'
-import { categories, versions, levels, difficulties, comboFlags, syncFlags } from './helper'
+import { categories, versions, levels, difficulties, comboFlags, syncFlags, FlattenedNote } from './helper'
 import { ComboFlag, SyncFlag } from './flags'
 import Variant from './Variant'
 import firebase from 'firebase/app'
 import { useAuth } from '../auth'
+import { Alert } from '@material-ui/lab'
 
 // Use to flatten the song list
 type FlattenedVariant = (
@@ -35,11 +36,6 @@ type FlattenedVariant = (
       & Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>
     )>
   }
-)
-type FlattenedNote = (
-  Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'> &
-  Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'> &
-  Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>
 )
 
 const Container = styled('div')`
@@ -190,12 +186,12 @@ const ScoreLevel = styled('span')`
     color: ${purple[200]};
   }
 `
-const ActualScore = styled('span')`
+export const ActualScore = styled('span')`
   width: 5.5em;
   text-align: right;
   overflow: hidden;
 `
-const FlagContainer = styled('span')`
+export const FlagContainer = styled('span')`
   width: 4em;
   font-size: 75%;
   overflow: hidden;
@@ -269,12 +265,14 @@ const Player: FunctionComponent = () => {
     }
   }
 
-  if (recordResult.error != null || recordResult.data == null ||
-    songsResult.data == null || songsResult.data == null) {
+  if (recordResult.error != null || songsResult.error != null) {
+    return <Alert severity='error'>發生錯誤，請重試。</Alert>
+  }
+  if (recordResult.data == null || songsResult.data == null) {
     return <></>
   }
   if (recordResult.data.dx_intl_players.length === 0) {
-    return <></>
+    return <Alert severity='warning'>成績單不存在或為私人成績單。</Alert>
   }
   const songs = songsResult.data.dx_intl_songs
   const player = recordResult.data.dx_intl_players[0]
@@ -282,7 +280,7 @@ const Player: FunctionComponent = () => {
   const scores = player.dx_intl_scores
 
   if (record == null) {
-    return <></>
+    return <Alert severity='warning'>沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
   }
 
   // First use groupBy to group all song list
