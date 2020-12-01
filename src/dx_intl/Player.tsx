@@ -82,7 +82,6 @@ const StyledTabs = styled(Tabs)`
   .MuiTab-root {
     font-family: 'M PLUS 1p';
     font-weight: 700;
-    min-width: 120px;
     text-transform: none;
   }
 `
