@@ -59,6 +59,7 @@ query dxIntlSongs {
 query dxIntlRecordWithScores($nickname: String!) {
   dx_intl_players(where: {nickname: {_eq: $nickname}}) {
     updated_at
+    private
     dx_intl_record {
       card_name
       title
