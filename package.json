@@ -18,7 +18,7 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
-    "@otohime-site/parser": "^0.5.1",
+    "@otohime-site/parser": "^0.5.2",
     "@types/react-virtualized": "^9.21.10",
     "@urql/exchange-auth": "^0.1.2",
     "@urql/exchange-graphcache": "^3.1.11",
