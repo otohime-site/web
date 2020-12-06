@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
-  <defs>
-    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#EDFFEF" />
-      <stop offset="100%" stop-color="#FF9E2E" />
-    </linearGradient>
-    <filter id="textShadow" height="150%">
-      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
-    </filter>
-    <filter id="circleShadow" height="150%">
-      <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0" />
-    </filter>
-  </defs>
-  <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#circleShadow)" />
-  <g transform="translate(4, 12), scale(0.9)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
-    <path d="M 7.104 9.6 L 3.856 9.6 L 3.328 11.84 L 0 11.84 L 3.84 0.16 L 7.2 0.16 L 11.04 11.84 L 7.648 11.84 L 7.104 9.6 Z M 15.696 8.192 L 15.696 11.84 L 12.576 11.84 L 12.576 0.24 A 22.891 22.891 0 0 1 14.723 0.034 A 27.307 27.307 0 0 1 16.096 0 Q 21.536 0 21.536 3.92 A 5.902 5.902 0 0 1 21.41 5.178 Q 21.236 5.98 20.817 6.576 A 3.321 3.321 0 0 1 20.312 7.144 A 3.908 3.908 0 0 1 18.917 7.931 Q 17.986 8.24 16.736 8.24 Q 16.287 8.24 15.946 8.216 A 5.961 5.961 0 0 1 15.696 8.192 Z M 15.696 2.48 L 15.696 5.872 Q 16 5.92 16.416 5.92 A 3.615 3.615 0 0 0 17.033 5.871 Q 17.635 5.767 18.016 5.44 Q 18.576 4.96 18.576 4.08 A 1.837 1.837 0 0 0 18.432 3.326 Q 18.019 2.4 16.416 2.4 A 3.34 3.34 0 0 0 15.788 2.462 A 3.733 3.733 0 0 0 15.696 2.48 Z M 5.472 2.88 L 4.432 7.2 L 6.544 7.2 L 5.504 2.88 L 5.472 2.88 Z" />
-  </g>
-  <g transform="translate(24, 8)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
-    <path d="M 4.56 2.58 L 7.2 2.58 L 7.2 4.38 L 4.56 4.38 L 4.56 6.96 L 2.64 6.96 L 2.64 4.38 L 0 4.38 L 0 2.58 L 2.64 2.58 L 2.64 0 L 4.56 0 L 4.56 2.58 Z" />
-  </g>
+    <defs>
+        <filter id="c" height="150%">
+            <feDropShadow dx="0" dy="2" flood-color="#AAA" flood-opacity=".8" stdDeviation="0"/>
+        </filter>
+        <filter id="a" height="150%">
+            <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0"/>
+        </filter>
+        <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#EDFFEF"/>
+            <stop offset="100%" stop-color="#FF9E2E"/>
+        </linearGradient>
+    </defs>
+    <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#a)"/>
+    <g transform="matrix(.9 0 0 .9 4 12)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+        <path d="M7.104 9.6H3.856l-.528 2.24H0L3.84.16H7.2l3.84 11.68H7.648L7.104 9.6zm8.592-1.408v3.648h-3.12V.24a22.891 22.891 0 012.147-.206A27.307 27.307 0 0116.096 0q5.44 0 5.44 3.92a5.902 5.902 0 01-.126 1.258q-.174.802-.593 1.398a3.321 3.321 0 01-.505.568 3.908 3.908 0 01-1.395.787q-.931.309-2.181.309-.449 0-.79-.024a5.961 5.961 0 01-.25-.024zm0-5.712v3.392q.304.048.72.048a3.615 3.615 0 00.617-.049q.602-.104.983-.431.56-.48.56-1.36a1.837 1.837 0 00-.144-.754q-.413-.926-2.016-.926a3.34 3.34 0 00-.628.062 3.733 3.733 0 00-.092.018zm-10.224.4L4.432 7.2h2.112l-1.04-4.32h-.032z"/>
+    </g>
+    <g transform="translate(24 8)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+        <path d="M4.56 2.58H7.2v1.8H4.56v2.58H2.64V4.38H0v-1.8h2.64V0h1.92v2.58z"/>
+    </g>
 </svg>

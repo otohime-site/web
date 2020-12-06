@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
-  <defs>
-    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#EDFFEF" />
-      <stop offset="100%" stop-color="#FF9E2E" />
-    </linearGradient>
-    <filter id="textShadow" height="150%">
-      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
-    </filter>
-    <filter id="circleShadow" height="150%">
-      <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0" />
-    </filter>
-  </defs>
-  <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#circleShadow)" />
-  <g transform="translate(3,12)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
-    <path d="M 23.03 10.36 L 21.644 6.72 L 21.616 6.72 L 20.23 10.36 L 17.178 10.36 L 19.768 5.18 L 17.248 0.14 L 20.286 0.14 L 21.672 3.64 L 21.7 3.64 L 23.086 0.14 L 26.068 0.14 L 23.548 5.18 L 26.138 10.36 L 23.03 10.36 Z M 2.8 4.34 L 6.3 4.34 L 6.3 6.44 L 2.8 6.44 L 2.8 10.36 L 0 10.36 L 0 0.14 L 6.58 0.14 L 6.58 2.38 L 2.8 2.38 L 2.8 4.34 Z M 8.414 10.29 L 8.414 0.21 A 20.03 20.03 0 0 1 10.293 0.03 A 23.894 23.894 0 0 1 11.494 0 Q 13.565 0 14.903 0.882 A 4.437 4.437 0 0 1 15.512 1.365 Q 16.954 2.73 16.954 5.11 A 7.299 7.299 0 0 1 16.786 6.727 Q 16.461 8.156 15.512 9.086 Q 14.14 10.431 11.743 10.497 A 9.089 9.089 0 0 1 11.494 10.5 A 22.728 22.728 0 0 1 9.429 10.41 A 19.077 19.077 0 0 1 8.414 10.29 Z M 11.144 2.24 L 11.144 8.26 A 3.003 3.003 0 0 0 11.687 8.329 A 2.737 2.737 0 0 0 11.774 8.33 A 2.772 2.772 0 0 0 12.904 8.117 Q 14.294 7.502 14.294 5.11 A 4.995 4.995 0 0 0 14.183 4.005 Q 13.765 2.17 11.774 2.17 A 2.922 2.922 0 0 0 11.224 2.224 A 3.266 3.266 0 0 0 11.144 2.24 Z" />
-  </g>
+    <defs>
+        <filter id="c" height="150%">
+            <feDropShadow dx="0" dy="2" flood-color="#AAA" flood-opacity=".8" stdDeviation="0"/>
+        </filter>
+        <filter id="a" height="150%">
+            <feDropShadow dx="0" dy="3" flood-color="#F88A1F" flood-opacity="1" stdDeviation="0"/>
+        </filter>
+        <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#EDFFEF"/>
+            <stop offset="100%" stop-color="#FF9E2E"/>
+        </linearGradient>
+    </defs>
+    <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#a)"/>
+    <g transform="translate(3 12)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+        <path d="M23.03 10.36l-1.386-3.64h-.028l-1.386 3.64h-3.052l2.59-5.18-2.52-5.04h3.038l1.386 3.5h.028l1.386-3.5h2.982l-2.52 5.04 2.59 5.18H23.03zM2.8 4.34h3.5v2.1H2.8v3.92H0V.14h6.58v2.24H2.8v1.96zm5.614 5.95V.21a20.03 20.03 0 011.879-.18A23.894 23.894 0 0111.494 0q2.071 0 3.409.882a4.437 4.437 0 01.609.483q1.442 1.365 1.442 3.745a7.299 7.299 0 01-.168 1.617q-.325 1.429-1.274 2.359-1.372 1.345-3.769 1.411a9.089 9.089 0 01-.249.003 22.728 22.728 0 01-2.065-.09 19.077 19.077 0 01-1.015-.12zm2.73-8.05v6.02a3.003 3.003 0 00.543.069 2.737 2.737 0 00.087.001 2.772 2.772 0 001.13-.213q1.39-.615 1.39-3.007a4.995 4.995 0 00-.111-1.105q-.418-1.835-2.409-1.835a2.922 2.922 0 00-.55.054 3.266 3.266 0 00-.08.016z"/>
+    </g>
 </svg>

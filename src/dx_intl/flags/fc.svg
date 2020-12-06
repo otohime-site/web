@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" width="32" height="32">
-  <defs>
-    <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="white" />
-      <stop offset="100%" stop-color="#E2FF29" />
-    </linearGradient>
-    <filter id="textShadow" height="150%">
-      <feDropShadow dx="0" dy="2" flood-color="#AAAAAA" flood-opacity="0.8" stdDeviation="0" />
-    </filter>
-    <filter id="circleShadow" height="150%">
-      <feDropShadow dx="0" dy="3" flood-color="#31955E" flood-opacity="1" stdDeviation="0" />
-    </filter>
-  </defs>
-  <circle cx="16" cy="18" r="15" fill="#8AFF4C" stroke="#31955E" stroke-width="#999999" filter="url(#circleShadow)" />
-  <g transform="translate(7,10)" stroke-linecap="round" fill-rule="evenodd" stroke="#31955E" stroke-width="3" fill="url(#textGradient)" paint-order="stroke" filter="url(#textShadow)">
-    <path d="M 18.816 1.12 L 17.936 3.44 A 5.807 5.807 0 0 0 16.818 2.854 A 4.211 4.211 0 0 0 15.296 2.56 A 4.359 4.359 0 0 0 14.31 2.665 Q 13.57 2.837 13.048 3.29 A 2.72 2.72 0 0 0 12.88 3.448 A 2.868 2.868 0 0 0 12.193 4.652 Q 12.016 5.246 12.016 6 A 4.564 4.564 0 0 0 12.13 7.052 A 3.049 3.049 0 0 0 12.92 8.52 Q 13.824 9.44 15.296 9.44 A 4.254 4.254 0 0 0 16.932 9.101 A 5.912 5.912 0 0 0 17.936 8.56 L 18.816 10.88 Q 17.232 12 14.976 12 A 8.083 8.083 0 0 1 13.012 11.774 A 5.684 5.684 0 0 1 10.44 10.392 A 5.311 5.311 0 0 1 8.86 7.416 A 7.729 7.729 0 0 1 8.736 6 A 7.778 7.778 0 0 1 8.939 4.171 A 5.216 5.216 0 0 1 10.376 1.592 Q 11.91 0.103 14.599 0.007 A 10.543 10.543 0 0 1 14.976 0 A 7.566 7.566 0 0 1 16.867 0.226 A 5.885 5.885 0 0 1 18.816 1.12 Z M 3.2 4.96 L 7.2 4.96 L 7.2 7.36 L 3.2 7.36 L 3.2 11.84 L 0 11.84 L 0 0.16 L 7.52 0.16 L 7.52 2.72 L 3.2 2.72 L 3.2 4.96 Z" />
-  </g>
+    <defs>
+        <filter id="c" height="150%">
+            <feDropShadow dx="0" dy="2" flood-color="#AAA" flood-opacity=".8" stdDeviation="0"/>
+        </filter>
+        <filter id="a" height="150%">
+            <feDropShadow dx="0" dy="3" flood-color="#31955E" flood-opacity="1" stdDeviation="0"/>
+        </filter>
+        <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fff"/>
+            <stop offset="100%" stop-color="#E2FF29"/>
+        </linearGradient>
+    </defs>
+    <circle cx="16" cy="18" r="15" fill="#8AFF4C" stroke="#31955E" stroke-width="#999999" filter="url(#a)"/>
+    <g transform="translate(7 10)" stroke-linecap="round" fill-rule="evenodd" stroke="#31955E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+        <path d="M18.816 1.12l-.88 2.32a5.807 5.807 0 00-1.118-.586 4.211 4.211 0 00-1.522-.294 4.359 4.359 0 00-.986.105q-.74.172-1.262.625a2.72 2.72 0 00-.168.158 2.868 2.868 0 00-.687 1.204q-.177.594-.177 1.348a4.564 4.564 0 00.114 1.052 3.049 3.049 0 00.79 1.468q.904.92 2.376.92a4.254 4.254 0 001.636-.339 5.912 5.912 0 001.004-.541l.88 2.32Q17.232 12 14.976 12a8.083 8.083 0 01-1.964-.226 5.684 5.684 0 01-2.572-1.382 5.311 5.311 0 01-1.58-2.976A7.729 7.729 0 018.736 6a7.778 7.778 0 01.203-1.829 5.216 5.216 0 011.437-2.579Q11.91.103 14.599.007A10.543 10.543 0 0114.976 0a7.566 7.566 0 011.891.226 5.885 5.885 0 011.949.894zM3.2 4.96h4v2.4h-4v4.48H0V.16h7.52v2.56H3.2v2.24z"/>
+    </g>
 </svg>
