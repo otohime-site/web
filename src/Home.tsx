@@ -85,12 +85,7 @@ const HomeComponent: FunctionComponent = () => {
           <PaddedPaper>
             <SpacedTypo variant='h6'>Bookmarklet</SpacedTypo>
             <SpacedTypo variant='body1'>
-              新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。請先產生隨機的權杖，然後：
-            </SpacedTypo>
-            <ul>
-              <li>電腦：將更新成績按鈕拖曳到書籤列，進入官方成績單網站時點擊書籤即可。</li>
-              <li>手機：以瀏覽器瀏覽本頁，點擊更新成績按鈕。</li>
-            </ul>
+              新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。<Link href='https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help' target='_blank'>詳細圖文說明</Link>。</SpacedTypo>
             <Token />
           </PaddedPaper>
         </Grid>
