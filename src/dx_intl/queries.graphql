@@ -146,3 +146,10 @@ mutation InsertDxIntlRecordWithScores(
     affected_rows
   }
 }
+
+query dxIntlBaseRating {
+  dx_intl_base_rating {
+    range
+    count
+  }
+}
