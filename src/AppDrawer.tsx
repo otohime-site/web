@@ -57,6 +57,10 @@ const AppDrawer: FunctionComponent<{
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary='首頁' />
         </ListItem>
+        <ListItem button={true} component={RouterLink} to='/dxi/'>
+          <ListItemIcon><LaundryOutlinedIcon /></ListItemIcon>
+          <ListItemText primary='maimai DX 國際版' />
+        </ListItem>
       </List>
     </StyledDrawer>
   )

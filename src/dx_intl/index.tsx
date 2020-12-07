@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import Overview from './Overview'
 import Player from './Player'
 import PlayerForm from './PlayerForm'
 import PlayerHistory from './PlayerHistory'
@@ -10,6 +11,7 @@ const DxIntl: FunctionComponent<RouteComponentProps<{}>> = ({ match }) => (
     <Route path={`${match.url}/p/:nickname/edit`} component={PlayerForm} />
     <Route path={`${match.url}/p/:nickname/history/:hash?`} component={PlayerHistory} />
     <Route path={`${match.url}/p/:nickname`} component={Player} exact={true} />
+    <Route path={`${match.url}`} component={Overview} exact={true} />
   </Switch>
 )
 export default DxIntl
