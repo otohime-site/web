@@ -1,7 +1,7 @@
 import {
   Card, CardContent, Button, Typography, FormControl, InputLabel, Select,
   MenuItem, Tabs, Tab, ButtonGroup, Table, TableHead, TableBody, TableRow, TableCell,
-  useMediaQuery, Theme, IconButton, Tooltip, Hidden
+  useMediaQuery, Theme, IconButton, Tooltip, Hidden, Link
 } from '@material-ui/core'
 import { green, orange, red, deepPurple, purple } from '@material-ui/core/colors'
 import React, { FunctionComponent, useState } from 'react'
@@ -30,6 +30,7 @@ import { Alert } from '@material-ui/lab'
 
 // Use to flatten the song list
 type FlattenedVariant = (
+  { songId: number } &
   Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'> &
   Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'> &
   {
@@ -336,6 +337,7 @@ const Player: FunctionComponent = () => {
     ? songs.reduce<FlattenedNote[]>(
       (accr, song) => [...accr, ...song.dx_intl_variants.reduce<FlattenedNote[]>(
         (accrInner, variant) => [...accrInner, ...variant.dx_intl_notes.map(note => ({
+          songId: song.id,
           category: song.category,
           title: song.title,
           order: song.order,
@@ -362,6 +364,7 @@ const Player: FunctionComponent = () => {
     )
     : songs.reduce<FlattenedVariant[]>(
       (accr, song) => [...accr, ...song.dx_intl_variants.map(variant => ({
+        songId: song.id,
         category: song.category,
         title: song.title,
         order: song.order,
@@ -540,7 +543,7 @@ const Player: FunctionComponent = () => {
       </TableHead>
       <TableBody>
         {currentTabRows.map(row => <TableRow key={`${row.category}/${row.title}/${row.deluxe ? 'true' : 'false'}/${('difficulty' in row) ? row.difficulty : ''}`}>
-          <TableCell>{row.title}</TableCell>
+          <TableCell><Link color='textPrimary' component={RouterLink} to={`/dxi/s/${row.songId}/${(row.deluxe) ? 'dx' : 'std'}/${('difficulty' in row) ? row.difficulty : ''}`}>{row.title}</Link></TableCell>
           <TableCell><Variant deluxe={row.deluxe} /></TableCell>
           {('difficulty' in row)
             ? getNoteScoreCell(row)

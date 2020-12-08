@@ -163,6 +163,7 @@ const PlayerHistory: FunctionComponent = () => {
         (accrInner, variant) => [...accrInner, ...variant.dx_intl_notes.map<[number, FlattenedNote]>(note => [
           note.id,
           {
+            songId: song.id,
             category: song.category,
             title: song.title,
             order: song.order,

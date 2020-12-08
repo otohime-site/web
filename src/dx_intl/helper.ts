@@ -80,6 +80,7 @@ export const constructSongs = (songs: DxIntlSongsQuery['dx_intl_songs']): Constr
 )
 
 export type FlattenedNote = (
+  { songId: number } &
   Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'> &
   Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'> &
   Pick<Dx_Intl_Notes, 'id' | 'difficulty' | 'level'>
