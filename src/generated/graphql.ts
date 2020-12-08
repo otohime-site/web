@@ -2221,6 +2221,220 @@ export type Dx_Intl_Scores_Set_Input = {
   sync_flag?: Maybe<Scalars['dx_intl_sync_flag']>;
 };
 
+/** columns and relationships of "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats = {
+  __typename?: 'dx_intl_scores_stats';
+  count?: Maybe<Scalars['bigint']>;
+  note_id?: Maybe<Scalars['Int']>;
+  range?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Aggregate = {
+  __typename?: 'dx_intl_scores_stats_aggregate';
+  aggregate?: Maybe<Dx_Intl_Scores_Stats_Aggregate_Fields>;
+  nodes: Array<Dx_Intl_Scores_Stats>;
+};
+
+/** aggregate fields of "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Aggregate_Fields = {
+  __typename?: 'dx_intl_scores_stats_aggregate_fields';
+  avg?: Maybe<Dx_Intl_Scores_Stats_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Dx_Intl_Scores_Stats_Max_Fields>;
+  min?: Maybe<Dx_Intl_Scores_Stats_Min_Fields>;
+  stddev?: Maybe<Dx_Intl_Scores_Stats_Stddev_Fields>;
+  stddev_pop?: Maybe<Dx_Intl_Scores_Stats_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Dx_Intl_Scores_Stats_Stddev_Samp_Fields>;
+  sum?: Maybe<Dx_Intl_Scores_Stats_Sum_Fields>;
+  var_pop?: Maybe<Dx_Intl_Scores_Stats_Var_Pop_Fields>;
+  var_samp?: Maybe<Dx_Intl_Scores_Stats_Var_Samp_Fields>;
+  variance?: Maybe<Dx_Intl_Scores_Stats_Variance_Fields>;
+};
+
+
+/** aggregate fields of "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Aggregate_Order_By = {
+  avg?: Maybe<Dx_Intl_Scores_Stats_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Dx_Intl_Scores_Stats_Max_Order_By>;
+  min?: Maybe<Dx_Intl_Scores_Stats_Min_Order_By>;
+  stddev?: Maybe<Dx_Intl_Scores_Stats_Stddev_Order_By>;
+  stddev_pop?: Maybe<Dx_Intl_Scores_Stats_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Dx_Intl_Scores_Stats_Stddev_Samp_Order_By>;
+  sum?: Maybe<Dx_Intl_Scores_Stats_Sum_Order_By>;
+  var_pop?: Maybe<Dx_Intl_Scores_Stats_Var_Pop_Order_By>;
+  var_samp?: Maybe<Dx_Intl_Scores_Stats_Var_Samp_Order_By>;
+  variance?: Maybe<Dx_Intl_Scores_Stats_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type Dx_Intl_Scores_Stats_Avg_Fields = {
+  __typename?: 'dx_intl_scores_stats_avg_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Avg_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "dx_intl_scores_stats". All fields are combined with a logical 'AND'. */
+export type Dx_Intl_Scores_Stats_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Dx_Intl_Scores_Stats_Bool_Exp>>>;
+  _not?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Dx_Intl_Scores_Stats_Bool_Exp>>>;
+  count?: Maybe<Bigint_Comparison_Exp>;
+  note_id?: Maybe<Int_Comparison_Exp>;
+  range?: Maybe<String_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Dx_Intl_Scores_Stats_Max_Fields = {
+  __typename?: 'dx_intl_scores_stats_max_fields';
+  count?: Maybe<Scalars['bigint']>;
+  note_id?: Maybe<Scalars['Int']>;
+  range?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Max_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+  range?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Dx_Intl_Scores_Stats_Min_Fields = {
+  __typename?: 'dx_intl_scores_stats_min_fields';
+  count?: Maybe<Scalars['bigint']>;
+  note_id?: Maybe<Scalars['Int']>;
+  range?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Min_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+  range?: Maybe<Order_By>;
+};
+
+/** ordering options when selecting data from "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+  range?: Maybe<Order_By>;
+};
+
+/** select columns of table "dx_intl_scores_stats" */
+export enum Dx_Intl_Scores_Stats_Select_Column {
+  /** column name */
+  Count = 'count',
+  /** column name */
+  NoteId = 'note_id',
+  /** column name */
+  Range = 'range'
+}
+
+/** aggregate stddev on columns */
+export type Dx_Intl_Scores_Stats_Stddev_Fields = {
+  __typename?: 'dx_intl_scores_stats_stddev_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Stddev_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Dx_Intl_Scores_Stats_Stddev_Pop_Fields = {
+  __typename?: 'dx_intl_scores_stats_stddev_pop_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Stddev_Pop_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Dx_Intl_Scores_Stats_Stddev_Samp_Fields = {
+  __typename?: 'dx_intl_scores_stats_stddev_samp_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Stddev_Samp_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Dx_Intl_Scores_Stats_Sum_Fields = {
+  __typename?: 'dx_intl_scores_stats_sum_fields';
+  count?: Maybe<Scalars['bigint']>;
+  note_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Sum_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Dx_Intl_Scores_Stats_Var_Pop_Fields = {
+  __typename?: 'dx_intl_scores_stats_var_pop_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Var_Pop_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Dx_Intl_Scores_Stats_Var_Samp_Fields = {
+  __typename?: 'dx_intl_scores_stats_var_samp_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Var_Samp_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Dx_Intl_Scores_Stats_Variance_Fields = {
+  __typename?: 'dx_intl_scores_stats_variance_fields';
+  count?: Maybe<Scalars['Float']>;
+  note_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Variance_Order_By = {
+  count?: Maybe<Order_By>;
+  note_id?: Maybe<Order_By>;
+};
+
 /** aggregate stddev on columns */
 export type Dx_Intl_Scores_Stddev_Fields = {
   __typename?: 'dx_intl_scores_stddev_fields';
@@ -3845,6 +4059,10 @@ export type Query_Root = {
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate;
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>;
+  /** fetch data from the table: "dx_intl_scores_stats" */
+  dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>;
+  /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
+  dx_intl_scores_stats_aggregate: Dx_Intl_Scores_Stats_Aggregate;
   /** fetch data from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history: Array<Dx_Intl_Scores_With_History>;
   /** fetch aggregated fields from the table: "dx_intl_scores_with_history" */
@@ -4041,6 +4259,26 @@ export type Query_RootDx_Intl_Scores_By_PkArgs = {
 
 
 /** query root */
+export type Query_RootDx_Intl_Scores_StatsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Scores_Stats_Order_By>>;
+  where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootDx_Intl_Scores_Stats_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Scores_Stats_Order_By>>;
+  where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>;
+};
+
+
+/** query root */
 export type Query_RootDx_Intl_Scores_With_HistoryArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_With_History_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -4217,6 +4455,10 @@ export type Subscription_Root = {
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate;
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>;
+  /** fetch data from the table: "dx_intl_scores_stats" */
+  dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>;
+  /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
+  dx_intl_scores_stats_aggregate: Dx_Intl_Scores_Stats_Aggregate;
   /** fetch data from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history: Array<Dx_Intl_Scores_With_History>;
   /** fetch aggregated fields from the table: "dx_intl_scores_with_history" */
@@ -4409,6 +4651,26 @@ export type Subscription_RootDx_Intl_Scores_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootDx_Intl_Scores_By_PkArgs = {
   id: Scalars['bigint'];
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Scores_StatsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Scores_Stats_Order_By>>;
+  where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootDx_Intl_Scores_Stats_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dx_Intl_Scores_Stats_Order_By>>;
+  where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>;
 };
 
 
@@ -4999,14 +5261,16 @@ export type DeleteDxIntlPlayerMutation = (
   )> }
 );
 
-export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never; }>;
+export type DxIntlSongsQueryVariables = Exact<{
+  id?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type DxIntlSongsQuery = (
   { __typename?: 'query_root' }
   & { dx_intl_songs: Array<(
     { __typename?: 'dx_intl_songs' }
-    & Pick<Dx_Intl_Songs, 'category' | 'title' | 'order'>
+    & Pick<Dx_Intl_Songs, 'id' | 'category' | 'title' | 'order'>
     & { dx_intl_variants: Array<(
       { __typename?: 'dx_intl_variants' }
       & Pick<Dx_Intl_Variants, 'deluxe' | 'version' | 'active'>
@@ -5113,6 +5377,19 @@ export type DxIntlBaseRatingQuery = (
   )> }
 );
 
+export type DxIntlScoresStatsQueryVariables = Exact<{
+  noteId: Scalars['Int'];
+}>;
+
+
+export type DxIntlScoresStatsQuery = (
+  { __typename?: 'query_root' }
+  & { dx_intl_scores_stats: Array<(
+    { __typename?: 'dx_intl_scores_stats' }
+    & Pick<Dx_Intl_Scores_Stats, 'range' | 'count'>
+  )> }
+);
+
 
 export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Tokens"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokens"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"created_at"},"arguments":[],"directives":[]}]}}]}}]};
 export const RegenerateTokenDocument: DocumentNode<RegenerateTokenMutation, RegenerateTokenMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"regenerateToken"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_tokens"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_tokens_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
@@ -5121,10 +5398,11 @@ export const DxIntlPlayersDocument: DocumentNode<DxIntlPlayersQuery, DxIntlPlaye
 export const InsertDxIntlPlayerDocument: DocumentNode<InsertDxIntlPlayerMutation, InsertDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"insertDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_players_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
 export const UpdateDxIntlPlayerDocument: DocumentNode<UpdateDxIntlPlayerMutation, UpdateDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"private"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"private"},"value":{"kind":"Variable","name":{"kind":"Name","value":"private"}}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
 export const DeleteDxIntlPlayerDocument: DocumentNode<DeleteDxIntlPlayerMutation, DeleteDxIntlPlayerMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"deleteDxIntlPlayer"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_dx_intl_players_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk"}}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]}]}}]}}]};
-export const DxIntlSongsDocument: DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlSongs"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_songs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"order"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"category"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"deluxe"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deluxe"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"version"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"active"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_notes"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"difficulty"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"level"},"arguments":[],"directives":[]}]}}]}}]}}]}}]};
+export const DxIntlSongsDocument: DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlSongs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_songs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"category"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"order"},"value":{"kind":"EnumValue","value":"asc"}}]}]}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"category"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"order"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"deluxe"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deluxe"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"version"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"active"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_notes"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"difficulty"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"level"},"arguments":[],"directives":[]}]}}]}}]}}]}}]};
 export const DxIntlRecordWithScoresDocument: DocumentNode<DxIntlRecordWithScoresQuery, DxIntlRecordWithScoresQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updated_at"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_record"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"card_name"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"trophy"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"max_rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"grade"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"dx_intl_scores"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"score"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"combo_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"sync_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"start"},"arguments":[],"directives":[]}]}}]}}]}}]};
 export const DxIntlPlayersTimelinesDocument: DocumentNode<DxIntlPlayersTimelinesQuery, DxIntlPlayersTimelinesQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayersTimelines"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players_timelines"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"timelines"},"arguments":[],"directives":[]}]}}]}}]};
 export const DxIntlPlayerWithTimelineDocument: DocumentNode<DxIntlPlayerWithTimelineQuery, DxIntlPlayerWithTimelineQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayerWithTimeline"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"time"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"timestamptz"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"beforeRecord"},"name":{"kind":"Name","value":"dx_intl_records_with_history"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"end"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"time"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"card_name"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"trophy"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"max_rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"grade"},"arguments":[],"directives":[]}]}},{"kind":"Field","alias":{"kind":"Name","value":"afterRecord"},"name":{"kind":"Name","value":"dx_intl_records_with_history"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"start"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"time"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"card_name"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"title"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"trophy"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"max_rating"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"grade"},"arguments":[],"directives":[]}]}},{"kind":"Field","alias":{"kind":"Name","value":"beforeScores"},"name":{"kind":"Name","value":"dx_intl_scores_with_history"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"end"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"time"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"score"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"combo_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"sync_flag"},"arguments":[],"directives":[]}]}},{"kind":"Field","alias":{"kind":"Name","value":"afterScores"},"name":{"kind":"Name","value":"dx_intl_scores_with_history"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"dx_intl_player"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"start"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"time"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"note_id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"score"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"combo_flag"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"sync_flag"},"arguments":[],"directives":[]}]}}]}}]};
 export const DxIntlPlayersEditableDocument: DocumentNode<DxIntlPlayersEditableQuery, DxIntlPlayersEditableQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlPlayersEditable"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_players"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"user_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"nickname"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nickname"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"nickname"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"private"},"arguments":[],"directives":[]}]}}]}}]};
 export const InsertDxIntlRecordWithScoresDocument: DocumentNode<InsertDxIntlRecordWithScoresMutation, InsertDxIntlRecordWithScoresMutationVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertDxIntlRecordWithScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"record"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_records_insert_input"}}},"directives":[]},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"scores"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"dx_intl_scores_insert_input"}}}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_records_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"record"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_records_player_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"card_name"},{"kind":"EnumValue","value":"title"},{"kind":"EnumValue","value":"trophy"},{"kind":"EnumValue","value":"rating"},{"kind":"EnumValue","value":"max_rating"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"},"arguments":[],"directives":[]}]}},{"kind":"Field","name":{"kind":"Name","value":"insert_dx_intl_scores"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"scores"}}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"dx_intl_scores_player_id_note_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"score"},{"kind":"EnumValue","value":"combo_flag"},{"kind":"EnumValue","value":"sync_flag"}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"affected_rows"},"arguments":[],"directives":[]}]}}]}}]};
 export const DxIntlBaseRatingDocument: DocumentNode<DxIntlBaseRatingQuery, DxIntlBaseRatingQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlBaseRating"},"variableDefinitions":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_base_rating"},"arguments":[],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"range"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"count"},"arguments":[],"directives":[]}]}}]}}]};
+export const DxIntlScoresStatsDocument: DocumentNode<DxIntlScoresStatsQuery, DxIntlScoresStatsQueryVariables> = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"dxIntlScoresStats"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"noteId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},"directives":[]}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dx_intl_scores_stats"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"note_id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"noteId"}}}]}}]}}],"directives":[],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"range"},"arguments":[],"directives":[]},{"kind":"Field","name":{"kind":"Name","value":"count"},"arguments":[],"directives":[]}]}}]}}]};

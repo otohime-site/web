@@ -36,11 +36,12 @@ mutation deleteDxIntlPlayer($pk: Int!) {
   }
 }
 
-query dxIntlSongs {
+query dxIntlSongs($id: Int) {
   dx_intl_songs(order_by: [
     {category: asc},
-    {order: asc}
-  ]) {
+    {order: asc},
+  ], where: {id: {_eq: $id}}) {
+    id
     category
     title
     order
@@ -149,6 +150,13 @@ mutation InsertDxIntlRecordWithScores(
 
 query dxIntlBaseRating {
   dx_intl_base_rating {
+    range
+    count
+  }
+}
+
+query dxIntlScoresStats($noteId: Int!) {
+  dx_intl_scores_stats(where: {note_id: {_eq: $noteId}}) {
     range
     count
   }
