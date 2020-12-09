@@ -2,7 +2,7 @@
 
 It is a TypeScript / React project.
 
-#### Get Startted
+#### Get Started
 
 Register and set:
 
