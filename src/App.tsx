@@ -13,6 +13,7 @@ import Forget from './Forget'
 import DxIntl from './dx_intl/index'
 
 import './App.css'
+import { Helmet } from 'react-helmet-async'
 
 const Title = styled(Typography)`
   flex-grow: 1;
@@ -60,6 +61,9 @@ const App: FunctionComponent = () => {
 
   return (
     <div className='App'>
+      <Helmet>
+        <title>Otohime</title>
+      </Helmet>
       <AppBar position='fixed' className={(drawerOpen) ? 'open' : ''}>
         <Toolbar>
           <AppMenuButton edge='start' color='inherit' aria-label='menu' onClick={toggleDrawerOpen}>
