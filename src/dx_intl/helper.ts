@@ -25,9 +25,9 @@ export const versions = [
   'MiLK PLUS',
   'FiNALE',
   'DX',
-  'DX Plus' //,
-  // 'DX Splash',
-  // 'DX Splash PLUS'
+  'DX Plus',
+  'Splash'
+  // 'Splash PLUS'
 ] as const
 
 export const levels = [
