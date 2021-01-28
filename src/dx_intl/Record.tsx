@@ -109,7 +109,7 @@ const Record: FunctionComponent<{
   <div>
     <Subtitle>
       <Rating rating={record.rating} />
-      (Max: {record.max_rating})
+      {(record.max_rating >= 0) ? `(Max: ${record.max_rating})` : '' }
       <Grade grade={record.grade} />
     </Subtitle>
     <CardName>{record.card_name}</CardName>

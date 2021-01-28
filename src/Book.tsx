@@ -108,6 +108,7 @@ const book: FunctionComponent = () => {
         {
           record: {
             player_id: playerId,
+            max_rating: -1,
             ...parsedPlayer
           },
           scores: scores.map(score => ({

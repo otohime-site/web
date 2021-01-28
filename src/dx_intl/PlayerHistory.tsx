@@ -234,9 +234,9 @@ const PlayerHistory: FunctionComponent = () => {
       {(before?.max_rating !== after?.max_rating)
         ? <TableRow>
           <TableCell colSpan={3}>Max Rating</TableCell>
-          <BeforeCell>{before?.max_rating ?? ''}</BeforeCell>
+          <BeforeCell>{((before?.max_rating ?? 0) >= 0) ? (before?.max_rating ?? '') : ''}</BeforeCell>
           <TableCell><ArrowForwardIcon /></TableCell>
-          <TableCell>{after?.max_rating ?? ''}</TableCell>
+          <TableCell>{((after?.max_rating ?? 0) >= 0) ? (after?.max_rating ?? '') : ''}</TableCell>
         </TableRow>
         : <></>}
       {(before?.grade !== after?.grade)
