@@ -132,7 +132,7 @@ mutation InsertDxIntlRecordWithScores(
     object: $record,
     on_conflict: {
       constraint: dx_intl_records_player_id_key,
-      update_columns: [card_name, title, trophy, rating, max_rating]
+      update_columns: [card_name, title, trophy, rating, max_rating, grade]
     }
   ) {
     __typename
