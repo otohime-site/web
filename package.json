@@ -38,7 +38,7 @@
     "rxjs": "^6.6.3",
     "subscriptions-transport-ws": "^0.9.18",
     "typesafe-actions": "^4.4.2",
-    "urql": "^1.11.6",
+    "urql": "^2.0.1",
     "victory": "^35.4.9"
   },
   "devDependencies": {
