@@ -20,7 +20,7 @@ const config: Configuration = {
   plugins: [
     new MiniCssExtractPlugin(),
     new HTMLWebpackPlugin({
-      template: resolve(__dirname, './src/index.html'),
+      template: 'src/index.html',
       chunks: ['index']
     }),
     new BookmarkletPlugin()
