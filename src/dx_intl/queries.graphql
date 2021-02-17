@@ -49,7 +49,7 @@ query dxIntlSongs($id: Int) {
       deluxe
       version
       active
-      dx_intl_notes {
+      dx_intl_notes(order_by: {difficulty: asc}) {
         id
         difficulty
         level
