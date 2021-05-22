@@ -3,6 +3,7 @@ import "firebase/auth"
 import React from "react"
 import { render } from "react-dom"
 import { BrowserRouter } from "react-router-dom"
+import { ThemeProvider as EMThemeProvider } from "@emotion/react"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
 import { createMuiTheme } from "@material-ui/core/styles"
@@ -33,12 +34,14 @@ render(
   <BrowserRouter>
     <HelmetProvider>
       <StylesProvider injectFirst={true}>
-        <ThemeProvider theme={theme}>
-          <GraphQLProvider>
-            <CssBaseline />
-            <App />
-          </GraphQLProvider>
-        </ThemeProvider>
+        <EMThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <GraphQLProvider>
+              <CssBaseline />
+              <App />
+            </GraphQLProvider>
+          </ThemeProvider>
+        </EMThemeProvider>
       </StylesProvider>
     </HelmetProvider>
   </BrowserRouter>,

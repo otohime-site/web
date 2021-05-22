@@ -1,5 +1,6 @@
 import React from "react"
 import { render } from "react-dom"
+import { ThemeProvider as EMThemeProvider } from "@emotion/react"
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
 import { createMuiTheme } from "@material-ui/core/styles"
@@ -36,12 +37,14 @@ if (document.getElementById("otohime-root") != null) {
   render(
     <Container>
       <StylesProvider injectFirst={true}>
-        <ThemeProvider theme={theme}>
-          <GraphQLBookmarkletProvider token={token}>
-            <ScopedCssBaseline />
-            <Book />
-          </GraphQLBookmarkletProvider>
-        </ThemeProvider>
+        <EMThemeProvider theme={theme}>
+          <ThemeProvider theme={theme}>
+            <GraphQLBookmarkletProvider token={token}>
+              <ScopedCssBaseline />
+              <Book />
+            </GraphQLBookmarkletProvider>
+          </ThemeProvider>
+        </EMThemeProvider>
       </StylesProvider>
     </Container>,
     root
