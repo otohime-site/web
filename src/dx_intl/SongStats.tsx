@@ -19,7 +19,8 @@ import {
   Dx_Intl_Scores_Stats,
 } from "../generated/graphql"
 import { QueryResult } from "../QueryResult"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 import { difficulties, NoteList } from "./helper"
 
 const FontTypo = styled(Typography)`

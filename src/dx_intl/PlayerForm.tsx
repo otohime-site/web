@@ -27,7 +27,8 @@ import { useForm, Controller } from "react-hook-form"
 import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 
 const StyledFormControl = styled(FormControl)`
   margin: 16px 0;

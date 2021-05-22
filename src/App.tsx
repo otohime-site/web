@@ -1,4 +1,5 @@
-import styled from "./styled"
+import styled from "@emotion/styled"
+
 import React, { FunctionComponent, useState } from "react"
 import { Route, Link as RouterLink, Switch } from "react-router-dom"
 import {

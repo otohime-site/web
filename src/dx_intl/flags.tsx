@@ -9,7 +9,8 @@ import FSP from "./flags/fsp.svg"
 import FSD from "./flags/fsd.svg"
 import FSDP from "./flags/fsdp.svg"
 import { Scalars } from "../generated/graphql"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 
 const getComboImage = (flag: Scalars["dx_intl_combo_flag"]): any => {
   switch (flag) {

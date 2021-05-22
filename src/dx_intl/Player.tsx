@@ -50,7 +50,8 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
 import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import {

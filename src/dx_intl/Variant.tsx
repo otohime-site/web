@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react"
 import STD from "./variants/std.svg"
 import DX from "./variants/dx.svg"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 
 const VariantImage = styled("img")`
   height: 1em;

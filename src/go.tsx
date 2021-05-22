@@ -1,13 +1,12 @@
 import React from "react"
 import { render } from "react-dom"
-import { ThemeProvider as EMThemeProvider } from "emotion-theming"
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
 import { createMuiTheme } from "@material-ui/core/styles"
 import { pink, orange } from "@material-ui/core/colors"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
 import Book from "./Book"
-import styled from "./styled"
+import styled from "@emotion/styled"
 
 const theme = createMuiTheme({
   palette: {
@@ -37,14 +36,12 @@ if (document.getElementById("otohime-root") != null) {
   render(
     <Container>
       <StylesProvider injectFirst={true}>
-        <EMThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <GraphQLBookmarkletProvider token={token}>
-              <ScopedCssBaseline />
-              <Book />
-            </GraphQLBookmarkletProvider>
-          </ThemeProvider>
-        </EMThemeProvider>
+        <ThemeProvider theme={theme}>
+          <GraphQLBookmarkletProvider token={token}>
+            <ScopedCssBaseline />
+            <Book />
+          </GraphQLBookmarkletProvider>
+        </ThemeProvider>
       </StylesProvider>
     </Container>,
     root

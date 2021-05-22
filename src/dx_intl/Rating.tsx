@@ -9,7 +9,8 @@ import Bronze from "./ratings/bronze.svg"
 import Silver from "./ratings/silver.svg"
 import Gold from "./ratings/gold.svg"
 import Rainbow from "./ratings/rainbow.svg"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 
 const getRatingImage = (rating: number): any => {
   switch (true) {

@@ -1,6 +1,5 @@
 import firebase from "firebase/app"
 import "firebase/auth"
-import { ThemeProvider as EMThemeProvider } from "emotion-theming"
 import React from "react"
 import { render } from "react-dom"
 import { BrowserRouter } from "react-router-dom"
@@ -34,14 +33,12 @@ render(
   <BrowserRouter>
     <HelmetProvider>
       <StylesProvider injectFirst={true}>
-        <EMThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <GraphQLProvider>
-              <CssBaseline />
-              <App />
-            </GraphQLProvider>
-          </ThemeProvider>
-        </EMThemeProvider>
+        <ThemeProvider theme={theme}>
+          <GraphQLProvider>
+            <CssBaseline />
+            <App />
+          </GraphQLProvider>
+        </ThemeProvider>
       </StylesProvider>
     </HelmetProvider>
   </BrowserRouter>,

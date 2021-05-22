@@ -16,7 +16,8 @@ import { Link as RouterLink } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
 import { useAuth } from "./auth"
 import Token from "./Token"
-import styled from "./styled"
+import styled from "@emotion/styled"
+
 import { TabContext, TabPanel } from "@material-ui/lab"
 import DxUserPlayers from "./dx_intl/UserPlayers"
 

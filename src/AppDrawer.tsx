@@ -1,4 +1,5 @@
-import styled from "./styled"
+import styled from "@emotion/styled"
+
 import React, { FunctionComponent } from "react"
 import {
   Drawer,

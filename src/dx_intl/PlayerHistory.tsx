@@ -33,7 +33,8 @@ import {
   DxIntlPlayerWithTimelineQuery,
   Dx_Intl_Scores,
 } from "../generated/graphql"
-import styled from "../styled"
+import styled from "@emotion/styled"
+
 import { gradeNames } from "./Grade"
 import { difficulties, FlattenedNote } from "./helper"
 import { Helmet } from "react-helmet-async"

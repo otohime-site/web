@@ -44,7 +44,8 @@ import { fromFetch } from "rxjs/fetch"
 import { Alert } from "@material-ui/lab"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import PlayerListItem from "./dx_intl/PlayerListItem"
-import styled from "./styled"
+import styled from "@emotion/styled"
+
 import { constructSongs } from "./dx_intl/helper"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
