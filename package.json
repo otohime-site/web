@@ -34,7 +34,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-virtualized": "^9.22.3",
-    "rxjs": "^6.6.7",
+    "rxjs": "^7.1.0",
     "subscriptions-transport-ws": "^0.9.18",
     "urql": "^2.0.3"
   },
