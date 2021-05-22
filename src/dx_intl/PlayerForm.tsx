@@ -60,8 +60,13 @@ interface FormParams {
 
 const PlayerForm: FunctionComponent = () => {
   const [user] = useAuth(firebase.auth())
-  const { control, handleSubmit, setError, errors, reset } =
-    useForm<FormParams>()
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors },
+    reset,
+  } = useForm<FormParams>()
   const params = useParams<{ nickname?: string }>()
   const history = useHistory()
   const [, insertPlayer] = useMutation(InsertDxIntlPlayerDocument)
@@ -177,9 +182,8 @@ const PlayerForm: FunctionComponent = () => {
         <StyledFormControl fullWidth error={errors.nickname != null}>
           <InputLabel htmlFor="nickname">暱稱</InputLabel>
           <Controller
-            as={Input}
+            render={({ field }) => <Input id="nickname" {...field} />}
             name="nickname"
-            id="nickname"
             control={control}
             defaultValue=""
             rules={{
@@ -205,8 +209,8 @@ const PlayerForm: FunctionComponent = () => {
             control={control}
             defaultValue=""
             rules={{ required: true }}
-            as={
-              <RadioGroup>
+            render={({ field }) => (
+              <RadioGroup {...field}>
                 <FormControlLabel
                   value="public"
                   control={<Radio />}
@@ -245,7 +249,7 @@ const PlayerForm: FunctionComponent = () => {
                   </StyledList>
                 </FormHelperText>
               </RadioGroup>
-            }
+            )}
           ></Controller>
           {errors.private != null ? (
             <FormHelperText>請選擇一個。</FormHelperText>
