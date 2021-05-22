@@ -8,9 +8,7 @@ mutation regenerateToken {
   delete_tokens(where: {}) {
     affected_rows
   }
-  insert_tokens_one(
-    object: {}
-  ) {
+  insert_tokens_one(object: {}) {
     id
   }
 }

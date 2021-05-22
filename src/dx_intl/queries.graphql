@@ -1,5 +1,5 @@
 query dxIntlPlayers($userId: String) {
-  dx_intl_players(where: {user_id: {_eq: $userId}}) {
+  dx_intl_players(where: { user_id: { _eq: $userId } }) {
     id
     nickname
     private
@@ -13,20 +13,17 @@ query dxIntlPlayers($userId: String) {
   }
 }
 mutation insertDxIntlPlayer($nickname: String, $private: Boolean) {
-  insert_dx_intl_players_one(object: {
-    nickname: $nickname,
-    private: $private
-  }) {
+  insert_dx_intl_players_one(
+    object: { nickname: $nickname, private: $private }
+  ) {
     id
   }
 }
 mutation updateDxIntlPlayer($pk: Int!, $nickname: String, $private: Boolean) {
   update_dx_intl_players_by_pk(
-    pk_columns: {id: $pk},
-		_set: {
-    	nickname: $nickname,
-    	private: $private
-  	}) {
+    pk_columns: { id: $pk }
+    _set: { nickname: $nickname, private: $private }
+  ) {
     id
   }
 }
@@ -37,19 +34,19 @@ mutation deleteDxIntlPlayer($pk: Int!) {
 }
 
 query dxIntlSongs($id: Int) {
-  dx_intl_songs(order_by: [
-    {category: asc},
-    {order: asc},
-  ], where: {id: {_eq: $id}}) {
+  dx_intl_songs(
+    order_by: [{ category: asc }, { order: asc }]
+    where: { id: { _eq: $id } }
+  ) {
     id
     category
     title
     order
-    dx_intl_variants(order_by: {deluxe: asc}) {
+    dx_intl_variants(order_by: { deluxe: asc }) {
       deluxe
       version
       active
-      dx_intl_notes(order_by: {difficulty: asc}) {
+      dx_intl_notes(order_by: { difficulty: asc }) {
         id
         difficulty
         level
@@ -58,7 +55,7 @@ query dxIntlSongs($id: Int) {
   }
 }
 query dxIntlRecordWithScores($nickname: String!) {
-  dx_intl_players(where: {nickname: {_eq: $nickname}}) {
+  dx_intl_players(where: { nickname: { _eq: $nickname } }) {
     updated_at
     private
     dx_intl_record {
@@ -80,13 +77,20 @@ query dxIntlRecordWithScores($nickname: String!) {
 }
 
 query dxIntlPlayersTimelines($nickname: String) {
-  dx_intl_players_timelines(where: {player: {nickname: {_eq: $nickname}}}) {
+  dx_intl_players_timelines(
+    where: { player: { nickname: { _eq: $nickname } } }
+  ) {
     timelines
   }
 }
 
 query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
-  beforeRecord: dx_intl_records_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, end: { _eq: $time } }) {
+  beforeRecord: dx_intl_records_with_history(
+    where: {
+      dx_intl_player: { nickname: { _eq: $nickname } }
+      end: { _eq: $time }
+    }
+  ) {
     card_name
     title
     trophy
@@ -94,7 +98,12 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
     max_rating
     grade
   }
-  afterRecord: dx_intl_records_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, start: { _eq: $time } }) {
+  afterRecord: dx_intl_records_with_history(
+    where: {
+      dx_intl_player: { nickname: { _eq: $nickname } }
+      start: { _eq: $time }
+    }
+  ) {
     card_name
     title
     trophy
@@ -102,13 +111,23 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
     max_rating
     grade
   }
-  beforeScores: dx_intl_scores_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, end: { _eq: $time } }) {
+  beforeScores: dx_intl_scores_with_history(
+    where: {
+      dx_intl_player: { nickname: { _eq: $nickname } }
+      end: { _eq: $time }
+    }
+  ) {
     note_id
     score
     combo_flag
     sync_flag
   }
-  afterScores: dx_intl_scores_with_history(where: { dx_intl_player: { nickname: { _eq: $nickname } }, start: { _eq: $time } }) {
+  afterScores: dx_intl_scores_with_history(
+    where: {
+      dx_intl_player: { nickname: { _eq: $nickname } }
+      start: { _eq: $time }
+    }
+  ) {
     note_id
     score
     combo_flag
@@ -117,7 +136,9 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
 }
 
 query dxIntlPlayersEditable($userId: String, $nickname: String) {
-  dx_intl_players(where: {user_id: {_eq: $userId}, nickname: {_eq: $nickname}}) {
+  dx_intl_players(
+    where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }
+  ) {
     id
     nickname
     private
@@ -125,22 +146,22 @@ query dxIntlPlayersEditable($userId: String, $nickname: String) {
 }
 
 mutation InsertDxIntlRecordWithScores(
-  $record: dx_intl_records_insert_input!,
-  $scores: [dx_intl_scores_insert_input!]!,
+  $record: dx_intl_records_insert_input!
+  $scores: [dx_intl_scores_insert_input!]!
 ) {
   insert_dx_intl_records_one(
-    object: $record,
+    object: $record
     on_conflict: {
-      constraint: dx_intl_records_player_id_key,
+      constraint: dx_intl_records_player_id_key
       update_columns: [card_name, title, trophy, rating, max_rating, grade]
     }
   ) {
     __typename
   }
   insert_dx_intl_scores(
-    objects: $scores,
+    objects: $scores
     on_conflict: {
-      constraint: dx_intl_scores_player_id_note_id_key,
+      constraint: dx_intl_scores_player_id_note_id_key
       update_columns: [score, combo_flag, sync_flag]
     }
   ) {
@@ -156,7 +177,7 @@ query dxIntlBaseRating {
 }
 
 query dxIntlScoresStats($noteId: Int!) {
-  dx_intl_scores_stats(where: {note_id: {_eq: $noteId}}) {
+  dx_intl_scores_stats(where: { note_id: { _eq: $noteId } }) {
     range
     count
   }

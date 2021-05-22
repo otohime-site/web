@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
-import firebase from 'firebase/app'
+import { useState, useEffect } from "react"
+import firebase from "firebase/app"
 
-export const useAuth = (auth: firebase.auth.Auth): [ firebase.User | null, boolean ] => {
+export const useAuth = (
+  auth: firebase.auth.Auth
+): [firebase.User | null, boolean] => {
   const [user, setUser] = useState<firebase.User | null>(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {
