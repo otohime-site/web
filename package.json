@@ -7,7 +7,7 @@
   "scripts": {
     "start": "webpack serve --progress",
     "build": "webpack --mode production --progress",
-    "lint": "eslint src",
+    "lint": "eslint",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.yml",
     "prepare": "husky install"
@@ -76,7 +76,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*.ts,*.tsx,*.js": "eslint --cache --fix",
+    "*.{ts,tsx,js,css,md}": "prettier --write"
   }
 }
