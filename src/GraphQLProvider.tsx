@@ -19,7 +19,7 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
   const client = useMemo(
     () =>
       createClient({
-        url: `https://${location.host}/graphql`,
+        url: `https://${host}/graphql`,
         exchanges: [
           dedupExchange,
           cacheExchange,
