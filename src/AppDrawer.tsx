@@ -1,8 +1,6 @@
 import styled from './styled'
 import React, { FunctionComponent } from 'react'
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core'
-import CardIcon from '@material-ui/icons/CreditCard'
-import ListIcon from '@material-ui/icons/List'
+import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home'
 import LaundryOutlinedIcon from '@material-ui/icons/LocalLaundryServiceOutlined'
 
@@ -23,9 +21,7 @@ const StyledDrawer = styled(Drawer)`
     width: ${props => props.theme.spacing(7) + 1}px;
   }
 `
-const NestedList = styled(List)`
-  padding-left: ${props => props.theme.spacing(2)}px;
-`
+
 /*
 const StyledBadge = styled(Badge)`
   .badge {
