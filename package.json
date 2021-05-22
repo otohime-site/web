@@ -7,8 +7,7 @@
   "scripts": {
     "start": "webpack serve --progress",
     "build": "webpack --mode production --progress",
-    "lint": "tslint 'src/**/*.ts?(x)'",
-    "lint:js": "eslint --cache --format codeframe --ext mjs,jsx,js src",
+    "lint": "eslint src",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -56,6 +55,7 @@
     "@typescript-eslint/parser": "^4.24.0",
     "css-loader": "^5.2.5",
     "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-node": "^11.1.0",
