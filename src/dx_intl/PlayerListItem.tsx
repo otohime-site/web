@@ -6,11 +6,11 @@ import {
 } from "@material-ui/core"
 import React, { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
-import { DxIntlPlayersQuery } from "../generated/graphql"
 import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
+import { DxIntlPlayersQuery } from "../generated/graphql"
 import { gradeNames } from "./Grade"
 
 const PlayerListItem: FunctionComponent<{

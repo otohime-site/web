@@ -5,9 +5,9 @@ import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
 import { createMuiTheme } from "@material-ui/core/styles"
 import { pink, orange } from "@material-ui/core/colors"
+import styled from "@emotion/styled"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
 import Book from "./Book"
-import styled from "@emotion/styled"
 
 const theme = createMuiTheme({
   palette: {

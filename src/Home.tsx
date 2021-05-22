@@ -14,11 +14,11 @@ import firebase from "firebase/app"
 import React, { FunctionComponent, useState } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
+import styled from "@emotion/styled"
+import { TabContext, TabPanel } from "@material-ui/lab"
 import { useAuth } from "./auth"
 import Token from "./Token"
-import styled from "@emotion/styled"
 
-import { TabContext, TabPanel } from "@material-ui/lab"
 import DxUserPlayers from "./dx_intl/UserPlayers"
 
 const SpacedContainer = styled("div")`

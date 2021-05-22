@@ -12,6 +12,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu"
 import GitHubIcon from "@material-ui/icons/GitHub"
 
+import { Helmet } from "react-helmet-async"
 import AppBar from "./AppBar"
 import AppDrawer from "./AppDrawer"
 import Home from "./Home"
@@ -20,7 +21,6 @@ import Forget from "./Forget"
 import DxIntl from "./dx_intl/index"
 
 import "./App.css"
-import { Helmet } from "react-helmet-async"
 
 const Title = styled(Typography)`
   flex-grow: 1;

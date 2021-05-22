@@ -26,6 +26,8 @@ import React, { FunctionComponent } from "react"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
+import styled from "@emotion/styled"
+import { Helmet } from "react-helmet-async"
 import {
   DxIntlSongsDocument,
   DxIntlPlayersTimelinesDocument,
@@ -33,11 +35,9 @@ import {
   DxIntlPlayerWithTimelineQuery,
   Dx_Intl_Scores,
 } from "../generated/graphql"
-import styled from "@emotion/styled"
 
 import { gradeNames } from "./Grade"
 import { difficulties, FlattenedNote } from "./helper"
-import { Helmet } from "react-helmet-async"
 import Variant from "./Variant"
 import { ActualScore, FlagContainer } from "./Player"
 import { ComboFlag, SyncFlag } from "./flags"

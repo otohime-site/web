@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react"
+import styled from "@emotion/styled"
 import Normal from "./ratings/normal.svg"
 import Blue from "./ratings/blue.svg"
 import Green from "./ratings/green.svg"
@@ -9,8 +10,6 @@ import Bronze from "./ratings/bronze.svg"
 import Silver from "./ratings/silver.svg"
 import Gold from "./ratings/gold.svg"
 import Rainbow from "./ratings/rainbow.svg"
-import styled from "@emotion/styled"
-
 
 const getRatingImage = (rating: number): any => {
   switch (true) {

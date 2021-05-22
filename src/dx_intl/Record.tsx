@@ -1,7 +1,7 @@
 import { Tooltip } from "@material-ui/core"
 import React, { FunctionComponent } from "react"
-import { Dx_Intl_Records } from "../generated/graphql"
 import styled from "@emotion/styled"
+import { Dx_Intl_Records } from "../generated/graphql"
 
 import Grade from "./Grade"
 import Rating from "./Rating"

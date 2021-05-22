@@ -11,7 +11,6 @@ import {
   Link,
   Typography,
 } from "@material-ui/core"
-import host from "./host"
 import {
   useObservable,
   useObservableState,
@@ -19,13 +18,7 @@ import {
   useSubscription,
 } from "observable-hooks"
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
-import {
-  DxIntlPlayersDocument,
-  DxIntlSongsDocument,
-  InsertDxIntlRecordWithScoresDocument,
-} from "./generated/graphql"
 import { useQuery, useClient } from "urql"
-import { QueryResult } from "./QueryResult"
 import { from } from "rxjs"
 import {
   mergeMap,
@@ -43,8 +36,15 @@ import {
 import { fromFetch } from "rxjs/fetch"
 import { Alert } from "@material-ui/lab"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import PlayerListItem from "./dx_intl/PlayerListItem"
 import styled from "@emotion/styled"
+import PlayerListItem from "./dx_intl/PlayerListItem"
+import { QueryResult } from "./QueryResult"
+import {
+  DxIntlPlayersDocument,
+  DxIntlSongsDocument,
+  InsertDxIntlRecordWithScoresDocument,
+} from "./generated/graphql"
+import host from "./host"
 
 import { constructSongs } from "./dx_intl/helper"
 

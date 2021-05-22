@@ -4,6 +4,7 @@
     "project": "tsconfig.json"
   },
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "import/order": "error"
   }
 }

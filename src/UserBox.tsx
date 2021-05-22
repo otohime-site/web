@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react"
-import { useAuth } from "./auth"
 import { Button } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import firebase from "firebase/app"
+import { useAuth } from "./auth"
 
 const UserBoxComponent: FunctionComponent = () => {
   const auth = firebase.auth()

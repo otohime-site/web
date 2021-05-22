@@ -1,9 +1,7 @@
 import React, { FunctionComponent, useState } from "react"
 import * as clipboard from "clipboard-polyfill"
 import firebase from "firebase/app"
-import { useAuth } from "./auth"
 import { useQuery, useMutation } from "urql"
-import { TokensDocument, RegenerateTokenDocument } from "./generated/graphql"
 import {
   Tooltip,
   Button,
@@ -14,12 +12,14 @@ import {
   DialogActions,
   Typography,
 } from "@material-ui/core"
-import { QueryResult } from "./QueryResult"
-import host from "./host"
 import LinkIcon from "@material-ui/icons/Link"
 import RefreshIcon from "@material-ui/icons/Refresh"
 import { Alert } from "@material-ui/lab"
 import { Helmet } from "react-helmet-async"
+import host from "./host"
+import { QueryResult } from "./QueryResult"
+import { TokensDocument, RegenerateTokenDocument } from "./generated/graphql"
+import { useAuth } from "./auth"
 
 const bookmarkletContent = (token: string): string => `
 javascript:

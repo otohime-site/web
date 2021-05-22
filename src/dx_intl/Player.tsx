@@ -34,15 +34,6 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import {
-  DxIntlRecordWithScoresDocument,
-  DxIntlSongsDocument,
-  Dx_Intl_Songs,
-  Dx_Intl_Variants,
-  Dx_Intl_Notes,
-  DxIntlPlayersEditableDocument,
-} from "../generated/graphql"
-import Record from "./Record"
 import EditIcon from "@material-ui/icons/Edit"
 import RefreshIcon from "@material-ui/icons/Refresh"
 import HistoryIcon from "@material-ui/icons/History"
@@ -54,6 +45,17 @@ import styled from "@emotion/styled"
 
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
+import firebase from "firebase/app"
+import { Alert } from "@material-ui/lab"
+import { useAuth } from "../auth"
+import {
+  DxIntlRecordWithScoresDocument,
+  DxIntlSongsDocument,
+  Dx_Intl_Songs,
+  Dx_Intl_Variants,
+  Dx_Intl_Notes,
+  DxIntlPlayersEditableDocument,
+} from "../generated/graphql"
 import {
   categories,
   versions,
@@ -65,9 +67,7 @@ import {
 } from "./helper"
 import { ComboFlag, SyncFlag } from "./flags"
 import Variant from "./Variant"
-import firebase from "firebase/app"
-import { useAuth } from "../auth"
-import { Alert } from "@material-ui/lab"
+import Record from "./Record"
 
 // Use to flatten the song list
 type FlattenedVariant = { songId: number } & Pick<

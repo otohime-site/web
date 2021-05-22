@@ -1,4 +1,6 @@
 import React, { FunctionComponent } from "react"
+import styled from "@emotion/styled"
+import { Scalars } from "../generated/graphql"
 import Blank from "./flags/blank.svg"
 import FC from "./flags/fc.svg"
 import FCP from "./flags/fcp.svg"
@@ -8,9 +10,6 @@ import FS from "./flags/fs.svg"
 import FSP from "./flags/fsp.svg"
 import FSD from "./flags/fsd.svg"
 import FSDP from "./flags/fsdp.svg"
-import { Scalars } from "../generated/graphql"
-import styled from "@emotion/styled"
-
 
 const getComboImage = (flag: Scalars["dx_intl_combo_flag"]): any => {
   switch (flag) {

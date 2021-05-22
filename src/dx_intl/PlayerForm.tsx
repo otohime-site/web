@@ -2,14 +2,7 @@ import React, { FunctionComponent, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"
-import {
-  DeleteDxIntlPlayerDocument,
-  DxIntlPlayersEditableDocument,
-  InsertDxIntlPlayerDocument,
-  UpdateDxIntlPlayerDocument,
-} from "../generated/graphql"
 import firebase from "firebase/app"
-import { useAuth } from "../auth"
 import {
   FormLabel,
   RadioGroup,
@@ -28,7 +21,13 @@ import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import styled from "@emotion/styled"
-
+import { useAuth } from "../auth"
+import {
+  DeleteDxIntlPlayerDocument,
+  DxIntlPlayersEditableDocument,
+  InsertDxIntlPlayerDocument,
+  UpdateDxIntlPlayerDocument,
+} from "../generated/graphql"
 
 const StyledFormControl = styled(FormControl)`
   margin: 16px 0;
