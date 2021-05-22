@@ -29,3 +29,6 @@ config:
     timestamptz: string
     _timestamptz: string[]
     uuid: string
+hooks:
+  afterAllFileWrite:
+    - prettier --write
