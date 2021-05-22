@@ -1,18 +1,18 @@
 overwrite: true
 schema:
-  - 'http://localhost:8580/v1/graphql':
+  - "http://localhost:8580/v1/graphql":
       headers:
         X-Hasura-Admin-Secret: development-hasura-secret
-documents: 'src/**/*.graphql'
+documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.ts:
     plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typed-document-node'
+      - "typescript"
+      - "typescript-operations"
+      - "typed-document-node"
   ./graphql.schema.json:
     plugins:
-      - 'introspection'
+      - "introspection"
 config:
   scalars:
     dx_intl_level: >

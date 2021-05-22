@@ -1,75 +1,75 @@
-import { resolve } from 'path'
-import { Configuration } from 'webpack'
-import 'webpack-dev-server'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import HTMLWebpackPlugin from 'html-webpack-plugin'
-import { BookmarkletPlugin } from './bookmarklet-plugin'
+import { resolve } from "path"
+import { Configuration } from "webpack"
+import "webpack-dev-server"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import HTMLWebpackPlugin from "html-webpack-plugin"
+import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
 const config: Configuration = {
-  mode: 'development',
+  mode: "development",
   watch: false,
   entry: {
-    index: './src/index.tsx',
-    go: './src/go.tsx'
+    index: "./src/index.tsx",
+    go: "./src/go.tsx",
   },
   output: {
-    path: resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
-    publicPath: '/'
+    path: resolve(__dirname, "dist"),
+    filename: "[name].bundle.js",
+    publicPath: "/",
   },
   plugins: [
     new MiniCssExtractPlugin(),
     new HTMLWebpackPlugin({
-      template: 'src/index.html',
-      chunks: ['index']
+      template: "src/index.html",
+      chunks: ["index"],
     }),
-    new BookmarkletPlugin()
+    new BookmarkletPlugin(),
   ],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        use: "ts-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.css?$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.svg?$/,
-        type: 'asset/resource'
-      }
-    ]
+        type: "asset/resource",
+      },
+    ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
-    publicPath: '/',
-    contentBase: resolve(__dirname, './public'),
+    publicPath: "/",
+    contentBase: resolve(__dirname, "./public"),
     https: true,
     historyApiFallback: true,
     proxy: {
-      '/graphql': {
-        target: 'http://localhost:8580/',
+      "/graphql": {
+        target: "http://localhost:8580/",
         pathRewrite: {
-          '^/graphql': '/v1/graphql'
+          "^/graphql": "/v1/graphql",
         },
-        ws: true
-      }
+        ws: true,
+      },
     },
     headers: {
-      'Access-Control-Allow-Origin': 'https://maimaidx-eng.com',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-    }
+      "Access-Control-Allow-Origin": "https://maimaidx-eng.com",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
-    }
-  }
+      chunks: "all",
+    },
+  },
 }
 
 export default config

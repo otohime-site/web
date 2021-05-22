@@ -6,23 +6,24 @@ It is a TypeScript / React project.
 
 Register and set:
 
-* Facebook Login
-* Firebase Auth connecting with Facebook
+- Facebook Login
+- Firebase Auth connecting with Facebook
 
 Make sure the server is up with `docker-compose` and `.env` set correctly.
 In order to import the score correctly, please check documents of the server.
 
 Then create `src/firebase.ts` with contents like:
+
 ```ts
 export default {
-  apiKey: '.......',
-  authDomain: 'project-name.firebaseapp.com',
-  databaseURL: 'https://project-name.firebaseio.com',
-  projectId: 'project-name',
-  storageBucket: 'project-name.appspot.com',
-  messagingSenderId: '............',
-  appId: '.........',
-  measurementId: '.....'
+  apiKey: ".......",
+  authDomain: "project-name.firebaseapp.com",
+  databaseURL: "https://project-name.firebaseio.com",
+  projectId: "project-name",
+  storageBucket: "project-name.appspot.com",
+  messagingSenderId: "............",
+  appId: ".........",
+  measurementId: ".....",
 }
 ```
 
