@@ -31,7 +31,8 @@ const FontTypo = styled(Typography)`
 const SongStats: FunctionComponent = () => {
   const params =
     useParams<{ songId: string; variant?: "std" | "dx"; difficulty?: string }>()
-  const songId = parseInt(params.songId, 10)
+  const { songId, variant } = params
+  const deluxe = variant != null ? variant === "dx" : null
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
   const [songsResult] = useQuery({
@@ -47,7 +48,6 @@ const SongStats: FunctionComponent = () => {
         active: variant.active,
         notes: variant.dx_intl_notes.reduce<NoteList>((accr, note) => {
           accr[note.difficulty] = {
-            id: note.id,
             level: note.level,
           }
           return accr
@@ -56,11 +56,10 @@ const SongStats: FunctionComponent = () => {
     ])
   )
   const notes = variantMap.get(params.variant === "dx")?.notes ?? []
-  const selectedNote = difficulty != null ? notes[difficulty] : null
   const [statsResult] = useQuery({
     query: DxIntlScoresStatsDocument,
-    variables: { noteId: selectedNote?.id ?? -1 },
-    pause: selectedNote == null,
+    variables: { songId, deluxe, difficulty },
+    pause: variant == null || difficulty == null,
   })
   const statsAccumulated = (
     statsResult.data?.dx_intl_scores_stats ?? []

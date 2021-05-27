@@ -16,7 +16,7 @@ const DxIntl: FunctionComponent<RouteComponentProps<{}>> = ({ match }) => (
     />
     <Route path={`${match.url}/p/:nickname`} component={Player} exact={true} />
     <Route
-      path={`${match.url}/s/:songId([0-9]+)/:variant(std|dx)?/:difficulty([01234])?`}
+      path={`${match.url}/s/:songId([0-9a-z]+)/:variant(std|dx)?/:difficulty([01234])?`}
       component={SongStats}
       exact={true}
     />

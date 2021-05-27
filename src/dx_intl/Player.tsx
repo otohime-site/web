@@ -64,13 +64,14 @@ import {
   comboFlags,
   syncFlags,
   FlattenedNote,
+  getNoteHash,
 } from "./helper"
 import { ComboFlag, SyncFlag } from "./flags"
 import Variant from "./Variant"
 import Record from "./Record"
 
 // Use to flatten the song list
-type FlattenedVariant = { songId: number } & Pick<
+type FlattenedVariant = { song_id: string } & Pick<
   Dx_Intl_Songs,
   "category" | "title" | "order"
 > &
@@ -78,7 +79,7 @@ type FlattenedVariant = { songId: number } & Pick<
     dx_intl_notes: Array<
       { __typename?: "dx_intl_notes" } & Pick<
         Dx_Intl_Notes,
-        "id" | "difficulty" | "level"
+        "difficulty" | "level"
       >
     >
   }
@@ -354,10 +355,10 @@ const Player: FunctionComponent = () => {
   }
 
   // First use groupBy to group all song list
-  const scoreMap = new Map(scores.map((score) => [score.note_id, score]))
+  const scoreMap = new Map(scores.map((score) => [getNoteHash(score), score]))
   const sortNote = (
-    noteA: Pick<Dx_Intl_Notes, "id" | "difficulty" | "level">,
-    noteB: Pick<Dx_Intl_Notes, "id" | "difficulty" | "level">
+    noteA: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">,
+    noteB: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">
   ): number => {
     const factor = orderByDesc ? -1 : 1
     switch (orderBy) {
@@ -367,20 +368,28 @@ const Player: FunctionComponent = () => {
         )
       case "score":
         return (
-          ((scoreMap.get(noteA.id)?.score ?? -1) -
-            (scoreMap.get(noteB.id)?.score ?? -1)) *
+          ((scoreMap.get(getNoteHash(noteA))?.score ?? -1) -
+            (scoreMap.get(getNoteHash(noteB))?.score ?? -1)) *
           factor
         )
       case "combo":
         return (
-          (comboFlags.indexOf(scoreMap.get(noteA.id)?.combo_flag ?? "") -
-            comboFlags.indexOf(scoreMap.get(noteB.id)?.combo_flag ?? "")) *
+          (comboFlags.indexOf(
+            scoreMap.get(getNoteHash(noteA))?.combo_flag ?? ""
+          ) -
+            comboFlags.indexOf(
+              scoreMap.get(getNoteHash(noteB))?.combo_flag ?? ""
+            )) *
           factor
         )
       case "sync":
         return (
-          (syncFlags.indexOf(scoreMap.get(noteA.id)?.sync_flag ?? "") -
-            syncFlags.indexOf(scoreMap.get(noteB.id)?.sync_flag ?? "")) *
+          (syncFlags.indexOf(
+            scoreMap.get(getNoteHash(noteA))?.sync_flag ?? ""
+          ) -
+            syncFlags.indexOf(
+              scoreMap.get(getNoteHash(noteB))?.sync_flag ?? ""
+            )) *
           factor
         )
       default:
@@ -388,10 +397,16 @@ const Player: FunctionComponent = () => {
     }
   }
   const sortNoteWithLevelDefault = (
-    noteA: Pick<Dx_Intl_Notes, "id" | "difficulty" | "level"> & {
+    noteA: Pick<
+      Dx_Intl_Notes,
+      "song_id" | "deluxe" | "difficulty" | "level"
+    > & {
       deluxe: boolean
     },
-    noteB: Pick<Dx_Intl_Notes, "id" | "difficulty" | "level"> & {
+    noteB: Pick<
+      Dx_Intl_Notes,
+      "song_id" | "deluxe" | "difficulty" | "level"
+    > & {
       deluxe: boolean
     }
   ): number => {
@@ -411,7 +426,7 @@ const Player: FunctionComponent = () => {
                 (accrInner, variant) => [
                   ...accrInner,
                   ...variant.dx_intl_notes.map((note) => ({
-                    songId: song.id,
+                    song_id: song.id,
                     category: song.category,
                     title: song.title,
                     order: song.order,
@@ -441,7 +456,7 @@ const Player: FunctionComponent = () => {
             (accr, song) => [
               ...accr,
               ...song.dx_intl_variants.map((variant) => ({
-                songId: song.id,
+                song_id: song.id,
                 category: song.category,
                 title: song.title,
                 order: song.order,
@@ -463,15 +478,21 @@ const Player: FunctionComponent = () => {
                 : variants
               : variants.sort((a, b) =>
                   sortNote(
-                    a.dx_intl_notes[difficulty] ?? {
-                      level: -1,
-                      id: -1,
-                      difficulty: -1,
+                    {
+                      song_id: a.song_id,
+                      deluxe: a.deluxe,
+                      ...(a.dx_intl_notes[difficulty] ?? {
+                        difficulty: -1,
+                        level: -1,
+                      }),
                     },
-                    b.dx_intl_notes[difficulty] ?? {
-                      level: -1,
-                      id: -1,
-                      difficulty: -1,
+                    {
+                      song_id: b.song_id,
+                      deluxe: b.deluxe,
+                      ...(b.dx_intl_notes[difficulty] ?? {
+                        difficulty: -1,
+                        level: -1,
+                      }),
                     }
                   )
                 )
@@ -486,9 +507,9 @@ const Player: FunctionComponent = () => {
       )
     : [...difficulties]
   const getNoteScoreCell = (
-    note: Pick<Dx_Intl_Notes, "id" | "difficulty" | "level">
+    note: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">
   ): JSX.Element => {
-    const score = scoreMap.get(note.id)
+    const score = scoreMap.get(getNoteHash(note))
     return (
       <ScoreCell className={`difficulty-${note.difficulty}`}>
         <ScoreCellInner>
@@ -688,7 +709,7 @@ const Player: FunctionComponent = () => {
                 <Link
                   color="textPrimary"
                   component={RouterLink}
-                  to={`/dxi/s/${row.songId}/${row.deluxe ? "dx" : "std"}/${
+                  to={`/dxi/s/${row.song_id}/${row.deluxe ? "dx" : "std"}/${
                     "difficulty" in row ? row.difficulty : ""
                   }`}
                 >
@@ -702,7 +723,11 @@ const Player: FunctionComponent = () => {
                 ? getNoteScoreCell(row)
                 : shownDifficulties.map((d, i) =>
                     i in row.dx_intl_notes
-                      ? getNoteScoreCell(row.dx_intl_notes[i])
+                      ? getNoteScoreCell({
+                          song_id: row.song_id,
+                          deluxe: row.deluxe,
+                          ...row.dx_intl_notes[i],
+                        })
                       : ""
                   )}
             </TableRow>

@@ -1,5 +1,4 @@
 import {
-  DxIntlSongsQuery,
   Scalars,
   Dx_Intl_Songs,
   Dx_Intl_Variants,
@@ -76,7 +75,6 @@ export const comboFlags = ["", "fc", "fc+", "ap", "ap+"] as const
 export const syncFlags = ["", "fs", "fs+", "fdx", "fdx+"] as const
 
 export type NoteList = Array<{
-  id: number
   level: Scalars["dx_intl_level"]
 }>
 
@@ -91,36 +89,19 @@ export type VariantMap = Map<
 
 export type ConstructedSong = Array<Map<string, VariantMap>>
 
-// Construct a map to query a note from category -> title -> variant -> difficulty map.
-export const constructSongs = (
-  songs: DxIntlSongsQuery["dx_intl_songs"]
-): ConstructedSong =>
-  songs.reduce<ConstructedSong>((accr, curr) => {
-    const categoryMap = accr[curr.category] ?? new Map()
-    const variantMap = new Map(
-      curr.dx_intl_variants.map((variant) => [
-        variant.deluxe,
-        {
-          version: variant.version,
-          active: variant.active,
-          notes: variant.dx_intl_notes.reduce<NoteList>((accr, note) => {
-            accr[note.difficulty] = {
-              id: note.id,
-              level: note.level,
-            }
-            return accr
-          }, []),
-        },
-      ])
-    )
-    categoryMap.set(curr.title, variantMap)
-    accr[curr.category] = categoryMap
-    return accr
-  }, [])
-
-export type FlattenedNote = { songId: number } & Pick<
+export type FlattenedNote = { song_id: string } & Pick<
   Dx_Intl_Songs,
   "category" | "title" | "order"
 > &
   Pick<Dx_Intl_Variants, "deluxe" | "version" | "active"> &
-  Pick<Dx_Intl_Notes, "id" | "difficulty" | "level">
+  Pick<Dx_Intl_Notes, "difficulty" | "level">
+
+export const getNoteHash = (instance: {
+  // As we cannot restrict null in histroy tables
+  song_id: string
+  deluxe: boolean
+  difficulty: number
+}): string =>
+  `${instance.song_id}_${instance.deluxe ? "t" : "f"}_${
+    instance.difficulty ?? "-1"
+  }`

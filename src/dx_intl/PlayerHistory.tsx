@@ -37,7 +37,7 @@ import {
 } from "../generated/graphql"
 
 import { gradeNames } from "./Grade"
-import { difficulties, FlattenedNote } from "./helper"
+import { difficulties, FlattenedNote, getNoteHash } from "./helper"
 import Variant from "./Variant"
 import { ActualScore, FlagContainer } from "./Player"
 import { ComboFlag, SyncFlag } from "./flags"
@@ -199,20 +199,24 @@ const PlayerHistory: FunctionComponent = () => {
     )
   }
 
-  const notes: Map<number, FlattenNodeWithBeforeAfter> =
+  const notes: Map<string, FlattenNodeWithBeforeAfter> =
     params.hash != null && songsResult.data != null
       ? new Map(
-          songsResult.data.dx_intl_songs.reduce<Array<[number, FlattenedNote]>>(
+          songsResult.data.dx_intl_songs.reduce<Array<[string, FlattenedNote]>>(
             (accr, song) => [
               ...accr,
-              ...song.dx_intl_variants.reduce<Array<[number, FlattenedNote]>>(
+              ...song.dx_intl_variants.reduce<Array<[string, FlattenedNote]>>(
                 (accrInner, variant) => [
                   ...accrInner,
-                  ...variant.dx_intl_notes.map<[number, FlattenedNote]>(
+                  ...variant.dx_intl_notes.map<[string, FlattenedNote]>(
                     (note) => [
-                      note.id,
+                      getNoteHash({
+                        song_id: song.id,
+                        deluxe: variant.deluxe,
+                        ...note,
+                      }),
                       {
-                        songId: song.id,
+                        song_id: song.id,
                         category: song.category,
                         title: song.title,
                         order: song.order,
@@ -234,7 +238,13 @@ const PlayerHistory: FunctionComponent = () => {
 
   if (timelineResult.data != null) {
     timelineResult.data.beforeScores.forEach((score) => {
-      const note = notes.get(score?.note_id ?? 0)
+      const note = notes.get(
+        getNoteHash({
+          song_id: score.song_id ?? "",
+          deluxe: score.deluxe ?? false,
+          difficulty: score.difficulty ?? -1,
+        })
+      )
       if (score == null || note == null) {
         return
       }
@@ -245,7 +255,13 @@ const PlayerHistory: FunctionComponent = () => {
       }
     })
     timelineResult.data.afterScores.forEach((score) => {
-      const note = notes.get(score?.note_id ?? 0)
+      const note = notes.get(
+        getNoteHash({
+          song_id: score.song_id ?? "",
+          deluxe: score.deluxe ?? false,
+          difficulty: score.difficulty ?? -1,
+        })
+      )
       if (score == null || note == null) {
         return
       }
@@ -360,7 +376,7 @@ const PlayerHistory: FunctionComponent = () => {
         {[...notes.values()]
           .filter((note) => note.before != null || note.after != null)
           .map((note) => (
-            <TableRow key={note.id}>
+            <TableRow key={getNoteHash(note)}>
               <TableCell component="th">{note.title}</TableCell>
               <TableCell>
                 <Variant deluxe={note.deluxe} />
