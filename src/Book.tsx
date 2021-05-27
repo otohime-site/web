@@ -11,29 +11,10 @@ import {
   Link,
   Typography,
 } from "@material-ui/core"
-import {
-  useObservable,
-  useObservableState,
-  pluckFirst,
-  useSubscription,
-} from "observable-hooks"
+
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { useQuery, useClient } from "urql"
-import { from } from "rxjs"
-import {
-  mergeMap,
-  map,
-  switchMap,
-  delay,
-  scan,
-  distinctUntilChanged,
-  filter,
-  withLatestFrom,
-  takeLast,
-  shareReplay,
-  take,
-} from "rxjs/operators"
-import { fromFetch } from "rxjs/fetch"
+
 import { Alert } from "@material-ui/lab"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import styled from "@emotion/styled"
@@ -41,12 +22,9 @@ import PlayerListItem from "./dx_intl/PlayerListItem"
 import { QueryResult } from "./QueryResult"
 import {
   DxIntlPlayersDocument,
-  DxIntlSongsDocument,
   InsertDxIntlRecordWithScoresDocument,
 } from "./generated/graphql"
 import host from "./host"
-
-import { constructSongs } from "./dx_intl/helper"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
@@ -63,15 +41,27 @@ const parsedPlayer = (() => {
   }
 })()
 
+// https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#converting_a_digest_to_a_hex_string
+const sha256Sum = async (text: string): Promise<string> => {
+  const hashBuffer = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(text)
+  )
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+}
+
 const book: FunctionComponent = () => {
   const [open, setOpen] = useState(true)
   const [selectedPlayerId, setSelectedPlayerId] =
     useState<number | undefined>(undefined)
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
-  const client$ = useObservable(pluckFirst, [useClient()])
+  const client = useClient()
   const [fetchState, setFetchState] =
     useState<"idle" | "fetching" | "done">("idle")
-  const handleFetch = (): void => {
+  const [fetchProgress, setFetchProgress] = useState(0)
+  const handleFetch = async (): Promise<void> => {
     const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(
       (p) => p.id === selectedPlayerId
     )
@@ -85,106 +75,48 @@ const book: FunctionComponent = () => {
       return
     }
     setFetchState("fetching")
-  }
-  const fetchState$ = useObservable(pluckFirst, [fetchState])
-  const selectedPlayerId$ = useObservable(pluckFirst, [selectedPlayerId])
-  const fetchResult$ = useObservable(() =>
-    fetchState$.pipe(
-      filter((state) => state === "fetching"),
-      distinctUntilChanged(),
-      switchMap(() =>
-        from(DIFFICULTIES).pipe(
-          mergeMap(
-            (difficulty) =>
-              fromFetch(
-                `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`
-              ).pipe(
-                // eslint-disable-next-line @typescript-eslint/promise-function-async
-                mergeMap((resp) => {
-                  if (!resp.ok) {
-                    throw new Error("Network Error!")
-                  }
-                  return resp.text()
-                }),
-                map((text) => parseScores(text)),
-                delay(1000)
-              ),
-            1
-          )
+    const entries = await DIFFICULTIES.reduce<Promise<ScoresParseEntry[]>>(
+      async (prevPromise, _, difficulty) => {
+        const prev = await prevPromise
+        const resp = await fetch(
+          `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`
         )
-      ),
-      scan<ScoresParseEntry[], [ScoresParseEntry[], number]>(
-        (prev, curr) => [[...prev[0], ...curr], prev[1] + 1],
-        [[], 0]
-      ),
-      take(DIFFICULTIES.length),
-      shareReplay()
-    )
-  )
-  const submission$ = useObservable(() =>
-    fetchResult$.pipe(
-      takeLast(1),
-      withLatestFrom(client$),
-      mergeMap(([[entries, count], client]) => {
-        return from(client.query(DxIntlSongsDocument).toPromise()).pipe(
-          map((songsResult) => {
-            if (songsResult.data == null || songsResult.error != null) {
-              throw new Error("Cannot get song data!")
-            }
-            const constructed = constructSongs(songsResult.data.dx_intl_songs)
-            return entries.map((entry) => {
-              const noteId = constructed[entry.category]
-                .get(entry.title)
-                ?.get(entry.deluxe)?.notes[entry.difficulty]?.id
-              if (noteId == null) {
-                throw new Error(
-                  `Cannot find song with ${entry.category}:${entry.title}:${
-                    entry.deluxe ? "true" : "false"
-                  }:${entry.difficulty}`
-                )
-              }
-              if (!("score" in entry)) {
-                throw new Error("Find out entry without scores!")
-              }
-              return {
-                note_id: noteId,
-                score: entry.score,
-                combo_flag: entry.combo_flag,
-                sync_flag: entry.sync_flag,
-              }
-            })
-          })
-        )
-      }),
-      withLatestFrom(client$, selectedPlayerId$),
-      mergeMap(([scores, client, playerId]) => {
-        if (parsedPlayer === undefined) {
-          throw new Error("No parsed players!")
+        if (!resp.ok) {
+          throw new Error("Network Error!")
         }
-        return from(
-          client
-            .mutation(InsertDxIntlRecordWithScoresDocument, {
-              record: {
-                player_id: playerId,
-                max_rating: -1,
-                ...parsedPlayer,
-              },
-              scores: scores.map((score) => ({
-                player_id: playerId,
-                ...score,
-              })),
-            })
-            .toPromise()
-        )
+        const result = parseScores(await resp.text())
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        setFetchProgress(difficulty + 1)
+        return [...prev, ...result]
+      },
+      Promise.resolve([])
+    )
+    const scores = await Promise.all(
+      entries.map(async (entry) => {
+        const { category, title, level, ...entryWithoutSong } = entry
+        return {
+          song_id: await sha256Sum(`${category}_${title}`),
+          ...entryWithoutSong,
+        }
       })
     )
-  )
-  useSubscription(submission$, () => setFetchState("done"))
 
-  const fetchProgress = useObservableState(
-    fetchResult$.pipe(map(([entry, count]) => count)),
-    0
-  )
+    await client
+      .mutation(InsertDxIntlRecordWithScoresDocument, {
+        record: {
+          player_id: selectedPlayerId,
+          max_rating: -1,
+          ...parsedPlayer,
+        },
+        scores: scores.map((score) => ({
+          player_id: selectedPlayerId,
+          ...score,
+        })),
+      })
+      .toPromise()
+    setFetchState("done")
+  }
+
   const handleClose = (): void => {
     setOpen(false)
     window.location.href = "/"
