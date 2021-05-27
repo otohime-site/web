@@ -33,7 +33,7 @@ mutation deleteDxIntlPlayer($pk: Int!) {
   }
 }
 
-query dxIntlSongs($id: Int) {
+query dxIntlSongs($id: String) {
   dx_intl_songs(
     order_by: [{ category: asc }, { order: asc }]
     where: { id: { _eq: $id } }
@@ -47,7 +47,6 @@ query dxIntlSongs($id: Int) {
       version
       active
       dx_intl_notes(order_by: { difficulty: asc }) {
-        id
         difficulty
         level
       }
@@ -67,7 +66,9 @@ query dxIntlRecordWithScores($nickname: String!) {
       grade
     }
     dx_intl_scores {
-      note_id
+      song_id
+      deluxe
+      difficulty
       score
       combo_flag
       sync_flag
@@ -117,7 +118,9 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
       end: { _eq: $time }
     }
   ) {
-    note_id
+    song_id
+    deluxe
+    difficulty
     score
     combo_flag
     sync_flag
@@ -128,7 +131,9 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
       start: { _eq: $time }
     }
   ) {
-    note_id
+    song_id
+    deluxe
+    difficulty
     score
     combo_flag
     sync_flag
@@ -161,7 +166,7 @@ mutation InsertDxIntlRecordWithScores(
   insert_dx_intl_scores(
     objects: $scores
     on_conflict: {
-      constraint: dx_intl_scores_player_id_note_id_key
+      constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key
       update_columns: [score, combo_flag, sync_flag]
     }
   ) {
@@ -176,8 +181,18 @@ query dxIntlBaseRating {
   }
 }
 
-query dxIntlScoresStats($noteId: Int!) {
-  dx_intl_scores_stats(where: { note_id: { _eq: $noteId } }) {
+query dxIntlScoresStats(
+  $songId: String!
+  $deluxe: Boolean!
+  $difficulty: smallint!
+) {
+  dx_intl_scores_stats(
+    where: {
+      song_id: { _eq: $songId }
+      deluxe: { _eq: $deluxe }
+      difficulty: { _eq: $difficulty }
+    }
+  ) {
     range
     count
   }

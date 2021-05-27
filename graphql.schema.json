@@ -2397,22 +2397,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": null,
             "args": [],
@@ -2433,9 +2417,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2875,30 +2863,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -2914,30 +2878,6 @@
         "inputFields": [
           {
             "name": "difficulty",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -3052,18 +2992,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": null,
             "type": {
@@ -3080,7 +3008,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -3101,13 +3029,7 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "dx_intl_notes_pkey",
-            "description": "unique or primary key constraint",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "dx_intl_notes_song_id_deluxe_difficulty_key",
+            "name": "dx_intl_notes_pkey1",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
@@ -3127,30 +3049,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "smallint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -3217,18 +3115,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": null,
             "type": {
@@ -3245,7 +3131,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -3275,24 +3161,12 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "song_id",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3312,18 +3186,6 @@
         "inputFields": [
           {
             "name": "difficulty",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -3369,24 +3231,12 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "song_id",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3406,18 +3256,6 @@
         "inputFields": [
           {
             "name": "difficulty",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -3653,18 +3491,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": null,
             "type": {
@@ -3700,14 +3526,46 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "deluxe",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "smallint",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -3736,12 +3594,6 @@
           },
           {
             "name": "difficulty",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -3792,18 +3644,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": null,
             "type": {
@@ -3820,7 +3660,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -3839,30 +3679,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -3896,30 +3712,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -3933,30 +3725,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -3990,30 +3758,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -4027,30 +3771,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -4084,30 +3804,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -4130,30 +3826,6 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -4169,30 +3841,6 @@
         "inputFields": [
           {
             "name": "difficulty",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -4229,12 +3877,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "level",
             "description": "column name",
             "isDeprecated": false,
@@ -4256,30 +3898,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -4313,30 +3931,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -4350,30 +3944,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -4407,30 +3977,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -4444,30 +3990,6 @@
         "fields": [
           {
             "name": "difficulty",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -4492,30 +4014,6 @@
         "inputFields": [
           {
             "name": "difficulty",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -13783,17 +13281,45 @@
             "deprecationReason": null
           },
           {
-            "name": "dx_intl_note",
-            "description": "An object relationship",
+            "name": "deluxe",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "dx_intl_notes",
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "smallint",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "dx_intl_note",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "dx_intl_notes",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -13847,22 +13373,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "args": [],
@@ -13888,6 +13398,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "numeric",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -14351,7 +13877,7 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -14363,7 +13889,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -14411,7 +13937,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14423,7 +13949,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -14526,6 +14052,30 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Boolean_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "smallint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dx_intl_note",
             "description": null,
             "type": {
@@ -14574,18 +14124,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -14603,6 +14141,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -14647,13 +14197,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "dx_intl_scores_pkey",
+            "name": "dx_intl_scores_pkey1",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "dx_intl_scores_player_id_note_id_key",
+            "name": "dx_intl_scores_player_id_song_id_deluxe_difficulty_key",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
@@ -14668,11 +14218,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "bigint",
+              "name": "smallint",
               "ofType": null
             },
             "defaultValue": null,
@@ -14680,11 +14230,11 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -14732,6 +14282,30 @@
             "type": {
               "kind": "SCALAR",
               "name": "dx_intl_combo_flag",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
               "ofType": null
             },
             "defaultValue": null,
@@ -14787,18 +14361,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -14816,6 +14378,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -14857,6 +14431,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": null,
             "args": [],
@@ -14875,18 +14461,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -14917,6 +14491,18 @@
             "deprecationReason": null
           },
           {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -14940,6 +14526,18 @@
         "description": "order by max() on columns of table \"dx_intl_scores\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "end",
             "description": null,
@@ -14965,18 +14563,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -14990,6 +14576,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15023,6 +14621,18 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": null,
             "args": [],
@@ -15041,18 +14651,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -15083,6 +14681,18 @@
             "deprecationReason": null
           },
           {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -15106,6 +14716,18 @@
         "description": "order by min() on columns of table \"dx_intl_scores\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "end",
             "description": null,
@@ -15131,18 +14753,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -15156,6 +14766,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15355,6 +14977,30 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dx_intl_note",
             "description": null,
             "type": {
@@ -15403,18 +15049,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -15428,6 +15062,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15509,6 +15155,18 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": "column name",
             "isDeprecated": false,
@@ -15521,12 +15179,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": "column name",
             "isDeprecated": false,
@@ -15534,6 +15186,12 @@
           },
           {
             "name": "score",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -15572,6 +15230,30 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": null,
             "type": {
@@ -15596,18 +15278,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -15625,6 +15295,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -15678,12 +15360,24 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "deluxe",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -15691,6 +15385,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -16091,7 +15797,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16127,7 +15833,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16206,11 +15912,23 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "deluxe",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "Boolean_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "smallint_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -16219,6 +15937,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -16252,12 +15982,12 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -16265,6 +15995,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -16300,7 +16042,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16313,6 +16055,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16346,12 +16100,12 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -16359,6 +16113,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "args": [],
             "type": {
@@ -16394,7 +16160,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16407,6 +16173,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16441,7 +16219,19 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16454,6 +16244,18 @@
           },
           {
             "name": "range",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16484,13 +16286,25 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "deluxe",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "range",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -16516,7 +16330,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16552,7 +16366,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16586,7 +16400,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16622,7 +16436,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16656,7 +16470,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16692,7 +16506,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16726,12 +16540,12 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -16762,7 +16576,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16796,7 +16610,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16832,7 +16646,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16866,7 +16680,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16902,7 +16716,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16936,7 +16750,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -16972,7 +16786,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -16994,7 +16808,7 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17006,7 +16820,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17054,7 +16868,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17066,7 +16880,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17112,7 +16926,7 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17124,7 +16938,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17172,7 +16986,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17184,7 +16998,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17230,7 +17044,7 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17242,7 +17056,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17290,7 +17104,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17302,7 +17116,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17348,24 +17162,24 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "bigint",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17408,7 +17222,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17420,7 +17234,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17475,6 +17289,18 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": "column name",
             "isDeprecated": false,
@@ -17487,12 +17313,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": "column name",
             "isDeprecated": false,
@@ -17500,6 +17320,12 @@
           },
           {
             "name": "score",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -17525,7 +17351,7 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17537,7 +17363,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17585,7 +17411,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17597,7 +17423,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17643,7 +17469,7 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17655,7 +17481,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17703,7 +17529,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17715,7 +17541,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17761,7 +17587,7 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -17773,7 +17599,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -17821,7 +17647,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17833,7 +17659,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -17891,6 +17717,30 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dx_intl_note",
             "description": "An object relationship",
             "args": [],
@@ -17939,18 +17789,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "args": [],
@@ -17969,6 +17807,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "numeric",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18376,7 +18226,7 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -18388,7 +18238,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -18436,7 +18286,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -18448,7 +18298,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -18551,6 +18401,30 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Boolean_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "smallint_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dx_intl_note",
             "description": null,
             "type": {
@@ -18599,18 +18473,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -18628,6 +18490,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "numeric_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -18669,6 +18543,18 @@
         "description": "aggregate max on columns",
         "fields": [
           {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": null,
             "args": [],
@@ -18687,18 +18573,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18729,6 +18603,18 @@
             "deprecationReason": null
           },
           {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -18752,6 +18638,18 @@
         "description": "order by max() on columns of table \"dx_intl_scores_with_history\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "end",
             "description": null,
@@ -18777,18 +18675,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -18802,6 +18688,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -18835,6 +18733,18 @@
         "description": "aggregate min on columns",
         "fields": [
           {
+            "name": "difficulty",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "smallint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": null,
             "args": [],
@@ -18853,18 +18763,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "note_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18895,6 +18793,18 @@
             "deprecationReason": null
           },
           {
+            "name": "song_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -18918,6 +18828,18 @@
         "description": "order by min() on columns of table \"dx_intl_scores_with_history\"",
         "fields": null,
         "inputFields": [
+          {
+            "name": "difficulty",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "end",
             "description": null,
@@ -18943,18 +18865,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -18968,6 +18878,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19003,6 +18925,30 @@
         "inputFields": [
           {
             "name": "combo_flag",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deluxe",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19062,18 +19008,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": null,
             "type": {
@@ -19087,6 +19021,18 @@
           },
           {
             "name": "score",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19141,6 +19087,18 @@
             "deprecationReason": null
           },
           {
+            "name": "deluxe",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "difficulty",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "end",
             "description": "column name",
             "isDeprecated": false,
@@ -19153,12 +19111,6 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "player_id",
             "description": "column name",
             "isDeprecated": false,
@@ -19166,6 +19118,12 @@
           },
           {
             "name": "score",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "song_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -19191,7 +19149,7 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19203,7 +19161,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19251,7 +19209,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19263,7 +19221,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19309,7 +19267,7 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19321,7 +19279,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19369,7 +19327,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19381,7 +19339,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19427,7 +19385,7 @@
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19439,7 +19397,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19487,7 +19445,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19499,7 +19457,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19545,24 +19503,24 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "bigint",
+              "name": "smallint",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -19605,7 +19563,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19617,7 +19575,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19663,7 +19621,7 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19675,7 +19633,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19723,7 +19681,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19735,7 +19693,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19781,7 +19739,7 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19793,7 +19751,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19841,7 +19799,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19853,7 +19811,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19899,7 +19857,7 @@
         "description": "aggregate variance on columns",
         "fields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "args": [],
             "type": {
@@ -19911,7 +19869,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -19959,7 +19917,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "id",
+            "name": "difficulty",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19971,7 +19929,7 @@
             "deprecationReason": null
           },
           {
-            "name": "note_id",
+            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -20235,7 +20193,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -20711,18 +20669,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "args": [],
@@ -20748,18 +20694,6 @@
         "inputFields": [
           {
             "name": "category",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -20866,7 +20800,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -20911,13 +20845,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "dx_intl_songs_category_title_key",
+            "name": "dx_intl_songs_category_title_key1",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "dx_intl_songs_pkey",
+            "name": "dx_intl_songs_pkey1",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
@@ -20937,18 +20871,6 @@
             "type": {
               "kind": "SCALAR",
               "name": "smallint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -21007,7 +20929,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -21066,7 +20988,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -21184,7 +21106,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -21517,7 +21439,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -21588,7 +21510,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -21642,18 +21564,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "args": [],
@@ -21690,18 +21600,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "type": {
@@ -21725,18 +21623,6 @@
         "fields": [
           {
             "name": "category",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -21784,18 +21670,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "type": {
@@ -21819,18 +21693,6 @@
         "fields": [
           {
             "name": "category",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -21878,18 +21740,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "type": {
@@ -21924,18 +21774,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "args": [],
@@ -21961,18 +21799,6 @@
         "inputFields": [
           {
             "name": "category",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -22053,18 +21879,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "args": [],
@@ -22101,18 +21915,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "type": {
@@ -22136,18 +21938,6 @@
         "fields": [
           {
             "name": "category",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -22195,18 +21985,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "order",
             "description": null,
             "type": {
@@ -22230,18 +22008,6 @@
         "fields": [
           {
             "name": "category",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "args": [],
             "type": {
@@ -22278,18 +22044,6 @@
         "inputFields": [
           {
             "name": "category",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -22863,7 +22617,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -23311,18 +23065,6 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "args": [],
@@ -23346,18 +23088,6 @@
         "description": "order by avg() on columns of table \"dx_intl_variants\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -23478,7 +23208,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -23511,7 +23241,7 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "dx_intl_variants_pkey",
+            "name": "dx_intl_variants_pkey1",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
@@ -23525,18 +23255,6 @@
         "description": "input type for incrementing integer column in table \"dx_intl_variants\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -23613,7 +23331,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -23648,7 +23366,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -23718,7 +23436,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -24043,7 +23761,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -24126,7 +23844,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -24156,18 +23874,6 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "args": [],
@@ -24192,18 +23898,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "type": {
@@ -24225,18 +23919,6 @@
         "name": "dx_intl_variants_stddev_pop_fields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24262,18 +23944,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "type": {
@@ -24295,18 +23965,6 @@
         "name": "dx_intl_variants_stddev_samp_fields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24332,18 +23990,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "type": {
@@ -24365,18 +24011,6 @@
         "name": "dx_intl_variants_sum_fields",
         "description": "aggregate sum on columns",
         "fields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24401,18 +24035,6 @@
         "description": "order by sum() on columns of table \"dx_intl_variants\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24471,18 +24093,6 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "args": [],
@@ -24507,18 +24117,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "type": {
@@ -24540,18 +24138,6 @@
         "name": "dx_intl_variants_var_samp_fields",
         "description": "aggregate var_samp on columns",
         "fields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24577,18 +24163,6 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "version",
             "description": null,
             "type": {
@@ -24610,18 +24184,6 @@
         "name": "dx_intl_variants_variance_fields",
         "description": "aggregate variance on columns",
         "fields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24646,18 +24208,6 @@
         "description": "order by variance() on columns of table \"dx_intl_variants\"",
         "fields": null,
         "inputFields": [
-          {
-            "name": "song_id",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
           {
             "name": "version",
             "description": null,
@@ -24714,14 +24264,46 @@
             "description": "delete single row from the table: \"dx_intl_notes\"",
             "args": [
               {
-                "name": "id",
+                "name": "deluxe",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "difficulty",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "smallint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "song_id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -24953,7 +24535,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -25027,7 +24609,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -27276,14 +26858,46 @@
             "description": "fetch data from the table: \"dx_intl_notes\" using primary key columns",
             "args": [
               {
-                "name": "id",
+                "name": "deluxe",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "difficulty",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "smallint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "song_id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -28951,7 +28565,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -29190,7 +28804,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -30202,14 +29816,46 @@
             "description": "fetch data from the table: \"dx_intl_notes\" using primary key columns",
             "args": [
               {
-                "name": "id",
+                "name": "deluxe",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "difficulty",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "smallint",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "song_id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -31877,7 +31523,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -32116,7 +31762,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
