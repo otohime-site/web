@@ -1,11 +1,13 @@
 import { resolve } from "path"
 import { Configuration } from "webpack"
-import "webpack-dev-server"
+import { Configuration as DevServerConfiguration } from "webpack-dev-server"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
-const config: Configuration = {
+// Workaround for @types/webpack-dev-server versions...
+// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/43232
+const config: Configuration & { devServer?: DevServerConfiguration } = {
   mode: "development",
   watch: false,
   entry: {
