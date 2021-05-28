@@ -33,10 +33,10 @@ mutation deleteDxIntlPlayer($pk: Int!) {
   }
 }
 
-query dxIntlSongs($id: String) {
+query dxIntlSongs($idLike: String) {
   dx_intl_songs(
     order_by: [{ category: asc }, { order: asc }]
-    where: { id: { _eq: $id } }
+    where: { id: { _like: $idLike } }
   ) {
     id
     category

@@ -5101,7 +5101,7 @@ export type DeleteDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
 }
 
 export type DxIntlSongsQueryVariables = Exact<{
-  id?: Maybe<Scalars["String"]>
+  idLike?: Maybe<Scalars["String"]>
 }>
 
 export type DxIntlSongsQuery = { __typename?: "query_root" } & {
@@ -5261,7 +5261,7 @@ export type DxIntlScoresStatsQuery = { __typename?: "query_root" } & {
   >
 }
 
-export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {
+export const TokensDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5286,11 +5286,8 @@ export const TokensDocument: DocumentNode<TokensQuery, TokensQueryVariables> = {
       },
     },
   ],
-}
-export const RegenerateTokenDocument: DocumentNode<
-  RegenerateTokenMutation,
-  RegenerateTokenMutationVariables
-> = {
+} as unknown as DocumentNode<TokensQuery, TokensQueryVariables>
+export const RegenerateTokenDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5341,11 +5338,11 @@ export const RegenerateTokenDocument: DocumentNode<
       },
     },
   ],
-}
-export const DeleteUserDocument: DocumentNode<
-  DeleteUserMutation,
-  DeleteUserMutationVariables
-> = {
+} as unknown as DocumentNode<
+  RegenerateTokenMutation,
+  RegenerateTokenMutationVariables
+>
+export const DeleteUserDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5379,11 +5376,8 @@ export const DeleteUserDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlPlayersDocument: DocumentNode<
-  DxIntlPlayersQuery,
-  DxIntlPlayersQueryVariables
-> = {
+} as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>
+export const DxIntlPlayersDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5467,11 +5461,8 @@ export const DxIntlPlayersDocument: DocumentNode<
       },
     },
   ],
-}
-export const InsertDxIntlPlayerDocument: DocumentNode<
-  InsertDxIntlPlayerMutation,
-  InsertDxIntlPlayerMutationVariables
-> = {
+} as unknown as DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables>
+export const InsertDxIntlPlayerDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5540,11 +5531,11 @@ export const InsertDxIntlPlayerDocument: DocumentNode<
       },
     },
   ],
-}
-export const UpdateDxIntlPlayerDocument: DocumentNode<
-  UpdateDxIntlPlayerMutation,
-  UpdateDxIntlPlayerMutationVariables
-> = {
+} as unknown as DocumentNode<
+  InsertDxIntlPlayerMutation,
+  InsertDxIntlPlayerMutationVariables
+>
+export const UpdateDxIntlPlayerDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5638,11 +5629,11 @@ export const UpdateDxIntlPlayerDocument: DocumentNode<
       },
     },
   ],
-}
-export const DeleteDxIntlPlayerDocument: DocumentNode<
-  DeleteDxIntlPlayerMutation,
-  DeleteDxIntlPlayerMutationVariables
-> = {
+} as unknown as DocumentNode<
+  UpdateDxIntlPlayerMutation,
+  UpdateDxIntlPlayerMutationVariables
+>
+export const DeleteDxIntlPlayerDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5686,11 +5677,11 @@ export const DeleteDxIntlPlayerDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlSongsDocument: DocumentNode<
-  DxIntlSongsQuery,
-  DxIntlSongsQueryVariables
-> = {
+} as unknown as DocumentNode<
+  DeleteDxIntlPlayerMutation,
+  DeleteDxIntlPlayerMutationVariables
+>
+export const DxIntlSongsDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5700,7 +5691,10 @@ export const DxIntlSongsDocument: DocumentNode<
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "idLike" },
+          },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
         },
       ],
@@ -5754,10 +5748,10 @@ export const DxIntlSongsDocument: DocumentNode<
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
+                            name: { kind: "Name", value: "_like" },
                             value: {
                               kind: "Variable",
-                              name: { kind: "Name", value: "id" },
+                              name: { kind: "Name", value: "idLike" },
                             },
                           },
                         ],
@@ -5851,11 +5845,8 @@ export const DxIntlSongsDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlRecordWithScoresDocument: DocumentNode<
-  DxIntlRecordWithScoresQuery,
-  DxIntlRecordWithScoresQueryVariables
-> = {
+} as unknown as DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables>
+export const DxIntlRecordWithScoresDocument = {
   kind: "Document",
   definitions: [
     {
@@ -5982,11 +5973,11 @@ export const DxIntlRecordWithScoresDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlPlayersTimelinesDocument: DocumentNode<
-  DxIntlPlayersTimelinesQuery,
-  DxIntlPlayersTimelinesQueryVariables
-> = {
+} as unknown as DocumentNode<
+  DxIntlRecordWithScoresQuery,
+  DxIntlRecordWithScoresQueryVariables
+>
+export const DxIntlPlayersTimelinesDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6057,11 +6048,11 @@ export const DxIntlPlayersTimelinesDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlPlayerWithTimelineDocument: DocumentNode<
-  DxIntlPlayerWithTimelineQuery,
-  DxIntlPlayerWithTimelineQueryVariables
-> = {
+} as unknown as DocumentNode<
+  DxIntlPlayersTimelinesQuery,
+  DxIntlPlayersTimelinesQueryVariables
+>
+export const DxIntlPlayerWithTimelineDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6382,11 +6373,11 @@ export const DxIntlPlayerWithTimelineDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlPlayersEditableDocument: DocumentNode<
-  DxIntlPlayersEditableQuery,
-  DxIntlPlayersEditableQueryVariables
-> = {
+} as unknown as DocumentNode<
+  DxIntlPlayerWithTimelineQuery,
+  DxIntlPlayerWithTimelineQueryVariables
+>
+export const DxIntlPlayersEditableDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6475,11 +6466,11 @@ export const DxIntlPlayersEditableDocument: DocumentNode<
       },
     },
   ],
-}
-export const InsertDxIntlRecordWithScoresDocument: DocumentNode<
-  InsertDxIntlRecordWithScoresMutation,
-  InsertDxIntlRecordWithScoresMutationVariables
-> = {
+} as unknown as DocumentNode<
+  DxIntlPlayersEditableQuery,
+  DxIntlPlayersEditableQueryVariables
+>
+export const InsertDxIntlRecordWithScoresDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6634,11 +6625,11 @@ export const InsertDxIntlRecordWithScoresDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlBaseRatingDocument: DocumentNode<
-  DxIntlBaseRatingQuery,
-  DxIntlBaseRatingQueryVariables
-> = {
+} as unknown as DocumentNode<
+  InsertDxIntlRecordWithScoresMutation,
+  InsertDxIntlRecordWithScoresMutationVariables
+>
+export const DxIntlBaseRatingDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6663,11 +6654,11 @@ export const DxIntlBaseRatingDocument: DocumentNode<
       },
     },
   ],
-}
-export const DxIntlScoresStatsDocument: DocumentNode<
-  DxIntlScoresStatsQuery,
-  DxIntlScoresStatsQueryVariables
-> = {
+} as unknown as DocumentNode<
+  DxIntlBaseRatingQuery,
+  DxIntlBaseRatingQueryVariables
+>
+export const DxIntlScoresStatsDocument = {
   kind: "Document",
   definitions: [
     {
@@ -6798,4 +6789,7 @@ export const DxIntlScoresStatsDocument: DocumentNode<
       },
     },
   ],
-}
+} as unknown as DocumentNode<
+  DxIntlScoresStatsQuery,
+  DxIntlScoresStatsQueryVariables
+>

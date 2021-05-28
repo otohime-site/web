@@ -709,9 +709,9 @@ const Player: FunctionComponent = () => {
                 <Link
                   color="textPrimary"
                   component={RouterLink}
-                  to={`/dxi/s/${row.song_id}/${row.deluxe ? "dx" : "std"}/${
-                    "difficulty" in row ? row.difficulty : ""
-                  }`}
+                  to={`/dxi/s/${row.song_id.substring(0, 8)}/${
+                    row.deluxe ? "dx" : "std"
+                  }/${"difficulty" in row ? row.difficulty : ""}`}
                 >
                   {row.title}
                 </Link>

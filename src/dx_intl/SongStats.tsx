@@ -37,7 +37,7 @@ const SongStats: FunctionComponent = () => {
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
   const [songsResult] = useQuery({
     query: DxIntlSongsDocument,
-    variables: { id: songId },
+    variables: { idLike: `${songId}%` },
   })
   const song = songsResult.data?.dx_intl_songs[0]
   const variantMap = new Map(
@@ -58,7 +58,7 @@ const SongStats: FunctionComponent = () => {
   const notes = variantMap.get(params.variant === "dx")?.notes ?? []
   const [statsResult] = useQuery({
     query: DxIntlScoresStatsDocument,
-    variables: { songId, deluxe, difficulty },
+    variables: { songId: song?.id ?? "", deluxe, difficulty },
     pause: variant == null || difficulty == null,
   })
   const statsAccumulated = (
