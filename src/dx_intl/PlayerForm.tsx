@@ -207,7 +207,7 @@ const PlayerForm: FunctionComponent = () => {
           <Controller
             name="private"
             control={control}
-            defaultValue=""
+            defaultValue={undefined}
             rules={{ required: true }}
             render={({ field }) => (
               <RadioGroup {...field}>
