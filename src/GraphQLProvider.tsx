@@ -9,7 +9,7 @@ import {
 } from "@urql/core"
 import { authExchange } from "@urql/exchange-auth"
 import { useAuth } from "./auth"
-import host from "./host"
+import { apiHost } from "./host"
 import AppBar from "./AppBar"
 
 const GraphQLProvider: FunctionComponent = ({ children }) => {
@@ -19,7 +19,7 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
   const client = useMemo(
     () =>
       createClient({
-        url: `https://${host}/graphql`,
+        url: `https://${apiHost}/graphql`,
         exchanges: [
           dedupExchange,
           cacheExchange,
@@ -71,7 +71,7 @@ export const GraphQLBookmarkletProvider: FunctionComponent<{ token: string }> =
     const client = useMemo(
       () =>
         createClient({
-          url: `https://${host}/graphql`,
+          url: `https://${apiHost}/graphql`,
           fetchOptions: {
             headers: {
               Authorization: `Bearer ${token}`,
