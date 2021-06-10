@@ -20,7 +20,12 @@ import UserBox from "./UserBox"
 import Forget from "./Forget"
 import DxIntl from "./dx_intl/index"
 
-import "./App.css"
+import "./global.css"
+
+const AppDiv = styled("div")`
+  display: flex;
+  flex-grow: 1;
+`
 
 const Title = styled(Typography)`
   flex-grow: 1;
@@ -67,7 +72,7 @@ const App: FunctionComponent = () => {
   }
 
   return (
-    <div className="App">
+    <AppDiv>
       <Helmet>
         <title>Otohime</title>
       </Helmet>
@@ -131,7 +136,7 @@ const App: FunctionComponent = () => {
           </Typography>
         </StyledFooter>
       </StyledMain>
-    </div>
+    </AppDiv>
   )
 }
 

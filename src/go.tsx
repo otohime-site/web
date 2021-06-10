@@ -9,6 +9,8 @@ import styled from "@emotion/styled"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
 import Book from "./Book"
 
+import "./global.css"
+
 const theme = createMuiTheme({
   palette: {
     primary: pink,
