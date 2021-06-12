@@ -255,10 +255,12 @@ export const FlagContainer = styled("span")`
 const Player: FunctionComponent = () => {
   const [user] = useAuth(firebase.auth())
   const [currentTab, setCurrentTab] = useState(1)
-  const [groupBy, setGroupBy] =
-    useState<"category" | "version" | "level">("category")
-  const [orderBy, setOrderBy] =
-    useState<"default" | "level" | "score" | "combo" | "sync">("default")
+  const [groupBy, setGroupBy] = useState<"category" | "version" | "level">(
+    "category"
+  )
+  const [orderBy, setOrderBy] = useState<
+    "default" | "level" | "score" | "combo" | "sync"
+  >("default")
   const [orderByDesc, setOrderByDesc] = useState(false)
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
@@ -416,28 +418,33 @@ const Player: FunctionComponent = () => {
     }
     return ((noteA.deluxe ? 1 : 0) - (noteB.deluxe ? 1 : 0)) * factor
   }
+
+  const filterActiveVariant = (variant: { active: boolean }): boolean =>
+    variant.active
   const groupedRows: Array<Array<FlattenedVariant | FlattenedNote>> =
     groupBy === "level"
       ? songs
           .reduce<FlattenedNote[]>(
             (accr, song) => [
               ...accr,
-              ...song.dx_intl_variants.reduce<FlattenedNote[]>(
-                (accrInner, variant) => [
-                  ...accrInner,
-                  ...variant.dx_intl_notes.map((note) => ({
-                    song_id: song.id,
-                    category: song.category,
-                    title: song.title,
-                    order: song.order,
-                    deluxe: variant.deluxe,
-                    version: variant.version,
-                    active: variant.active,
-                    ...note,
-                  })),
-                ],
-                []
-              ),
+              ...song.dx_intl_variants
+                .filter(filterActiveVariant)
+                .reduce<FlattenedNote[]>(
+                  (accrInner, variant) => [
+                    ...accrInner,
+                    ...variant.dx_intl_notes.map((note) => ({
+                      song_id: song.id,
+                      category: song.category,
+                      title: song.title,
+                      order: song.order,
+                      deluxe: variant.deluxe,
+                      version: variant.version,
+                      active: variant.active,
+                      ...note,
+                    })),
+                  ],
+                  []
+                ),
             ],
             []
           )
@@ -465,6 +472,7 @@ const Player: FunctionComponent = () => {
             ],
             []
           )
+          .filter(filterActiveVariant)
           .reduce<FlattenedVariant[][]>((accr, curr) => {
             const sortKey =
               groupBy === "category" ? curr.category : curr.version
