@@ -639,34 +639,36 @@ const Player: FunctionComponent = () => {
             />
           ))}
         </StyledTabs>
-        <Hidden smDown={true} lgUp={true} implementation="css">
-          <DifficultySetTabs
-            value={difficultySet}
-            onChange={handleChangeDifficultySet}
-            aria-label="Select Difficulty"
-            indicatorColor="secondary"
-            textColor="secondary"
-          >
-            <Tab label={`${difficulties[0]} - ${difficulties[2]}`} />
-            <Tab label={`${difficulties[2]} - ${difficulties[4]}`} />
-          </DifficultySetTabs>
-        </Hidden>
         {groupBy !== "level" ? (
-          <Hidden mdUp={true} implementation="css">
-            <DifficultyTabs
-              value={difficulty}
-              onChange={handleChangeDifficulty}
-              variant="scrollable"
-              scrollButtons="on"
-              aria-label="Select Difficulty"
-              indicatorColor="secondary"
-              textColor="secondary"
-            >
-              {difficulties.map((difficulty) => (
-                <Tab key={difficulty} label={difficulty} />
-              ))}
-            </DifficultyTabs>
-          </Hidden>
+          <>
+            <Hidden smDown={true} lgUp={true} implementation="css">
+              <DifficultySetTabs
+                value={difficultySet}
+                onChange={handleChangeDifficultySet}
+                aria-label="Select Difficulty"
+                indicatorColor="secondary"
+                textColor="secondary"
+              >
+                <Tab label={`${difficulties[0]} - ${difficulties[2]}`} />
+                <Tab label={`${difficulties[2]} - ${difficulties[4]}`} />
+              </DifficultySetTabs>
+            </Hidden>
+            <Hidden mdUp={true} implementation="css">
+              <DifficultyTabs
+                value={difficulty}
+                onChange={handleChangeDifficulty}
+                variant="scrollable"
+                scrollButtons="on"
+                aria-label="Select Difficulty"
+                indicatorColor="secondary"
+                textColor="secondary"
+              >
+                {difficulties.map((difficulty) => (
+                  <Tab key={difficulty} label={difficulty} />
+                ))}
+              </DifficultyTabs>
+            </Hidden>
+          </>
         ) : (
           ""
         )}
