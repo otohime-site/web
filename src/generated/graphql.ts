@@ -49,7 +49,7 @@ export type Scalars = {
   uuid: string
 }
 
-/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
   _eq?: Maybe<Scalars["Boolean"]>
   _gt?: Maybe<Scalars["Boolean"]>
@@ -62,7 +62,7 @@ export type Boolean_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["Boolean"]>>
 }
 
-/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars["Int"]>
   _gt?: Maybe<Scalars["Int"]>
@@ -75,26 +75,40 @@ export type Int_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["Int"]>>
 }
 
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars["String"]>
   _gt?: Maybe<Scalars["String"]>
   _gte?: Maybe<Scalars["String"]>
+  /** does the column match the given case-insensitive pattern */
   _ilike?: Maybe<Scalars["String"]>
   _in?: Maybe<Array<Scalars["String"]>>
+  /** does the column match the given POSIX regular expression, case insensitive */
+  _iregex?: Maybe<Scalars["String"]>
   _is_null?: Maybe<Scalars["Boolean"]>
+  /** does the column match the given pattern */
   _like?: Maybe<Scalars["String"]>
   _lt?: Maybe<Scalars["String"]>
   _lte?: Maybe<Scalars["String"]>
   _neq?: Maybe<Scalars["String"]>
+  /** does the column NOT match the given case-insensitive pattern */
   _nilike?: Maybe<Scalars["String"]>
   _nin?: Maybe<Array<Scalars["String"]>>
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  _niregex?: Maybe<Scalars["String"]>
+  /** does the column NOT match the given pattern */
   _nlike?: Maybe<Scalars["String"]>
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  _nregex?: Maybe<Scalars["String"]>
+  /** does the column NOT match the given SQL regular expression */
   _nsimilar?: Maybe<Scalars["String"]>
+  /** does the column match the given POSIX regular expression, case sensitive */
+  _regex?: Maybe<Scalars["String"]>
+  /** does the column match the given SQL regular expression */
   _similar?: Maybe<Scalars["String"]>
 }
 
-/** expression to compare columns of type _timestamptz. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "_timestamptz". All fields are combined with logical 'AND'. */
 export type _Timestamptz_Comparison_Exp = {
   _eq?: Maybe<Scalars["_timestamptz"]>
   _gt?: Maybe<Scalars["_timestamptz"]>
@@ -107,7 +121,7 @@ export type _Timestamptz_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["_timestamptz"]>>
 }
 
-/** expression to compare columns of type bigint. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
   _eq?: Maybe<Scalars["bigint"]>
   _gt?: Maybe<Scalars["bigint"]>
@@ -138,7 +152,7 @@ export type Dx_Intl_Base_Rating_Aggregate = {
 export type Dx_Intl_Base_Rating_Aggregate_Fields = {
   __typename?: "dx_intl_base_rating_aggregate_fields"
   avg?: Maybe<Dx_Intl_Base_Rating_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Base_Rating_Max_Fields>
   min?: Maybe<Dx_Intl_Base_Rating_Min_Fields>
   stddev?: Maybe<Dx_Intl_Base_Rating_Stddev_Fields>
@@ -156,37 +170,17 @@ export type Dx_Intl_Base_Rating_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Base_Rating_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Base_Rating_Max_Order_By>
-  min?: Maybe<Dx_Intl_Base_Rating_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Base_Rating_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Base_Rating_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Base_Rating_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Base_Rating_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Base_Rating_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Base_Rating_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Base_Rating_Variance_Order_By>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Base_Rating_Avg_Fields = {
   __typename?: "dx_intl_base_rating_avg_fields"
   count?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Avg_Order_By = {
-  count?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_base_rating". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Base_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Base_Rating_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Base_Rating_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Base_Rating_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Base_Rating_Bool_Exp>>
   count?: Maybe<Bigint_Comparison_Exp>
   range?: Maybe<String_Comparison_Exp>
 }
@@ -198,12 +192,6 @@ export type Dx_Intl_Base_Rating_Max_Fields = {
   range?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Max_Order_By = {
-  count?: Maybe<Order_By>
-  range?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Base_Rating_Min_Fields = {
   __typename?: "dx_intl_base_rating_min_fields"
@@ -211,13 +199,7 @@ export type Dx_Intl_Base_Rating_Min_Fields = {
   range?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Min_Order_By = {
-  count?: Maybe<Order_By>
-  range?: Maybe<Order_By>
-}
-
-/** ordering options when selecting data from "dx_intl_base_rating" */
+/** Ordering options when selecting data from "dx_intl_base_rating". */
 export type Dx_Intl_Base_Rating_Order_By = {
   count?: Maybe<Order_By>
   range?: Maybe<Order_By>
@@ -237,20 +219,10 @@ export type Dx_Intl_Base_Rating_Stddev_Fields = {
   count?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Stddev_Order_By = {
-  count?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Base_Rating_Stddev_Pop_Fields = {
   __typename?: "dx_intl_base_rating_stddev_pop_fields"
   count?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -259,20 +231,10 @@ export type Dx_Intl_Base_Rating_Stddev_Samp_Fields = {
   count?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Base_Rating_Sum_Fields = {
   __typename?: "dx_intl_base_rating_sum_fields"
   count?: Maybe<Scalars["bigint"]>
-}
-
-/** order by sum() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Sum_Order_By = {
-  count?: Maybe<Order_By>
 }
 
 /** aggregate var_pop on columns */
@@ -281,20 +243,10 @@ export type Dx_Intl_Base_Rating_Var_Pop_Fields = {
   count?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Base_Rating_Var_Samp_Fields = {
   __typename?: "dx_intl_base_rating_var_samp_fields"
   count?: Maybe<Scalars["Float"]>
-}
-
-/** order by var_samp() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>
 }
 
 /** aggregate variance on columns */
@@ -303,12 +255,7 @@ export type Dx_Intl_Base_Rating_Variance_Fields = {
   count?: Maybe<Scalars["Float"]>
 }
 
-/** order by variance() on columns of table "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Variance_Order_By = {
-  count?: Maybe<Order_By>
-}
-
-/** expression to compare columns of type dx_intl_combo_flag. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "dx_intl_combo_flag". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Combo_Flag_Comparison_Exp = {
   _eq?: Maybe<Scalars["dx_intl_combo_flag"]>
   _gt?: Maybe<Scalars["dx_intl_combo_flag"]>
@@ -321,7 +268,7 @@ export type Dx_Intl_Combo_Flag_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["dx_intl_combo_flag"]>>
 }
 
-/** expression to compare columns of type dx_intl_level. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "dx_intl_level". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Level_Comparison_Exp = {
   _eq?: Maybe<Scalars["dx_intl_level"]>
   _gt?: Maybe<Scalars["dx_intl_level"]>
@@ -341,7 +288,7 @@ export type Dx_Intl_Notes = {
   difficulty: Scalars["smallint"]
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** An object relationship */
   dx_intl_variant?: Maybe<Dx_Intl_Variants>
@@ -378,7 +325,7 @@ export type Dx_Intl_Notes_Aggregate = {
 export type Dx_Intl_Notes_Aggregate_Fields = {
   __typename?: "dx_intl_notes_aggregate_fields"
   avg?: Maybe<Dx_Intl_Notes_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Notes_Max_Fields>
   min?: Maybe<Dx_Intl_Notes_Min_Fields>
   stddev?: Maybe<Dx_Intl_Notes_Stddev_Fields>
@@ -414,6 +361,7 @@ export type Dx_Intl_Notes_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "dx_intl_notes" */
 export type Dx_Intl_Notes_Arr_Rel_Insert_Input = {
   data: Array<Dx_Intl_Notes_Insert_Input>
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Notes_On_Conflict>
 }
 
@@ -430,9 +378,9 @@ export type Dx_Intl_Notes_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "dx_intl_notes". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Notes_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Notes_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Notes_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Notes_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Notes_Bool_Exp>>
   deluxe?: Maybe<Boolean_Comparison_Exp>
   difficulty?: Maybe<Smallint_Comparison_Exp>
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Bool_Exp>
@@ -447,7 +395,7 @@ export enum Dx_Intl_Notes_Constraint {
   DxIntlNotesPkey1 = "dx_intl_notes_pkey1",
 }
 
-/** input type for incrementing integer column in table "dx_intl_notes" */
+/** input type for incrementing numeric columns in table "dx_intl_notes" */
 export type Dx_Intl_Notes_Inc_Input = {
   difficulty?: Maybe<Scalars["smallint"]>
 }
@@ -491,26 +439,27 @@ export type Dx_Intl_Notes_Min_Order_By = {
 /** response of any mutation on the table "dx_intl_notes" */
 export type Dx_Intl_Notes_Mutation_Response = {
   __typename?: "dx_intl_notes_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Notes>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_notes" */
 export type Dx_Intl_Notes_Obj_Rel_Insert_Input = {
   data: Dx_Intl_Notes_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Notes_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_notes" */
 export type Dx_Intl_Notes_On_Conflict = {
   constraint: Dx_Intl_Notes_Constraint
-  update_columns: Array<Dx_Intl_Notes_Update_Column>
+  update_columns?: Array<Dx_Intl_Notes_Update_Column>
   where?: Maybe<Dx_Intl_Notes_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_notes" */
+/** Ordering options when selecting data from "dx_intl_notes". */
 export type Dx_Intl_Notes_Order_By = {
   deluxe?: Maybe<Order_By>
   difficulty?: Maybe<Order_By>
@@ -520,7 +469,7 @@ export type Dx_Intl_Notes_Order_By = {
   song_id?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_notes" */
+/** primary key columns input for table: dx_intl_notes */
 export type Dx_Intl_Notes_Pk_Columns_Input = {
   deluxe: Scalars["Boolean"]
   difficulty: Scalars["smallint"]
@@ -642,13 +591,13 @@ export type Dx_Intl_Players = {
   created_at: Scalars["timestamptz"]
   /** An object relationship */
   dx_intl_record?: Maybe<Dx_Intl_Records>
-  /** An array relationship */
+  /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   id: Scalars["Int"]
   nickname: Scalars["String"]
@@ -709,7 +658,7 @@ export type Dx_Intl_Players_Aggregate = {
 export type Dx_Intl_Players_Aggregate_Fields = {
   __typename?: "dx_intl_players_aggregate_fields"
   avg?: Maybe<Dx_Intl_Players_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Players_Max_Fields>
   min?: Maybe<Dx_Intl_Players_Min_Fields>
   stddev?: Maybe<Dx_Intl_Players_Stddev_Fields>
@@ -745,6 +694,7 @@ export type Dx_Intl_Players_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "dx_intl_players" */
 export type Dx_Intl_Players_Arr_Rel_Insert_Input = {
   data: Array<Dx_Intl_Players_Insert_Input>
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Players_On_Conflict>
 }
 
@@ -761,9 +711,9 @@ export type Dx_Intl_Players_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "dx_intl_players". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Players_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Players_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Players_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Players_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Players_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Players_Bool_Exp>>
   created_at?: Maybe<Timestamptz_Comparison_Exp>
   dx_intl_record?: Maybe<Dx_Intl_Records_Bool_Exp>
   dx_intl_records?: Maybe<Dx_Intl_Records_Bool_Exp>
@@ -772,6 +722,7 @@ export type Dx_Intl_Players_Bool_Exp = {
   nickname?: Maybe<String_Comparison_Exp>
   private?: Maybe<Boolean_Comparison_Exp>
   timelines?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>
   user?: Maybe<Users_Bool_Exp>
   user_id?: Maybe<String_Comparison_Exp>
 }
@@ -784,7 +735,7 @@ export enum Dx_Intl_Players_Constraint {
   DxIntlPlayersPkey = "dx_intl_players_pkey",
 }
 
-/** input type for incrementing integer column in table "dx_intl_players" */
+/** input type for incrementing numeric columns in table "dx_intl_players" */
 export type Dx_Intl_Players_Inc_Input = {
   id?: Maybe<Scalars["Int"]>
 }
@@ -798,6 +749,7 @@ export type Dx_Intl_Players_Insert_Input = {
   id?: Maybe<Scalars["Int"]>
   nickname?: Maybe<Scalars["String"]>
   private?: Maybe<Scalars["Boolean"]>
+  timelines?: Maybe<Dx_Intl_Players_Timelines_Obj_Rel_Insert_Input>
   user?: Maybe<Users_Obj_Rel_Insert_Input>
   user_id?: Maybe<Scalars["String"]>
 }
@@ -839,26 +791,27 @@ export type Dx_Intl_Players_Min_Order_By = {
 /** response of any mutation on the table "dx_intl_players" */
 export type Dx_Intl_Players_Mutation_Response = {
   __typename?: "dx_intl_players_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Players>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_players" */
 export type Dx_Intl_Players_Obj_Rel_Insert_Input = {
   data: Dx_Intl_Players_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Players_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_players" */
 export type Dx_Intl_Players_On_Conflict = {
   constraint: Dx_Intl_Players_Constraint
-  update_columns: Array<Dx_Intl_Players_Update_Column>
+  update_columns?: Array<Dx_Intl_Players_Update_Column>
   where?: Maybe<Dx_Intl_Players_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_players" */
+/** Ordering options when selecting data from "dx_intl_players". */
 export type Dx_Intl_Players_Order_By = {
   created_at?: Maybe<Order_By>
   dx_intl_record?: Maybe<Dx_Intl_Records_Order_By>
@@ -872,7 +825,7 @@ export type Dx_Intl_Players_Order_By = {
   user_id?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_players" */
+/** primary key columns input for table: dx_intl_players */
 export type Dx_Intl_Players_Pk_Columns_Input = {
   id: Scalars["Int"]
 }
@@ -965,7 +918,7 @@ export type Dx_Intl_Players_Timelines_Aggregate = {
 export type Dx_Intl_Players_Timelines_Aggregate_Fields = {
   __typename?: "dx_intl_players_timelines_aggregate_fields"
   avg?: Maybe<Dx_Intl_Players_Timelines_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Players_Timelines_Max_Fields>
   min?: Maybe<Dx_Intl_Players_Timelines_Min_Fields>
   stddev?: Maybe<Dx_Intl_Players_Timelines_Stddev_Fields>
@@ -983,41 +936,29 @@ export type Dx_Intl_Players_Timelines_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Players_Timelines_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Players_Timelines_Max_Order_By>
-  min?: Maybe<Dx_Intl_Players_Timelines_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Players_Timelines_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Players_Timelines_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Players_Timelines_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Players_Timelines_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Players_Timelines_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Players_Timelines_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Players_Timelines_Variance_Order_By>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Players_Timelines_Avg_Fields = {
   __typename?: "dx_intl_players_timelines_avg_fields"
   id?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Avg_Order_By = {
-  id?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_players_timelines". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Players_Timelines_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Players_Timelines_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Players_Timelines_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Players_Timelines_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Players_Timelines_Bool_Exp>>
   id?: Maybe<Int_Comparison_Exp>
   nickname?: Maybe<String_Comparison_Exp>
   player?: Maybe<Dx_Intl_Players_Bool_Exp>
   timelines?: Maybe<_Timestamptz_Comparison_Exp>
+}
+
+/** input type for inserting data into table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Insert_Input = {
+  id?: Maybe<Scalars["Int"]>
+  nickname?: Maybe<Scalars["String"]>
+  player?: Maybe<Dx_Intl_Players_Obj_Rel_Insert_Input>
+  timelines?: Maybe<Scalars["_timestamptz"]>
 }
 
 /** aggregate max on columns */
@@ -1027,12 +968,6 @@ export type Dx_Intl_Players_Timelines_Max_Fields = {
   nickname?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Max_Order_By = {
-  id?: Maybe<Order_By>
-  nickname?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Players_Timelines_Min_Fields = {
   __typename?: "dx_intl_players_timelines_min_fields"
@@ -1040,13 +975,12 @@ export type Dx_Intl_Players_Timelines_Min_Fields = {
   nickname?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Min_Order_By = {
-  id?: Maybe<Order_By>
-  nickname?: Maybe<Order_By>
+/** input type for inserting object relation for remote table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Obj_Rel_Insert_Input = {
+  data: Dx_Intl_Players_Timelines_Insert_Input
 }
 
-/** ordering options when selecting data from "dx_intl_players_timelines" */
+/** Ordering options when selecting data from "dx_intl_players_timelines". */
 export type Dx_Intl_Players_Timelines_Order_By = {
   id?: Maybe<Order_By>
   nickname?: Maybe<Order_By>
@@ -1070,20 +1004,10 @@ export type Dx_Intl_Players_Timelines_Stddev_Fields = {
   id?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Stddev_Order_By = {
-  id?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Players_Timelines_Stddev_Pop_Fields = {
   __typename?: "dx_intl_players_timelines_stddev_pop_fields"
   id?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Stddev_Pop_Order_By = {
-  id?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -1092,20 +1016,10 @@ export type Dx_Intl_Players_Timelines_Stddev_Samp_Fields = {
   id?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Stddev_Samp_Order_By = {
-  id?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Players_Timelines_Sum_Fields = {
   __typename?: "dx_intl_players_timelines_sum_fields"
   id?: Maybe<Scalars["Int"]>
-}
-
-/** order by sum() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Sum_Order_By = {
-  id?: Maybe<Order_By>
 }
 
 /** aggregate var_pop on columns */
@@ -1114,31 +1028,16 @@ export type Dx_Intl_Players_Timelines_Var_Pop_Fields = {
   id?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Var_Pop_Order_By = {
-  id?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Players_Timelines_Var_Samp_Fields = {
   __typename?: "dx_intl_players_timelines_var_samp_fields"
   id?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_samp() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Var_Samp_Order_By = {
-  id?: Maybe<Order_By>
-}
-
 /** aggregate variance on columns */
 export type Dx_Intl_Players_Timelines_Variance_Fields = {
   __typename?: "dx_intl_players_timelines_variance_fields"
   id?: Maybe<Scalars["Float"]>
-}
-
-/** order by variance() on columns of table "dx_intl_players_timelines" */
-export type Dx_Intl_Players_Timelines_Variance_Order_By = {
-  id?: Maybe<Order_By>
 }
 
 /** update columns of table "dx_intl_players" */
@@ -1192,10 +1091,12 @@ export type Dx_Intl_Players_Variance_Order_By = {
 export type Dx_Intl_Records = {
   __typename?: "dx_intl_records"
   card_name: Scalars["String"]
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   /** An object relationship */
   dx_intl_player: Dx_Intl_Players
   end: Scalars["timestamptz"]
-  grade: Scalars["Int"]
+  grade?: Maybe<Scalars["Int"]>
   id: Scalars["Int"]
   max_rating: Scalars["smallint"]
   player_id: Scalars["Int"]
@@ -1216,7 +1117,7 @@ export type Dx_Intl_Records_Aggregate = {
 export type Dx_Intl_Records_Aggregate_Fields = {
   __typename?: "dx_intl_records_aggregate_fields"
   avg?: Maybe<Dx_Intl_Records_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Records_Max_Fields>
   min?: Maybe<Dx_Intl_Records_Min_Fields>
   stddev?: Maybe<Dx_Intl_Records_Stddev_Fields>
@@ -1252,12 +1153,15 @@ export type Dx_Intl_Records_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "dx_intl_records" */
 export type Dx_Intl_Records_Arr_Rel_Insert_Input = {
   data: Array<Dx_Intl_Records_Insert_Input>
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Records_On_Conflict>
 }
 
 /** aggregate avg on columns */
 export type Dx_Intl_Records_Avg_Fields = {
   __typename?: "dx_intl_records_avg_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1267,6 +1171,8 @@ export type Dx_Intl_Records_Avg_Fields = {
 
 /** order by avg() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Avg_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1276,10 +1182,12 @@ export type Dx_Intl_Records_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "dx_intl_records". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Records_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Records_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Records_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Records_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Records_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Records_Bool_Exp>>
   card_name?: Maybe<String_Comparison_Exp>
+  class_rank?: Maybe<Smallint_Comparison_Exp>
+  course_rank?: Maybe<Smallint_Comparison_Exp>
   dx_intl_player?: Maybe<Dx_Intl_Players_Bool_Exp>
   end?: Maybe<Timestamptz_Comparison_Exp>
   grade?: Maybe<Int_Comparison_Exp>
@@ -1300,8 +1208,10 @@ export enum Dx_Intl_Records_Constraint {
   DxIntlRecordsPlayerIdKey = "dx_intl_records_player_id_key",
 }
 
-/** input type for incrementing integer column in table "dx_intl_records" */
+/** input type for incrementing numeric columns in table "dx_intl_records" */
 export type Dx_Intl_Records_Inc_Input = {
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
   max_rating?: Maybe<Scalars["smallint"]>
@@ -1312,6 +1222,8 @@ export type Dx_Intl_Records_Inc_Input = {
 /** input type for inserting data into table "dx_intl_records" */
 export type Dx_Intl_Records_Insert_Input = {
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   dx_intl_player?: Maybe<Dx_Intl_Players_Obj_Rel_Insert_Input>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
@@ -1328,6 +1240,8 @@ export type Dx_Intl_Records_Insert_Input = {
 export type Dx_Intl_Records_Max_Fields = {
   __typename?: "dx_intl_records_max_fields"
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
@@ -1341,6 +1255,8 @@ export type Dx_Intl_Records_Max_Fields = {
 /** order by max() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Max_Order_By = {
   card_name?: Maybe<Order_By>
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   end?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
@@ -1355,6 +1271,8 @@ export type Dx_Intl_Records_Max_Order_By = {
 export type Dx_Intl_Records_Min_Fields = {
   __typename?: "dx_intl_records_min_fields"
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
@@ -1368,6 +1286,8 @@ export type Dx_Intl_Records_Min_Fields = {
 /** order by min() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Min_Order_By = {
   card_name?: Maybe<Order_By>
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   end?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
@@ -1381,28 +1301,31 @@ export type Dx_Intl_Records_Min_Order_By = {
 /** response of any mutation on the table "dx_intl_records" */
 export type Dx_Intl_Records_Mutation_Response = {
   __typename?: "dx_intl_records_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Records>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_records" */
 export type Dx_Intl_Records_Obj_Rel_Insert_Input = {
   data: Dx_Intl_Records_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Records_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_records" */
 export type Dx_Intl_Records_On_Conflict = {
   constraint: Dx_Intl_Records_Constraint
-  update_columns: Array<Dx_Intl_Records_Update_Column>
+  update_columns?: Array<Dx_Intl_Records_Update_Column>
   where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_records" */
+/** Ordering options when selecting data from "dx_intl_records". */
 export type Dx_Intl_Records_Order_By = {
   card_name?: Maybe<Order_By>
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   dx_intl_player?: Maybe<Dx_Intl_Players_Order_By>
   end?: Maybe<Order_By>
   grade?: Maybe<Order_By>
@@ -1415,7 +1338,7 @@ export type Dx_Intl_Records_Order_By = {
   trophy?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_records" */
+/** primary key columns input for table: dx_intl_records */
 export type Dx_Intl_Records_Pk_Columns_Input = {
   id: Scalars["Int"]
 }
@@ -1424,6 +1347,10 @@ export type Dx_Intl_Records_Pk_Columns_Input = {
 export enum Dx_Intl_Records_Select_Column {
   /** column name */
   CardName = "card_name",
+  /** column name */
+  ClassRank = "class_rank",
+  /** column name */
+  CourseRank = "course_rank",
   /** column name */
   End = "end",
   /** column name */
@@ -1447,6 +1374,8 @@ export enum Dx_Intl_Records_Select_Column {
 /** input type for updating data in table "dx_intl_records" */
 export type Dx_Intl_Records_Set_Input = {
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
@@ -1461,6 +1390,8 @@ export type Dx_Intl_Records_Set_Input = {
 /** aggregate stddev on columns */
 export type Dx_Intl_Records_Stddev_Fields = {
   __typename?: "dx_intl_records_stddev_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1470,6 +1401,8 @@ export type Dx_Intl_Records_Stddev_Fields = {
 
 /** order by stddev() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Stddev_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1480,6 +1413,8 @@ export type Dx_Intl_Records_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Records_Stddev_Pop_Fields = {
   __typename?: "dx_intl_records_stddev_pop_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1489,6 +1424,8 @@ export type Dx_Intl_Records_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Stddev_Pop_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1499,6 +1436,8 @@ export type Dx_Intl_Records_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Records_Stddev_Samp_Fields = {
   __typename?: "dx_intl_records_stddev_samp_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1508,6 +1447,8 @@ export type Dx_Intl_Records_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Stddev_Samp_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1518,6 +1459,8 @@ export type Dx_Intl_Records_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Dx_Intl_Records_Sum_Fields = {
   __typename?: "dx_intl_records_sum_fields"
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
   max_rating?: Maybe<Scalars["smallint"]>
@@ -1527,6 +1470,8 @@ export type Dx_Intl_Records_Sum_Fields = {
 
 /** order by sum() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Sum_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1538,6 +1483,10 @@ export type Dx_Intl_Records_Sum_Order_By = {
 export enum Dx_Intl_Records_Update_Column {
   /** column name */
   CardName = "card_name",
+  /** column name */
+  ClassRank = "class_rank",
+  /** column name */
+  CourseRank = "course_rank",
   /** column name */
   End = "end",
   /** column name */
@@ -1561,6 +1510,8 @@ export enum Dx_Intl_Records_Update_Column {
 /** aggregate var_pop on columns */
 export type Dx_Intl_Records_Var_Pop_Fields = {
   __typename?: "dx_intl_records_var_pop_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1570,6 +1521,8 @@ export type Dx_Intl_Records_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Var_Pop_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1580,6 +1533,8 @@ export type Dx_Intl_Records_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Dx_Intl_Records_Var_Samp_Fields = {
   __typename?: "dx_intl_records_var_samp_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1589,6 +1544,8 @@ export type Dx_Intl_Records_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Var_Samp_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1599,6 +1556,8 @@ export type Dx_Intl_Records_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Dx_Intl_Records_Variance_Fields = {
   __typename?: "dx_intl_records_variance_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1608,6 +1567,8 @@ export type Dx_Intl_Records_Variance_Fields = {
 
 /** order by variance() on columns of table "dx_intl_records" */
 export type Dx_Intl_Records_Variance_Order_By = {
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   grade?: Maybe<Order_By>
   id?: Maybe<Order_By>
   max_rating?: Maybe<Order_By>
@@ -1619,6 +1580,8 @@ export type Dx_Intl_Records_Variance_Order_By = {
 export type Dx_Intl_Records_With_History = {
   __typename?: "dx_intl_records_with_history"
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   /** An object relationship */
   dx_intl_player?: Maybe<Dx_Intl_Players>
   end?: Maybe<Scalars["timestamptz"]>
@@ -1643,7 +1606,7 @@ export type Dx_Intl_Records_With_History_Aggregate = {
 export type Dx_Intl_Records_With_History_Aggregate_Fields = {
   __typename?: "dx_intl_records_with_history_aggregate_fields"
   avg?: Maybe<Dx_Intl_Records_With_History_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Records_With_History_Max_Fields>
   min?: Maybe<Dx_Intl_Records_With_History_Min_Fields>
   stddev?: Maybe<Dx_Intl_Records_With_History_Stddev_Fields>
@@ -1661,24 +1624,11 @@ export type Dx_Intl_Records_With_History_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Records_With_History_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Records_With_History_Max_Order_By>
-  min?: Maybe<Dx_Intl_Records_With_History_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Records_With_History_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Records_With_History_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Records_With_History_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Records_With_History_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Records_With_History_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Records_With_History_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Records_With_History_Variance_Order_By>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Records_With_History_Avg_Fields = {
   __typename?: "dx_intl_records_with_history_avg_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1686,21 +1636,14 @@ export type Dx_Intl_Records_With_History_Avg_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Avg_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_records_with_history". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Records_With_History_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Records_With_History_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Records_With_History_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Records_With_History_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Records_With_History_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Records_With_History_Bool_Exp>>
   card_name?: Maybe<String_Comparison_Exp>
+  class_rank?: Maybe<Smallint_Comparison_Exp>
+  course_rank?: Maybe<Smallint_Comparison_Exp>
   dx_intl_player?: Maybe<Dx_Intl_Players_Bool_Exp>
   end?: Maybe<Timestamptz_Comparison_Exp>
   grade?: Maybe<Int_Comparison_Exp>
@@ -1717,6 +1660,8 @@ export type Dx_Intl_Records_With_History_Bool_Exp = {
 export type Dx_Intl_Records_With_History_Max_Fields = {
   __typename?: "dx_intl_records_with_history_max_fields"
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
@@ -1725,25 +1670,14 @@ export type Dx_Intl_Records_With_History_Max_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
-}
-
-/** order by max() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Max_Order_By = {
-  card_name?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-  title?: Maybe<Order_By>
 }
 
 /** aggregate min on columns */
 export type Dx_Intl_Records_With_History_Min_Fields = {
   __typename?: "dx_intl_records_with_history_min_fields"
   card_name?: Maybe<Scalars["String"]>
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
@@ -1754,22 +1688,11 @@ export type Dx_Intl_Records_With_History_Min_Fields = {
   title?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Min_Order_By = {
-  card_name?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-  title?: Maybe<Order_By>
-}
-
-/** ordering options when selecting data from "dx_intl_records_with_history" */
+/** Ordering options when selecting data from "dx_intl_records_with_history". */
 export type Dx_Intl_Records_With_History_Order_By = {
   card_name?: Maybe<Order_By>
+  class_rank?: Maybe<Order_By>
+  course_rank?: Maybe<Order_By>
   dx_intl_player?: Maybe<Dx_Intl_Players_Order_By>
   end?: Maybe<Order_By>
   grade?: Maybe<Order_By>
@@ -1786,6 +1709,10 @@ export type Dx_Intl_Records_With_History_Order_By = {
 export enum Dx_Intl_Records_With_History_Select_Column {
   /** column name */
   CardName = "card_name",
+  /** column name */
+  ClassRank = "class_rank",
+  /** column name */
+  CourseRank = "course_rank",
   /** column name */
   End = "end",
   /** column name */
@@ -1809,44 +1736,32 @@ export enum Dx_Intl_Records_With_History_Select_Column {
 /** aggregate stddev on columns */
 export type Dx_Intl_Records_With_History_Stddev_Fields = {
   __typename?: "dx_intl_records_with_history_stddev_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Stddev_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Records_With_History_Stddev_Pop_Fields = {
   __typename?: "dx_intl_records_with_history_stddev_pop_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Stddev_Pop_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Records_With_History_Stddev_Samp_Fields = {
   __typename?: "dx_intl_records_with_history_stddev_samp_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
@@ -1854,18 +1769,11 @@ export type Dx_Intl_Records_With_History_Stddev_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Stddev_Samp_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Records_With_History_Sum_Fields = {
   __typename?: "dx_intl_records_with_history_sum_fields"
+  class_rank?: Maybe<Scalars["smallint"]>
+  course_rank?: Maybe<Scalars["smallint"]>
   grade?: Maybe<Scalars["Int"]>
   id?: Maybe<Scalars["Int"]>
   max_rating?: Maybe<Scalars["smallint"]>
@@ -1873,70 +1781,40 @@ export type Dx_Intl_Records_With_History_Sum_Fields = {
   rating?: Maybe<Scalars["smallint"]>
 }
 
-/** order by sum() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Sum_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate var_pop on columns */
 export type Dx_Intl_Records_With_History_Var_Pop_Fields = {
   __typename?: "dx_intl_records_with_history_var_pop_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by var_pop() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Var_Pop_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** aggregate var_samp on columns */
 export type Dx_Intl_Records_With_History_Var_Samp_Fields = {
   __typename?: "dx_intl_records_with_history_var_samp_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by var_samp() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Var_Samp_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** aggregate variance on columns */
 export type Dx_Intl_Records_With_History_Variance_Fields = {
   __typename?: "dx_intl_records_with_history_variance_fields"
+  class_rank?: Maybe<Scalars["Float"]>
+  course_rank?: Maybe<Scalars["Float"]>
   grade?: Maybe<Scalars["Float"]>
   id?: Maybe<Scalars["Float"]>
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by variance() on columns of table "dx_intl_records_with_history" */
-export type Dx_Intl_Records_With_History_Variance_Order_By = {
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** columns and relationships of "dx_intl_scores" */
@@ -1969,7 +1847,7 @@ export type Dx_Intl_Scores_Aggregate = {
 export type Dx_Intl_Scores_Aggregate_Fields = {
   __typename?: "dx_intl_scores_aggregate_fields"
   avg?: Maybe<Dx_Intl_Scores_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Scores_Max_Fields>
   min?: Maybe<Dx_Intl_Scores_Min_Fields>
   stddev?: Maybe<Dx_Intl_Scores_Stddev_Fields>
@@ -2005,6 +1883,7 @@ export type Dx_Intl_Scores_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "dx_intl_scores" */
 export type Dx_Intl_Scores_Arr_Rel_Insert_Input = {
   data: Array<Dx_Intl_Scores_Insert_Input>
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Scores_On_Conflict>
 }
 
@@ -2027,9 +1906,9 @@ export type Dx_Intl_Scores_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "dx_intl_scores". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Scores_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Scores_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Scores_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Scores_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Scores_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Scores_Bool_Exp>>
   combo_flag?: Maybe<Dx_Intl_Combo_Flag_Comparison_Exp>
   deluxe?: Maybe<Boolean_Comparison_Exp>
   difficulty?: Maybe<Smallint_Comparison_Exp>
@@ -2052,7 +1931,7 @@ export enum Dx_Intl_Scores_Constraint {
   DxIntlScoresPlayerIdSongIdDeluxeDifficultyKey = "dx_intl_scores_player_id_song_id_deluxe_difficulty_key",
 }
 
-/** input type for incrementing integer column in table "dx_intl_scores" */
+/** input type for incrementing numeric columns in table "dx_intl_scores" */
 export type Dx_Intl_Scores_Inc_Input = {
   difficulty?: Maybe<Scalars["smallint"]>
   id?: Maybe<Scalars["bigint"]>
@@ -2125,26 +2004,20 @@ export type Dx_Intl_Scores_Min_Order_By = {
 /** response of any mutation on the table "dx_intl_scores" */
 export type Dx_Intl_Scores_Mutation_Response = {
   __typename?: "dx_intl_scores_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Scores>
-}
-
-/** input type for inserting object relation for remote table "dx_intl_scores" */
-export type Dx_Intl_Scores_Obj_Rel_Insert_Input = {
-  data: Dx_Intl_Scores_Insert_Input
-  on_conflict?: Maybe<Dx_Intl_Scores_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_scores" */
 export type Dx_Intl_Scores_On_Conflict = {
   constraint: Dx_Intl_Scores_Constraint
-  update_columns: Array<Dx_Intl_Scores_Update_Column>
+  update_columns?: Array<Dx_Intl_Scores_Update_Column>
   where?: Maybe<Dx_Intl_Scores_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_scores" */
+/** Ordering options when selecting data from "dx_intl_scores". */
 export type Dx_Intl_Scores_Order_By = {
   combo_flag?: Maybe<Order_By>
   deluxe?: Maybe<Order_By>
@@ -2160,7 +2033,7 @@ export type Dx_Intl_Scores_Order_By = {
   sync_flag?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_scores" */
+/** primary key columns input for table: dx_intl_scores */
 export type Dx_Intl_Scores_Pk_Columns_Input = {
   id: Scalars["bigint"]
 }
@@ -2224,7 +2097,7 @@ export type Dx_Intl_Scores_Stats_Aggregate = {
 export type Dx_Intl_Scores_Stats_Aggregate_Fields = {
   __typename?: "dx_intl_scores_stats_aggregate_fields"
   avg?: Maybe<Dx_Intl_Scores_Stats_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Scores_Stats_Max_Fields>
   min?: Maybe<Dx_Intl_Scores_Stats_Min_Fields>
   stddev?: Maybe<Dx_Intl_Scores_Stats_Stddev_Fields>
@@ -2242,21 +2115,6 @@ export type Dx_Intl_Scores_Stats_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Scores_Stats_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Scores_Stats_Max_Order_By>
-  min?: Maybe<Dx_Intl_Scores_Stats_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Scores_Stats_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Scores_Stats_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Scores_Stats_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Scores_Stats_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Scores_Stats_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Scores_Stats_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Scores_Stats_Variance_Order_By>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Scores_Stats_Avg_Fields = {
   __typename?: "dx_intl_scores_stats_avg_fields"
@@ -2264,17 +2122,11 @@ export type Dx_Intl_Scores_Stats_Avg_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Avg_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_scores_stats". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Scores_Stats_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Scores_Stats_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Scores_Stats_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Scores_Stats_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Scores_Stats_Bool_Exp>>
   count?: Maybe<Bigint_Comparison_Exp>
   deluxe?: Maybe<Boolean_Comparison_Exp>
   difficulty?: Maybe<Smallint_Comparison_Exp>
@@ -2291,14 +2143,6 @@ export type Dx_Intl_Scores_Stats_Max_Fields = {
   song_id?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Max_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-  range?: Maybe<Order_By>
-  song_id?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Scores_Stats_Min_Fields = {
   __typename?: "dx_intl_scores_stats_min_fields"
@@ -2308,15 +2152,7 @@ export type Dx_Intl_Scores_Stats_Min_Fields = {
   song_id?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Min_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-  range?: Maybe<Order_By>
-  song_id?: Maybe<Order_By>
-}
-
-/** ordering options when selecting data from "dx_intl_scores_stats" */
+/** Ordering options when selecting data from "dx_intl_scores_stats". */
 export type Dx_Intl_Scores_Stats_Order_By = {
   count?: Maybe<Order_By>
   deluxe?: Maybe<Order_By>
@@ -2346,23 +2182,11 @@ export type Dx_Intl_Scores_Stats_Stddev_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Stddev_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Scores_Stats_Stddev_Pop_Fields = {
   __typename?: "dx_intl_scores_stats_stddev_pop_fields"
   count?: Maybe<Scalars["Float"]>
   difficulty?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Stddev_Pop_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -2372,23 +2196,11 @@ export type Dx_Intl_Scores_Stats_Stddev_Samp_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Stddev_Samp_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_Stats_Sum_Fields = {
   __typename?: "dx_intl_scores_stats_sum_fields"
   count?: Maybe<Scalars["bigint"]>
   difficulty?: Maybe<Scalars["smallint"]>
-}
-
-/** order by sum() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Sum_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
 }
 
 /** aggregate var_pop on columns */
@@ -2398,12 +2210,6 @@ export type Dx_Intl_Scores_Stats_Var_Pop_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Var_Pop_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Scores_Stats_Var_Samp_Fields = {
   __typename?: "dx_intl_scores_stats_var_samp_fields"
@@ -2411,23 +2217,11 @@ export type Dx_Intl_Scores_Stats_Var_Samp_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_samp() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Var_Samp_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
-}
-
 /** aggregate variance on columns */
 export type Dx_Intl_Scores_Stats_Variance_Fields = {
   __typename?: "dx_intl_scores_stats_variance_fields"
   count?: Maybe<Scalars["Float"]>
   difficulty?: Maybe<Scalars["Float"]>
-}
-
-/** order by variance() on columns of table "dx_intl_scores_stats" */
-export type Dx_Intl_Scores_Stats_Variance_Order_By = {
-  count?: Maybe<Order_By>
-  difficulty?: Maybe<Order_By>
 }
 
 /** aggregate stddev on columns */
@@ -2603,7 +2397,7 @@ export type Dx_Intl_Scores_With_History_Aggregate = {
 export type Dx_Intl_Scores_With_History_Aggregate_Fields = {
   __typename?: "dx_intl_scores_with_history_aggregate_fields"
   avg?: Maybe<Dx_Intl_Scores_With_History_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Scores_With_History_Max_Fields>
   min?: Maybe<Dx_Intl_Scores_With_History_Min_Fields>
   stddev?: Maybe<Dx_Intl_Scores_With_History_Stddev_Fields>
@@ -2621,21 +2415,6 @@ export type Dx_Intl_Scores_With_History_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Scores_With_History_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Scores_With_History_Max_Order_By>
-  min?: Maybe<Dx_Intl_Scores_With_History_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Scores_With_History_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Scores_With_History_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Scores_With_History_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Scores_With_History_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Scores_With_History_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Scores_With_History_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Scores_With_History_Variance_Order_By>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Scores_With_History_Avg_Fields = {
   __typename?: "dx_intl_scores_with_history_avg_fields"
@@ -2645,19 +2424,11 @@ export type Dx_Intl_Scores_With_History_Avg_Fields = {
   score?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Avg_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_scores_with_history". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Scores_With_History_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Scores_With_History_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Scores_With_History_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Scores_With_History_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Scores_With_History_Bool_Exp>>
   combo_flag?: Maybe<Dx_Intl_Combo_Flag_Comparison_Exp>
   deluxe?: Maybe<Boolean_Comparison_Exp>
   difficulty?: Maybe<Smallint_Comparison_Exp>
@@ -2684,17 +2455,6 @@ export type Dx_Intl_Scores_With_History_Max_Fields = {
   start?: Maybe<Scalars["timestamptz"]>
 }
 
-/** order by max() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Max_Order_By = {
-  difficulty?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-  song_id?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Scores_With_History_Min_Fields = {
   __typename?: "dx_intl_scores_with_history_min_fields"
@@ -2707,18 +2467,7 @@ export type Dx_Intl_Scores_With_History_Min_Fields = {
   start?: Maybe<Scalars["timestamptz"]>
 }
 
-/** order by min() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Min_Order_By = {
-  difficulty?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-  song_id?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-}
-
-/** ordering options when selecting data from "dx_intl_scores_with_history" */
+/** Ordering options when selecting data from "dx_intl_scores_with_history". */
 export type Dx_Intl_Scores_With_History_Order_By = {
   combo_flag?: Maybe<Order_By>
   deluxe?: Maybe<Order_By>
@@ -2767,14 +2516,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Fields = {
   score?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Stddev_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Scores_With_History_Stddev_Pop_Fields = {
   __typename?: "dx_intl_scores_with_history_stddev_pop_fields"
@@ -2782,14 +2523,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Pop_Fields = {
   id?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   score?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Stddev_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -2801,14 +2534,6 @@ export type Dx_Intl_Scores_With_History_Stddev_Samp_Fields = {
   score?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Stddev_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_With_History_Sum_Fields = {
   __typename?: "dx_intl_scores_with_history_sum_fields"
@@ -2816,14 +2541,6 @@ export type Dx_Intl_Scores_With_History_Sum_Fields = {
   id?: Maybe<Scalars["bigint"]>
   player_id?: Maybe<Scalars["Int"]>
   score?: Maybe<Scalars["numeric"]>
-}
-
-/** order by sum() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Sum_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
 }
 
 /** aggregate var_pop on columns */
@@ -2835,14 +2552,6 @@ export type Dx_Intl_Scores_With_History_Var_Pop_Fields = {
   score?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Var_Pop_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Scores_With_History_Var_Samp_Fields = {
   __typename?: "dx_intl_scores_with_history_var_samp_fields"
@@ -2850,14 +2559,6 @@ export type Dx_Intl_Scores_With_History_Var_Samp_Fields = {
   id?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   score?: Maybe<Scalars["Float"]>
-}
-
-/** order by var_samp() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Var_Samp_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
 }
 
 /** aggregate variance on columns */
@@ -2869,21 +2570,13 @@ export type Dx_Intl_Scores_With_History_Variance_Fields = {
   score?: Maybe<Scalars["Float"]>
 }
 
-/** order by variance() on columns of table "dx_intl_scores_with_history" */
-export type Dx_Intl_Scores_With_History_Variance_Order_By = {
-  difficulty?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  score?: Maybe<Order_By>
-}
-
 /** columns and relationships of "dx_intl_songs" */
 export type Dx_Intl_Songs = {
   __typename?: "dx_intl_songs"
   category: Scalars["smallint"]
   /** An array relationship */
   dx_intl_variants: Array<Dx_Intl_Variants>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate
   id: Scalars["String"]
   order: Scalars["smallint"]
@@ -2919,7 +2612,7 @@ export type Dx_Intl_Songs_Aggregate = {
 export type Dx_Intl_Songs_Aggregate_Fields = {
   __typename?: "dx_intl_songs_aggregate_fields"
   avg?: Maybe<Dx_Intl_Songs_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Songs_Max_Fields>
   min?: Maybe<Dx_Intl_Songs_Min_Fields>
   stddev?: Maybe<Dx_Intl_Songs_Stddev_Fields>
@@ -2937,27 +2630,6 @@ export type Dx_Intl_Songs_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Songs_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Songs_Max_Order_By>
-  min?: Maybe<Dx_Intl_Songs_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Songs_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Songs_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Songs_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Songs_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Songs_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Songs_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Songs_Variance_Order_By>
-}
-
-/** input type for inserting array relation for remote table "dx_intl_songs" */
-export type Dx_Intl_Songs_Arr_Rel_Insert_Input = {
-  data: Array<Dx_Intl_Songs_Insert_Input>
-  on_conflict?: Maybe<Dx_Intl_Songs_On_Conflict>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Songs_Avg_Fields = {
   __typename?: "dx_intl_songs_avg_fields"
@@ -2965,17 +2637,11 @@ export type Dx_Intl_Songs_Avg_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
-/** order by avg() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Avg_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "dx_intl_songs". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Songs_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Songs_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Songs_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Songs_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Songs_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Songs_Bool_Exp>>
   category?: Maybe<Smallint_Comparison_Exp>
   dx_intl_variants?: Maybe<Dx_Intl_Variants_Bool_Exp>
   id?: Maybe<String_Comparison_Exp>
@@ -2991,7 +2657,7 @@ export enum Dx_Intl_Songs_Constraint {
   DxIntlSongsPkey1 = "dx_intl_songs_pkey1",
 }
 
-/** input type for incrementing integer column in table "dx_intl_songs" */
+/** input type for incrementing numeric columns in table "dx_intl_songs" */
 export type Dx_Intl_Songs_Inc_Input = {
   category?: Maybe<Scalars["smallint"]>
   order?: Maybe<Scalars["smallint"]>
@@ -3015,14 +2681,6 @@ export type Dx_Intl_Songs_Max_Fields = {
   title?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Max_Order_By = {
-  category?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-  title?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Songs_Min_Fields = {
   __typename?: "dx_intl_songs_min_fields"
@@ -3032,37 +2690,30 @@ export type Dx_Intl_Songs_Min_Fields = {
   title?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Min_Order_By = {
-  category?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-  title?: Maybe<Order_By>
-}
-
 /** response of any mutation on the table "dx_intl_songs" */
 export type Dx_Intl_Songs_Mutation_Response = {
   __typename?: "dx_intl_songs_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Songs>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_songs" */
 export type Dx_Intl_Songs_Obj_Rel_Insert_Input = {
   data: Dx_Intl_Songs_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Songs_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_songs" */
 export type Dx_Intl_Songs_On_Conflict = {
   constraint: Dx_Intl_Songs_Constraint
-  update_columns: Array<Dx_Intl_Songs_Update_Column>
+  update_columns?: Array<Dx_Intl_Songs_Update_Column>
   where?: Maybe<Dx_Intl_Songs_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_songs" */
+/** Ordering options when selecting data from "dx_intl_songs". */
 export type Dx_Intl_Songs_Order_By = {
   category?: Maybe<Order_By>
   dx_intl_variants_aggregate?: Maybe<Dx_Intl_Variants_Aggregate_Order_By>
@@ -3071,7 +2722,7 @@ export type Dx_Intl_Songs_Order_By = {
   title?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_songs" */
+/** primary key columns input for table: dx_intl_songs */
 export type Dx_Intl_Songs_Pk_Columns_Input = {
   id: Scalars["String"]
 }
@@ -3103,23 +2754,11 @@ export type Dx_Intl_Songs_Stddev_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Stddev_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Songs_Stddev_Pop_Fields = {
   __typename?: "dx_intl_songs_stddev_pop_fields"
   category?: Maybe<Scalars["Float"]>
   order?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Stddev_Pop_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -3129,23 +2768,11 @@ export type Dx_Intl_Songs_Stddev_Samp_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Stddev_Samp_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Songs_Sum_Fields = {
   __typename?: "dx_intl_songs_sum_fields"
   category?: Maybe<Scalars["smallint"]>
   order?: Maybe<Scalars["smallint"]>
-}
-
-/** order by sum() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Sum_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
 }
 
 /** update columns of table "dx_intl_songs" */
@@ -3167,23 +2794,11 @@ export type Dx_Intl_Songs_Var_Pop_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Var_Pop_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Songs_Var_Samp_Fields = {
   __typename?: "dx_intl_songs_var_samp_fields"
   category?: Maybe<Scalars["Float"]>
   order?: Maybe<Scalars["Float"]>
-}
-
-/** order by var_samp() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Var_Samp_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
 }
 
 /** aggregate variance on columns */
@@ -3193,13 +2808,7 @@ export type Dx_Intl_Songs_Variance_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
-/** order by variance() on columns of table "dx_intl_songs" */
-export type Dx_Intl_Songs_Variance_Order_By = {
-  category?: Maybe<Order_By>
-  order?: Maybe<Order_By>
-}
-
-/** expression to compare columns of type dx_intl_sync_flag. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "dx_intl_sync_flag". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Sync_Flag_Comparison_Exp = {
   _eq?: Maybe<Scalars["dx_intl_sync_flag"]>
   _gt?: Maybe<Scalars["dx_intl_sync_flag"]>
@@ -3212,7 +2821,7 @@ export type Dx_Intl_Sync_Flag_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["dx_intl_sync_flag"]>>
 }
 
-/** expression to compare columns of type dx_intl_trophy. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "dx_intl_trophy". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Trophy_Comparison_Exp = {
   _eq?: Maybe<Scalars["dx_intl_trophy"]>
   _gt?: Maybe<Scalars["dx_intl_trophy"]>
@@ -3232,7 +2841,7 @@ export type Dx_Intl_Variants = {
   deluxe: Scalars["Boolean"]
   /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate
   /** An object relationship */
   dx_intl_song: Dx_Intl_Songs
@@ -3269,7 +2878,7 @@ export type Dx_Intl_Variants_Aggregate = {
 export type Dx_Intl_Variants_Aggregate_Fields = {
   __typename?: "dx_intl_variants_aggregate_fields"
   avg?: Maybe<Dx_Intl_Variants_Avg_Fields>
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Dx_Intl_Variants_Max_Fields>
   min?: Maybe<Dx_Intl_Variants_Min_Fields>
   stddev?: Maybe<Dx_Intl_Variants_Stddev_Fields>
@@ -3305,6 +2914,7 @@ export type Dx_Intl_Variants_Aggregate_Order_By = {
 /** input type for inserting array relation for remote table "dx_intl_variants" */
 export type Dx_Intl_Variants_Arr_Rel_Insert_Input = {
   data: Array<Dx_Intl_Variants_Insert_Input>
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>
 }
 
@@ -3321,9 +2931,9 @@ export type Dx_Intl_Variants_Avg_Order_By = {
 
 /** Boolean expression to filter rows from the table "dx_intl_variants". All fields are combined with a logical 'AND'. */
 export type Dx_Intl_Variants_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Dx_Intl_Variants_Bool_Exp>>>
+  _and?: Maybe<Array<Dx_Intl_Variants_Bool_Exp>>
   _not?: Maybe<Dx_Intl_Variants_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Dx_Intl_Variants_Bool_Exp>>>
+  _or?: Maybe<Array<Dx_Intl_Variants_Bool_Exp>>
   active?: Maybe<Boolean_Comparison_Exp>
   deluxe?: Maybe<Boolean_Comparison_Exp>
   dx_intl_notes?: Maybe<Dx_Intl_Notes_Bool_Exp>
@@ -3338,7 +2948,7 @@ export enum Dx_Intl_Variants_Constraint {
   DxIntlVariantsPkey1 = "dx_intl_variants_pkey1",
 }
 
-/** input type for incrementing integer column in table "dx_intl_variants" */
+/** input type for incrementing numeric columns in table "dx_intl_variants" */
 export type Dx_Intl_Variants_Inc_Input = {
   version?: Maybe<Scalars["smallint"]>
 }
@@ -3382,26 +2992,27 @@ export type Dx_Intl_Variants_Min_Order_By = {
 /** response of any mutation on the table "dx_intl_variants" */
 export type Dx_Intl_Variants_Mutation_Response = {
   __typename?: "dx_intl_variants_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Dx_Intl_Variants>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_variants" */
 export type Dx_Intl_Variants_Obj_Rel_Insert_Input = {
   data: Dx_Intl_Variants_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Dx_Intl_Variants_On_Conflict>
 }
 
 /** on conflict condition type for table "dx_intl_variants" */
 export type Dx_Intl_Variants_On_Conflict = {
   constraint: Dx_Intl_Variants_Constraint
-  update_columns: Array<Dx_Intl_Variants_Update_Column>
+  update_columns?: Array<Dx_Intl_Variants_Update_Column>
   where?: Maybe<Dx_Intl_Variants_Bool_Exp>
 }
 
-/** ordering options when selecting data from "dx_intl_variants" */
+/** Ordering options when selecting data from "dx_intl_variants". */
 export type Dx_Intl_Variants_Order_By = {
   active?: Maybe<Order_By>
   deluxe?: Maybe<Order_By>
@@ -3411,7 +3022,7 @@ export type Dx_Intl_Variants_Order_By = {
   version?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "dx_intl_variants" */
+/** primary key columns input for table: dx_intl_variants */
 export type Dx_Intl_Variants_Pk_Columns_Input = {
   deluxe: Scalars["Boolean"]
   song_id: Scalars["String"]
@@ -3914,7 +3525,7 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
   pk_columns: Users_Pk_Columns_Input
 }
 
-/** expression to compare columns of type numeric. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
   _eq?: Maybe<Scalars["numeric"]>
   _gt?: Maybe<Scalars["numeric"]>
@@ -3929,36 +3540,35 @@ export type Numeric_Comparison_Exp = {
 
 /** column ordering options */
 export enum Order_By {
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   Asc = "asc",
-  /** in the ascending order, nulls first */
+  /** in ascending order, nulls first */
   AscNullsFirst = "asc_nulls_first",
-  /** in the ascending order, nulls last */
+  /** in ascending order, nulls last */
   AscNullsLast = "asc_nulls_last",
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   Desc = "desc",
-  /** in the descending order, nulls first */
+  /** in descending order, nulls first */
   DescNullsFirst = "desc_nulls_first",
-  /** in the descending order, nulls last */
+  /** in descending order, nulls last */
   DescNullsLast = "desc_nulls_last",
 }
 
-/** query root */
 export type Query_Root = {
   __typename?: "query_root"
   /** fetch data from the table: "dx_intl_base_rating" */
   dx_intl_base_rating: Array<Dx_Intl_Base_Rating>
   /** fetch aggregated fields from the table: "dx_intl_base_rating" */
   dx_intl_base_rating_aggregate: Dx_Intl_Base_Rating_Aggregate
-  /** fetch data from the table: "dx_intl_notes" */
+  /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
-  /** fetch aggregated fields from the table: "dx_intl_notes" */
+  /** An aggregate relationship */
   dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate
   /** fetch data from the table: "dx_intl_notes" using primary key columns */
   dx_intl_notes_by_pk?: Maybe<Dx_Intl_Notes>
-  /** fetch data from the table: "dx_intl_players" */
+  /** An array relationship */
   dx_intl_players: Array<Dx_Intl_Players>
-  /** fetch aggregated fields from the table: "dx_intl_players" */
+  /** An aggregate relationship */
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>
@@ -3968,7 +3578,7 @@ export type Query_Root = {
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
-  /** fetch aggregated fields from the table: "dx_intl_records" */
+  /** An aggregate relationship */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
@@ -3976,9 +3586,9 @@ export type Query_Root = {
   dx_intl_records_with_history: Array<Dx_Intl_Records_With_History>
   /** fetch aggregated fields from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history_aggregate: Dx_Intl_Records_With_History_Aggregate
-  /** fetch data from the table: "dx_intl_scores" */
+  /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
-  /** fetch aggregated fields from the table: "dx_intl_scores" */
+  /** An aggregate relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>
@@ -3996,9 +3606,9 @@ export type Query_Root = {
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>
-  /** fetch data from the table: "dx_intl_variants" */
+  /** An array relationship */
   dx_intl_variants: Array<Dx_Intl_Variants>
-  /** fetch aggregated fields from the table: "dx_intl_variants" */
+  /** An aggregate relationship */
   dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate
   /** fetch data from the table: "dx_intl_variants" using primary key columns */
   dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>
@@ -4016,7 +3626,6 @@ export type Query_Root = {
   users_by_pk?: Maybe<Users>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Base_RatingArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4025,7 +3634,6 @@ export type Query_RootDx_Intl_Base_RatingArgs = {
   where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Base_Rating_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4034,7 +3642,6 @@ export type Query_RootDx_Intl_Base_Rating_AggregateArgs = {
   where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_NotesArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4043,7 +3650,6 @@ export type Query_RootDx_Intl_NotesArgs = {
   where?: Maybe<Dx_Intl_Notes_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Notes_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4052,14 +3658,12 @@ export type Query_RootDx_Intl_Notes_AggregateArgs = {
   where?: Maybe<Dx_Intl_Notes_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Notes_By_PkArgs = {
   deluxe: Scalars["Boolean"]
   difficulty: Scalars["smallint"]
   song_id: Scalars["String"]
 }
 
-/** query root */
 export type Query_RootDx_Intl_PlayersArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4068,7 +3672,6 @@ export type Query_RootDx_Intl_PlayersArgs = {
   where?: Maybe<Dx_Intl_Players_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Players_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4077,12 +3680,10 @@ export type Query_RootDx_Intl_Players_AggregateArgs = {
   where?: Maybe<Dx_Intl_Players_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Players_By_PkArgs = {
   id: Scalars["Int"]
 }
 
-/** query root */
 export type Query_RootDx_Intl_Players_TimelinesArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4091,7 +3692,6 @@ export type Query_RootDx_Intl_Players_TimelinesArgs = {
   where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Players_Timelines_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4100,7 +3700,6 @@ export type Query_RootDx_Intl_Players_Timelines_AggregateArgs = {
   where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_RecordsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4109,7 +3708,6 @@ export type Query_RootDx_Intl_RecordsArgs = {
   where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Records_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4118,12 +3716,10 @@ export type Query_RootDx_Intl_Records_AggregateArgs = {
   where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Records_By_PkArgs = {
   id: Scalars["Int"]
 }
 
-/** query root */
 export type Query_RootDx_Intl_Records_With_HistoryArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4132,7 +3728,6 @@ export type Query_RootDx_Intl_Records_With_HistoryArgs = {
   where?: Maybe<Dx_Intl_Records_With_History_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Records_With_History_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4141,7 +3736,6 @@ export type Query_RootDx_Intl_Records_With_History_AggregateArgs = {
   where?: Maybe<Dx_Intl_Records_With_History_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_ScoresArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4150,7 +3744,6 @@ export type Query_RootDx_Intl_ScoresArgs = {
   where?: Maybe<Dx_Intl_Scores_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4159,12 +3752,10 @@ export type Query_RootDx_Intl_Scores_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_By_PkArgs = {
   id: Scalars["bigint"]
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_StatsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4173,7 +3764,6 @@ export type Query_RootDx_Intl_Scores_StatsArgs = {
   where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_Stats_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4182,7 +3772,6 @@ export type Query_RootDx_Intl_Scores_Stats_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_With_HistoryArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4191,7 +3780,6 @@ export type Query_RootDx_Intl_Scores_With_HistoryArgs = {
   where?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Scores_With_History_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4200,7 +3788,6 @@ export type Query_RootDx_Intl_Scores_With_History_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_SongsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Songs_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4209,7 +3796,6 @@ export type Query_RootDx_Intl_SongsArgs = {
   where?: Maybe<Dx_Intl_Songs_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Songs_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Songs_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4218,12 +3804,10 @@ export type Query_RootDx_Intl_Songs_AggregateArgs = {
   where?: Maybe<Dx_Intl_Songs_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Songs_By_PkArgs = {
   id: Scalars["String"]
 }
 
-/** query root */
 export type Query_RootDx_Intl_VariantsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4232,7 +3816,6 @@ export type Query_RootDx_Intl_VariantsArgs = {
   where?: Maybe<Dx_Intl_Variants_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Variants_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4241,13 +3824,11 @@ export type Query_RootDx_Intl_Variants_AggregateArgs = {
   where?: Maybe<Dx_Intl_Variants_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootDx_Intl_Variants_By_PkArgs = {
   deluxe: Scalars["Boolean"]
   song_id: Scalars["String"]
 }
 
-/** query root */
 export type Query_RootTokensArgs = {
   distinct_on?: Maybe<Array<Tokens_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4256,7 +3837,6 @@ export type Query_RootTokensArgs = {
   where?: Maybe<Tokens_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootTokens_AggregateArgs = {
   distinct_on?: Maybe<Array<Tokens_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4265,12 +3845,10 @@ export type Query_RootTokens_AggregateArgs = {
   where?: Maybe<Tokens_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootTokens_By_PkArgs = {
   id: Scalars["uuid"]
 }
 
-/** query root */
 export type Query_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4279,7 +3857,6 @@ export type Query_RootUsersArgs = {
   where?: Maybe<Users_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootUsers_AggregateArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4288,12 +3865,11 @@ export type Query_RootUsers_AggregateArgs = {
   where?: Maybe<Users_Bool_Exp>
 }
 
-/** query root */
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars["String"]
 }
 
-/** expression to compare columns of type smallint. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "smallint". All fields are combined with logical 'AND'. */
 export type Smallint_Comparison_Exp = {
   _eq?: Maybe<Scalars["smallint"]>
   _gt?: Maybe<Scalars["smallint"]>
@@ -4306,22 +3882,21 @@ export type Smallint_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["smallint"]>>
 }
 
-/** subscription root */
 export type Subscription_Root = {
   __typename?: "subscription_root"
   /** fetch data from the table: "dx_intl_base_rating" */
   dx_intl_base_rating: Array<Dx_Intl_Base_Rating>
   /** fetch aggregated fields from the table: "dx_intl_base_rating" */
   dx_intl_base_rating_aggregate: Dx_Intl_Base_Rating_Aggregate
-  /** fetch data from the table: "dx_intl_notes" */
+  /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
-  /** fetch aggregated fields from the table: "dx_intl_notes" */
+  /** An aggregate relationship */
   dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate
   /** fetch data from the table: "dx_intl_notes" using primary key columns */
   dx_intl_notes_by_pk?: Maybe<Dx_Intl_Notes>
-  /** fetch data from the table: "dx_intl_players" */
+  /** An array relationship */
   dx_intl_players: Array<Dx_Intl_Players>
-  /** fetch aggregated fields from the table: "dx_intl_players" */
+  /** An aggregate relationship */
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>
@@ -4331,7 +3906,7 @@ export type Subscription_Root = {
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
-  /** fetch aggregated fields from the table: "dx_intl_records" */
+  /** An aggregate relationship */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
@@ -4339,9 +3914,9 @@ export type Subscription_Root = {
   dx_intl_records_with_history: Array<Dx_Intl_Records_With_History>
   /** fetch aggregated fields from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history_aggregate: Dx_Intl_Records_With_History_Aggregate
-  /** fetch data from the table: "dx_intl_scores" */
+  /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
-  /** fetch aggregated fields from the table: "dx_intl_scores" */
+  /** An aggregate relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>
@@ -4359,9 +3934,9 @@ export type Subscription_Root = {
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>
-  /** fetch data from the table: "dx_intl_variants" */
+  /** An array relationship */
   dx_intl_variants: Array<Dx_Intl_Variants>
-  /** fetch aggregated fields from the table: "dx_intl_variants" */
+  /** An aggregate relationship */
   dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate
   /** fetch data from the table: "dx_intl_variants" using primary key columns */
   dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>
@@ -4379,7 +3954,6 @@ export type Subscription_Root = {
   users_by_pk?: Maybe<Users>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Base_RatingArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4388,7 +3962,6 @@ export type Subscription_RootDx_Intl_Base_RatingArgs = {
   where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Base_Rating_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4397,7 +3970,6 @@ export type Subscription_RootDx_Intl_Base_Rating_AggregateArgs = {
   where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_NotesArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4406,7 +3978,6 @@ export type Subscription_RootDx_Intl_NotesArgs = {
   where?: Maybe<Dx_Intl_Notes_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Notes_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Notes_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4415,14 +3986,12 @@ export type Subscription_RootDx_Intl_Notes_AggregateArgs = {
   where?: Maybe<Dx_Intl_Notes_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Notes_By_PkArgs = {
   deluxe: Scalars["Boolean"]
   difficulty: Scalars["smallint"]
   song_id: Scalars["String"]
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_PlayersArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4431,7 +4000,6 @@ export type Subscription_RootDx_Intl_PlayersArgs = {
   where?: Maybe<Dx_Intl_Players_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Players_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4440,12 +4008,10 @@ export type Subscription_RootDx_Intl_Players_AggregateArgs = {
   where?: Maybe<Dx_Intl_Players_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Players_By_PkArgs = {
   id: Scalars["Int"]
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Players_TimelinesArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4454,7 +4020,6 @@ export type Subscription_RootDx_Intl_Players_TimelinesArgs = {
   where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Players_Timelines_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Players_Timelines_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4463,7 +4028,6 @@ export type Subscription_RootDx_Intl_Players_Timelines_AggregateArgs = {
   where?: Maybe<Dx_Intl_Players_Timelines_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_RecordsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4472,7 +4036,6 @@ export type Subscription_RootDx_Intl_RecordsArgs = {
   where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Records_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4481,12 +4044,10 @@ export type Subscription_RootDx_Intl_Records_AggregateArgs = {
   where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Records_By_PkArgs = {
   id: Scalars["Int"]
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Records_With_HistoryArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4495,7 +4056,6 @@ export type Subscription_RootDx_Intl_Records_With_HistoryArgs = {
   where?: Maybe<Dx_Intl_Records_With_History_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Records_With_History_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Records_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4504,7 +4064,6 @@ export type Subscription_RootDx_Intl_Records_With_History_AggregateArgs = {
   where?: Maybe<Dx_Intl_Records_With_History_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_ScoresArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4513,7 +4072,6 @@ export type Subscription_RootDx_Intl_ScoresArgs = {
   where?: Maybe<Dx_Intl_Scores_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4522,12 +4080,10 @@ export type Subscription_RootDx_Intl_Scores_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_By_PkArgs = {
   id: Scalars["bigint"]
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_StatsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4536,7 +4092,6 @@ export type Subscription_RootDx_Intl_Scores_StatsArgs = {
   where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_Stats_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4545,7 +4100,6 @@ export type Subscription_RootDx_Intl_Scores_Stats_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_Stats_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_With_HistoryArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4554,7 +4108,6 @@ export type Subscription_RootDx_Intl_Scores_With_HistoryArgs = {
   where?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Scores_With_History_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Scores_With_History_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4563,7 +4116,6 @@ export type Subscription_RootDx_Intl_Scores_With_History_AggregateArgs = {
   where?: Maybe<Dx_Intl_Scores_With_History_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_SongsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Songs_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4572,7 +4124,6 @@ export type Subscription_RootDx_Intl_SongsArgs = {
   where?: Maybe<Dx_Intl_Songs_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Songs_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Songs_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4581,12 +4132,10 @@ export type Subscription_RootDx_Intl_Songs_AggregateArgs = {
   where?: Maybe<Dx_Intl_Songs_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Songs_By_PkArgs = {
   id: Scalars["String"]
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_VariantsArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4595,7 +4144,6 @@ export type Subscription_RootDx_Intl_VariantsArgs = {
   where?: Maybe<Dx_Intl_Variants_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Variants_AggregateArgs = {
   distinct_on?: Maybe<Array<Dx_Intl_Variants_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4604,13 +4152,11 @@ export type Subscription_RootDx_Intl_Variants_AggregateArgs = {
   where?: Maybe<Dx_Intl_Variants_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootDx_Intl_Variants_By_PkArgs = {
   deluxe: Scalars["Boolean"]
   song_id: Scalars["String"]
 }
 
-/** subscription root */
 export type Subscription_RootTokensArgs = {
   distinct_on?: Maybe<Array<Tokens_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4619,7 +4165,6 @@ export type Subscription_RootTokensArgs = {
   where?: Maybe<Tokens_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootTokens_AggregateArgs = {
   distinct_on?: Maybe<Array<Tokens_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4628,12 +4173,10 @@ export type Subscription_RootTokens_AggregateArgs = {
   where?: Maybe<Tokens_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootTokens_By_PkArgs = {
   id: Scalars["uuid"]
 }
 
-/** subscription root */
 export type Subscription_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4642,7 +4185,6 @@ export type Subscription_RootUsersArgs = {
   where?: Maybe<Users_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootUsers_AggregateArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
@@ -4651,12 +4193,11 @@ export type Subscription_RootUsers_AggregateArgs = {
   where?: Maybe<Users_Bool_Exp>
 }
 
-/** subscription root */
 export type Subscription_RootUsers_By_PkArgs = {
   id: Scalars["String"]
 }
 
-/** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: Maybe<Scalars["timestamptz"]>
   _gt?: Maybe<Scalars["timestamptz"]>
@@ -4689,7 +4230,7 @@ export type Tokens_Aggregate = {
 /** aggregate fields of "tokens" */
 export type Tokens_Aggregate_Fields = {
   __typename?: "tokens_aggregate_fields"
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Tokens_Max_Fields>
   min?: Maybe<Tokens_Min_Fields>
 }
@@ -4700,24 +4241,11 @@ export type Tokens_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "tokens" */
-export type Tokens_Aggregate_Order_By = {
-  count?: Maybe<Order_By>
-  max?: Maybe<Tokens_Max_Order_By>
-  min?: Maybe<Tokens_Min_Order_By>
-}
-
-/** input type for inserting array relation for remote table "tokens" */
-export type Tokens_Arr_Rel_Insert_Input = {
-  data: Array<Tokens_Insert_Input>
-  on_conflict?: Maybe<Tokens_On_Conflict>
-}
-
 /** Boolean expression to filter rows from the table "tokens". All fields are combined with a logical 'AND'. */
 export type Tokens_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Tokens_Bool_Exp>>>
+  _and?: Maybe<Array<Tokens_Bool_Exp>>
   _not?: Maybe<Tokens_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Tokens_Bool_Exp>>>
+  _or?: Maybe<Array<Tokens_Bool_Exp>>
   created_at?: Maybe<Timestamptz_Comparison_Exp>
   id?: Maybe<Uuid_Comparison_Exp>
   user?: Maybe<Users_Bool_Exp>
@@ -4748,13 +4276,6 @@ export type Tokens_Max_Fields = {
   user_id?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "tokens" */
-export type Tokens_Max_Order_By = {
-  created_at?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  user_id?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Tokens_Min_Fields = {
   __typename?: "tokens_min_fields"
@@ -4763,36 +4284,30 @@ export type Tokens_Min_Fields = {
   user_id?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "tokens" */
-export type Tokens_Min_Order_By = {
-  created_at?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  user_id?: Maybe<Order_By>
-}
-
 /** response of any mutation on the table "tokens" */
 export type Tokens_Mutation_Response = {
   __typename?: "tokens_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Tokens>
 }
 
 /** input type for inserting object relation for remote table "tokens" */
 export type Tokens_Obj_Rel_Insert_Input = {
   data: Tokens_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Tokens_On_Conflict>
 }
 
 /** on conflict condition type for table "tokens" */
 export type Tokens_On_Conflict = {
   constraint: Tokens_Constraint
-  update_columns: Array<Tokens_Update_Column>
+  update_columns?: Array<Tokens_Update_Column>
   where?: Maybe<Tokens_Bool_Exp>
 }
 
-/** ordering options when selecting data from "tokens" */
+/** Ordering options when selecting data from "tokens". */
 export type Tokens_Order_By = {
   created_at?: Maybe<Order_By>
   id?: Maybe<Order_By>
@@ -4800,7 +4315,7 @@ export type Tokens_Order_By = {
   user_id?: Maybe<Order_By>
 }
 
-/** primary key columns input for table: "tokens" */
+/** primary key columns input for table: tokens */
 export type Tokens_Pk_Columns_Input = {
   id: Scalars["uuid"]
 }
@@ -4838,7 +4353,7 @@ export type Users = {
   created_at: Scalars["timestamptz"]
   /** An array relationship */
   dx_intl_players: Array<Dx_Intl_Players>
-  /** An aggregated array relationship */
+  /** An aggregate relationship */
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate
   id: Scalars["String"]
   /** An object relationship */
@@ -4873,7 +4388,7 @@ export type Users_Aggregate = {
 /** aggregate fields of "users" */
 export type Users_Aggregate_Fields = {
   __typename?: "users_aggregate_fields"
-  count?: Maybe<Scalars["Int"]>
+  count: Scalars["Int"]
   max?: Maybe<Users_Max_Fields>
   min?: Maybe<Users_Min_Fields>
 }
@@ -4884,24 +4399,11 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "users" */
-export type Users_Aggregate_Order_By = {
-  count?: Maybe<Order_By>
-  max?: Maybe<Users_Max_Order_By>
-  min?: Maybe<Users_Min_Order_By>
-}
-
-/** input type for inserting array relation for remote table "users" */
-export type Users_Arr_Rel_Insert_Input = {
-  data: Array<Users_Insert_Input>
-  on_conflict?: Maybe<Users_On_Conflict>
-}
-
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
 export type Users_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Users_Bool_Exp>>>
+  _and?: Maybe<Array<Users_Bool_Exp>>
   _not?: Maybe<Users_Bool_Exp>
-  _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>
+  _or?: Maybe<Array<Users_Bool_Exp>>
   created_at?: Maybe<Timestamptz_Comparison_Exp>
   dx_intl_players?: Maybe<Dx_Intl_Players_Bool_Exp>
   id?: Maybe<String_Comparison_Exp>
@@ -4929,12 +4431,6 @@ export type Users_Max_Fields = {
   id?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "users" */
-export type Users_Max_Order_By = {
-  created_at?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: "users_min_fields"
@@ -4942,35 +4438,30 @@ export type Users_Min_Fields = {
   id?: Maybe<Scalars["String"]>
 }
 
-/** order by min() on columns of table "users" */
-export type Users_Min_Order_By = {
-  created_at?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-}
-
 /** response of any mutation on the table "users" */
 export type Users_Mutation_Response = {
   __typename?: "users_mutation_response"
-  /** number of affected rows by the mutation */
+  /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]
-  /** data of the affected rows by the mutation */
+  /** data from the rows affected by the mutation */
   returning: Array<Users>
 }
 
 /** input type for inserting object relation for remote table "users" */
 export type Users_Obj_Rel_Insert_Input = {
   data: Users_Insert_Input
+  /** on conflict condition */
   on_conflict?: Maybe<Users_On_Conflict>
 }
 
 /** on conflict condition type for table "users" */
 export type Users_On_Conflict = {
   constraint: Users_Constraint
-  update_columns: Array<Users_Update_Column>
+  update_columns?: Array<Users_Update_Column>
   where?: Maybe<Users_Bool_Exp>
 }
 
-/** ordering options when selecting data from "users" */
+/** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   created_at?: Maybe<Order_By>
   dx_intl_players_aggregate?: Maybe<Dx_Intl_Players_Aggregate_Order_By>
@@ -4978,7 +4469,7 @@ export type Users_Order_By = {
   token?: Maybe<Tokens_Order_By>
 }
 
-/** primary key columns input for table: "users" */
+/** primary key columns input for table: users */
 export type Users_Pk_Columns_Input = {
   id: Scalars["String"]
 }
@@ -5005,7 +4496,7 @@ export enum Users_Update_Column {
   Id = "id",
 }
 
-/** expression to compare columns of type uuid. All fields are combined with logical 'AND'. */
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type Uuid_Comparison_Exp = {
   _eq?: Maybe<Scalars["uuid"]>
   _gt?: Maybe<Scalars["uuid"]>
@@ -5048,7 +4539,7 @@ export type DeleteUserMutation = { __typename?: "mutation_root" } & {
 }
 
 export type DxIntlPlayersQueryVariables = Exact<{
-  userId?: Maybe<Scalars["String"]>
+  userId: Scalars["String"]
 }>
 
 export type DxIntlPlayersQuery = { __typename?: "query_root" } & {
@@ -5060,7 +4551,7 @@ export type DxIntlPlayersQuery = { __typename?: "query_root" } & {
         dx_intl_record?: Maybe<
           { __typename?: "dx_intl_records" } & Pick<
             Dx_Intl_Records,
-            "card_name" | "rating" | "grade"
+            "card_name" | "rating" | "grade" | "course_rank" | "class_rank"
           >
         >
       }
@@ -5068,8 +4559,8 @@ export type DxIntlPlayersQuery = { __typename?: "query_root" } & {
 }
 
 export type InsertDxIntlPlayerMutationVariables = Exact<{
-  nickname?: Maybe<Scalars["String"]>
-  private?: Maybe<Scalars["Boolean"]>
+  nickname: Scalars["String"]
+  private: Scalars["Boolean"]
 }>
 
 export type InsertDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
@@ -5080,8 +4571,8 @@ export type InsertDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
 
 export type UpdateDxIntlPlayerMutationVariables = Exact<{
   pk: Scalars["Int"]
-  nickname?: Maybe<Scalars["String"]>
-  private?: Maybe<Scalars["Boolean"]>
+  nickname: Scalars["String"]
+  private: Scalars["Boolean"]
 }>
 
 export type UpdateDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
@@ -5100,30 +4591,40 @@ export type DeleteDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
   >
 }
 
-export type DxIntlSongsQueryVariables = Exact<{
-  idLike?: Maybe<Scalars["String"]>
-}>
+export type DxIntlSongsFieldsFragment = { __typename?: "dx_intl_songs" } & Pick<
+  Dx_Intl_Songs,
+  "id" | "category" | "title" | "order"
+> & {
+    dx_intl_variants: Array<
+      { __typename?: "dx_intl_variants" } & Pick<
+        Dx_Intl_Variants,
+        "deluxe" | "version" | "active"
+      > & {
+          dx_intl_notes: Array<
+            { __typename?: "dx_intl_notes" } & Pick<
+              Dx_Intl_Notes,
+              "difficulty" | "level"
+            >
+          >
+        }
+    >
+  }
+
+export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never }>
 
 export type DxIntlSongsQuery = { __typename?: "query_root" } & {
   dx_intl_songs: Array<
-    { __typename?: "dx_intl_songs" } & Pick<
-      Dx_Intl_Songs,
-      "id" | "category" | "title" | "order"
-    > & {
-        dx_intl_variants: Array<
-          { __typename?: "dx_intl_variants" } & Pick<
-            Dx_Intl_Variants,
-            "deluxe" | "version" | "active"
-          > & {
-              dx_intl_notes: Array<
-                { __typename?: "dx_intl_notes" } & Pick<
-                  Dx_Intl_Notes,
-                  "difficulty" | "level"
-                >
-              >
-            }
-        >
-      }
+    { __typename?: "dx_intl_songs" } & DxIntlSongsFieldsFragment
+  >
+}
+
+export type DxIntlSongsByIdQueryVariables = Exact<{
+  idLike: Scalars["String"]
+}>
+
+export type DxIntlSongsByIdQuery = { __typename?: "query_root" } & {
+  dx_intl_songs: Array<
+    { __typename?: "dx_intl_songs" } & DxIntlSongsFieldsFragment
   >
 }
 
@@ -5140,7 +4641,14 @@ export type DxIntlRecordWithScoresQuery = { __typename?: "query_root" } & {
         dx_intl_record?: Maybe<
           { __typename?: "dx_intl_records" } & Pick<
             Dx_Intl_Records,
-            "card_name" | "title" | "trophy" | "rating" | "max_rating" | "grade"
+            | "card_name"
+            | "title"
+            | "trophy"
+            | "rating"
+            | "max_rating"
+            | "grade"
+            | "course_rank"
+            | "class_rank"
           >
         >
         dx_intl_scores: Array<
@@ -5160,7 +4668,7 @@ export type DxIntlRecordWithScoresQuery = { __typename?: "query_root" } & {
 }
 
 export type DxIntlPlayersTimelinesQueryVariables = Exact<{
-  nickname?: Maybe<Scalars["String"]>
+  nickname: Scalars["String"]
 }>
 
 export type DxIntlPlayersTimelinesQuery = { __typename?: "query_root" } & {
@@ -5181,13 +4689,27 @@ export type DxIntlPlayerWithTimelineQuery = { __typename?: "query_root" } & {
   beforeRecord: Array<
     { __typename?: "dx_intl_records_with_history" } & Pick<
       Dx_Intl_Records_With_History,
-      "card_name" | "title" | "trophy" | "rating" | "max_rating" | "grade"
+      | "card_name"
+      | "title"
+      | "trophy"
+      | "rating"
+      | "max_rating"
+      | "grade"
+      | "course_rank"
+      | "class_rank"
     >
   >
   afterRecord: Array<
     { __typename?: "dx_intl_records_with_history" } & Pick<
       Dx_Intl_Records_With_History,
-      "card_name" | "title" | "trophy" | "rating" | "max_rating" | "grade"
+      | "card_name"
+      | "title"
+      | "trophy"
+      | "rating"
+      | "max_rating"
+      | "grade"
+      | "course_rank"
+      | "class_rank"
     >
   >
   beforeScores: Array<
@@ -5205,8 +4727,8 @@ export type DxIntlPlayerWithTimelineQuery = { __typename?: "query_root" } & {
 }
 
 export type DxIntlPlayersEditableQueryVariables = Exact<{
-  userId?: Maybe<Scalars["String"]>
-  nickname?: Maybe<Scalars["String"]>
+  userId: Scalars["String"]
+  nickname: Scalars["String"]
 }>
 
 export type DxIntlPlayersEditableQuery = { __typename?: "query_root" } & {
@@ -5261,6 +4783,86 @@ export type DxIntlScoresStatsQuery = { __typename?: "query_root" } & {
   >
 }
 
+export const DxIntlSongsFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlSongsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_songs" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "category" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "order" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_variants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "deluxe" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+                { kind: "Field", name: { kind: "Name", value: "version" } },
+                { kind: "Field", name: { kind: "Name", value: "active" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dx_intl_notes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "difficulty" },
+                            value: { kind: "EnumValue", value: "asc" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "difficulty" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "level" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlSongsFieldsFragment, unknown>
 export const TokensDocument = {
   kind: "Document",
   definitions: [
@@ -5391,7 +4993,13 @@ export const DxIntlPlayersDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "userId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -5451,6 +5059,14 @@ export const DxIntlPlayersDocument = {
                         name: { kind: "Name", value: "rating" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "grade" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "course_rank" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "class_rank" },
+                      },
                     ],
                   },
                 },
@@ -5476,7 +5092,13 @@ export const InsertDxIntlPlayerDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "nickname" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
         {
           kind: "VariableDefinition",
@@ -5484,7 +5106,13 @@ export const InsertDxIntlPlayerDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "private" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -5557,7 +5185,13 @@ export const UpdateDxIntlPlayerDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "nickname" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
         {
           kind: "VariableDefinition",
@@ -5565,7 +5199,13 @@ export const UpdateDxIntlPlayerDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "private" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -5688,6 +5328,66 @@ export const DxIntlSongsDocument = {
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "dxIntlSongs" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_songs" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "category" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "order" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlSongsFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...DxIntlSongsFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables>
+export const DxIntlSongsByIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlSongsById" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -5695,7 +5395,13 @@ export const DxIntlSongsDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "idLike" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -5764,79 +5470,9 @@ export const DxIntlSongsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "category" } },
-                { kind: "Field", name: { kind: "Name", value: "title" } },
-                { kind: "Field", name: { kind: "Name", value: "order" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "dx_intl_variants" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "deluxe" },
-                            value: { kind: "EnumValue", value: "asc" },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "deluxe" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "version" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "active" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "dx_intl_notes" },
-                        arguments: [
-                          {
-                            kind: "Argument",
-                            name: { kind: "Name", value: "order_by" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "difficulty" },
-                                  value: { kind: "EnumValue", value: "asc" },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "difficulty" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "level" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlSongsFields" },
                 },
               ],
             },
@@ -5844,8 +5480,12 @@ export const DxIntlSongsDocument = {
         ],
       },
     },
+    ...DxIntlSongsFieldsFragmentDoc.definitions,
   ],
-} as unknown as DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables>
+} as unknown as DocumentNode<
+  DxIntlSongsByIdQuery,
+  DxIntlSongsByIdQueryVariables
+>
 export const DxIntlRecordWithScoresDocument = {
   kind: "Document",
   definitions: [
@@ -5932,6 +5572,14 @@ export const DxIntlRecordWithScoresDocument = {
                         name: { kind: "Name", value: "max_rating" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "grade" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "course_rank" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "class_rank" },
+                      },
                     ],
                   },
                 },
@@ -5991,7 +5639,13 @@ export const DxIntlPlayersTimelinesDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "nickname" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -6156,6 +5810,8 @@ export const DxIntlPlayerWithTimelineDocument = {
                 { kind: "Field", name: { kind: "Name", value: "rating" } },
                 { kind: "Field", name: { kind: "Name", value: "max_rating" } },
                 { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
               ],
             },
           },
@@ -6226,6 +5882,8 @@ export const DxIntlPlayerWithTimelineDocument = {
                 { kind: "Field", name: { kind: "Name", value: "rating" } },
                 { kind: "Field", name: { kind: "Name", value: "max_rating" } },
                 { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
               ],
             },
           },
@@ -6391,7 +6049,13 @@ export const DxIntlPlayersEditableDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "userId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
         {
           kind: "VariableDefinition",
@@ -6399,7 +6063,13 @@ export const DxIntlPlayersEditableDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "nickname" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {
@@ -6554,6 +6224,8 @@ export const InsertDxIntlRecordWithScoresDocument = {
                           { kind: "EnumValue", value: "rating" },
                           { kind: "EnumValue", value: "max_rating" },
                           { kind: "EnumValue", value: "grade" },
+                          { kind: "EnumValue", value: "course_rank" },
+                          { kind: "EnumValue", value: "class_rank" },
                         ],
                       },
                     },

@@ -34,7 +34,7 @@ export const versions = [
   "DX",
   "DX Plus",
   "Splash",
-  // 'Splash PLUS'
+  "Splash PLUS",
 ] as const
 
 export const levels = [

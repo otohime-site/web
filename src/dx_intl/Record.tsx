@@ -5,6 +5,7 @@ import { Dx_Intl_Records } from "../generated/graphql"
 
 import Grade from "./Grade"
 import Rating from "./Rating"
+import { classRankNames, courseRankNames } from "./Ranks"
 
 const Subtitle = styled("div")`
   display: flex;
@@ -164,14 +165,29 @@ const Title = styled("div")`
 const Record: FunctionComponent<{
   record: Pick<
     Dx_Intl_Records,
-    "card_name" | "title" | "trophy" | "rating" | "max_rating" | "grade"
+    | "card_name"
+    | "title"
+    | "trophy"
+    | "rating"
+    | "max_rating"
+    | "grade"
+    | "course_rank"
+    | "class_rank"
   >
 }> = ({ record }) => (
   <div>
     <Subtitle>
       <Rating rating={record.rating} />
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
-      <Grade grade={record.grade} />
+      {record.grade != null ? <Grade grade={record.grade} /> : ""}
+      {record.course_rank != null && record.class_rank != null ? (
+        <div>
+          {courseRankNames[record.course_rank]} /{" "}
+          {classRankNames[record.class_rank]}
+        </div>
+      ) : (
+        ""
+      )}
     </Subtitle>
     <CardName>{record.card_name}</CardName>
     <Tooltip title={record.title}>

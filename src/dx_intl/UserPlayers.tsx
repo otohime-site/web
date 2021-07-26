@@ -13,7 +13,7 @@ const UserPlayers: FunctionComponent = () => {
   const [user] = useAuth(firebase.auth())
   const [playersResult] = useQuery({
     query: DxIntlPlayersDocument,
-    variables: { userId: user?.uid },
+    variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
   const players = playersResult.data?.dx_intl_players

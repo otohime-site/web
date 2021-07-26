@@ -16,7 +16,7 @@ import { useQuery } from "urql"
 import styled from "@emotion/styled"
 import {
   DxIntlScoresStatsDocument,
-  DxIntlSongsDocument,
+  DxIntlSongsByIdDocument,
   Dx_Intl_Scores_Stats,
 } from "../generated/graphql"
 import { QueryResult } from "../QueryResult"
@@ -36,7 +36,7 @@ const SongStats: FunctionComponent = () => {
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
   const [songsResult] = useQuery({
-    query: DxIntlSongsDocument,
+    query: DxIntlSongsByIdDocument,
     variables: { idLike: `${songId}%` },
   })
   const song = songsResult.data?.dx_intl_songs[0]

@@ -267,7 +267,7 @@ const Player: FunctionComponent = () => {
   const params = useParams<{ nickname: string }>()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
-    variables: { userId: user?.uid },
+    variables: { userId: user?.uid ?? "", nickname: params.nickname },
     pause: user == null,
   })
   const [recordResult, refetchRecord] = useQuery({
