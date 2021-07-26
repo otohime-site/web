@@ -76,6 +76,7 @@ query dxIntlRecordWithScores($nickname: String!) {
       trophy
       rating
       max_rating
+      rating_legacy
       grade
       course_rank
       class_rank

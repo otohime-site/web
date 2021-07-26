@@ -169,6 +169,7 @@ const Record: FunctionComponent<{
     | "title"
     | "trophy"
     | "rating"
+    | "rating_legacy"
     | "max_rating"
     | "grade"
     | "course_rank"
@@ -177,7 +178,7 @@ const Record: FunctionComponent<{
 }> = ({ record }) => (
   <div>
     <Subtitle>
-      <Rating rating={record.rating} />
+      <Rating rating={record.rating} legacy={record.rating_legacy} />
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
       {record.grade != null ? <Grade grade={record.grade} /> : ""}
       {record.course_rank != null && record.class_rank != null ? (

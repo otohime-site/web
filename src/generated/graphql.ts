@@ -1101,6 +1101,7 @@ export type Dx_Intl_Records = {
   max_rating: Scalars["smallint"]
   player_id: Scalars["Int"]
   rating: Scalars["smallint"]
+  rating_legacy: Scalars["Boolean"]
   start: Scalars["timestamptz"]
   title: Scalars["String"]
   trophy: Scalars["dx_intl_trophy"]
@@ -1195,6 +1196,7 @@ export type Dx_Intl_Records_Bool_Exp = {
   max_rating?: Maybe<Smallint_Comparison_Exp>
   player_id?: Maybe<Int_Comparison_Exp>
   rating?: Maybe<Smallint_Comparison_Exp>
+  rating_legacy?: Maybe<Boolean_Comparison_Exp>
   start?: Maybe<Timestamptz_Comparison_Exp>
   title?: Maybe<String_Comparison_Exp>
   trophy?: Maybe<Dx_Intl_Trophy_Comparison_Exp>
@@ -1231,6 +1233,7 @@ export type Dx_Intl_Records_Insert_Input = {
   max_rating?: Maybe<Scalars["smallint"]>
   player_id?: Maybe<Scalars["Int"]>
   rating?: Maybe<Scalars["smallint"]>
+  rating_legacy?: Maybe<Scalars["Boolean"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
   trophy?: Maybe<Scalars["dx_intl_trophy"]>
@@ -1333,6 +1336,7 @@ export type Dx_Intl_Records_Order_By = {
   max_rating?: Maybe<Order_By>
   player_id?: Maybe<Order_By>
   rating?: Maybe<Order_By>
+  rating_legacy?: Maybe<Order_By>
   start?: Maybe<Order_By>
   title?: Maybe<Order_By>
   trophy?: Maybe<Order_By>
@@ -1364,6 +1368,8 @@ export enum Dx_Intl_Records_Select_Column {
   /** column name */
   Rating = "rating",
   /** column name */
+  RatingLegacy = "rating_legacy",
+  /** column name */
   Start = "start",
   /** column name */
   Title = "title",
@@ -1382,6 +1388,7 @@ export type Dx_Intl_Records_Set_Input = {
   max_rating?: Maybe<Scalars["smallint"]>
   player_id?: Maybe<Scalars["Int"]>
   rating?: Maybe<Scalars["smallint"]>
+  rating_legacy?: Maybe<Scalars["Boolean"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
   trophy?: Maybe<Scalars["dx_intl_trophy"]>
@@ -1500,6 +1507,8 @@ export enum Dx_Intl_Records_Update_Column {
   /** column name */
   Rating = "rating",
   /** column name */
+  RatingLegacy = "rating_legacy",
+  /** column name */
   Start = "start",
   /** column name */
   Title = "title",
@@ -1590,6 +1599,7 @@ export type Dx_Intl_Records_With_History = {
   max_rating?: Maybe<Scalars["smallint"]>
   player_id?: Maybe<Scalars["Int"]>
   rating?: Maybe<Scalars["smallint"]>
+  rating_legacy?: Maybe<Scalars["Boolean"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
   trophy?: Maybe<Scalars["dx_intl_trophy"]>
@@ -1651,6 +1661,7 @@ export type Dx_Intl_Records_With_History_Bool_Exp = {
   max_rating?: Maybe<Smallint_Comparison_Exp>
   player_id?: Maybe<Int_Comparison_Exp>
   rating?: Maybe<Smallint_Comparison_Exp>
+  rating_legacy?: Maybe<Boolean_Comparison_Exp>
   start?: Maybe<Timestamptz_Comparison_Exp>
   title?: Maybe<String_Comparison_Exp>
   trophy?: Maybe<Dx_Intl_Trophy_Comparison_Exp>
@@ -1700,6 +1711,7 @@ export type Dx_Intl_Records_With_History_Order_By = {
   max_rating?: Maybe<Order_By>
   player_id?: Maybe<Order_By>
   rating?: Maybe<Order_By>
+  rating_legacy?: Maybe<Order_By>
   start?: Maybe<Order_By>
   title?: Maybe<Order_By>
   trophy?: Maybe<Order_By>
@@ -1725,6 +1737,8 @@ export enum Dx_Intl_Records_With_History_Select_Column {
   PlayerId = "player_id",
   /** column name */
   Rating = "rating",
+  /** column name */
+  RatingLegacy = "rating_legacy",
   /** column name */
   Start = "start",
   /** column name */
@@ -4646,6 +4660,7 @@ export type DxIntlRecordWithScoresQuery = { __typename?: "query_root" } & {
             | "trophy"
             | "rating"
             | "max_rating"
+            | "rating_legacy"
             | "grade"
             | "course_rank"
             | "class_rank"
@@ -5570,6 +5585,10 @@ export const DxIntlRecordWithScoresDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "max_rating" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "rating_legacy" },
                       },
                       { kind: "Field", name: { kind: "Name", value: "grade" } },
                       {

@@ -7071,6 +7071,22 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -7910,6 +7926,18 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Boolean_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "type": {
@@ -8188,6 +8216,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "smallint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null,
@@ -9087,6 +9127,18 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "type": {
@@ -9212,6 +9264,12 @@
           },
           {
             "name": "rating",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating_legacy",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9345,6 +9403,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "smallint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null,
@@ -10215,6 +10285,12 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": "column name",
             "isDeprecated": false,
@@ -10931,6 +11007,18 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "args": [],
@@ -11473,6 +11561,18 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Boolean_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "type": {
@@ -11926,6 +12026,18 @@
             "deprecationReason": null
           },
           {
+            "name": "rating_legacy",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "start",
             "description": null,
             "type": {
@@ -12024,6 +12136,12 @@
           },
           {
             "name": "rating",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rating_legacy",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
