@@ -65,6 +65,9 @@ import {
   syncFlags,
   FlattenedNote,
   getNoteHash,
+  arrangeScoreStats,
+  arrangeComboStats,
+  arrangeSyncStats,
 } from "./helper"
 import { ComboFlag, SyncFlag } from "./flags"
 import Variant from "./Variant"
@@ -250,6 +253,31 @@ export const FlagContainer = styled("span")`
   width: 4em;
   font-size: 75%;
   overflow: hidden;
+`
+
+export const StatContainer = styled("ul")`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  li {
+    width: 2.5em;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      height: 1.5em;
+    }
+    span {
+      font-family: "M PLUS 1p";
+      font-weight: 800;
+      font-size: 85%;
+      padding: 0.18em;
+      color: #333333;
+    }
+  }
 `
 
 const Player: FunctionComponent = () => {
@@ -542,6 +570,21 @@ const Player: FunctionComponent = () => {
     )
   }
 
+  const currentTabRowsScores = currentTabRows.map((row) => {
+    const innerNote =
+      "difficulty" in row
+        ? row
+        : {
+            song_id: row.song_id,
+            deluxe: row.deluxe,
+            ...row.dx_intl_notes[difficulty],
+          }
+    return scoreMap.get(getNoteHash(innerNote))
+  })
+  const scoreStats = arrangeScoreStats(currentTabRowsScores)
+  const comboStats = arrangeComboStats(currentTabRowsScores)
+  const syncStats = arrangeSyncStats(currentTabRowsScores)
+
   return (
     <>
       <Helmet>
@@ -673,6 +716,23 @@ const Player: FunctionComponent = () => {
           ""
         )}
       </TabContainer>
+      <StatContainer>
+        {[...scoreStats.entries()].map(([k, v]) => (
+          <li>
+            <span>{k}</span> {v}
+          </li>
+        ))}
+        {[...comboStats.entries()].map(([k, v]) => (
+          <li>
+            <ComboFlag flag={k} /> {v}
+          </li>
+        ))}
+        {[...syncStats.entries()].map(([k, v]) => (
+          <li>
+            <SyncFlag flag={k} /> {v}
+          </li>
+        ))}
+      </StatContainer>
       <ScoreTable lang="ja">
         <colgroup>
           <col />
