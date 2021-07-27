@@ -12,10 +12,10 @@
         </linearGradient>
     </defs>
     <circle cx="16" cy="18" r="15" fill="#FFD95B" stroke="#F88A1F" stroke-width="#999999" filter="url(#a)"/>
-    <g transform="matrix(.9 0 0 .9 4 12)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+    <g transform="translate(3.5, 10)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
         <path d="M7.104 9.6H3.856l-.528 2.24H0L3.84.16H7.2l3.84 11.68H7.648L7.104 9.6zm8.592-1.408v3.648h-3.12V.24a22.891 22.891 0 012.147-.206A27.307 27.307 0 0116.096 0q5.44 0 5.44 3.92a5.902 5.902 0 01-.126 1.258q-.174.802-.593 1.398a3.321 3.321 0 01-.505.568 3.908 3.908 0 01-1.395.787q-.931.309-2.181.309-.449 0-.79-.024a5.961 5.961 0 01-.25-.024zm0-5.712v3.392q.304.048.72.048a3.615 3.615 0 00.617-.049q.602-.104.983-.431.56-.48.56-1.36a1.837 1.837 0 00-.144-.754q-.413-.926-2.016-.926a3.34 3.34 0 00-.628.062 3.733 3.733 0 00-.092.018zm-10.224.4L4.432 7.2h2.112l-1.04-4.32h-.032z"/>
     </g>
-    <g transform="translate(24 8)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
+    <g transform="translate(25.5 8)" stroke-linecap="round" fill-rule="evenodd" stroke="#F7391E" stroke-width="3" fill="url(#b)" paint-order="stroke" filter="url(#c)">
         <path d="M4.56 2.58H7.2v1.8H4.56v2.58H2.64V4.38H0v-1.8h2.64V0h1.92v2.58z"/>
     </g>
 </svg>
