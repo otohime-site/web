@@ -1,19 +1,30 @@
-query dxIntlPlayers($userId: String!) {
-  dx_intl_players(where: { user_id: { _eq: $userId } }) {
-    id
-    nickname
-    private
-    created_at
-    updated_at
-    dx_intl_record {
-      card_name
-      rating
-      grade
-      course_rank
-      class_rank
-    }
+fragment dxIntlPlayersFields on dx_intl_players {
+  id
+  nickname
+  private
+  created_at
+  updated_at
+  dx_intl_record {
+    card_name
+    rating
+    grade
+    course_rank
+    class_rank
   }
 }
+
+query dxIntlPlayers {
+  dx_intl_players {
+    ...dxIntlPlayersFields
+  }
+}
+
+query dxIntlPlayersForUser($userId: String!) {
+  dx_intl_players(where: { user_id: { _eq: $userId } }) {
+    ...dxIntlPlayersFields
+  }
+}
+
 mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {
   insert_dx_intl_players_one(
     object: { nickname: $nickname, private: $private }
@@ -178,7 +189,16 @@ mutation InsertDxIntlRecordWithScores(
     object: $record
     on_conflict: {
       constraint: dx_intl_records_player_id_key
-      update_columns: [card_name, title, trophy, rating, max_rating, grade, course_rank, class_rank]
+      update_columns: [
+        card_name
+        title
+        trophy
+        rating
+        max_rating
+        grade
+        course_rank
+        class_rank
+      ]
     }
   ) {
     __typename
@@ -194,8 +214,8 @@ mutation InsertDxIntlRecordWithScores(
   }
 }
 
-query dxIntlBaseRating {
-  dx_intl_base_rating {
+query dxIntlNewRatingStats {
+  dx_intl_new_rating_stats {
     range
     count
   }

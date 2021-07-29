@@ -134,127 +134,6 @@ export type Bigint_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars["bigint"]>>
 }
 
-/** columns and relationships of "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating = {
-  __typename?: "dx_intl_base_rating"
-  count?: Maybe<Scalars["bigint"]>
-  range?: Maybe<Scalars["String"]>
-}
-
-/** aggregated selection of "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Aggregate = {
-  __typename?: "dx_intl_base_rating_aggregate"
-  aggregate?: Maybe<Dx_Intl_Base_Rating_Aggregate_Fields>
-  nodes: Array<Dx_Intl_Base_Rating>
-}
-
-/** aggregate fields of "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Aggregate_Fields = {
-  __typename?: "dx_intl_base_rating_aggregate_fields"
-  avg?: Maybe<Dx_Intl_Base_Rating_Avg_Fields>
-  count: Scalars["Int"]
-  max?: Maybe<Dx_Intl_Base_Rating_Max_Fields>
-  min?: Maybe<Dx_Intl_Base_Rating_Min_Fields>
-  stddev?: Maybe<Dx_Intl_Base_Rating_Stddev_Fields>
-  stddev_pop?: Maybe<Dx_Intl_Base_Rating_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Dx_Intl_Base_Rating_Stddev_Samp_Fields>
-  sum?: Maybe<Dx_Intl_Base_Rating_Sum_Fields>
-  var_pop?: Maybe<Dx_Intl_Base_Rating_Var_Pop_Fields>
-  var_samp?: Maybe<Dx_Intl_Base_Rating_Var_Samp_Fields>
-  variance?: Maybe<Dx_Intl_Base_Rating_Variance_Fields>
-}
-
-/** aggregate fields of "dx_intl_base_rating" */
-export type Dx_Intl_Base_Rating_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
-  distinct?: Maybe<Scalars["Boolean"]>
-}
-
-/** aggregate avg on columns */
-export type Dx_Intl_Base_Rating_Avg_Fields = {
-  __typename?: "dx_intl_base_rating_avg_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** Boolean expression to filter rows from the table "dx_intl_base_rating". All fields are combined with a logical 'AND'. */
-export type Dx_Intl_Base_Rating_Bool_Exp = {
-  _and?: Maybe<Array<Dx_Intl_Base_Rating_Bool_Exp>>
-  _not?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
-  _or?: Maybe<Array<Dx_Intl_Base_Rating_Bool_Exp>>
-  count?: Maybe<Bigint_Comparison_Exp>
-  range?: Maybe<String_Comparison_Exp>
-}
-
-/** aggregate max on columns */
-export type Dx_Intl_Base_Rating_Max_Fields = {
-  __typename?: "dx_intl_base_rating_max_fields"
-  count?: Maybe<Scalars["bigint"]>
-  range?: Maybe<Scalars["String"]>
-}
-
-/** aggregate min on columns */
-export type Dx_Intl_Base_Rating_Min_Fields = {
-  __typename?: "dx_intl_base_rating_min_fields"
-  count?: Maybe<Scalars["bigint"]>
-  range?: Maybe<Scalars["String"]>
-}
-
-/** Ordering options when selecting data from "dx_intl_base_rating". */
-export type Dx_Intl_Base_Rating_Order_By = {
-  count?: Maybe<Order_By>
-  range?: Maybe<Order_By>
-}
-
-/** select columns of table "dx_intl_base_rating" */
-export enum Dx_Intl_Base_Rating_Select_Column {
-  /** column name */
-  Count = "count",
-  /** column name */
-  Range = "range",
-}
-
-/** aggregate stddev on columns */
-export type Dx_Intl_Base_Rating_Stddev_Fields = {
-  __typename?: "dx_intl_base_rating_stddev_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** aggregate stddev_pop on columns */
-export type Dx_Intl_Base_Rating_Stddev_Pop_Fields = {
-  __typename?: "dx_intl_base_rating_stddev_pop_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** aggregate stddev_samp on columns */
-export type Dx_Intl_Base_Rating_Stddev_Samp_Fields = {
-  __typename?: "dx_intl_base_rating_stddev_samp_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** aggregate sum on columns */
-export type Dx_Intl_Base_Rating_Sum_Fields = {
-  __typename?: "dx_intl_base_rating_sum_fields"
-  count?: Maybe<Scalars["bigint"]>
-}
-
-/** aggregate var_pop on columns */
-export type Dx_Intl_Base_Rating_Var_Pop_Fields = {
-  __typename?: "dx_intl_base_rating_var_pop_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** aggregate var_samp on columns */
-export type Dx_Intl_Base_Rating_Var_Samp_Fields = {
-  __typename?: "dx_intl_base_rating_var_samp_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
-/** aggregate variance on columns */
-export type Dx_Intl_Base_Rating_Variance_Fields = {
-  __typename?: "dx_intl_base_rating_variance_fields"
-  count?: Maybe<Scalars["Float"]>
-}
-
 /** Boolean expression to compare columns of type "dx_intl_combo_flag". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Combo_Flag_Comparison_Exp = {
   _eq?: Maybe<Scalars["dx_intl_combo_flag"]>
@@ -279,6 +158,127 @@ export type Dx_Intl_Level_Comparison_Exp = {
   _lte?: Maybe<Scalars["dx_intl_level"]>
   _neq?: Maybe<Scalars["dx_intl_level"]>
   _nin?: Maybe<Array<Scalars["dx_intl_level"]>>
+}
+
+/** columns and relationships of "dx_intl_new_rating_stats" */
+export type Dx_Intl_New_Rating_Stats = {
+  __typename?: "dx_intl_new_rating_stats"
+  count?: Maybe<Scalars["bigint"]>
+  range?: Maybe<Scalars["String"]>
+}
+
+/** aggregated selection of "dx_intl_new_rating_stats" */
+export type Dx_Intl_New_Rating_Stats_Aggregate = {
+  __typename?: "dx_intl_new_rating_stats_aggregate"
+  aggregate?: Maybe<Dx_Intl_New_Rating_Stats_Aggregate_Fields>
+  nodes: Array<Dx_Intl_New_Rating_Stats>
+}
+
+/** aggregate fields of "dx_intl_new_rating_stats" */
+export type Dx_Intl_New_Rating_Stats_Aggregate_Fields = {
+  __typename?: "dx_intl_new_rating_stats_aggregate_fields"
+  avg?: Maybe<Dx_Intl_New_Rating_Stats_Avg_Fields>
+  count: Scalars["Int"]
+  max?: Maybe<Dx_Intl_New_Rating_Stats_Max_Fields>
+  min?: Maybe<Dx_Intl_New_Rating_Stats_Min_Fields>
+  stddev?: Maybe<Dx_Intl_New_Rating_Stats_Stddev_Fields>
+  stddev_pop?: Maybe<Dx_Intl_New_Rating_Stats_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Dx_Intl_New_Rating_Stats_Stddev_Samp_Fields>
+  sum?: Maybe<Dx_Intl_New_Rating_Stats_Sum_Fields>
+  var_pop?: Maybe<Dx_Intl_New_Rating_Stats_Var_Pop_Fields>
+  var_samp?: Maybe<Dx_Intl_New_Rating_Stats_Var_Samp_Fields>
+  variance?: Maybe<Dx_Intl_New_Rating_Stats_Variance_Fields>
+}
+
+/** aggregate fields of "dx_intl_new_rating_stats" */
+export type Dx_Intl_New_Rating_Stats_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Dx_Intl_New_Rating_Stats_Select_Column>>
+  distinct?: Maybe<Scalars["Boolean"]>
+}
+
+/** aggregate avg on columns */
+export type Dx_Intl_New_Rating_Stats_Avg_Fields = {
+  __typename?: "dx_intl_new_rating_stats_avg_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** Boolean expression to filter rows from the table "dx_intl_new_rating_stats". All fields are combined with a logical 'AND'. */
+export type Dx_Intl_New_Rating_Stats_Bool_Exp = {
+  _and?: Maybe<Array<Dx_Intl_New_Rating_Stats_Bool_Exp>>
+  _not?: Maybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
+  _or?: Maybe<Array<Dx_Intl_New_Rating_Stats_Bool_Exp>>
+  count?: Maybe<Bigint_Comparison_Exp>
+  range?: Maybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Dx_Intl_New_Rating_Stats_Max_Fields = {
+  __typename?: "dx_intl_new_rating_stats_max_fields"
+  count?: Maybe<Scalars["bigint"]>
+  range?: Maybe<Scalars["String"]>
+}
+
+/** aggregate min on columns */
+export type Dx_Intl_New_Rating_Stats_Min_Fields = {
+  __typename?: "dx_intl_new_rating_stats_min_fields"
+  count?: Maybe<Scalars["bigint"]>
+  range?: Maybe<Scalars["String"]>
+}
+
+/** Ordering options when selecting data from "dx_intl_new_rating_stats". */
+export type Dx_Intl_New_Rating_Stats_Order_By = {
+  count?: Maybe<Order_By>
+  range?: Maybe<Order_By>
+}
+
+/** select columns of table "dx_intl_new_rating_stats" */
+export enum Dx_Intl_New_Rating_Stats_Select_Column {
+  /** column name */
+  Count = "count",
+  /** column name */
+  Range = "range",
+}
+
+/** aggregate stddev on columns */
+export type Dx_Intl_New_Rating_Stats_Stddev_Fields = {
+  __typename?: "dx_intl_new_rating_stats_stddev_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** aggregate stddev_pop on columns */
+export type Dx_Intl_New_Rating_Stats_Stddev_Pop_Fields = {
+  __typename?: "dx_intl_new_rating_stats_stddev_pop_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** aggregate stddev_samp on columns */
+export type Dx_Intl_New_Rating_Stats_Stddev_Samp_Fields = {
+  __typename?: "dx_intl_new_rating_stats_stddev_samp_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** aggregate sum on columns */
+export type Dx_Intl_New_Rating_Stats_Sum_Fields = {
+  __typename?: "dx_intl_new_rating_stats_sum_fields"
+  count?: Maybe<Scalars["bigint"]>
+}
+
+/** aggregate var_pop on columns */
+export type Dx_Intl_New_Rating_Stats_Var_Pop_Fields = {
+  __typename?: "dx_intl_new_rating_stats_var_pop_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** aggregate var_samp on columns */
+export type Dx_Intl_New_Rating_Stats_Var_Samp_Fields = {
+  __typename?: "dx_intl_new_rating_stats_var_samp_fields"
+  count?: Maybe<Scalars["Float"]>
+}
+
+/** aggregate variance on columns */
+export type Dx_Intl_New_Rating_Stats_Variance_Fields = {
+  __typename?: "dx_intl_new_rating_stats_variance_fields"
+  count?: Maybe<Scalars["Float"]>
 }
 
 /** columns and relationships of "dx_intl_notes" */
@@ -3570,10 +3570,10 @@ export enum Order_By {
 
 export type Query_Root = {
   __typename?: "query_root"
-  /** fetch data from the table: "dx_intl_base_rating" */
-  dx_intl_base_rating: Array<Dx_Intl_Base_Rating>
-  /** fetch aggregated fields from the table: "dx_intl_base_rating" */
-  dx_intl_base_rating_aggregate: Dx_Intl_Base_Rating_Aggregate
+  /** fetch data from the table: "dx_intl_new_rating_stats" */
+  dx_intl_new_rating_stats: Array<Dx_Intl_New_Rating_Stats>
+  /** fetch aggregated fields from the table: "dx_intl_new_rating_stats" */
+  dx_intl_new_rating_stats_aggregate: Dx_Intl_New_Rating_Stats_Aggregate
   /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
   /** An aggregate relationship */
@@ -3640,20 +3640,20 @@ export type Query_Root = {
   users_by_pk?: Maybe<Users>
 }
 
-export type Query_RootDx_Intl_Base_RatingArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
+export type Query_RootDx_Intl_New_Rating_StatsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_New_Rating_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
   offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Base_Rating_Order_By>>
-  where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
+  order_by?: Maybe<Array<Dx_Intl_New_Rating_Stats_Order_By>>
+  where?: Maybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
 }
 
-export type Query_RootDx_Intl_Base_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
+export type Query_RootDx_Intl_New_Rating_Stats_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_New_Rating_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
   offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Base_Rating_Order_By>>
-  where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
+  order_by?: Maybe<Array<Dx_Intl_New_Rating_Stats_Order_By>>
+  where?: Maybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
 }
 
 export type Query_RootDx_Intl_NotesArgs = {
@@ -3898,10 +3898,10 @@ export type Smallint_Comparison_Exp = {
 
 export type Subscription_Root = {
   __typename?: "subscription_root"
-  /** fetch data from the table: "dx_intl_base_rating" */
-  dx_intl_base_rating: Array<Dx_Intl_Base_Rating>
-  /** fetch aggregated fields from the table: "dx_intl_base_rating" */
-  dx_intl_base_rating_aggregate: Dx_Intl_Base_Rating_Aggregate
+  /** fetch data from the table: "dx_intl_new_rating_stats" */
+  dx_intl_new_rating_stats: Array<Dx_Intl_New_Rating_Stats>
+  /** fetch aggregated fields from the table: "dx_intl_new_rating_stats" */
+  dx_intl_new_rating_stats_aggregate: Dx_Intl_New_Rating_Stats_Aggregate
   /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
   /** An aggregate relationship */
@@ -3968,20 +3968,20 @@ export type Subscription_Root = {
   users_by_pk?: Maybe<Users>
 }
 
-export type Subscription_RootDx_Intl_Base_RatingArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
+export type Subscription_RootDx_Intl_New_Rating_StatsArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_New_Rating_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
   offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Base_Rating_Order_By>>
-  where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
+  order_by?: Maybe<Array<Dx_Intl_New_Rating_Stats_Order_By>>
+  where?: Maybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
 }
 
-export type Subscription_RootDx_Intl_Base_Rating_AggregateArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Base_Rating_Select_Column>>
+export type Subscription_RootDx_Intl_New_Rating_Stats_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dx_Intl_New_Rating_Stats_Select_Column>>
   limit?: Maybe<Scalars["Int"]>
   offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Base_Rating_Order_By>>
-  where?: Maybe<Dx_Intl_Base_Rating_Bool_Exp>
+  order_by?: Maybe<Array<Dx_Intl_New_Rating_Stats_Order_By>>
+  where?: Maybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
 }
 
 export type Subscription_RootDx_Intl_NotesArgs = {
@@ -4552,23 +4552,35 @@ export type DeleteUserMutation = { __typename?: "mutation_root" } & {
   >
 }
 
-export type DxIntlPlayersQueryVariables = Exact<{
-  userId: Scalars["String"]
-}>
+export type DxIntlPlayersFieldsFragment = {
+  __typename?: "dx_intl_players"
+} & Pick<
+  Dx_Intl_Players,
+  "id" | "nickname" | "private" | "created_at" | "updated_at"
+> & {
+    dx_intl_record?: Maybe<
+      { __typename?: "dx_intl_records" } & Pick<
+        Dx_Intl_Records,
+        "card_name" | "rating" | "grade" | "course_rank" | "class_rank"
+      >
+    >
+  }
+
+export type DxIntlPlayersQueryVariables = Exact<{ [key: string]: never }>
 
 export type DxIntlPlayersQuery = { __typename?: "query_root" } & {
   dx_intl_players: Array<
-    { __typename?: "dx_intl_players" } & Pick<
-      Dx_Intl_Players,
-      "id" | "nickname" | "private" | "created_at" | "updated_at"
-    > & {
-        dx_intl_record?: Maybe<
-          { __typename?: "dx_intl_records" } & Pick<
-            Dx_Intl_Records,
-            "card_name" | "rating" | "grade" | "course_rank" | "class_rank"
-          >
-        >
-      }
+    { __typename?: "dx_intl_players" } & DxIntlPlayersFieldsFragment
+  >
+}
+
+export type DxIntlPlayersForUserQueryVariables = Exact<{
+  userId: Scalars["String"]
+}>
+
+export type DxIntlPlayersForUserQuery = { __typename?: "query_root" } & {
+  dx_intl_players: Array<
+    { __typename?: "dx_intl_players" } & DxIntlPlayersFieldsFragment
   >
 }
 
@@ -4772,12 +4784,12 @@ export type InsertDxIntlRecordWithScoresMutation = {
   >
 }
 
-export type DxIntlBaseRatingQueryVariables = Exact<{ [key: string]: never }>
+export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
 
-export type DxIntlBaseRatingQuery = { __typename?: "query_root" } & {
-  dx_intl_base_rating: Array<
-    { __typename?: "dx_intl_base_rating" } & Pick<
-      Dx_Intl_Base_Rating,
+export type DxIntlNewRatingStatsQuery = { __typename?: "query_root" } & {
+  dx_intl_new_rating_stats: Array<
+    { __typename?: "dx_intl_new_rating_stats" } & Pick<
+      Dx_Intl_New_Rating_Stats,
       "range" | "count"
     >
   >
@@ -4798,6 +4810,43 @@ export type DxIntlScoresStatsQuery = { __typename?: "query_root" } & {
   >
 }
 
+export const DxIntlPlayersFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlPlayersFieldsFragment, unknown>
 export const DxIntlSongsFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -5001,6 +5050,35 @@ export const DxIntlPlayersDocument = {
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "dxIntlPlayers" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlPlayersFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...DxIntlPlayersFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables>
+export const DxIntlPlayersForUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayersForUser" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -5054,36 +5132,9 @@ export const DxIntlPlayersDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "nickname" } },
-                { kind: "Field", name: { kind: "Name", value: "private" } },
-                { kind: "Field", name: { kind: "Name", value: "created_at" } },
-                { kind: "Field", name: { kind: "Name", value: "updated_at" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "dx_intl_record" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "card_name" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "rating" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "grade" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "course_rank" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "class_rank" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlPlayersFields" },
                 },
               ],
             },
@@ -5091,8 +5142,12 @@ export const DxIntlPlayersDocument = {
         ],
       },
     },
+    ...DxIntlPlayersFieldsFragmentDoc.definitions,
   ],
-} as unknown as DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables>
+} as unknown as DocumentNode<
+  DxIntlPlayersForUserQuery,
+  DxIntlPlayersForUserQueryVariables
+>
 export const InsertDxIntlPlayerDocument = {
   kind: "Document",
   definitions: [
@@ -6320,19 +6375,19 @@ export const InsertDxIntlRecordWithScoresDocument = {
   InsertDxIntlRecordWithScoresMutation,
   InsertDxIntlRecordWithScoresMutationVariables
 >
-export const DxIntlBaseRatingDocument = {
+export const DxIntlNewRatingStatsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "dxIntlBaseRating" },
+      name: { kind: "Name", value: "dxIntlNewRatingStats" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "dx_intl_base_rating" },
+            name: { kind: "Name", value: "dx_intl_new_rating_stats" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -6346,8 +6401,8 @@ export const DxIntlBaseRatingDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  DxIntlBaseRatingQuery,
-  DxIntlBaseRatingQueryVariables
+  DxIntlNewRatingStatsQuery,
+  DxIntlNewRatingStatsQueryVariables
 >
 export const DxIntlScoresStatsDocument = {
   kind: "Document",

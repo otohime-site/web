@@ -138,7 +138,7 @@ export const arrangeScoreStats = (
   }, new Map(SCORE_STATS.map((rank) => [rank, 0])))
 
 export const SCORE_STATS = [
-  "CLEAR",
+  "CLR",
   "S",
   "S+",
   "SS",

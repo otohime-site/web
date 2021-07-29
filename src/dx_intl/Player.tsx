@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   Button,
-  Typography,
   FormControl,
   InputLabel,
   Select,
@@ -34,17 +33,14 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
+import CloseIcon from "@material-ui/icons/Close"
 import EditIcon from "@material-ui/icons/Edit"
 import RefreshIcon from "@material-ui/icons/Refresh"
 import HistoryIcon from "@material-ui/icons/History"
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
-import PublicIcon from "@material-ui/icons/Public"
-import LockIcon from "@material-ui/icons/Lock"
 import styled from "@emotion/styled"
 
-import { formatDistance } from "date-fns"
-import { zhTW } from "date-fns/locale"
 import firebase from "firebase/app"
 import { Alert } from "@material-ui/lab"
 import { useAuth } from "../auth"
@@ -106,12 +102,6 @@ const StyledCard = styled(Card)`
   .MuiCardContent-root:last-child {
     padding-bottom: 8px;
   }
-`
-
-const AlignedTypo = styled(Typography)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 `
 
 const TabContainer = styled("div")`
@@ -255,13 +245,22 @@ export const FlagContainer = styled("span")`
   overflow: hidden;
 `
 
-export const StatContainer = styled("ul")`
+export const StatContainer = styled("div")`
+  background: #fafafa;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   margin: 0;
   padding: 0;
+  padding: 0.3em;
+  padding-right: 2em;
+  border-top: 1px solid #cccccc;
   display: flex;
   flex-direction: row;
   list-style-type: none;
-  li {
+  flex-wrap: wrap;
+  div {
     width: 2.5em;
     margin: 0;
     display: flex;
@@ -273,11 +272,20 @@ export const StatContainer = styled("ul")`
     span {
       font-family: "M PLUS 1p";
       font-weight: 800;
-      font-size: 85%;
-      padding: 0.18em;
+      font-size: 75%;
+      padding: 0.24em;
       color: #333333;
     }
   }
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    margin-left: 60px;
+  }
+`
+
+const StatCloseButton = styled(IconButton)`
+  position: absolute;
+  top: 0.15em;
+  right: 0.15em;
 `
 
 const Player: FunctionComponent = () => {
@@ -292,6 +300,7 @@ const Player: FunctionComponent = () => {
   const [orderByDesc, setOrderByDesc] = useState(false)
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
+  const [showStats, setShowStats] = useState(true)
   const params = useParams<{ nickname: string }>()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
@@ -362,6 +371,10 @@ const Player: FunctionComponent = () => {
         break
       default:
     }
+  }
+
+  const handleHideStats = (): void => {
+    setShowStats(false)
   }
 
   if (recordResult.error != null || songsResult.error != null) {
@@ -533,8 +546,7 @@ const Player: FunctionComponent = () => {
                   )
                 )
           )
-
-  const currentTabRows = groupedRows[currentTab]
+  const currentTabRows = groupedRows[currentTab] ?? []
   const shownDifficulties = useSingleDiffLayout
     ? Array(difficulty).concat([difficulties[difficulty]])
     : useDiffSetLayout
@@ -594,16 +606,11 @@ const Player: FunctionComponent = () => {
         <CardContent>
           <Container>
             <div>
-              <Record record={record} />
-              <AlignedTypo variant="body2">
-                {player.private ? <LockIcon /> : <PublicIcon />}
-                {player.updated_at != null
-                  ? formatDistance(new Date(player.updated_at), new Date(), {
-                      locale: zhTW,
-                    })
-                  : ""}
-                前更新
-              </AlignedTypo>
+              <Record
+                record={record}
+                isPrivate={player.private}
+                updatedAt={player.updated_at}
+              />
             </div>
             <div>
               <ButtonGroup variant="contained">
@@ -716,23 +723,30 @@ const Player: FunctionComponent = () => {
           ""
         )}
       </TabContainer>
-      <StatContainer>
-        {[...scoreStats.entries()].map(([k, v]) => (
-          <li>
-            <span>{k}</span> {v}
-          </li>
-        ))}
-        {[...comboStats.entries()].map(([k, v]) => (
-          <li>
-            <ComboFlag flag={k} /> {v}
-          </li>
-        ))}
-        {[...syncStats.entries()].map(([k, v]) => (
-          <li>
-            <SyncFlag flag={k} /> {v}
-          </li>
-        ))}
-      </StatContainer>
+      {showStats ? (
+        <StatContainer>
+          <StatCloseButton onClick={handleHideStats}>
+            <CloseIcon />
+          </StatCloseButton>
+          {[...scoreStats.entries()].map(([k, v]) => (
+            <div>
+              <span>{k}</span> {v}
+            </div>
+          ))}
+          {[...comboStats.entries()].map(([k, v]) => (
+            <div>
+              <ComboFlag flag={k} /> {v}
+            </div>
+          ))}
+          {[...syncStats.entries()].map(([k, v]) => (
+            <div>
+              <SyncFlag flag={k} /> {v}
+            </div>
+          ))}
+        </StatContainer>
+      ) : (
+        ""
+      )}
       <ScoreTable lang="ja">
         <colgroup>
           <col />

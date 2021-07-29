@@ -10,18 +10,20 @@ import {
 import React, { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import {
-  DxIntlBaseRatingDocument,
-  Dx_Intl_Base_Rating,
+  DxIntlNewRatingStatsDocument,
+  Dx_Intl_New_Rating_Stats,
 } from "../generated/graphql"
 import { QueryResult } from "../QueryResult"
 
 const Overview: FunctionComponent = () => {
-  const [baseRatingResult] = useQuery({ query: DxIntlBaseRatingDocument })
+  const [baseRatingResult] = useQuery({ query: DxIntlNewRatingStatsDocument })
   const baseRatingAccumulated = (
-    baseRatingResult.data?.dx_intl_base_rating ?? []
+    baseRatingResult.data?.dx_intl_new_rating_stats ?? []
   ).reduce<
     Array<
-      Pick<Dx_Intl_Base_Rating, "range" | "count"> & { accumulated: number }
+      Pick<Dx_Intl_New_Rating_Stats, "range" | "count"> & {
+        accumulated: number
+      }
     >
   >(
     (accr, curr) => [
@@ -39,15 +41,15 @@ const Overview: FunctionComponent = () => {
   return (
     <Container component="main">
       <Typography variant="h5">maimai DX 國際版玩家統計</Typography>
-      <Typography variant="h6">Rating 底值</Typography>
+      <Typography variant="h6">Rating</Typography>
       <Typography variant="body2">
-        只計算公開成績單。已排除段位加成。
+        只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。
       </Typography>
       <QueryResult result={baseRatingResult}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell component="th">底 R 範圍</TableCell>
+              <TableCell component="th">範圍</TableCell>
               <TableCell component="th">玩家數</TableCell>
               <TableCell component="th">累計</TableCell>
             </TableRow>

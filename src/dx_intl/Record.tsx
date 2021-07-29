@@ -1,8 +1,14 @@
-import { Tooltip } from "@material-ui/core"
+import { Tooltip, Typography } from "@material-ui/core"
 import React, { FunctionComponent } from "react"
-import styled from "@emotion/styled"
-import { Dx_Intl_Records } from "../generated/graphql"
 
+import PublicIcon from "@material-ui/icons/Public"
+import LockIcon from "@material-ui/icons/Lock"
+import styled from "@emotion/styled"
+
+import { formatDistance } from "date-fns"
+import { zhTW } from "date-fns/locale"
+
+import { Dx_Intl_Records } from "../generated/graphql"
 import Grade from "./Grade"
 import Rating from "./Rating"
 import { classRankNames, courseRankNames } from "./Ranks"
@@ -12,13 +18,13 @@ const Subtitle = styled("div")`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 20em;
+  width: 22em;
 `
 
 const CardName = styled("div")`
   margin-top: 0.1em;
   margin-bottom: 0.1em;
-  width: 15em;
+  width: 9em;
   background: white;
   border: 0.1em solid #cccccc;
   border-radius: 0.2em;
@@ -28,7 +34,7 @@ const CardName = styled("div")`
 `
 
 const Title = styled("div")`
-  width: 20em;
+  width: 22em;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -162,6 +168,12 @@ const Title = styled("div")`
   }
 `
 
+const AlignedTypo = styled(Typography)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 const Record: FunctionComponent<{
   record: Pick<
     Dx_Intl_Records,
@@ -175,10 +187,24 @@ const Record: FunctionComponent<{
     | "course_rank"
     | "class_rank"
   >
-}> = ({ record }) => (
+  isPrivate: boolean
+  updatedAt: string | null | undefined
+}> = ({ record, isPrivate, updatedAt }) => (
   <div>
     <Subtitle>
       <Rating rating={record.rating} legacy={record.rating_legacy} />
+      <AlignedTypo variant="body2">
+        {updatedAt != null
+          ? formatDistance(new Date(updatedAt), new Date(), {
+              locale: zhTW,
+            })
+          : ""}
+        前更新
+        {isPrivate ? <LockIcon /> : <PublicIcon />}
+      </AlignedTypo>
+    </Subtitle>
+    <Subtitle>
+      <CardName>{record.card_name}</CardName>
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
       {record.grade != null ? <Grade grade={record.grade} /> : ""}
       {record.course_rank != null && record.class_rank != null ? (
@@ -190,7 +216,6 @@ const Record: FunctionComponent<{
         ""
       )}
     </Subtitle>
-    <CardName>{record.card_name}</CardName>
     <Tooltip title={record.title}>
       <Title className={record.trophy}>{record.title}</Title>
     </Tooltip>
