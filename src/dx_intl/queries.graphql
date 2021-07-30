@@ -194,6 +194,7 @@ mutation InsertDxIntlRecordWithScores(
         title
         trophy
         rating
+        rating_legacy
         max_rating
         grade
         course_rank

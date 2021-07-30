@@ -6296,6 +6296,7 @@ export const InsertDxIntlRecordWithScoresDocument = {
                           { kind: "EnumValue", value: "title" },
                           { kind: "EnumValue", value: "trophy" },
                           { kind: "EnumValue", value: "rating" },
+                          { kind: "EnumValue", value: "rating_legacy" },
                           { kind: "EnumValue", value: "max_rating" },
                           { kind: "EnumValue", value: "grade" },
                           { kind: "EnumValue", value: "course_rank" },
