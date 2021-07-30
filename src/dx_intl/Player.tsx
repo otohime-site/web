@@ -20,6 +20,12 @@ import {
   Tooltip,
   Hidden,
   Link,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core"
 import {
   green,
@@ -33,8 +39,8 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import CloseIcon from "@material-ui/icons/Close"
 import EditIcon from "@material-ui/icons/Edit"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import RefreshIcon from "@material-ui/icons/Refresh"
 import EventNoteIcon from "@material-ui/icons/EventNote"
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
@@ -248,17 +254,21 @@ export const FlagContainer = styled("span")`
   overflow: hidden;
 `
 
+export const AccordionDetailsVertical = styled(AccordionDetails)`
+  flex-direction: column;
+`
+
+export const AdvancedControls = styled("div")`
+  margin-left: 8px;
+`
+
+export const StatTitleTypo = styled(Typography)`
+  font-family: "M PLUS 1p";
+  font-weight: 600;
+  text-transform: uppercase;
+`
+
 export const StatContainer = styled("div")`
-  background: #fafafa;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  padding: 0.3em;
-  padding-right: 2em;
-  border-top: 1px solid #cccccc;
   display: flex;
   flex-direction: row;
   list-style-type: none;
@@ -280,15 +290,19 @@ export const StatContainer = styled("div")`
       color: #333333;
     }
   }
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    margin-left: 60px;
-  }
 `
 
-const StatCloseButton = styled(IconButton)`
-  position: absolute;
-  top: 0.15em;
-  right: 0.15em;
+const WithInactiveTableRow = styled(TableRow)`
+  &.inactive {
+    color: #666666;
+    .MuiTypography-colorTextPrimary {
+      color: rgba(96, 96, 96, 0.67);
+      text-decoration: line-through;
+    }
+    .MuiTableCell-body {
+      color: rgba(96, 96, 96, 0.67);
+    }
+  }
 `
 
 const Player: FunctionComponent = () => {
@@ -303,7 +317,7 @@ const Player: FunctionComponent = () => {
   const [orderByDesc, setOrderByDesc] = useState(false)
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
-  const [showStats, setShowStats] = useState(true)
+  const [includeInactive, setIncludeInactive] = useState(false)
   const params = useParams<{ nickname: string }>()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
@@ -376,8 +390,10 @@ const Player: FunctionComponent = () => {
     }
   }
 
-  const handleHideStats = (): void => {
-    setShowStats(false)
+  const handleChangeIncludeInactive = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setIncludeInactive(event.target.checked)
   }
 
   if (recordResult.error != null || songsResult.error != null) {
@@ -463,7 +479,7 @@ const Player: FunctionComponent = () => {
   }
 
   const filterActiveVariant = (variant: { active: boolean }): boolean =>
-    variant.active
+    includeInactive || variant.active
   const groupedRows: Array<Array<FlattenedVariant | FlattenedNote>> =
     groupBy === "level"
       ? songs
@@ -677,6 +693,51 @@ const Player: FunctionComponent = () => {
           </Container>
         </CardContent>
       </StyledCard>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          統計與進階選項
+        </AccordionSummary>
+        <AdvancedControls>
+          <FormControlLabel
+            control={
+              <Switch
+                value={includeInactive}
+                onChange={handleChangeIncludeInactive}
+              />
+            }
+            label="包含刪除曲"
+          />
+        </AdvancedControls>
+        <AccordionDetailsVertical>
+          <StatTitleTypo variant="subtitle2">
+            {getHeader(currentTab)}{" "}
+            {groupBy !== "level" ? ` - ${difficulties[difficulty]}` : ""} (
+            {
+              currentTabRows.filter(
+                (row) => "difficulty" in row || difficulty in row.dx_intl_notes
+              ).length
+            }
+            )
+          </StatTitleTypo>
+          <StatContainer>
+            {[...scoreStats.entries()].map(([k, v]) => (
+              <div key={k}>
+                <span>{k}</span> {v}
+              </div>
+            ))}
+            {[...comboStats.entries()].map(([k, v]) => (
+              <div key={k}>
+                <ComboFlag flag={k} /> {v}
+              </div>
+            ))}
+            {[...syncStats.entries()].map(([k, v]) => (
+              <div key={k}>
+                <SyncFlag flag={k} /> {v}
+              </div>
+            ))}
+          </StatContainer>
+        </AccordionDetailsVertical>
+      </Accordion>
       <TabContainer>
         <StyledTabs
           value={currentTab}
@@ -730,30 +791,6 @@ const Player: FunctionComponent = () => {
           ""
         )}
       </TabContainer>
-      {showStats ? (
-        <StatContainer>
-          <StatCloseButton onClick={handleHideStats}>
-            <CloseIcon />
-          </StatCloseButton>
-          {[...scoreStats.entries()].map(([k, v]) => (
-            <div key={k}>
-              <span>{k}</span> {v}
-            </div>
-          ))}
-          {[...comboStats.entries()].map(([k, v]) => (
-            <div key={k}>
-              <ComboFlag flag={k} /> {v}
-            </div>
-          ))}
-          {[...syncStats.entries()].map(([k, v]) => (
-            <div key={k}>
-              <SyncFlag flag={k} /> {v}
-            </div>
-          ))}
-        </StatContainer>
-      ) : (
-        ""
-      )}
       <ScoreTable lang="ja">
         <colgroup>
           <col />
@@ -791,10 +828,11 @@ const Player: FunctionComponent = () => {
         </TableHead>
         <TableBody>
           {currentTabRows.map((row) => (
-            <TableRow
+            <WithInactiveTableRow
               key={`${row.category}/${row.title}/${
                 row.deluxe ? "true" : "false"
               }/${"difficulty" in row ? row.difficulty : ""}`}
+              className={row.active ? "" : "inactive"}
             >
               <TableCell>
                 <Link
@@ -823,7 +861,7 @@ const Player: FunctionComponent = () => {
                         : ""
                     )
                     .filter((cell) => cell !== "")}
-            </TableRow>
+            </WithInactiveTableRow>
           ))}
         </TableBody>
       </ScoreTable>
