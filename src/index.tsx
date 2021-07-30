@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
-import { createMuiTheme } from "@material-ui/core/styles"
+import { createTheme } from "@material-ui/core/styles"
 import { pink, orange } from "@material-ui/core/colors"
 import { HelmetProvider } from "react-helmet-async"
 import App from "./App"
@@ -22,7 +22,7 @@ firebase
     () => {}
   )
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: pink,
     secondary: orange,

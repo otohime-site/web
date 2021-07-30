@@ -3,7 +3,7 @@ import { render } from "react-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
 import { ThemeProvider, StylesProvider } from "@material-ui/styles"
-import { createMuiTheme } from "@material-ui/core/styles"
+import { createTheme } from "@material-ui/core/styles"
 import { pink, orange } from "@material-ui/core/colors"
 import styled from "@emotion/styled"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
@@ -11,7 +11,7 @@ import Book from "./Book"
 
 import "./global.css"
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: pink,
     secondary: orange,
