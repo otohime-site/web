@@ -36,7 +36,7 @@ import { useQuery } from "urql"
 import CloseIcon from "@material-ui/icons/Close"
 import EditIcon from "@material-ui/icons/Edit"
 import RefreshIcon from "@material-ui/icons/Refresh"
-import HistoryIcon from "@material-ui/icons/History"
+import EventNoteIcon from "@material-ui/icons/EventNote"
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
 import styled from "@emotion/styled"
@@ -92,7 +92,7 @@ const Container = styled("div")`
 `
 
 const SizedSelect = styled(Select)`
-  width: 12em;
+  width: 8em;
 `
 
 const StyledCard = styled(Card)`
@@ -101,6 +101,9 @@ const StyledCard = styled(Card)`
   }
   .MuiCardContent-root:last-child {
     padding-bottom: 8px;
+  }
+  .order {
+    margin-top: 8px;
   }
 `
 
@@ -453,11 +456,10 @@ const Player: FunctionComponent = () => {
       deluxe: boolean
     }
   ): number => {
-    const factor = orderByDesc ? -1 : 1
     if (noteA.difficulty !== noteB.difficulty) {
-      return (noteA.difficulty - noteB.difficulty) * factor
+      return noteA.difficulty - noteB.difficulty
     }
-    return ((noteA.deluxe ? 1 : 0) - (noteB.deluxe ? 1 : 0)) * factor
+    return (noteA.deluxe ? 1 : 0) - (noteB.deluxe ? 1 : 0)
   }
 
   const filterActiveVariant = (variant: { active: boolean }): boolean =>
@@ -496,7 +498,9 @@ const Player: FunctionComponent = () => {
           }, [])
           .map((notes) =>
             orderBy === "default"
-              ? notes.sort(sortNoteWithLevelDefault)
+              ? orderByDesc
+                ? notes.sort(sortNoteWithLevelDefault).reverse()
+                : notes.sort(sortNoteWithLevelDefault)
               : notes.sort(sortNote)
           )
       : songs
@@ -559,7 +563,10 @@ const Player: FunctionComponent = () => {
   ): JSX.Element => {
     const score = scoreMap.get(getNoteHash(note))
     return (
-      <ScoreCell className={`difficulty-${note.difficulty}`}>
+      <ScoreCell
+        key={getNoteHash(note)}
+        className={`difficulty-${note.difficulty}`}
+      >
         <ScoreCellInner>
           <ScoreLevel className={groupBy === "level" ? "diff" : ""}>
             {groupBy === "level"
@@ -620,9 +627,9 @@ const Player: FunctionComponent = () => {
                 <Button
                   component={RouterLink}
                   to={`/dxi/p/${params.nickname}/history`}
-                  startIcon={<HistoryIcon />}
+                  startIcon={<EventNoteIcon />}
                 >
-                  歷史紀錄
+                  歷史
                 </Button>
                 {editableResult.error == null &&
                 (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
@@ -637,7 +644,7 @@ const Player: FunctionComponent = () => {
                   ""
                 )}
               </ButtonGroup>
-              <p>
+              <div className="order">
                 <FormControl>
                   <InputLabel>頁籤</InputLabel>
                   <SizedSelect value={groupBy} onChange={handleChangeGroupBy}>
@@ -665,7 +672,7 @@ const Player: FunctionComponent = () => {
                     {orderByDesc ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
                   </IconButton>
                 </Tooltip>
-              </p>
+              </div>
             </div>
           </Container>
         </CardContent>
@@ -729,17 +736,17 @@ const Player: FunctionComponent = () => {
             <CloseIcon />
           </StatCloseButton>
           {[...scoreStats.entries()].map(([k, v]) => (
-            <div>
+            <div key={k}>
               <span>{k}</span> {v}
             </div>
           ))}
           {[...comboStats.entries()].map(([k, v]) => (
-            <div>
+            <div key={k}>
               <ComboFlag flag={k} /> {v}
             </div>
           ))}
           {[...syncStats.entries()].map(([k, v]) => (
-            <div>
+            <div key={k}>
               <SyncFlag flag={k} /> {v}
             </div>
           ))}
@@ -805,15 +812,17 @@ const Player: FunctionComponent = () => {
               </TableCell>
               {"difficulty" in row
                 ? getNoteScoreCell(row)
-                : shownDifficulties.map((d, i) =>
-                    i in row.dx_intl_notes
-                      ? getNoteScoreCell({
-                          song_id: row.song_id,
-                          deluxe: row.deluxe,
-                          ...row.dx_intl_notes[i],
-                        })
-                      : ""
-                  )}
+                : shownDifficulties
+                    .map((d, i) =>
+                      i in row.dx_intl_notes
+                        ? getNoteScoreCell({
+                            song_id: row.song_id,
+                            deluxe: row.deluxe,
+                            ...row.dx_intl_notes[i],
+                          })
+                        : ""
+                    )
+                    .filter((cell) => cell !== "")}
             </TableRow>
           ))}
         </TableBody>
