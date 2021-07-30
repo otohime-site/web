@@ -41,6 +41,7 @@ import { difficulties, FlattenedNote, getNoteHash } from "./helper"
 import Variant from "./Variant"
 import { ActualScore, FlagContainer } from "./Player"
 import { ComboFlag, SyncFlag } from "./flags"
+import { classRankNames, courseRankNames } from "./Ranks"
 
 interface FlattenNodeWithBeforeAfter extends FlattenedNote {
   before?: Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
@@ -338,6 +339,46 @@ const PlayerHistory: FunctionComponent = () => {
             <ArrowForwardIcon />
           </TableCell>
           <TableCell>{gradeNames[after?.grade ?? 0] ?? ""}</TableCell>
+        </TableRow>
+      ) : (
+        <></>
+      )}
+      {(before?.course_rank ?? null) !== (after?.course_rank ?? null) ? (
+        <TableRow>
+          <TableCell colSpan={3}>段位</TableCell>
+          <BeforeCell>
+            {before?.course_rank != null
+              ? courseRankNames[before.course_rank] ?? ""
+              : ""}
+          </BeforeCell>
+          <TableCell>
+            <ArrowForwardIcon />
+          </TableCell>
+          <TableCell>
+            {after?.course_rank != null
+              ? courseRankNames[after.course_rank] ?? ""
+              : ""}
+          </TableCell>
+        </TableRow>
+      ) : (
+        <></>
+      )}
+      {(before?.class_rank ?? null) !== (after?.class_rank ?? null) ? (
+        <TableRow>
+          <TableCell colSpan={3}>對戰階級</TableCell>
+          <BeforeCell>
+            {before?.class_rank != null
+              ? classRankNames[before.class_rank] ?? ""
+              : ""}
+          </BeforeCell>
+          <TableCell>
+            <ArrowForwardIcon />
+          </TableCell>
+          <TableCell>
+            {after?.class_rank != null
+              ? classRankNames[after.class_rank] ?? ""
+              : ""}
+          </TableCell>
         </TableRow>
       ) : (
         <></>
