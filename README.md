@@ -40,3 +40,11 @@ npm start
 ```
 
 Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
+
+### License
+
+Copyright (c) 2018 - 2021 Otohime Team (Hsiao-Ting Yu and others)
+
+Licensed under MIT license, see LICENSE.md.
+
+Except artworks in `src/dx_intl/course_ranks` and `src/dx_intl/class_ranks` which is currently not released under open-source licenses.
