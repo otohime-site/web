@@ -47,4 +47,6 @@ Copyright (c) 2018 - 2021 Otohime Team (Hsiao-Ting Yu and others)
 
 Licensed under MIT license, see LICENSE.md.
 
-Except artworks in `src/dx_intl/course_ranks` and `src/dx_intl/class_ranks` which is currently not released under open-source licenses.
+Artworks in `src/dx_intl/course_ranks` and `src/dx_intl/class_ranks` are released separately:
+
+(C) 2021 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
