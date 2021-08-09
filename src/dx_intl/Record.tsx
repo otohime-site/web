@@ -11,7 +11,7 @@ import { zhTW } from "date-fns/locale"
 import { Dx_Intl_Records } from "../generated/graphql"
 import Grade from "./Grade"
 import Rating from "./Rating"
-import { classRankNames, courseRankNames } from "./Ranks"
+import CourseRank, { classRankNames } from "./Ranks"
 
 const Subtitle = styled("div")`
   display: flex;
@@ -29,8 +29,8 @@ const CardName = styled("div")`
   border: 0.1em solid #cccccc;
   border-radius: 0.2em;
   font-size: 133%;
-  font-weight: bold;
-  font-family: "Kosugi Maru";
+  font-weight: 800;
+  font-family: "M PLUS Rounded 1c";
 `
 
 const Title = styled("div")`
@@ -42,9 +42,10 @@ const Title = styled("div")`
   border-radius: 0.4em;
   border: 0.1em solid;
   color: white;
-  -webkit-text-stroke: 0.06em #000000;
-  font-weight: bold;
-  font-family: "Kosugi Maru";
+  -webkit-text-stroke: 0.04em #000000;
+  text-shadow: 0.06em 0.06em #000000;
+  font-weight: 800;
+  font-family: "M PLUS Rounded 1c";
   margin-bottom: 0.5em;
   &.normal {
     background: linear-gradient(
@@ -174,6 +175,12 @@ const AlignedTypo = styled(Typography)`
   align-items: center;
 `
 
+const AlignedDiv = styled("div")`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 const Record: FunctionComponent<{
   record: Pick<
     Dx_Intl_Records,
@@ -208,10 +215,10 @@ const Record: FunctionComponent<{
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
       {record.grade != null ? <Grade grade={record.grade} /> : ""}
       {record.course_rank != null && record.class_rank != null ? (
-        <div>
-          {courseRankNames[record.course_rank]} /{" "}
+        <AlignedDiv>
+          <CourseRank courseRank={record.course_rank} />
           {classRankNames[record.class_rank]}
-        </div>
+        </AlignedDiv>
       ) : (
         ""
       )}
