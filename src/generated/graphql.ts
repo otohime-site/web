@@ -4525,63 +4525,93 @@ export type Uuid_Comparison_Exp = {
 
 export type TokensQueryVariables = Exact<{ [key: string]: never }>
 
-export type TokensQuery = { __typename?: "query_root" } & {
-  tokens: Array<{ __typename?: "tokens" } & Pick<Tokens, "id" | "created_at">>
+export type TokensQuery = {
+  __typename?: "query_root"
+  tokens: Array<{ __typename?: "tokens"; id: string; created_at: string }>
 }
 
 export type RegenerateTokenMutationVariables = Exact<{ [key: string]: never }>
 
-export type RegenerateTokenMutation = { __typename?: "mutation_root" } & {
-  delete_tokens?: Maybe<
-    { __typename?: "tokens_mutation_response" } & Pick<
-      Tokens_Mutation_Response,
-      "affected_rows"
-    >
-  >
-  insert_tokens_one?: Maybe<{ __typename?: "tokens" } & Pick<Tokens, "id">>
+export type RegenerateTokenMutation = {
+  __typename?: "mutation_root"
+  delete_tokens?: Maybe<{
+    __typename?: "tokens_mutation_response"
+    affected_rows: number
+  }>
+  insert_tokens_one?: Maybe<{ __typename?: "tokens"; id: string }>
 }
 
 export type DeleteUserMutationVariables = Exact<{ [key: string]: never }>
 
-export type DeleteUserMutation = { __typename?: "mutation_root" } & {
-  delete_users?: Maybe<
-    { __typename?: "users_mutation_response" } & Pick<
-      Users_Mutation_Response,
-      "affected_rows"
-    >
-  >
+export type DeleteUserMutation = {
+  __typename?: "mutation_root"
+  delete_users?: Maybe<{
+    __typename?: "users_mutation_response"
+    affected_rows: number
+  }>
 }
 
 export type DxIntlPlayersFieldsFragment = {
   __typename?: "dx_intl_players"
-} & Pick<
-  Dx_Intl_Players,
-  "id" | "nickname" | "private" | "created_at" | "updated_at"
-> & {
-    dx_intl_record?: Maybe<
-      { __typename?: "dx_intl_records" } & Pick<
-        Dx_Intl_Records,
-        "card_name" | "rating" | "grade" | "course_rank" | "class_rank"
-      >
-    >
-  }
+  id: number
+  nickname: string
+  private: boolean
+  created_at: string
+  updated_at?: Maybe<string>
+  dx_intl_record?: Maybe<{
+    __typename?: "dx_intl_records"
+    card_name: string
+    rating: number
+    grade?: Maybe<number>
+    course_rank?: Maybe<number>
+    class_rank?: Maybe<number>
+  }>
+}
 
 export type DxIntlPlayersQueryVariables = Exact<{ [key: string]: never }>
 
-export type DxIntlPlayersQuery = { __typename?: "query_root" } & {
-  dx_intl_players: Array<
-    { __typename?: "dx_intl_players" } & DxIntlPlayersFieldsFragment
-  >
+export type DxIntlPlayersQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    id: number
+    nickname: string
+    private: boolean
+    created_at: string
+    updated_at?: Maybe<string>
+    dx_intl_record?: Maybe<{
+      __typename?: "dx_intl_records"
+      card_name: string
+      rating: number
+      grade?: Maybe<number>
+      course_rank?: Maybe<number>
+      class_rank?: Maybe<number>
+    }>
+  }>
 }
 
 export type DxIntlPlayersForUserQueryVariables = Exact<{
   userId: Scalars["String"]
 }>
 
-export type DxIntlPlayersForUserQuery = { __typename?: "query_root" } & {
-  dx_intl_players: Array<
-    { __typename?: "dx_intl_players" } & DxIntlPlayersFieldsFragment
-  >
+export type DxIntlPlayersForUserQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    id: number
+    nickname: string
+    private: boolean
+    created_at: string
+    updated_at?: Maybe<string>
+    dx_intl_record?: Maybe<{
+      __typename?: "dx_intl_records"
+      card_name: string
+      rating: number
+      grade?: Maybe<number>
+      course_rank?: Maybe<number>
+      class_rank?: Maybe<number>
+    }>
+  }>
 }
 
 export type InsertDxIntlPlayerMutationVariables = Exact<{
@@ -4589,10 +4619,12 @@ export type InsertDxIntlPlayerMutationVariables = Exact<{
   private: Scalars["Boolean"]
 }>
 
-export type InsertDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
-  insert_dx_intl_players_one?: Maybe<
-    { __typename?: "dx_intl_players" } & Pick<Dx_Intl_Players, "id">
-  >
+export type InsertDxIntlPlayerMutation = {
+  __typename?: "mutation_root"
+  insert_dx_intl_players_one?: Maybe<{
+    __typename?: "dx_intl_players"
+    id: number
+  }>
 }
 
 export type UpdateDxIntlPlayerMutationVariables = Exact<{
@@ -4601,110 +4633,209 @@ export type UpdateDxIntlPlayerMutationVariables = Exact<{
   private: Scalars["Boolean"]
 }>
 
-export type UpdateDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
-  update_dx_intl_players_by_pk?: Maybe<
-    { __typename?: "dx_intl_players" } & Pick<Dx_Intl_Players, "id">
-  >
+export type UpdateDxIntlPlayerMutation = {
+  __typename?: "mutation_root"
+  update_dx_intl_players_by_pk?: Maybe<{
+    __typename?: "dx_intl_players"
+    id: number
+  }>
 }
 
 export type DeleteDxIntlPlayerMutationVariables = Exact<{
   pk: Scalars["Int"]
 }>
 
-export type DeleteDxIntlPlayerMutation = { __typename?: "mutation_root" } & {
-  delete_dx_intl_players_by_pk?: Maybe<
-    { __typename?: "dx_intl_players" } & Pick<Dx_Intl_Players, "id">
-  >
+export type DeleteDxIntlPlayerMutation = {
+  __typename?: "mutation_root"
+  delete_dx_intl_players_by_pk?: Maybe<{
+    __typename?: "dx_intl_players"
+    id: number
+  }>
 }
 
-export type DxIntlSongsFieldsFragment = { __typename?: "dx_intl_songs" } & Pick<
-  Dx_Intl_Songs,
-  "id" | "category" | "title" | "order"
-> & {
-    dx_intl_variants: Array<
-      { __typename?: "dx_intl_variants" } & Pick<
-        Dx_Intl_Variants,
-        "deluxe" | "version" | "active"
-      > & {
-          dx_intl_notes: Array<
-            { __typename?: "dx_intl_notes" } & Pick<
-              Dx_Intl_Notes,
-              "difficulty" | "level"
-            >
-          >
-        }
-    >
-  }
+export type DxIntlSongsFieldsFragment = {
+  __typename?: "dx_intl_songs"
+  id: string
+  category: number
+  title: string
+  order: number
+  dx_intl_variants: Array<{
+    __typename?: "dx_intl_variants"
+    deluxe: boolean
+    version: number
+    active: boolean
+    dx_intl_notes: Array<{
+      __typename?: "dx_intl_notes"
+      difficulty: number
+      level:
+        | "1"
+        | "2"
+        | "3"
+        | "4"
+        | "5"
+        | "6"
+        | "7"
+        | "7+"
+        | "8"
+        | "8+"
+        | "9"
+        | "9+"
+        | "10"
+        | "10+"
+        | "11"
+        | "11+"
+        | "12"
+        | "12+"
+        | "13"
+        | "13+"
+        | "14"
+        | "14+"
+        | "15"
+    }>
+  }>
+}
 
 export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never }>
 
-export type DxIntlSongsQuery = { __typename?: "query_root" } & {
-  dx_intl_songs: Array<
-    { __typename?: "dx_intl_songs" } & DxIntlSongsFieldsFragment
-  >
+export type DxIntlSongsQuery = {
+  __typename?: "query_root"
+  dx_intl_songs: Array<{
+    __typename?: "dx_intl_songs"
+    id: string
+    category: number
+    title: string
+    order: number
+    dx_intl_variants: Array<{
+      __typename?: "dx_intl_variants"
+      deluxe: boolean
+      version: number
+      active: boolean
+      dx_intl_notes: Array<{
+        __typename?: "dx_intl_notes"
+        difficulty: number
+        level:
+          | "1"
+          | "2"
+          | "3"
+          | "4"
+          | "5"
+          | "6"
+          | "7"
+          | "7+"
+          | "8"
+          | "8+"
+          | "9"
+          | "9+"
+          | "10"
+          | "10+"
+          | "11"
+          | "11+"
+          | "12"
+          | "12+"
+          | "13"
+          | "13+"
+          | "14"
+          | "14+"
+          | "15"
+      }>
+    }>
+  }>
 }
 
 export type DxIntlSongsByIdQueryVariables = Exact<{
   idLike: Scalars["String"]
 }>
 
-export type DxIntlSongsByIdQuery = { __typename?: "query_root" } & {
-  dx_intl_songs: Array<
-    { __typename?: "dx_intl_songs" } & DxIntlSongsFieldsFragment
-  >
+export type DxIntlSongsByIdQuery = {
+  __typename?: "query_root"
+  dx_intl_songs: Array<{
+    __typename?: "dx_intl_songs"
+    id: string
+    category: number
+    title: string
+    order: number
+    dx_intl_variants: Array<{
+      __typename?: "dx_intl_variants"
+      deluxe: boolean
+      version: number
+      active: boolean
+      dx_intl_notes: Array<{
+        __typename?: "dx_intl_notes"
+        difficulty: number
+        level:
+          | "1"
+          | "2"
+          | "3"
+          | "4"
+          | "5"
+          | "6"
+          | "7"
+          | "7+"
+          | "8"
+          | "8+"
+          | "9"
+          | "9+"
+          | "10"
+          | "10+"
+          | "11"
+          | "11+"
+          | "12"
+          | "12+"
+          | "13"
+          | "13+"
+          | "14"
+          | "14+"
+          | "15"
+      }>
+    }>
+  }>
 }
 
 export type DxIntlRecordWithScoresQueryVariables = Exact<{
   nickname: Scalars["String"]
 }>
 
-export type DxIntlRecordWithScoresQuery = { __typename?: "query_root" } & {
-  dx_intl_players: Array<
-    { __typename?: "dx_intl_players" } & Pick<
-      Dx_Intl_Players,
-      "updated_at" | "private"
-    > & {
-        dx_intl_record?: Maybe<
-          { __typename?: "dx_intl_records" } & Pick<
-            Dx_Intl_Records,
-            | "card_name"
-            | "title"
-            | "trophy"
-            | "rating"
-            | "max_rating"
-            | "rating_legacy"
-            | "grade"
-            | "course_rank"
-            | "class_rank"
-          >
-        >
-        dx_intl_scores: Array<
-          { __typename?: "dx_intl_scores" } & Pick<
-            Dx_Intl_Scores,
-            | "song_id"
-            | "deluxe"
-            | "difficulty"
-            | "score"
-            | "combo_flag"
-            | "sync_flag"
-            | "start"
-          >
-        >
-      }
-  >
+export type DxIntlRecordWithScoresQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    updated_at?: Maybe<string>
+    private: boolean
+    dx_intl_record?: Maybe<{
+      __typename?: "dx_intl_records"
+      card_name: string
+      title: string
+      trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
+      rating: number
+      max_rating: number
+      rating_legacy: boolean
+      grade?: Maybe<number>
+      course_rank?: Maybe<number>
+      class_rank?: Maybe<number>
+    }>
+    dx_intl_scores: Array<{
+      __typename?: "dx_intl_scores"
+      song_id: string
+      deluxe: boolean
+      difficulty: number
+      score: number
+      combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
+      sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+      start: string
+    }>
+  }>
 }
 
 export type DxIntlPlayersTimelinesQueryVariables = Exact<{
   nickname: Scalars["String"]
 }>
 
-export type DxIntlPlayersTimelinesQuery = { __typename?: "query_root" } & {
-  dx_intl_players_timelines: Array<
-    { __typename?: "dx_intl_players_timelines" } & Pick<
-      Dx_Intl_Players_Timelines,
-      "timelines"
-    >
-  >
+export type DxIntlPlayersTimelinesQuery = {
+  __typename?: "query_root"
+  dx_intl_players_timelines: Array<{
+    __typename?: "dx_intl_players_timelines"
+    timelines?: Maybe<string[]>
+  }>
 }
 
 export type DxIntlPlayerWithTimelineQueryVariables = Exact<{
@@ -4712,45 +4843,48 @@ export type DxIntlPlayerWithTimelineQueryVariables = Exact<{
   time: Scalars["timestamptz"]
 }>
 
-export type DxIntlPlayerWithTimelineQuery = { __typename?: "query_root" } & {
-  beforeRecord: Array<
-    { __typename?: "dx_intl_records_with_history" } & Pick<
-      Dx_Intl_Records_With_History,
-      | "card_name"
-      | "title"
-      | "trophy"
-      | "rating"
-      | "max_rating"
-      | "grade"
-      | "course_rank"
-      | "class_rank"
-    >
-  >
-  afterRecord: Array<
-    { __typename?: "dx_intl_records_with_history" } & Pick<
-      Dx_Intl_Records_With_History,
-      | "card_name"
-      | "title"
-      | "trophy"
-      | "rating"
-      | "max_rating"
-      | "grade"
-      | "course_rank"
-      | "class_rank"
-    >
-  >
-  beforeScores: Array<
-    { __typename?: "dx_intl_scores_with_history" } & Pick<
-      Dx_Intl_Scores_With_History,
-      "song_id" | "deluxe" | "difficulty" | "score" | "combo_flag" | "sync_flag"
-    >
-  >
-  afterScores: Array<
-    { __typename?: "dx_intl_scores_with_history" } & Pick<
-      Dx_Intl_Scores_With_History,
-      "song_id" | "deluxe" | "difficulty" | "score" | "combo_flag" | "sync_flag"
-    >
-  >
+export type DxIntlPlayerWithTimelineQuery = {
+  __typename?: "query_root"
+  beforeRecord: Array<{
+    __typename?: "dx_intl_records_with_history"
+    card_name?: Maybe<string>
+    title?: Maybe<string>
+    trophy?: Maybe<"normal" | "bronze" | "silver" | "gold" | "rainbow">
+    rating?: Maybe<number>
+    max_rating?: Maybe<number>
+    grade?: Maybe<number>
+    course_rank?: Maybe<number>
+    class_rank?: Maybe<number>
+  }>
+  afterRecord: Array<{
+    __typename?: "dx_intl_records_with_history"
+    card_name?: Maybe<string>
+    title?: Maybe<string>
+    trophy?: Maybe<"normal" | "bronze" | "silver" | "gold" | "rainbow">
+    rating?: Maybe<number>
+    max_rating?: Maybe<number>
+    grade?: Maybe<number>
+    course_rank?: Maybe<number>
+    class_rank?: Maybe<number>
+  }>
+  beforeScores: Array<{
+    __typename?: "dx_intl_scores_with_history"
+    song_id?: Maybe<string>
+    deluxe?: Maybe<boolean>
+    difficulty?: Maybe<number>
+    score?: Maybe<number>
+    combo_flag?: Maybe<"" | "fc" | "fc+" | "ap" | "ap+">
+    sync_flag?: Maybe<"" | "fs" | "fs+" | "fdx" | "fdx+">
+  }>
+  afterScores: Array<{
+    __typename?: "dx_intl_scores_with_history"
+    song_id?: Maybe<string>
+    deluxe?: Maybe<boolean>
+    difficulty?: Maybe<number>
+    score?: Maybe<number>
+    combo_flag?: Maybe<"" | "fc" | "fc+" | "ap" | "ap+">
+    sync_flag?: Maybe<"" | "fs" | "fs+" | "fdx" | "fdx+">
+  }>
 }
 
 export type DxIntlPlayersEditableQueryVariables = Exact<{
@@ -4758,13 +4892,14 @@ export type DxIntlPlayersEditableQueryVariables = Exact<{
   nickname: Scalars["String"]
 }>
 
-export type DxIntlPlayersEditableQuery = { __typename?: "query_root" } & {
-  dx_intl_players: Array<
-    { __typename?: "dx_intl_players" } & Pick<
-      Dx_Intl_Players,
-      "id" | "nickname" | "private"
-    >
-  >
+export type DxIntlPlayersEditableQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    id: number
+    nickname: string
+    private: boolean
+  }>
 }
 
 export type InsertDxIntlRecordWithScoresMutationVariables = Exact<{
@@ -4774,25 +4909,22 @@ export type InsertDxIntlRecordWithScoresMutationVariables = Exact<{
 
 export type InsertDxIntlRecordWithScoresMutation = {
   __typename?: "mutation_root"
-} & {
   insert_dx_intl_records_one?: Maybe<{ __typename: "dx_intl_records" }>
-  insert_dx_intl_scores?: Maybe<
-    { __typename?: "dx_intl_scores_mutation_response" } & Pick<
-      Dx_Intl_Scores_Mutation_Response,
-      "affected_rows"
-    >
-  >
+  insert_dx_intl_scores?: Maybe<{
+    __typename?: "dx_intl_scores_mutation_response"
+    affected_rows: number
+  }>
 }
 
 export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
 
-export type DxIntlNewRatingStatsQuery = { __typename?: "query_root" } & {
-  dx_intl_new_rating_stats: Array<
-    { __typename?: "dx_intl_new_rating_stats" } & Pick<
-      Dx_Intl_New_Rating_Stats,
-      "range" | "count"
-    >
-  >
+export type DxIntlNewRatingStatsQuery = {
+  __typename?: "query_root"
+  dx_intl_new_rating_stats: Array<{
+    __typename?: "dx_intl_new_rating_stats"
+    range?: Maybe<string>
+    count?: Maybe<number>
+  }>
 }
 
 export type DxIntlScoresStatsQueryVariables = Exact<{
@@ -4801,13 +4933,13 @@ export type DxIntlScoresStatsQueryVariables = Exact<{
   difficulty: Scalars["smallint"]
 }>
 
-export type DxIntlScoresStatsQuery = { __typename?: "query_root" } & {
-  dx_intl_scores_stats: Array<
-    { __typename?: "dx_intl_scores_stats" } & Pick<
-      Dx_Intl_Scores_Stats,
-      "range" | "count"
-    >
-  >
+export type DxIntlScoresStatsQuery = {
+  __typename?: "query_root"
+  dx_intl_scores_stats: Array<{
+    __typename?: "dx_intl_scores_stats"
+    range?: Maybe<string>
+    count?: Maybe<number>
+  }>
 }
 
 export const DxIntlPlayersFieldsFragmentDoc = {
