@@ -4616,7 +4616,6 @@ export type DxIntlPlayersForUserQuery = {
 
 export type DxIntlPlayersWithKeywordAnonymousQueryVariables = Exact<{
   nickname_like: Scalars["String"]
-  card_name_like: Scalars["String"]
 }>
 
 export type DxIntlPlayersWithKeywordAnonymousQuery = {
@@ -4642,7 +4641,6 @@ export type DxIntlPlayersWithKeywordAnonymousQuery = {
 export type DxIntlPlayersWithKeywordUserQueryVariables = Exact<{
   userId: Scalars["String"]
   nickname_like: Scalars["String"]
-  card_name_like: Scalars["String"]
 }>
 
 export type DxIntlPlayersWithKeywordUserQuery = {
@@ -5369,20 +5367,6 @@ export const DxIntlPlayersWithKeywordAnonymousDocument = {
             },
           },
         },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "card_name_like" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5400,74 +5384,17 @@ export const DxIntlPlayersWithKeywordAnonymousDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "_or" },
+                      name: { kind: "Name", value: "nickname" },
                       value: {
-                        kind: "ListValue",
-                        values: [
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "nickname" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_ilike" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: {
-                                          kind: "Name",
-                                          value: "nickname_like",
-                                        },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "dx_intl_record" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: {
-                                        kind: "Name",
-                                        value: "card_name",
-                                      },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_ilike",
-                                            },
-                                            value: {
-                                              kind: "Variable",
-                                              name: {
-                                                kind: "Name",
-                                                value: "card_name_like",
-                                              },
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_ilike" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname_like" },
+                            },
                           },
                         ],
                       },
@@ -5550,20 +5477,6 @@ export const DxIntlPlayersWithKeywordUserDocument = {
             },
           },
         },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "card_name_like" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -5581,120 +5494,34 @@ export const DxIntlPlayersWithKeywordUserDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
+                      name: { kind: "Name", value: "user_id" },
                       value: {
-                        kind: "ListValue",
-                        values: [
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "user_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: { kind: "Name", value: "userId" },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "userId" },
+                            },
                           },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "nickname" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "_or" },
-                                value: {
-                                  kind: "ListValue",
-                                  values: [
-                                    {
-                                      kind: "ObjectValue",
-                                      fields: [
-                                        {
-                                          kind: "ObjectField",
-                                          name: {
-                                            kind: "Name",
-                                            value: "nickname",
-                                          },
-                                          value: {
-                                            kind: "ObjectValue",
-                                            fields: [
-                                              {
-                                                kind: "ObjectField",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "_ilike",
-                                                },
-                                                value: {
-                                                  kind: "Variable",
-                                                  name: {
-                                                    kind: "Name",
-                                                    value: "nickname_like",
-                                                  },
-                                                },
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      kind: "ObjectValue",
-                                      fields: [
-                                        {
-                                          kind: "ObjectField",
-                                          name: {
-                                            kind: "Name",
-                                            value: "dx_intl_record",
-                                          },
-                                          value: {
-                                            kind: "ObjectValue",
-                                            fields: [
-                                              {
-                                                kind: "ObjectField",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "card_name",
-                                                },
-                                                value: {
-                                                  kind: "ObjectValue",
-                                                  fields: [
-                                                    {
-                                                      kind: "ObjectField",
-                                                      name: {
-                                                        kind: "Name",
-                                                        value: "_ilike",
-                                                      },
-                                                      value: {
-                                                        kind: "Variable",
-                                                        name: {
-                                                          kind: "Name",
-                                                          value:
-                                                            "card_name_like",
-                                                        },
-                                                      },
-                                                    },
-                                                  ],
-                                                },
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_ilike" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname_like" },
+                            },
                           },
                         ],
                       },
@@ -5740,120 +5567,34 @@ export const DxIntlPlayersWithKeywordUserDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
+                      name: { kind: "Name", value: "user_id" },
                       value: {
-                        kind: "ListValue",
-                        values: [
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "user_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_neq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: { kind: "Name", value: "userId" },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_neq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "userId" },
+                            },
                           },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "nickname" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "_or" },
-                                value: {
-                                  kind: "ListValue",
-                                  values: [
-                                    {
-                                      kind: "ObjectValue",
-                                      fields: [
-                                        {
-                                          kind: "ObjectField",
-                                          name: {
-                                            kind: "Name",
-                                            value: "nickname",
-                                          },
-                                          value: {
-                                            kind: "ObjectValue",
-                                            fields: [
-                                              {
-                                                kind: "ObjectField",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "_ilike",
-                                                },
-                                                value: {
-                                                  kind: "Variable",
-                                                  name: {
-                                                    kind: "Name",
-                                                    value: "nickname_like",
-                                                  },
-                                                },
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                    {
-                                      kind: "ObjectValue",
-                                      fields: [
-                                        {
-                                          kind: "ObjectField",
-                                          name: {
-                                            kind: "Name",
-                                            value: "dx_intl_record",
-                                          },
-                                          value: {
-                                            kind: "ObjectValue",
-                                            fields: [
-                                              {
-                                                kind: "ObjectField",
-                                                name: {
-                                                  kind: "Name",
-                                                  value: "card_name",
-                                                },
-                                                value: {
-                                                  kind: "ObjectValue",
-                                                  fields: [
-                                                    {
-                                                      kind: "ObjectField",
-                                                      name: {
-                                                        kind: "Name",
-                                                        value: "_ilike",
-                                                      },
-                                                      value: {
-                                                        kind: "Variable",
-                                                        name: {
-                                                          kind: "Name",
-                                                          value:
-                                                            "card_name_like",
-                                                        },
-                                                      },
-                                                    },
-                                                  ],
-                                                },
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_ilike" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname_like" },
+                            },
                           },
                         ],
                       },

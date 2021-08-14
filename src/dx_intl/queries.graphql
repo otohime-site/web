@@ -25,58 +25,26 @@ query dxIntlPlayersForUser($userId: String!) {
   }
 }
 
-query dxIntlPlayersWithKeywordAnonymous(
-  $nickname_like: String!
-  $card_name_like: String!
-) {
+query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
   other_players: dx_intl_players(
-    where: {
-      _or: [
-        { nickname: { _ilike: $nickname_like } }
-        { dx_intl_record: { card_name: { _ilike: $card_name_like } } }
-      ]
-    }
-    order_by: { nickname: asc },
+    where: { nickname: { _ilike: $nickname_like } }
+    order_by: { nickname: asc }
     limit: 10
   ) {
     ...dxIntlPlayersFields
   }
 }
 
-query dxIntlPlayersWithKeywordUser(
-  $userId: String!
-  $nickname_like: String!
-  $card_name_like: String!
-) {
+query dxIntlPlayersWithKeywordUser($userId: String!, $nickname_like: String!) {
   user_players: dx_intl_players(
-    where: {
-      _and: [
-        { user_id: { _eq: $userId } }
-        {
-          _or: [
-            { nickname: { _ilike: $nickname_like } }
-            { dx_intl_record: { card_name: { _ilike: $card_name_like } } }
-          ]
-        }
-      ]
-    }
+    where: { user_id: { _eq: $userId }, nickname: { _ilike: $nickname_like } }
     order_by: { nickname: asc }
   ) {
     ...dxIntlPlayersFields
   }
   other_players: dx_intl_players(
-    where: {
-      _and: [
-        { user_id: { _neq: $userId } }
-        {
-          _or: [
-            { nickname: { _ilike: $nickname_like } }
-            { dx_intl_record: { card_name: { _ilike: $card_name_like } } }
-          ]
-        }
-      ]
-    }
-    order_by: { nickname: asc },
+    where: { user_id: { _neq: $userId }, nickname: { _ilike: $nickname_like } }
+    order_by: { nickname: asc }
     limit: 10
   ) {
     ...dxIntlPlayersFields
