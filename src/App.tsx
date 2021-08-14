@@ -8,9 +8,13 @@ import {
   IconButton,
   Link,
   Hidden,
+  Button,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 import GitHubIcon from "@material-ui/icons/GitHub"
+import SearchIcon from "@material-ui/icons/Search"
 
 import { Helmet } from "react-helmet-async"
 import AppBar from "./AppBar"
@@ -21,6 +25,7 @@ import Forget from "./Forget"
 import DxIntl from "./dx_intl/index"
 
 import "./global.css"
+import Search from "./Search"
 
 const AppDiv = styled("div")`
   display: flex;
@@ -28,7 +33,6 @@ const AppDiv = styled("div")`
 `
 
 const Title = styled(Typography)`
-  flex-grow: 1;
   font-family: "McLaren", cursive;
   a {
     color: white;
@@ -60,10 +64,42 @@ const StyledLink = styled(Link)`
   margin: 0 ${(props) => props.theme.spacing(2)}px;
 `
 
+const Spacing = styled("div")`
+  flex-grow: 1;
+`
+
+const SearchButton = styled(Button)`
+  &.search-shown {
+    display: none;
+  }
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    display: none;
+  }
+`
+const UserBoxPlaceholder = styled("div")`
+  ${(props) => props.theme.breakpoints.down("xs")} {
+    display: block;
+    &.search-shown {
+      display: none;
+    }
+  }
+`
+
 const App: FunctionComponent = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [searchShown, setSearchShown] = useState(false)
+  const theme = useTheme()
+  const searchCollapsible = useMediaQuery(theme.breakpoints.down("xs"))
 
-  function toggleDrawerOpen(): void {
+  const showSearch = (): void => {
+    setSearchShown(true)
+  }
+
+  const hideSearch = (): void => {
+    setSearchShown(false)
+  }
+
+  const toggleDrawerOpen = (): void => {
     setDrawerOpen(!drawerOpen)
   }
 
@@ -91,7 +127,25 @@ const App: FunctionComponent = () => {
               Otohime
             </Link>
           </Title>
-          <UserBox />
+          {!searchCollapsible || searchShown ? (
+            <Search
+              hideSearch={hideSearch}
+              shouldAutoFocus={searchCollapsible}
+            />
+          ) : (
+            <></>
+          )}
+          <Spacing />
+          <SearchButton
+            className={searchShown ? "search-shown" : ""}
+            color="inherit"
+            onClick={showSearch}
+          >
+            <SearchIcon />
+          </SearchButton>
+          <UserBoxPlaceholder className={searchShown ? "search-shown" : ""}>
+            <UserBox />
+          </UserBoxPlaceholder>
         </Toolbar>
       </AppBar>
       <Hidden smUp={true}>
