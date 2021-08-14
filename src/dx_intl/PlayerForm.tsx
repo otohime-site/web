@@ -223,8 +223,7 @@ const PlayerForm: FunctionComponent = () => {
                 <FormHelperText>
                   <StyledList>
                     <li>
-                      任何擁有成績單網址的人都能瀏覽。
-                      <i>別人將也能用卡名或暱稱搜尋到你的成績單。</i>
+                      任何擁有成績單網址的人都能瀏覽，別人也能用暱稱搜尋到你的成績單。
                     </li>
                     <li>
                       <i>
