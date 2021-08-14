@@ -27,7 +27,7 @@ query dxIntlPlayersForUser($userId: String!) {
 
 query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
   other_players: dx_intl_players(
-    where: { nickname: { _ilike: $nickname_like } }
+    where: { nickname: { _ilike: $nickname_like }, dx_intl_record: {} }
     order_by: { nickname: asc }
     limit: 10
   ) {
@@ -37,13 +37,21 @@ query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
 
 query dxIntlPlayersWithKeywordUser($userId: String!, $nickname_like: String!) {
   user_players: dx_intl_players(
-    where: { user_id: { _eq: $userId }, nickname: { _ilike: $nickname_like } }
+    where: {
+      user_id: { _eq: $userId }
+      nickname: { _ilike: $nickname_like }
+      dx_intl_record: {}
+    }
     order_by: { nickname: asc }
   ) {
     ...dxIntlPlayersFields
   }
   other_players: dx_intl_players(
-    where: { user_id: { _neq: $userId }, nickname: { _ilike: $nickname_like } }
+    where: {
+      user_id: { _neq: $userId }
+      nickname: { _ilike: $nickname_like }
+      dx_intl_record: {}
+    }
     order_by: { nickname: asc }
     limit: 10
   ) {

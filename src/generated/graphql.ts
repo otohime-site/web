@@ -591,10 +591,6 @@ export type Dx_Intl_Players = {
   created_at: Scalars["timestamptz"]
   /** An object relationship */
   dx_intl_record?: Maybe<Dx_Intl_Records>
-  /** fetch data from the table: "dx_intl_records" */
-  dx_intl_records: Array<Dx_Intl_Records>
-  /** An aggregate relationship */
-  dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
   /** An aggregate relationship */
@@ -609,24 +605,6 @@ export type Dx_Intl_Players = {
   /** An object relationship */
   user: Users
   user_id: Scalars["String"]
-}
-
-/** columns and relationships of "dx_intl_players" */
-export type Dx_Intl_PlayersDx_Intl_RecordsArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
-  limit?: Maybe<Scalars["Int"]>
-  offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Records_Order_By>>
-  where?: Maybe<Dx_Intl_Records_Bool_Exp>
-}
-
-/** columns and relationships of "dx_intl_players" */
-export type Dx_Intl_PlayersDx_Intl_Records_AggregateArgs = {
-  distinct_on?: Maybe<Array<Dx_Intl_Records_Select_Column>>
-  limit?: Maybe<Scalars["Int"]>
-  offset?: Maybe<Scalars["Int"]>
-  order_by?: Maybe<Array<Dx_Intl_Records_Order_By>>
-  where?: Maybe<Dx_Intl_Records_Bool_Exp>
 }
 
 /** columns and relationships of "dx_intl_players" */
@@ -716,7 +694,6 @@ export type Dx_Intl_Players_Bool_Exp = {
   _or?: Maybe<Array<Dx_Intl_Players_Bool_Exp>>
   created_at?: Maybe<Timestamptz_Comparison_Exp>
   dx_intl_record?: Maybe<Dx_Intl_Records_Bool_Exp>
-  dx_intl_records?: Maybe<Dx_Intl_Records_Bool_Exp>
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Bool_Exp>
   id?: Maybe<Int_Comparison_Exp>
   nickname?: Maybe<String_Comparison_Exp>
@@ -744,7 +721,6 @@ export type Dx_Intl_Players_Inc_Input = {
 export type Dx_Intl_Players_Insert_Input = {
   created_at?: Maybe<Scalars["timestamptz"]>
   dx_intl_record?: Maybe<Dx_Intl_Records_Obj_Rel_Insert_Input>
-  dx_intl_records?: Maybe<Dx_Intl_Records_Arr_Rel_Insert_Input>
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Arr_Rel_Insert_Input>
   id?: Maybe<Scalars["Int"]>
   nickname?: Maybe<Scalars["String"]>
@@ -815,7 +791,6 @@ export type Dx_Intl_Players_On_Conflict = {
 export type Dx_Intl_Players_Order_By = {
   created_at?: Maybe<Order_By>
   dx_intl_record?: Maybe<Dx_Intl_Records_Order_By>
-  dx_intl_records_aggregate?: Maybe<Dx_Intl_Records_Aggregate_Order_By>
   dx_intl_scores_aggregate?: Maybe<Dx_Intl_Scores_Aggregate_Order_By>
   id?: Maybe<Order_By>
   nickname?: Maybe<Order_By>
@@ -1136,28 +1111,6 @@ export type Dx_Intl_Records_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars["Boolean"]>
 }
 
-/** order by aggregate values of table "dx_intl_records" */
-export type Dx_Intl_Records_Aggregate_Order_By = {
-  avg?: Maybe<Dx_Intl_Records_Avg_Order_By>
-  count?: Maybe<Order_By>
-  max?: Maybe<Dx_Intl_Records_Max_Order_By>
-  min?: Maybe<Dx_Intl_Records_Min_Order_By>
-  stddev?: Maybe<Dx_Intl_Records_Stddev_Order_By>
-  stddev_pop?: Maybe<Dx_Intl_Records_Stddev_Pop_Order_By>
-  stddev_samp?: Maybe<Dx_Intl_Records_Stddev_Samp_Order_By>
-  sum?: Maybe<Dx_Intl_Records_Sum_Order_By>
-  var_pop?: Maybe<Dx_Intl_Records_Var_Pop_Order_By>
-  var_samp?: Maybe<Dx_Intl_Records_Var_Samp_Order_By>
-  variance?: Maybe<Dx_Intl_Records_Variance_Order_By>
-}
-
-/** input type for inserting array relation for remote table "dx_intl_records" */
-export type Dx_Intl_Records_Arr_Rel_Insert_Input = {
-  data: Array<Dx_Intl_Records_Insert_Input>
-  /** on conflict condition */
-  on_conflict?: Maybe<Dx_Intl_Records_On_Conflict>
-}
-
 /** aggregate avg on columns */
 export type Dx_Intl_Records_Avg_Fields = {
   __typename?: "dx_intl_records_avg_fields"
@@ -1168,17 +1121,6 @@ export type Dx_Intl_Records_Avg_Fields = {
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by avg() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Avg_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** Boolean expression to filter rows from the table "dx_intl_records". All fields are combined with a logical 'AND'. */
@@ -1255,21 +1197,6 @@ export type Dx_Intl_Records_Max_Fields = {
   title?: Maybe<Scalars["String"]>
 }
 
-/** order by max() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Max_Order_By = {
-  card_name?: Maybe<Order_By>
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-  title?: Maybe<Order_By>
-}
-
 /** aggregate min on columns */
 export type Dx_Intl_Records_Min_Fields = {
   __typename?: "dx_intl_records_min_fields"
@@ -1284,21 +1211,6 @@ export type Dx_Intl_Records_Min_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
-}
-
-/** order by min() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Min_Order_By = {
-  card_name?: Maybe<Order_By>
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  end?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-  start?: Maybe<Order_By>
-  title?: Maybe<Order_By>
 }
 
 /** response of any mutation on the table "dx_intl_records" */
@@ -1406,17 +1318,6 @@ export type Dx_Intl_Records_Stddev_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Stddev_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Records_Stddev_Pop_Fields = {
   __typename?: "dx_intl_records_stddev_pop_fields"
@@ -1427,17 +1328,6 @@ export type Dx_Intl_Records_Stddev_Pop_Fields = {
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by stddev_pop() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Stddev_Pop_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
@@ -1452,17 +1342,6 @@ export type Dx_Intl_Records_Stddev_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by stddev_samp() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Stddev_Samp_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate sum on columns */
 export type Dx_Intl_Records_Sum_Fields = {
   __typename?: "dx_intl_records_sum_fields"
@@ -1473,17 +1352,6 @@ export type Dx_Intl_Records_Sum_Fields = {
   max_rating?: Maybe<Scalars["smallint"]>
   player_id?: Maybe<Scalars["Int"]>
   rating?: Maybe<Scalars["smallint"]>
-}
-
-/** order by sum() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Sum_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** update columns of table "dx_intl_records" */
@@ -1528,17 +1396,6 @@ export type Dx_Intl_Records_Var_Pop_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_pop() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Var_Pop_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate var_samp on columns */
 export type Dx_Intl_Records_Var_Samp_Fields = {
   __typename?: "dx_intl_records_var_samp_fields"
@@ -1551,17 +1408,6 @@ export type Dx_Intl_Records_Var_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
-/** order by var_samp() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Var_Samp_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
-}
-
 /** aggregate variance on columns */
 export type Dx_Intl_Records_Variance_Fields = {
   __typename?: "dx_intl_records_variance_fields"
@@ -1572,17 +1418,6 @@ export type Dx_Intl_Records_Variance_Fields = {
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
-}
-
-/** order by variance() on columns of table "dx_intl_records" */
-export type Dx_Intl_Records_Variance_Order_By = {
-  class_rank?: Maybe<Order_By>
-  course_rank?: Maybe<Order_By>
-  grade?: Maybe<Order_By>
-  id?: Maybe<Order_By>
-  max_rating?: Maybe<Order_By>
-  player_id?: Maybe<Order_By>
-  rating?: Maybe<Order_By>
 }
 
 /** columns and relationships of "dx_intl_records_with_history" */
@@ -3592,7 +3427,7 @@ export type Query_Root = {
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
-  /** An aggregate relationship */
+  /** fetch aggregated fields from the table: "dx_intl_records" */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
@@ -3920,7 +3755,7 @@ export type Subscription_Root = {
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
-  /** An aggregate relationship */
+  /** fetch aggregated fields from the table: "dx_intl_records" */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
@@ -5399,6 +5234,11 @@ export const DxIntlPlayersWithKeywordAnonymousDocument = {
                         ],
                       },
                     },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_record" },
+                      value: { kind: "ObjectValue", fields: [] },
+                    },
                   ],
                 },
               },
@@ -5526,6 +5366,11 @@ export const DxIntlPlayersWithKeywordUserDocument = {
                         ],
                       },
                     },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_record" },
+                      value: { kind: "ObjectValue", fields: [] },
+                    },
                   ],
                 },
               },
@@ -5598,6 +5443,11 @@ export const DxIntlPlayersWithKeywordUserDocument = {
                           },
                         ],
                       },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_record" },
+                      value: { kind: "ObjectValue", fields: [] },
                     },
                   ],
                 },
