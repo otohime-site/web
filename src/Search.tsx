@@ -82,11 +82,14 @@ const Search: FunctionComponent<{
   })
 
   const hasError =
-    keywordAnonResult.error != null || keywordUserResult.error != null
-  const userPlayers = keywordUserResult.data?.user_players
+    user == null
+      ? keywordAnonResult.error != null
+      : keywordUserResult.error != null
+  const userPlayers = user == null ? [] : keywordUserResult.data?.user_players
   const otherPlayers =
-    keywordAnonResult.data?.other_players ??
-    keywordUserResult.data?.other_players
+    user == null
+      ? keywordAnonResult.data?.other_players
+      : keywordUserResult.data?.other_players
   const options =
     keyword.length === 0
       ? []
