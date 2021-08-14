@@ -56,7 +56,7 @@ const StyledInputBase = styled(InputBase)`
 `
 
 const escapeForLike = (keyword: string): string =>
-  keyword.replace(/%/g, "\\\\%").replace(/_/g, "\\\\_")
+  keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
 
 const Search: FunctionComponent<{
   hideSearch: () => void
