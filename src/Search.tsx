@@ -69,7 +69,6 @@ const Search: FunctionComponent<{
     query: DxIntlPlayersWithKeywordAnonymousDocument,
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
-      card_name_like: ``,
     },
     pause: user != null || keyword.length === 0,
   })
@@ -77,7 +76,6 @@ const Search: FunctionComponent<{
     query: DxIntlPlayersWithKeywordUserDocument,
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
-      card_name_like: ``,
       userId: user?.uid ?? "",
     },
     pause: user == null || keyword.length === 0,
@@ -135,7 +133,7 @@ const Search: FunctionComponent<{
           <StyledInputBase
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
-            placeholder="搜尋玩家暱稱或卡名..."
+            placeholder="搜尋玩家暱稱..."
             onBlur={hideSearch}
             autoFocus={shouldAutoFocus}
           />
