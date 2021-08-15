@@ -13,7 +13,7 @@
       <feOffset dy="2" result="offset"/>
       <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
     </filter>
-    <filter id="b" x="-.017" y="-.017" width="1.033" height="1.053">
+    <filter id="b" x="-.017" y="-.017" width="1.033" height="1.133">
       <feFlood flood-color="#F88A1F" result="flood"/>
       <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
       <feGaussianBlur in="composite1" result="blur"/>
