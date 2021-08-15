@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36">
   <defs>
     <filter id="c" height="150%">
       <feFlood flood-opacity=".8" flood-color="#AAA" result="flood"/>
