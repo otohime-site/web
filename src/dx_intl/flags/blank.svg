@@ -1,3 +1,12 @@
 <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="16" cy="16.875" r="15" fill="#fafafa" stroke="#ccc" stroke-width="#999999"/>
+  <defs>
+    <filter id="a" x="-.017" y="-.017" width="1.033" height="1.133">
+      <feFlood flood-color="#CCC" result="flood"/>
+      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+      <feGaussianBlur in="composite1" result="blur"/>
+      <feOffset dy="3" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
+    </filter>
+  </defs>
+  <circle cx="16" cy="16.875" r="15" fill="#fafafa" filter="url(#a)" stroke="#ccc" stroke-width="#999999"/>
 </svg>
