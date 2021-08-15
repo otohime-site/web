@@ -1,24 +1,10 @@
-<svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="c" x="-.096" y="-.127" width="1.166" height="1.422">
-      <feFlood flood-color="#AAA" flood-opacity=".8" result="flood"/>
-      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
-      <feGaussianBlur in="composite1" result="blur"/>
-      <feOffset dy="2" result="offset"/>
-      <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
-    </filter>
-    <filter id="a" x="-.017" y="-.017" width="1.033" height="1.133">
-      <feFlood flood-color="#F88A1F" result="flood"/>
-      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
-      <feGaussianBlur in="composite1" result="blur"/>
-      <feOffset dy="3" result="offset"/>
-      <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
-    </filter>
-    <linearGradient id="b" x1="-1.593" x2="-1.593" y1="-1.951" y2="17.352" gradientTransform="matrix(1.3007 0 0 .76879 5 8.875)" gradientUnits="userSpaceOnUse">
+    <linearGradient id="a" x1="-1.593" x2="-1.593" y1="-1.951" y2="17.352" gradientTransform="matrix(1.3007 0 0 .76879 5 8.875)" gradientUnits="userSpaceOnUse">
       <stop stop-color="#EDFFEF" offset="0"/>
       <stop stop-color="#FF9E2E" offset="1"/>
     </linearGradient>
   </defs>
-  <circle cx="16" cy="16.875" r="15" fill="#ffd95b" filter="url(#a)" stroke="#f88a1f" stroke-width="#999999"/>
-  <path d="M12.104 18.475H8.856l-.528 2.24H5l3.84-11.68h3.36l3.84 11.68h-3.392zm8.592-1.408v3.648h-3.12v-11.6a22.891 22.891 0 0 1 2.147-.206 27.307 27.307 0 0 1 1.373-.034q5.44 0 5.44 3.92a5.902 5.902 0 0 1-.126 1.258q-.174.802-.593 1.398a3.321 3.321 0 0 1-.505.568 3.908 3.908 0 0 1-1.395.787q-.931.309-2.181.309-.449 0-.79-.024a5.961 5.961 0 0 1-.25-.024zm0-5.712v3.392q.304.048.72.048a3.615 3.615 0 0 0 .617-.049q.602-.104.983-.431.56-.48.56-1.36a1.837 1.837 0 0 0-.144-.754q-.413-.926-2.016-.926a3.34 3.34 0 0 0-.628.062 3.733 3.733 0 0 0-.092.018zm-10.224.4-1.04 4.32h2.112l-1.04-4.32z" fill="url(#b)" fill-rule="evenodd" filter="url(#c)" stroke="#f7391e" stroke-linecap="round" stroke-width="3" style="paint-order:stroke"/>
+  <circle cx="16" cy="16" r="15" fill="#ffd95b" stroke="#f88a1f"/>
+  <path d="M12.104 18.475H8.856l-.528 2.24H5l3.84-11.68h3.36l3.84 11.68h-3.392zm8.592-1.408v3.648h-3.12v-11.6a22.891 22.891 0 0 1 2.147-.206 27.307 27.307 0 0 1 1.373-.034q5.44 0 5.44 3.92a5.902 5.902 0 0 1-.126 1.258q-.174.802-.593 1.398a3.321 3.321 0 0 1-.505.568 3.908 3.908 0 0 1-1.395.787q-.931.309-2.181.309-.449 0-.79-.024a5.961 5.961 0 0 1-.25-.024zm0-5.712v3.392q.304.048.72.048a3.615 3.615 0 0 0 .617-.049q.602-.104.983-.431.56-.48.56-1.36a1.837 1.837 0 0 0-.144-.754q-.413-.926-2.016-.926a3.34 3.34 0 0 0-.628.062 3.733 3.733 0 0 0-.092.018zm-10.224.4-1.04 4.32h2.112l-1.04-4.32z" fill="url(#a)" fill-rule="evenodd" stroke="#f7391e" stroke-linecap="round" stroke-width="3" style="paint-order:stroke"/>
 </svg>
