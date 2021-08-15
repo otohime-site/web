@@ -285,8 +285,8 @@ export const StatContainer = styled("div")`
     span {
       font-family: "M PLUS 1p";
       font-weight: 800;
-      font-size: 75%;
-      padding: 0.24em;
+      font-size: 90%;
+      line-height: 21px;
       color: #333333;
     }
   }
