@@ -284,7 +284,7 @@ export const StatContainer = styled("div")`
     }
     span {
       font-family: "M PLUS 1p";
-      font-weight: 800;
+      font-weight: 700;
       font-size: 90%;
       line-height: 21px;
       color: #333333;
