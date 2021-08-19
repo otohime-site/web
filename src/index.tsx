@@ -1,6 +1,5 @@
 import firebase from "firebase/app"
 import "firebase/auth"
-import React from "react"
 import { render } from "react-dom"
 import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
@@ -12,6 +11,7 @@ import { HelmetProvider } from "react-helmet-async"
 import App from "./App"
 import GraphQLProvider from "./GraphQLProvider"
 import firebaseConfig from "./firebase"
+import { AuthProvider } from "./auth"
 
 firebase.initializeApp(firebaseConfig)
 firebase
@@ -36,10 +36,12 @@ render(
       <StylesProvider injectFirst={true}>
         <EMThemeProvider theme={theme}>
           <ThemeProvider theme={theme}>
-            <GraphQLProvider>
-              <CssBaseline />
-              <App />
-            </GraphQLProvider>
+            <AuthProvider>
+              <GraphQLProvider>
+                <CssBaseline />
+                <App />
+              </GraphQLProvider>
+            </AuthProvider>
           </ThemeProvider>
         </EMThemeProvider>
       </StylesProvider>

@@ -4,7 +4,6 @@ import SearchIcon from "@material-ui/icons/Search"
 import WarningIcon from "@material-ui/icons/Warning"
 import { Autocomplete, AutocompleteChangeReason } from "@material-ui/lab"
 import { FunctionComponent, useState } from "react"
-import firebase from "firebase/app"
 import { useQuery } from "urql"
 import { useHistory } from "react-router"
 import { useAuth } from "./auth"
@@ -62,7 +61,7 @@ const Search: FunctionComponent<{
   hideSearch: () => void
   shouldAutoFocus: boolean
 }> = ({ hideSearch, shouldAutoFocus }) => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const history = useHistory()
   const [keyword, setKeyword] = useState("")
   const [keywordAnonResult] = useQuery({
@@ -70,7 +69,7 @@ const Search: FunctionComponent<{
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
     },
-    pause: user != null || keyword.length === 0,
+    pause: loading || user != null || keyword.length === 0,
   })
   const [keywordUserResult] = useQuery({
     query: DxIntlPlayersWithKeywordUserDocument,
@@ -78,7 +77,7 @@ const Search: FunctionComponent<{
       nickname_like: `${escapeForLike(keyword)}%`,
       userId: user?.uid ?? "",
     },
-    pause: user == null || keyword.length === 0,
+    pause: loading || user == null || keyword.length === 0,
   })
 
   const hasError =

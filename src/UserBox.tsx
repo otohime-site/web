@@ -8,7 +8,7 @@ import { useAuth } from "./auth"
 const UserBoxComponent: FunctionComponent = () => {
   const auth = firebase.auth()
   const provider = new firebase.auth.FacebookAuthProvider()
-  const [user, loading] = useAuth(auth)
+  const [user, loading] = useAuth()
   const handleLogin = async (): Promise<void> => {
     await auth.signInWithRedirect(provider)
   }

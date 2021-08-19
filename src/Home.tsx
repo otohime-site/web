@@ -10,7 +10,6 @@ import {
   Link,
   Button,
 } from "@material-ui/core"
-import firebase from "firebase/app"
 import { FunctionComponent, useState } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
@@ -33,8 +32,11 @@ const SpacedTypo = styled(Typography)`
 `
 
 const HomeComponent: FunctionComponent = () => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const [tabValue, setTabValue] = useState("dx")
+  if (loading) {
+    return <></>
+  }
   if (user == null) {
     return (
       <>

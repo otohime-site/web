@@ -1,6 +1,5 @@
 import { FunctionComponent, useState } from "react"
 import * as clipboard from "clipboard-polyfill"
-import firebase from "firebase/app"
 import { useQuery, useMutation } from "urql"
 import {
   Tooltip,
@@ -32,7 +31,7 @@ void(0);
 `
 
 const User: FunctionComponent = () => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const [tokensResult, refetchTokens] = useQuery({ query: TokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(
     RegenerateTokenDocument
@@ -58,7 +57,7 @@ const User: FunctionComponent = () => {
     }
   }
   const notSupported = !("DOMParser" in window && "fetch" in window)
-  if (user == null) {
+  if (loading || user == null) {
     return <></>
   }
   if (notSupported) {

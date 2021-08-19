@@ -1,4 +1,3 @@
-import firebase from "firebase/app"
 import { FunctionComponent } from "react"
 import { Button, List } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
@@ -10,7 +9,7 @@ import { QueryResult } from "../QueryResult"
 import PlayerListItem from "./PlayerListItem"
 
 const UserPlayers: FunctionComponent = () => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const [playersResult] = useQuery({
     query: DxIntlPlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },
@@ -18,7 +17,7 @@ const UserPlayers: FunctionComponent = () => {
   })
   const players = playersResult.data?.dx_intl_players
 
-  if (user == null) {
+  if (loading || user == null) {
     return <></>
   }
   return (

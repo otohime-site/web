@@ -36,6 +36,7 @@ import {
   Dx_Intl_Scores,
 } from "../generated/graphql"
 
+import { useAuth } from "../auth"
 import { gradeNames } from "./Grade"
 import { difficulties, FlattenedNote, getNoteHash } from "./helper"
 import Variant from "./Variant"
@@ -168,6 +169,7 @@ const hashToDateString = (hash: string): string => {
 }
 
 const PlayerHistory: FunctionComponent = () => {
+  const [, loading] = useAuth()
   const params = useParams<{ nickname: string; hash?: string }>()
   const [songsResult] = useQuery({
     query: DxIntlSongsDocument,
@@ -176,6 +178,7 @@ const PlayerHistory: FunctionComponent = () => {
   const [timelinesResult] = useQuery({
     query: DxIntlPlayersTimelinesDocument,
     variables: { nickname: params.nickname },
+    pause: loading,
   })
   const [timelineResult] = useQuery({
     query: DxIntlPlayerWithTimelineDocument,
@@ -183,7 +186,7 @@ const PlayerHistory: FunctionComponent = () => {
       nickname: params.nickname,
       time: hashToDateString(params.hash ?? ""),
     },
-    pause: params.hash === null,
+    pause: loading || params.hash == null || params.hash.length === 0,
   })
   if (timelinesResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>

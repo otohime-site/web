@@ -1,4 +1,3 @@
-import firebase from "firebase/app"
 import { FunctionComponent, useMemo } from "react"
 import { createClient, Provider as UrqlProvider } from "urql"
 import {
@@ -10,11 +9,9 @@ import {
 import { authExchange } from "@urql/exchange-auth"
 import { useAuth } from "./auth"
 import { apiHost } from "./host"
-import AppBar from "./AppBar"
 
 const GraphQLProvider: FunctionComponent = ({ children }) => {
-  const auth = firebase.auth()
-  const [user, loading] = useAuth(auth)
+  const [user] = useAuth()
 
   const client = useMemo(
     () =>
@@ -61,9 +58,6 @@ const GraphQLProvider: FunctionComponent = ({ children }) => {
     [user]
   )
 
-  if (loading) {
-    return <AppBar></AppBar>
-  }
   return <UrqlProvider value={client}>{children}</UrqlProvider>
 }
 export const GraphQLBookmarkletProvider: FunctionComponent<{ token: string }> =

@@ -1,8 +1,8 @@
+import { Alert, Skeleton } from "@material-ui/lab"
 import { FunctionComponent, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"
-import firebase from "firebase/app"
 import {
   FormLabel,
   RadioGroup,
@@ -59,7 +59,7 @@ interface FormParams {
 }
 
 const PlayerForm: FunctionComponent = () => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const {
     control,
     handleSubmit,
@@ -75,7 +75,7 @@ const PlayerForm: FunctionComponent = () => {
   const [playerResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
-    pause: user == null && params.nickname != null,
+    pause: loading || (user == null && params.nickname != null),
   })
 
   useEffect(() => {
@@ -149,8 +149,20 @@ const PlayerForm: FunctionComponent = () => {
     history.push("/")
   }
 
+  if (loading) {
+    return (
+      <Container component="main" maxWidth="md">
+        <Skeleton variant="rect" width="100%" height={200} />
+      </Container>
+    )
+  }
+
   if (user == null) {
-    return <>請先登入。</>
+    return (
+      <Container component="main" maxWidth="md">
+        <Alert severity="info">請先登入。</Alert>
+      </Container>
+    )
   }
   return (
     <Container component="main" maxWidth="sm">

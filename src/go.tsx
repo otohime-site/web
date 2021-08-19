@@ -1,4 +1,3 @@
-import React from "react"
 import { render } from "react-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
 import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"

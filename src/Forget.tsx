@@ -5,8 +5,7 @@ import {
   Checkbox,
   Button,
 } from "@material-ui/core"
-import { Alert } from "@material-ui/lab"
-import firebase from "firebase/app"
+import { Alert, Skeleton } from "@material-ui/lab"
 import { FunctionComponent, useState } from "react"
 import { useHistory } from "react-router"
 import { useMutation } from "urql"
@@ -14,9 +13,8 @@ import { useAuth } from "./auth"
 import { DeleteUserDocument } from "./generated/graphql"
 
 const Forget: FunctionComponent = () => {
-  const auth = firebase.auth()
   const history = useHistory()
-  const [user] = useAuth(auth)
+  const [user, loading] = useAuth()
   const [, deleteUser] = useMutation(DeleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
   const handleConfirm = (e: React.ChangeEvent<HTMLInputElement>): void =>
@@ -33,9 +31,20 @@ const Forget: FunctionComponent = () => {
       alert("發生錯誤，請登出再登入後重試。")
     }
   }
+  if (loading) {
+    return (
+      <Container component="main" maxWidth="md">
+        <Skeleton variant="rect" width="100%" height={200} />
+      </Container>
+    )
+  }
 
   if (user == null) {
-    return <>請先登入。</>
+    return (
+      <Container component="main" maxWidth="md">
+        <Alert severity="info">請先登入。</Alert>
+      </Container>
+    )
   }
 
   return (

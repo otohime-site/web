@@ -47,7 +47,6 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
 import styled from "@emotion/styled"
 
-import firebase from "firebase/app"
 import { Alert } from "@material-ui/lab"
 import { useAuth } from "../auth"
 import {
@@ -306,7 +305,7 @@ const WithInactiveTableRow = styled(TableRow)`
 `
 
 const Player: FunctionComponent = () => {
-  const [user] = useAuth(firebase.auth())
+  const [user, loading] = useAuth()
   const [currentTab, setCurrentTab] = useState(1)
   const [groupBy, setGroupBy] = useState<"category" | "version" | "level">(
     "category"
@@ -322,11 +321,12 @@ const Player: FunctionComponent = () => {
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname },
-    pause: user == null,
+    pause: loading || user == null,
   })
   const [recordResult, refetchRecord] = useQuery({
     query: DxIntlRecordWithScoresDocument,
     variables: { ...params },
+    pause: loading,
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
   const useDiffSetLayout = useMediaQuery<Theme>((theme) =>
