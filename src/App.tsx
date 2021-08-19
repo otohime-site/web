@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 
-import React, { FunctionComponent, useState } from "react"
+import React, { FunctionComponent, lazy, Suspense, useState } from "react"
 import { Route, Link as RouterLink, Switch } from "react-router-dom"
 import {
   Toolbar,
@@ -19,13 +19,14 @@ import SearchIcon from "@material-ui/icons/Search"
 import { Helmet } from "react-helmet-async"
 import AppBar from "./AppBar"
 import AppDrawer from "./AppDrawer"
-import Home from "./Home"
 import UserBox from "./UserBox"
-import Forget from "./Forget"
-import DxIntl from "./dx_intl/index"
 
 import "./global.css"
 import Search from "./Search"
+
+const Home = lazy(async () => await import("./Home"))
+const Forget = lazy(async () => await import("./Forget"))
+const DxIntl = lazy(async () => await import("./dx_intl/index"))
 
 const AppDiv = styled("div")`
   display: flex;
@@ -163,11 +164,13 @@ const App: FunctionComponent = () => {
         />
       </Hidden>
       <StyledMain>
-        <Switch>
-          <Route path="/" exact={true} component={Home} />
-          <Route path="/forget" exact={true} component={Forget} />
-          <Route path="/dxi" component={DxIntl} />
-        </Switch>
+        <Suspense fallback={<></>}>
+          <Switch>
+            <Route path="/" exact={true} component={Home} />
+            <Route path="/forget" exact={true} component={Forget} />
+            <Route path="/dxi" component={DxIntl} />
+          </Switch>
+        </Suspense>
         <StyledFooter>
           <Typography variant="body2" color="textSecondary">
             &copy; 2020 Otohime Team。Otohime 是一個開源專案。
