@@ -7,7 +7,7 @@ import {
   TableBody,
   Typography,
 } from "@material-ui/core"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import {
   DxIntlNewRatingStatsDocument,

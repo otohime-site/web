@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 
-import React, { FunctionComponent, lazy, Suspense, useState } from "react"
+import { FunctionComponent, lazy, Suspense, useState } from "react"
 import { Route, Link as RouterLink, Switch } from "react-router-dom"
 import {
   Toolbar,

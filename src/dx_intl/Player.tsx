@@ -34,7 +34,7 @@ import {
   deepPurple,
   purple,
 } from "@material-ui/core/colors"
-import React, { FunctionComponent, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"

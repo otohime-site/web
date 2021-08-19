@@ -1,5 +1,5 @@
 import firebase from "firebase/app"
-import React, { FunctionComponent, useMemo } from "react"
+import { FunctionComponent, useMemo } from "react"
 import { createClient, Provider as UrqlProvider } from "urql"
 import {
   cacheExchange,

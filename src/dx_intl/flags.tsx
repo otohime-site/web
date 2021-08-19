@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import styled from "@emotion/styled"
 import { Scalars } from "../generated/graphql"
 import Blank from "./flags/blank.svg"

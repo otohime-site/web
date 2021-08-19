@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import {
   Drawer,
   List,

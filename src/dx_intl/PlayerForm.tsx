@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react"
+import { FunctionComponent, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"

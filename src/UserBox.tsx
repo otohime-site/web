@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { Fragment, FunctionComponent } from "react"
 import { Button } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
@@ -19,20 +19,20 @@ const UserBoxComponent: FunctionComponent = () => {
     return <Skeleton variant="text" width={60} />
   } else if (user !== null) {
     return (
-      <React.Fragment>
+      <Fragment>
         <Button color="inherit" onClick={handleLogout}>
           <ExitToAppIcon />
           登出
         </Button>
-      </React.Fragment>
+      </Fragment>
     )
   }
   return (
-    <React.Fragment>
+    <Fragment>
       <Button color="inherit" onClick={handleLogin}>
         登入
       </Button>
-    </React.Fragment>
+    </Fragment>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import * as clipboard from "clipboard-polyfill"
 import firebase from "firebase/app"
 import { useQuery, useMutation } from "urql"

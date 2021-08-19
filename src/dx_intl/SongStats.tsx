@@ -8,7 +8,7 @@ import {
   TableCell,
   TableBody,
 } from "@material-ui/core"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"

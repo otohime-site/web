@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import firebase from "firebase/app"
-import React, { FunctionComponent, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import { useHistory } from "react-router"
 import { useMutation } from "urql"
 import { useAuth } from "./auth"

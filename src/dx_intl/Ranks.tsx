@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import styled from "@emotion/styled"
 
 import course0 from "./course_ranks/0.svg"

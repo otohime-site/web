@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { Route, RouteComponentProps, Switch } from "react-router-dom"
 import Overview from "./Overview"
 import Player from "./Player"

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import {
   Button,
   Dialog,
@@ -54,12 +54,14 @@ const sha256Sum = async (text: string): Promise<string> => {
 
 const book: FunctionComponent = () => {
   const [open, setOpen] = useState(true)
-  const [selectedPlayerId, setSelectedPlayerId] =
-    useState<number | undefined>(undefined)
+  const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
+    undefined
+  )
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
   const client = useClient()
-  const [fetchState, setFetchState] =
-    useState<"idle" | "fetching" | "done">("idle")
+  const [fetchState, setFetchState] = useState<"idle" | "fetching" | "done">(
+    "idle"
+  )
   const [fetchProgress, setFetchProgress] = useState(0)
   const handleFetch = async (): Promise<void> => {
     const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(

@@ -11,7 +11,7 @@ import {
   Button,
 } from "@material-ui/core"
 import firebase from "firebase/app"
-import React, { FunctionComponent, useState } from "react"
+import { FunctionComponent, useState } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { Helmet } from "react-helmet-async"
 import styled from "@emotion/styled"

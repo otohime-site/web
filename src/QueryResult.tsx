@@ -1,5 +1,5 @@
 import { Alert, Skeleton } from "@material-ui/lab"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { UseQueryState } from "urql"
 
 interface Props {

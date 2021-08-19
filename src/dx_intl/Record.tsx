@@ -1,5 +1,5 @@
 import { Tooltip, Typography } from "@material-ui/core"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 
 import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"

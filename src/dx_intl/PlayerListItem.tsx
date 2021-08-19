@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import { ListItemText, ListItem, ListItemIcon } from "@material-ui/core"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import PublicIcon from "@material-ui/icons/Public"
 import LockIcon from "@material-ui/icons/Lock"
