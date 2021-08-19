@@ -140,7 +140,7 @@ query dxIntlRecordWithScores($nickname: String!) {
 
 query dxIntlPlayersTimelines($nickname: String!) {
   dx_intl_players_timelines(
-    where: { player: { nickname: { _eq: $nickname } } }
+    where: { nickname: { _eq: $nickname } }
   ) {
     timelines
   }

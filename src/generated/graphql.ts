@@ -6080,25 +6080,16 @@ export const DxIntlPlayersTimelinesDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "player" },
+                      name: { kind: "Name", value: "nickname" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "nickname" },
+                            name: { kind: "Name", value: "_eq" },
                             value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "nickname" },
-                                  },
-                                },
-                              ],
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname" },
                             },
                           },
                         ],
