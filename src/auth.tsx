@@ -5,18 +5,24 @@ import {
   createContext,
   FunctionComponent,
 } from "react"
-import firebase from "firebase/app"
+import { getAuth, onAuthStateChanged, User } from "firebase/auth"
+import { initializeApp } from "firebase/app"
+
+import firebaseConfig from "./firebase"
+
+const firebaseApp = initializeApp(firebaseConfig)
+export const firebaseAuth = getAuth(firebaseApp)
 
 export const AuthContext = createContext<{
-  user: firebase.User | null
+  user: User | null
   loading: boolean
 }>({ user: null, loading: true })
 
 export const AuthProvider: FunctionComponent = ({ children }) => {
-  const [user, setUser] = useState<firebase.User | null>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    const unlisten = firebase.auth().onAuthStateChanged((user) => {
+    const unlisten = onAuthStateChanged(firebaseAuth, (user) => {
       setUser(user)
       setLoading(false)
     })
@@ -31,7 +37,7 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
   )
 }
 
-export const useAuth = (): [firebase.User | null, boolean] => {
+export const useAuth = (): [User | null, boolean] => {
   const { user, loading } = useContext(AuthContext)
   return [user, loading]
 }

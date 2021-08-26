@@ -2,18 +2,21 @@ import { Fragment, FunctionComponent } from "react"
 import { Button } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-import firebase from "firebase/app"
-import { useAuth } from "./auth"
+import {
+  FacebookAuthProvider,
+  signInWithRedirect,
+  signOut,
+} from "firebase/auth"
+import { firebaseAuth, useAuth } from "./auth"
 
 const UserBoxComponent: FunctionComponent = () => {
-  const auth = firebase.auth()
-  const provider = new firebase.auth.FacebookAuthProvider()
+  const provider = new FacebookAuthProvider()
   const [user, loading] = useAuth()
   const handleLogin = async (): Promise<void> => {
-    await auth.signInWithRedirect(provider)
+    await signInWithRedirect(firebaseAuth, provider)
   }
   const handleLogout = async (): Promise<void> => {
-    await auth.signOut()
+    await signOut(firebaseAuth)
   }
   if (loading) {
     return <Skeleton variant="text" width={60} />

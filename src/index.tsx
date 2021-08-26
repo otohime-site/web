@@ -1,5 +1,4 @@
-import firebase from "firebase/app"
-import "firebase/auth"
+import { getRedirectResult } from "firebase/auth"
 import { render } from "react-dom"
 import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
@@ -10,17 +9,12 @@ import { pink, orange } from "@material-ui/core/colors"
 import { HelmetProvider } from "react-helmet-async"
 import App from "./App"
 import GraphQLProvider from "./GraphQLProvider"
-import firebaseConfig from "./firebase"
-import { AuthProvider } from "./auth"
+import { firebaseAuth, AuthProvider } from "./auth"
 
-firebase.initializeApp(firebaseConfig)
-firebase
-  .auth()
-  .getRedirectResult()
-  .then(
-    () => {},
-    () => {}
-  )
+getRedirectResult(firebaseAuth).then(
+  () => {},
+  () => {}
+)
 
 const theme = createTheme({
   palette: {
