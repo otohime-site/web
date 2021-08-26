@@ -48,8 +48,13 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
     extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
-    publicPath: "/",
-    contentBase: resolve(__dirname, "./public"),
+    devMiddleware: {
+      publicPath: "/",
+    },
+    static: {
+      directory: resolve(__dirname, "./public"),
+      publicPath: "/public",
+    },
     https: true,
     historyApiFallback: true,
     proxy: {
