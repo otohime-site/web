@@ -24,6 +24,33 @@ import courseShin9 from "./course_ranks/shin9.svg"
 import courseShin10 from "./course_ranks/shin10.svg"
 import courseShinKaiden from "./course_ranks/shinkaiden.svg"
 
+import classB5 from "./class_ranks/B5.svg"
+import classB4 from "./class_ranks/B4.svg"
+import classB3 from "./class_ranks/B3.svg"
+import classB2 from "./class_ranks/B2.svg"
+import classB1 from "./class_ranks/B1.svg"
+import classA5 from "./class_ranks/A5.svg"
+import classA4 from "./class_ranks/A4.svg"
+import classA3 from "./class_ranks/A3.svg"
+import classA2 from "./class_ranks/A2.svg"
+import classA1 from "./class_ranks/A1.svg"
+import classS5 from "./class_ranks/S5.svg"
+import classS4 from "./class_ranks/S4.svg"
+import classS3 from "./class_ranks/S3.svg"
+import classS2 from "./class_ranks/S2.svg"
+import classS1 from "./class_ranks/S1.svg"
+import classSS5 from "./class_ranks/SS5.svg"
+import classSS4 from "./class_ranks/SS4.svg"
+import classSS3 from "./class_ranks/SS3.svg"
+import classSS2 from "./class_ranks/SS2.svg"
+import classSS1 from "./class_ranks/SS1.svg"
+import classSSS5 from "./class_ranks/SSS5.svg"
+import classSSS4 from "./class_ranks/SSS4.svg"
+import classSSS3 from "./class_ranks/SSS3.svg"
+import classSSS2 from "./class_ranks/SSS2.svg"
+import classSSS1 from "./class_ranks/SSS1.svg"
+import classLegend from "./class_ranks/LEGEND.svg"
+
 export const courseRankNames = [
   "初心者",
   "初段",
@@ -79,61 +106,79 @@ export const classRankNames = [
   "LEGEND",
 ]
 
+const courseRankImages = [
+  course0,
+  course1,
+  course2,
+  course3,
+  course4,
+  course5,
+  course6,
+  course7,
+  course8,
+  course9,
+  course10,
+  undefined,
+  courseShin1,
+  courseShin2,
+  courseShin3,
+  courseShin4,
+  courseShin5,
+  courseShin6,
+  courseShin7,
+  courseShin8,
+  courseShin9,
+  courseShin10,
+  courseShinKaiden,
+]
+
+const classRankImages = [
+  classB5,
+  classB4,
+  classB3,
+  classB2,
+  classB1,
+  classA5,
+  classA4,
+  classA3,
+  classA2,
+  classA1,
+  classS5,
+  classS4,
+  classS3,
+  classS2,
+  classS1,
+  classSS5,
+  classSS4,
+  classSS3,
+  classSS2,
+  classSS1,
+  classSSS5,
+  classSSS4,
+  classSSS3,
+  classSSS2,
+  classSSS1,
+  classLegend,
+]
+
 const RankContainer = styled("img")`
   height: 2em;
 `
 
-const getCourseRankImage = (courseRank: number): any => {
-  switch (courseRank) {
-    case 0:
-      return course0
-    case 1:
-      return course1
-    case 2:
-      return course2
-    case 3:
-      return course3
-    case 4:
-      return course4
-    case 5:
-      return course5
-    case 6:
-      return course6
-    case 7:
-      return course7
-    case 8:
-      return course8
-    case 9:
-      return course9
-    case 10:
-      return course10
-    case 12:
-      return courseShin1
-    case 13:
-      return courseShin2
-    case 14:
-      return courseShin3
-    case 15:
-      return courseShin4
-    case 16:
-      return courseShin5
-    case 17:
-      return courseShin6
-    case 18:
-      return courseShin7
-    case 19:
-      return courseShin8
-    case 20:
-      return courseShin9
-    case 21:
-      return courseShin10
-    case 22:
-      return courseShinKaiden
-  }
-  return ""
-}
-const CourseRank: FunctionComponent<{
+export const CourseRank: FunctionComponent<{
   courseRank: number
-}> = ({ courseRank }) => <RankContainer src={getCourseRankImage(courseRank)} />
+}> = ({ courseRank }) => (
+  <RankContainer
+    src={courseRankImages[courseRank]}
+    alt={courseRankNames[courseRank]}
+  />
+)
 
-export default CourseRank
+export const ClassRank: FunctionComponent<{
+  classRank: number
+}> = ({ classRank }) => (
+  <RankContainer
+    src={classRankImages[classRank]}
+    alt={classRankNames[classRank]}
+  />
+)

@@ -11,7 +11,7 @@ import { zhTW } from "date-fns/locale"
 import { Dx_Intl_Records } from "../generated/graphql"
 import Grade from "./Grade"
 import Rating from "./Rating"
-import CourseRank, { classRankNames } from "./Ranks"
+import { CourseRank, ClassRank } from "./Ranks"
 
 const Subtitle = styled("div")`
   display: flex;
@@ -217,7 +217,7 @@ const Record: FunctionComponent<{
       {record.course_rank != null && record.class_rank != null ? (
         <AlignedDiv>
           <CourseRank courseRank={record.course_rank} />
-          {classRankNames[record.class_rank]}
+          <ClassRank classRank={record.class_rank} />
         </AlignedDiv>
       ) : (
         ""
