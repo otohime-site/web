@@ -5,7 +5,12 @@ import {
   createContext,
   FunctionComponent,
 } from "react"
-import { getAuth, onAuthStateChanged, User } from "firebase/auth"
+import {
+  getAuth,
+  getRedirectResult,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth"
 import { initializeApp } from "firebase/app"
 
 import firebaseConfig from "./firebase"
@@ -21,7 +26,12 @@ export const AuthContext = createContext<{
 export const AuthProvider: FunctionComponent = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+
   useEffect(() => {
+    getRedirectResult(firebaseAuth).then(
+      () => {},
+      () => {}
+    )
     const unlisten = onAuthStateChanged(firebaseAuth, (user) => {
       setUser(user)
       setLoading(false)
@@ -29,7 +39,7 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
     return () => {
       unlisten()
     }
-  })
+  }, [])
   return (
     <AuthContext.Provider value={{ user, loading }}>
       {children}

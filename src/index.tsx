@@ -1,4 +1,4 @@
-import { getRedirectResult } from "firebase/auth"
+import { SnackbarProvider } from "notistack"
 import { render } from "react-dom"
 import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
@@ -9,12 +9,7 @@ import { pink, orange } from "@material-ui/core/colors"
 import { HelmetProvider } from "react-helmet-async"
 import App from "./App"
 import GraphQLProvider from "./GraphQLProvider"
-import { firebaseAuth, AuthProvider } from "./auth"
-
-getRedirectResult(firebaseAuth).then(
-  () => {},
-  () => {}
-)
+import { AuthProvider } from "./auth"
 
 const theme = createTheme({
   palette: {
@@ -30,12 +25,14 @@ render(
       <StylesProvider injectFirst={true}>
         <EMThemeProvider theme={theme}>
           <ThemeProvider theme={theme}>
-            <AuthProvider>
-              <GraphQLProvider>
-                <CssBaseline />
-                <App />
-              </GraphQLProvider>
-            </AuthProvider>
+            <SnackbarProvider maxSnack={3}>
+              <AuthProvider>
+                <GraphQLProvider>
+                  <CssBaseline />
+                  <App />
+                </GraphQLProvider>
+              </AuthProvider>
+            </SnackbarProvider>
           </ThemeProvider>
         </EMThemeProvider>
       </StylesProvider>
