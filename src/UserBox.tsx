@@ -4,6 +4,7 @@ import { Button } from "@material-ui/core"
 import { Skeleton } from "@material-ui/lab"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import {
+  AuthError,
   FacebookAuthProvider,
   signInWithPopup,
   signInWithRedirect,
@@ -27,7 +28,7 @@ const UserBoxComponent: FunctionComponent = () => {
       } else {
         await signInWithPopup(firebaseAuth, provider)
       }
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === "auth/popup-blocked") {
         enqueueSnackbar("彈出視窗被瀏覽器阻擋。請試著重點一次「登入」。", {
           variant: "error",
