@@ -1,6 +1,6 @@
 {
   "name": "otohime-web",
-  "version": "21.8.8",
+  "version": "21.9.1",
   "repository": "git@github.com:otohime-site/web.git",
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
@@ -54,7 +54,7 @@
     "css-loader": "^6.2.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard-with-typescript": "^20.0.0",
+    "eslint-config-standard-with-typescript": "^21.0.1",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-node": "^11.1.0",
