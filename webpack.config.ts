@@ -3,7 +3,6 @@ import { Configuration } from "webpack"
 import { Configuration as DevServerConfiguration } from "webpack-dev-server"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import FaviconsWebpackPlugin from "favicons-webpack-plugin"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
 // Workaround for @types/webpack-dev-server versions...
@@ -23,10 +22,10 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
   plugins: [
     new MiniCssExtractPlugin(),
     new HTMLWebpackPlugin({
+      favicon: "src/logo/icon2.svg",
       template: "src/index.html",
       chunks: ["index"],
     }),
-    new FaviconsWebpackPlugin("src/logo/icon2.svg"),
     new BookmarkletPlugin(),
   ],
   module: {

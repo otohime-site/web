@@ -1,6 +1,6 @@
 {
   "name": "otohime-web",
-  "version": "21.9.3",
+  "version": "21.9.1",
   "repository": "git@github.com:otohime-site/web.git",
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
@@ -60,8 +60,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.23.2",
-    "favicons": "^6.2.2",
-    "favicons-webpack-plugin": "^5.0.2",
     "html-webpack-plugin": "^5.3.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.0.0",
