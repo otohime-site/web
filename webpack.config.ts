@@ -22,6 +22,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
   plugins: [
     new MiniCssExtractPlugin(),
     new HTMLWebpackPlugin({
+      favicon: "src/logo/icon2.svg",
       template: "src/index.html",
       chunks: ["index"],
     }),
