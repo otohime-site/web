@@ -36,11 +36,11 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css?$/,
+        test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.svg?$/,
+        test: /\.(svg|png)$/,
         type: "asset/resource",
       },
     ],
