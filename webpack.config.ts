@@ -30,6 +30,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
     new BookmarkletPlugin(),
     new CopyWebpackPlugin({
       patterns: [
+        resolve("./src/logo/favicon.ico"),
         resolve("./src/logo/android-chrome-192x192.png"),
         resolve("./src/logo/android-chrome-512x512.png"),
       ],
