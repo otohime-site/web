@@ -3,6 +3,7 @@ import { Configuration } from "webpack"
 import { Configuration as DevServerConfiguration } from "webpack-dev-server"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import HTMLWebpackPlugin from "html-webpack-plugin"
+import CopyWebpackPlugin from "copy-webpack-plugin"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
 // Workaround for @types/webpack-dev-server versions...
@@ -22,11 +23,17 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
   plugins: [
     new MiniCssExtractPlugin(),
     new HTMLWebpackPlugin({
-      favicon: "src/logo/icon2.svg",
+      favicon: "src/logo/favicon.svg",
       template: "src/index.html",
       chunks: ["index"],
     }),
     new BookmarkletPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        resolve("./src/logo/android-chrome-192x192.png"),
+        resolve("./src/logo/android-chrome-512x512.png"),
+      ],
+    }),
   ],
   module: {
     rules: [
@@ -40,7 +47,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.(svg|png)$/,
+        test: /\.(svg|png|webmanifest)$/,
         type: "asset/resource",
       },
     ],

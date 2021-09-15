@@ -41,7 +41,7 @@ const HomeComponent: FunctionComponent = () => {
     return (
       <>
         <Helmet>
-          <title>&#x1F3B5; Otohime: 音 Game 成績單網站</title>
+          <title>Otohime: 音 Game 成績單網站</title>
         </Helmet>
         <SpacedTypo variant="h5">Otohime - 音 Game 成績單網站</SpacedTypo>
         <Typography variant="body1">

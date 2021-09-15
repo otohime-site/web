@@ -50,3 +50,5 @@ Licensed under MIT license, see LICENSE.md.
 Artworks in `src/logo`, `src/dx_intl/course_ranks` and `src/dx_intl/class_ranks` are released separately:
 
 (C) 2021 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+
+Logos are generated with [RealFaviconGenerator.net](https://realfavicongenerator.net/).

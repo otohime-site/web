@@ -23,6 +23,7 @@ import UserBox from "./UserBox"
 
 import "./global.css"
 import Search from "./Search"
+import LogoIcon from "./logo/logo.svg"
 
 const Home = lazy(async () => await import("./Home"))
 const Forget = lazy(async () => await import("./Forget"))
@@ -38,6 +39,12 @@ const Title = styled(Typography)`
   a {
     color: white;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    img {
+      height: 1.6em;
+      margin-right: 0.3em;
+    }
   }
   a:hover {
     text-decoration: none;
@@ -125,6 +132,7 @@ const App: FunctionComponent = () => {
           </AppMenuButton>
           <Title variant="h6">
             <Link component={RouterLink} to="/">
+              <img src={LogoIcon} />
               Otohime
             </Link>
           </Title>
