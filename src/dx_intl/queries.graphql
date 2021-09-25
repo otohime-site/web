@@ -90,6 +90,7 @@ fragment dxIntlSongsFields on dx_intl_songs {
     version
     active
     dx_intl_notes(order_by: { difficulty: asc }) {
+      internal_lv
       difficulty
       level
     }

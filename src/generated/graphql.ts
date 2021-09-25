@@ -3,10 +3,12 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -292,6 +294,7 @@ export type Dx_Intl_Notes = {
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** An object relationship */
   dx_intl_variant?: Maybe<Dx_Intl_Variants>
+  internal_lv?: Maybe<Scalars["numeric"]>
   level: Scalars["dx_intl_level"]
   song_id: Scalars["String"]
 }
@@ -369,11 +372,13 @@ export type Dx_Intl_Notes_Arr_Rel_Insert_Input = {
 export type Dx_Intl_Notes_Avg_Fields = {
   __typename?: "dx_intl_notes_avg_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by avg() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Avg_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** Boolean expression to filter rows from the table "dx_intl_notes". All fields are combined with a logical 'AND'. */
@@ -385,6 +390,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
   difficulty?: Maybe<Smallint_Comparison_Exp>
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Bool_Exp>
   dx_intl_variant?: Maybe<Dx_Intl_Variants_Bool_Exp>
+  internal_lv?: Maybe<Numeric_Comparison_Exp>
   level?: Maybe<Dx_Intl_Level_Comparison_Exp>
   song_id?: Maybe<String_Comparison_Exp>
 }
@@ -398,6 +404,7 @@ export enum Dx_Intl_Notes_Constraint {
 /** input type for incrementing numeric columns in table "dx_intl_notes" */
 export type Dx_Intl_Notes_Inc_Input = {
   difficulty?: Maybe<Scalars["smallint"]>
+  internal_lv?: Maybe<Scalars["numeric"]>
 }
 
 /** input type for inserting data into table "dx_intl_notes" */
@@ -406,6 +413,7 @@ export type Dx_Intl_Notes_Insert_Input = {
   difficulty?: Maybe<Scalars["smallint"]>
   dx_intl_scores?: Maybe<Dx_Intl_Scores_Arr_Rel_Insert_Input>
   dx_intl_variant?: Maybe<Dx_Intl_Variants_Obj_Rel_Insert_Input>
+  internal_lv?: Maybe<Scalars["numeric"]>
   level?: Maybe<Scalars["dx_intl_level"]>
   song_id?: Maybe<Scalars["String"]>
 }
@@ -414,12 +422,14 @@ export type Dx_Intl_Notes_Insert_Input = {
 export type Dx_Intl_Notes_Max_Fields = {
   __typename?: "dx_intl_notes_max_fields"
   difficulty?: Maybe<Scalars["smallint"]>
+  internal_lv?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
 }
 
 /** order by max() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Max_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
   song_id?: Maybe<Order_By>
 }
 
@@ -427,12 +437,14 @@ export type Dx_Intl_Notes_Max_Order_By = {
 export type Dx_Intl_Notes_Min_Fields = {
   __typename?: "dx_intl_notes_min_fields"
   difficulty?: Maybe<Scalars["smallint"]>
+  internal_lv?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
 }
 
 /** order by min() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Min_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
   song_id?: Maybe<Order_By>
 }
 
@@ -465,6 +477,7 @@ export type Dx_Intl_Notes_Order_By = {
   difficulty?: Maybe<Order_By>
   dx_intl_scores_aggregate?: Maybe<Dx_Intl_Scores_Aggregate_Order_By>
   dx_intl_variant?: Maybe<Dx_Intl_Variants_Order_By>
+  internal_lv?: Maybe<Order_By>
   level?: Maybe<Order_By>
   song_id?: Maybe<Order_By>
 }
@@ -483,6 +496,8 @@ export enum Dx_Intl_Notes_Select_Column {
   /** column name */
   Difficulty = "difficulty",
   /** column name */
+  InternalLv = "internal_lv",
+  /** column name */
   Level = "level",
   /** column name */
   SongId = "song_id",
@@ -492,6 +507,7 @@ export enum Dx_Intl_Notes_Select_Column {
 export type Dx_Intl_Notes_Set_Input = {
   deluxe?: Maybe<Scalars["Boolean"]>
   difficulty?: Maybe<Scalars["smallint"]>
+  internal_lv?: Maybe<Scalars["numeric"]>
   level?: Maybe<Scalars["dx_intl_level"]>
   song_id?: Maybe<Scalars["String"]>
 }
@@ -500,44 +516,52 @@ export type Dx_Intl_Notes_Set_Input = {
 export type Dx_Intl_Notes_Stddev_Fields = {
   __typename?: "dx_intl_notes_stddev_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by stddev() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** aggregate stddev_pop on columns */
 export type Dx_Intl_Notes_Stddev_Pop_Fields = {
   __typename?: "dx_intl_notes_stddev_pop_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by stddev_pop() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Pop_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** aggregate stddev_samp on columns */
 export type Dx_Intl_Notes_Stddev_Samp_Fields = {
   __typename?: "dx_intl_notes_stddev_samp_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by stddev_samp() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Stddev_Samp_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** aggregate sum on columns */
 export type Dx_Intl_Notes_Sum_Fields = {
   __typename?: "dx_intl_notes_sum_fields"
   difficulty?: Maybe<Scalars["smallint"]>
+  internal_lv?: Maybe<Scalars["numeric"]>
 }
 
 /** order by sum() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Sum_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** update columns of table "dx_intl_notes" */
@@ -546,6 +570,8 @@ export enum Dx_Intl_Notes_Update_Column {
   Deluxe = "deluxe",
   /** column name */
   Difficulty = "difficulty",
+  /** column name */
+  InternalLv = "internal_lv",
   /** column name */
   Level = "level",
   /** column name */
@@ -556,33 +582,39 @@ export enum Dx_Intl_Notes_Update_Column {
 export type Dx_Intl_Notes_Var_Pop_Fields = {
   __typename?: "dx_intl_notes_var_pop_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by var_pop() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Var_Pop_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** aggregate var_samp on columns */
 export type Dx_Intl_Notes_Var_Samp_Fields = {
   __typename?: "dx_intl_notes_var_samp_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by var_samp() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Var_Samp_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** aggregate variance on columns */
 export type Dx_Intl_Notes_Variance_Fields = {
   __typename?: "dx_intl_notes_variance_fields"
   difficulty?: Maybe<Scalars["Float"]>
+  internal_lv?: Maybe<Scalars["Float"]>
 }
 
 /** order by variance() on columns of table "dx_intl_notes" */
 export type Dx_Intl_Notes_Variance_Order_By = {
   difficulty?: Maybe<Order_By>
+  internal_lv?: Maybe<Order_By>
 }
 
 /** columns and relationships of "dx_intl_players" */
@@ -796,6 +828,7 @@ export type Dx_Intl_Players_Order_By = {
   nickname?: Maybe<Order_By>
   private?: Maybe<Order_By>
   timelines?: Maybe<Dx_Intl_Players_Timelines_Order_By>
+  updated_at?: Maybe<Order_By>
   user?: Maybe<Users_Order_By>
   user_id?: Maybe<Order_By>
 }
@@ -4566,6 +4599,7 @@ export type DxIntlSongsFieldsFragment = {
     active: boolean
     dx_intl_notes: Array<{
       __typename?: "dx_intl_notes"
+      internal_lv?: Maybe<number>
       difficulty: number
       level:
         | "1"
@@ -4612,6 +4646,7 @@ export type DxIntlSongsQuery = {
       active: boolean
       dx_intl_notes: Array<{
         __typename?: "dx_intl_notes"
+        internal_lv?: Maybe<number>
         difficulty: number
         level:
           | "1"
@@ -4661,6 +4696,7 @@ export type DxIntlSongsByIdQuery = {
       active: boolean
       dx_intl_notes: Array<{
         __typename?: "dx_intl_notes"
+        internal_lv?: Maybe<number>
         difficulty: number
         level:
           | "1"
@@ -4943,6 +4979,10 @@ export const DxIntlSongsFieldsFragmentDoc = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_lv" },
+                      },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "difficulty" },
