@@ -1,13 +1,12 @@
-import { render } from "react-dom"
 import { ThemeProvider as EMThemeProvider } from "@emotion/react"
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
-import { ThemeProvider, StylesProvider } from "@material-ui/styles"
-import { createTheme } from "@material-ui/core/styles"
-import { pink, orange } from "@material-ui/core/colors"
 import styled from "@emotion/styled"
-import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
+import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
+import { pink, orange } from "@material-ui/core/colors"
+import { createTheme } from "@material-ui/core/styles"
+import { ThemeProvider, StylesProvider } from "@material-ui/styles"
+import { render } from "react-dom"
 import Book from "./Book"
-
+import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
 import "./global.css"
 
 const theme = createTheme({

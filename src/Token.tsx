@@ -1,6 +1,3 @@
-import { FunctionComponent, useState } from "react"
-import * as clipboard from "clipboard-polyfill"
-import { useQuery, useMutation } from "urql"
 import {
   Tooltip,
   Button,
@@ -14,11 +11,14 @@ import {
 import LinkIcon from "@material-ui/icons/Link"
 import RefreshIcon from "@material-ui/icons/Refresh"
 import { Alert } from "@material-ui/lab"
+import * as clipboard from "clipboard-polyfill"
+import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
-import host from "./host"
+import { useQuery, useMutation } from "urql"
 import { QueryResult } from "./QueryResult"
-import { TokensDocument, RegenerateTokenDocument } from "./generated/graphql"
 import { useAuth } from "./auth"
+import { TokensDocument, RegenerateTokenDocument } from "./generated/graphql"
+import host from "./host"
 
 const bookmarkletContent = (token: string): string => `
 javascript:

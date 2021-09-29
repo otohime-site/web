@@ -1,3 +1,10 @@
+import { initializeApp } from "firebase/app"
+import {
+  getAuth,
+  getRedirectResult,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth"
 import {
   useContext,
   useState,
@@ -5,14 +12,6 @@ import {
   createContext,
   FunctionComponent,
 } from "react"
-import {
-  getAuth,
-  getRedirectResult,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth"
-import { initializeApp } from "firebase/app"
-
 import firebaseConfig from "./firebase"
 
 const firebaseApp = initializeApp(firebaseConfig)

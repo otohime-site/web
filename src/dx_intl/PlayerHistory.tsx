@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import {
   Tab,
   Tabs,
@@ -17,17 +18,17 @@ import {
   deepPurple,
   purple,
 } from "@material-ui/core/colors"
-import { Alert } from "@material-ui/lab"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward"
+import { Alert } from "@material-ui/lab"
 import { formatRelative } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
+import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import styled from "@emotion/styled"
-import { Helmet } from "react-helmet-async"
+import { useAuth } from "../auth"
 import {
   DxIntlSongsDocument,
   DxIntlPlayersTimelinesDocument,
@@ -35,14 +36,12 @@ import {
   DxIntlPlayerWithTimelineQuery,
   Dx_Intl_Scores,
 } from "../generated/graphql"
-
-import { useAuth } from "../auth"
 import { gradeNames } from "./Grade"
-import { difficulties, FlattenedNote, getNoteHash } from "./helper"
-import Variant from "./Variant"
 import { ActualScore, FlagContainer } from "./Player"
-import { ComboFlag, SyncFlag } from "./flags"
 import { classRankNames, courseRankNames } from "./Ranks"
+import Variant from "./Variant"
+import { ComboFlag, SyncFlag } from "./flags"
+import { difficulties, FlattenedNote, getNoteHash } from "./helper"
 
 interface FlattenNodeWithBeforeAfter extends FlattenedNote {
   before?: Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">

@@ -1,17 +1,14 @@
-import { Tooltip, Typography } from "@material-ui/core"
-import { FunctionComponent } from "react"
-
-import PublicIcon from "@material-ui/icons/Public"
-import LockIcon from "@material-ui/icons/Lock"
 import styled from "@emotion/styled"
-
+import { Tooltip, Typography } from "@material-ui/core"
+import LockIcon from "@material-ui/icons/Lock"
+import PublicIcon from "@material-ui/icons/Public"
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
-
+import { FunctionComponent } from "react"
 import { Dx_Intl_Records } from "../generated/graphql"
 import Grade from "./Grade"
-import Rating from "./Rating"
 import { CourseRank, ClassRank } from "./Ranks"
+import Rating from "./Rating"
 
 const Subtitle = styled("div")`
   display: flex;

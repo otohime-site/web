@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react"
+import styled from "@emotion/styled"
 import {
   Button,
   Dialog,
@@ -11,15 +11,13 @@ import {
   Link,
   Typography,
 } from "@material-ui/core"
-
-import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
-import { useQuery, useClient } from "urql"
-
 import { Alert } from "@material-ui/lab"
+import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import styled from "@emotion/styled"
-import PlayerListItem from "./dx_intl/PlayerListItem"
+import { FunctionComponent, useState } from "react"
+import { useQuery, useClient } from "urql"
 import { QueryResult } from "./QueryResult"
+import PlayerListItem from "./dx_intl/PlayerListItem"
 import {
   DxIntlPlayersDocument,
   InsertDxIntlRecordWithScoresDocument,

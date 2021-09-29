@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import {
   Typography,
   Tabs,
@@ -13,14 +14,12 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import styled from "@emotion/styled"
+import { QueryResult } from "../QueryResult"
 import {
   DxIntlScoresStatsDocument,
   DxIntlSongsByIdDocument,
   Dx_Intl_Scores_Stats,
 } from "../generated/graphql"
-import { QueryResult } from "../QueryResult"
-
 import { difficulties, NoteList } from "./helper"
 
 const FontTypo = styled(Typography)`

@@ -1,6 +1,4 @@
 import styled from "@emotion/styled"
-
-import { FunctionComponent } from "react"
 import {
   Drawer,
   List,
@@ -10,7 +8,7 @@ import {
 } from "@material-ui/core"
 import HomeIcon from "@material-ui/icons/Home"
 import LaundryOutlinedIcon from "@material-ui/icons/LocalLaundryServiceOutlined"
-
+import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 
 const StyledDrawer = styled(Drawer)`

@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import {
   Card,
   CardContent,
@@ -34,20 +35,18 @@ import {
   deepPurple,
   purple,
 } from "@material-ui/core/colors"
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
+import EditIcon from "@material-ui/icons/Edit"
+import EventNoteIcon from "@material-ui/icons/EventNote"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import RefreshIcon from "@material-ui/icons/Refresh"
+import { Alert } from "@material-ui/lab"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import EditIcon from "@material-ui/icons/Edit"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import RefreshIcon from "@material-ui/icons/Refresh"
-import EventNoteIcon from "@material-ui/icons/EventNote"
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
-import styled from "@emotion/styled"
-
-import { Alert } from "@material-ui/lab"
 import { useAuth } from "../auth"
 import {
   DxIntlRecordWithScoresDocument,
@@ -57,6 +56,9 @@ import {
   Dx_Intl_Notes,
   DxIntlPlayersEditableDocument,
 } from "../generated/graphql"
+import Record from "./Record"
+import Variant from "./Variant"
+import { ComboFlag, SyncFlag } from "./flags"
 import {
   categories,
   versions,
@@ -70,9 +72,6 @@ import {
   arrangeComboStats,
   arrangeSyncStats,
 } from "./helper"
-import { ComboFlag, SyncFlag } from "./flags"
-import Variant from "./Variant"
-import Record from "./Record"
 
 // Use to flatten the song list
 type FlattenedVariant = { song_id: string } & Pick<

@@ -4,15 +4,14 @@ import SearchIcon from "@material-ui/icons/Search"
 import WarningIcon from "@material-ui/icons/Warning"
 import { Autocomplete, AutocompleteChangeReason } from "@material-ui/lab"
 import { FunctionComponent, useState } from "react"
-import { useQuery } from "urql"
 import { useHistory } from "react-router"
+import { useQuery } from "urql"
 import { useAuth } from "./auth"
-
+import PlayerListItem from "./dx_intl/PlayerListItem"
 import {
   DxIntlPlayersWithKeywordAnonymousDocument,
   DxIntlPlayersWithKeywordUserDocument,
 } from "./generated/graphql"
-import PlayerListItem from "./dx_intl/PlayerListItem"
 
 const SearchContainer = styled("div")`
   display: flex;

@@ -1,16 +1,16 @@
-import { FunctionComponent } from "react"
 import styled from "@emotion/styled"
-import Normal from "./ratings/normal.svg"
+import { FunctionComponent } from "react"
 import Blue from "./ratings/blue.svg"
-import Green from "./ratings/green.svg"
-import Orange from "./ratings/orange.svg"
-import Red from "./ratings/red.svg"
-import Purple from "./ratings/purple.svg"
 import Bronze from "./ratings/bronze.svg"
-import Silver from "./ratings/silver.svg"
 import Gold from "./ratings/gold.svg"
+import Green from "./ratings/green.svg"
+import Normal from "./ratings/normal.svg"
+import Orange from "./ratings/orange.svg"
 import Platinum from "./ratings/platinum.svg"
+import Purple from "./ratings/purple.svg"
 import Rainbow from "./ratings/rainbow.svg"
+import Red from "./ratings/red.svg"
+import Silver from "./ratings/silver.svg"
 
 const getRatingImage = (rating: number, legacy: boolean): any => {
   if (legacy) {

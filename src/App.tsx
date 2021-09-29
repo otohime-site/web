@@ -1,7 +1,4 @@
 import styled from "@emotion/styled"
-
-import { FunctionComponent, lazy, Suspense, useState } from "react"
-import { Route, Link as RouterLink, Switch } from "react-router-dom"
 import {
   Toolbar,
   Typography,
@@ -12,17 +9,17 @@ import {
   useTheme,
   useMediaQuery,
 } from "@material-ui/core"
-import MenuIcon from "@material-ui/icons/Menu"
 import GitHubIcon from "@material-ui/icons/GitHub"
+import MenuIcon from "@material-ui/icons/Menu"
 import SearchIcon from "@material-ui/icons/Search"
-
+import { FunctionComponent, lazy, Suspense, useState } from "react"
 import { Helmet } from "react-helmet-async"
+import { Route, Link as RouterLink, Switch } from "react-router-dom"
 import AppBar from "./AppBar"
 import AppDrawer from "./AppDrawer"
-import UserBox from "./UserBox"
-
-import "./global.css"
 import Search from "./Search"
+import UserBox from "./UserBox"
+import "./global.css"
 import LogoIcon from "./logo/logo.svg"
 
 const Home = lazy(async () => await import("./Home"))

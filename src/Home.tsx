@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import {
   Typography,
   Stepper,
@@ -10,14 +11,12 @@ import {
   Link,
   Button,
 } from "@material-ui/core"
-import { FunctionComponent, useState } from "react"
-import { Link as RouterLink } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
-import styled from "@emotion/styled"
 import { TabContext, TabPanel } from "@material-ui/lab"
-import { useAuth } from "./auth"
+import { FunctionComponent, useState } from "react"
+import { Helmet } from "react-helmet-async"
+import { Link as RouterLink } from "react-router-dom"
 import Token from "./Token"
-
+import { useAuth } from "./auth"
 import DxUserPlayers from "./dx_intl/UserPlayers"
 
 const SpacedContainer = styled("div")`

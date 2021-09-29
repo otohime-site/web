@@ -1,11 +1,11 @@
-import { FunctionComponent } from "react"
 import { Button, List } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
-import { useQuery } from "urql"
+import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
+import { useQuery } from "urql"
+import { QueryResult } from "../QueryResult"
 import { useAuth } from "../auth"
 import { DxIntlPlayersForUserDocument } from "../generated/graphql"
-import { QueryResult } from "../QueryResult"
 import PlayerListItem from "./PlayerListItem"
 
 const UserPlayers: FunctionComponent = () => {

@@ -1,8 +1,4 @@
-import { Alert, Skeleton } from "@material-ui/lab"
-import { FunctionComponent, useEffect } from "react"
-import { useHistory, useParams } from "react-router"
-import { Link as RouterLink } from "react-router-dom"
-import { useMutation, useQuery } from "urql"
+import styled from "@emotion/styled"
 import {
   FormLabel,
   RadioGroup,
@@ -16,11 +12,15 @@ import {
   Button,
   Container,
 } from "@material-ui/core"
-import { useForm, Controller } from "react-hook-form"
-import PublicIcon from "@material-ui/icons/Public"
-import LockIcon from "@material-ui/icons/Lock"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
-import styled from "@emotion/styled"
+import LockIcon from "@material-ui/icons/Lock"
+import PublicIcon from "@material-ui/icons/Public"
+import { Alert, Skeleton } from "@material-ui/lab"
+import { FunctionComponent, useEffect } from "react"
+import { useForm, Controller } from "react-hook-form"
+import { useHistory, useParams } from "react-router"
+import { Link as RouterLink } from "react-router-dom"
+import { useMutation, useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
   DeleteDxIntlPlayerDocument,

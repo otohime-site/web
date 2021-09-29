@@ -1,6 +1,5 @@
-import { FunctionComponent } from "react"
 import styled from "@emotion/styled"
-
+import { FunctionComponent } from "react"
 import Grade1 from "./grades/1.svg"
 import Grade2 from "./grades/2.svg"
 import Grade3 from "./grades/3.svg"

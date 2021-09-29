@@ -1,8 +1,6 @@
-import { useSnackbar } from "notistack"
-import { Fragment, FunctionComponent, useCallback } from "react"
 import { Button } from "@material-ui/core"
-import { Skeleton } from "@material-ui/lab"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import { Skeleton } from "@material-ui/lab"
 import {
   AuthError,
   FacebookAuthProvider,
@@ -10,6 +8,8 @@ import {
   signInWithRedirect,
   signOut,
 } from "firebase/auth"
+import { useSnackbar } from "notistack"
+import { Fragment, FunctionComponent, useCallback } from "react"
 import { firebaseAuth, useAuth } from "./auth"
 
 const isInAppBrowser = (agent: string): boolean =>

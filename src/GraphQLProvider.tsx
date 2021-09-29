@@ -1,5 +1,3 @@
-import { FunctionComponent, useMemo } from "react"
-import { createClient, Provider as UrqlProvider } from "urql"
 import {
   cacheExchange,
   dedupExchange,
@@ -7,6 +5,8 @@ import {
   makeOperation,
 } from "@urql/core"
 import { authExchange } from "@urql/exchange-auth"
+import { FunctionComponent, useMemo } from "react"
+import { createClient, Provider as UrqlProvider } from "urql"
 import { useAuth } from "./auth"
 import { apiHost } from "./host"
 

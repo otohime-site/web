@@ -1,6 +1,5 @@
-import { AppBar } from "@material-ui/core"
 import styled from "@emotion/styled"
-
+import { AppBar } from "@material-ui/core"
 
 export default styled(AppBar)`
   z-index: ${(props) => props.theme.zIndex.drawer + 1};
