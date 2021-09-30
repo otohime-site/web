@@ -86,6 +86,7 @@ const HomeComponent: FunctionComponent = () => {
               <Tabs
                 value={tabValue}
                 textColor="secondary"
+                indicatorColor="secondary"
                 variant="fullWidth"
                 onChange={(_, val): void => setTabValue(val)}
               >

@@ -38,7 +38,8 @@ const User: FunctionComponent = () => {
   )
   const [bookDialogOpen, setBookDialogOpen] = useState(false)
   const handleClose = (): void => setBookDialogOpen(false)
-  const generateToken = async (): Promise<void> => {
+  const generateToken = async (e: React.MouseEvent): Promise<void> => {
+    e.preventDefault()
     if (confirm("您舊的 Bookmarklet 連結將會失效。確定要重新產生權杖？")) {
       await regenerateToken()
       refetchTokens({ requestPolicy: "network-only" })
@@ -117,9 +118,8 @@ const User: FunctionComponent = () => {
             產生權杖
           </Button>
         ) : (
-          <ButtonGroup>
+          <ButtonGroup variant="contained">
             <Button
-              variant="contained"
               color="primary"
               href={bookmarkletContent(token)}
               onClick={async (e) => await copyBookmarklet(e, token)}
@@ -129,7 +129,7 @@ const User: FunctionComponent = () => {
             </Button>
             <Tooltip title="重新產生權杖">
               <Button
-                variant="contained"
+                href="#"
                 color="secondary"
                 disabled={regenerateTokenResult.fetching}
                 onClick={generateToken}
