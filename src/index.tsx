@@ -15,8 +15,12 @@ import { AuthProvider } from "./auth"
 
 const theme = createTheme({
   palette: {
-    primary: pink,
-    secondary: orange,
+    primary: {
+      main: pink[400],
+    },
+    secondary: {
+      main: orange[400],
+    },
   },
 })
 
