@@ -132,6 +132,7 @@ const Search: FunctionComponent<{
         freeSolo
         disableClearable
         options={options}
+        getOptionLabel={(option) => ""}
         filterOptions={(option) => option}
         groupBy={(option) => option.from}
         onChange={onItemChange}
@@ -145,8 +146,10 @@ const Search: FunctionComponent<{
             autoFocus={shouldAutoFocus}
           />
         )}
-        renderOption={(_, option) => (
-          <PlayerListItem player={option} forAutoComplete={true} />
+        renderOption={(props, option) => (
+          <li {...props}>
+            <PlayerListItem player={option} forAutoComplete={true} />
+          </li>
         )}
       />
     </SearchContainer>
