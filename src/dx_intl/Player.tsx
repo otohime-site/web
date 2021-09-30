@@ -339,9 +339,6 @@ const Player: FunctionComponent = () => {
       ? versions[sparsedIndex] ?? ""
       : `Lv ${levels[sparsedIndex]}`
 
-  const handleRefresh = (): void => {
-    refetchRecord({ requestPolicy: "network-only" })
-  }
   const handleChangeGroupBy = (event: SelectChangeEvent<unknown>): void => {
     const { value } = event.target
     if (value !== "category" && value !== "version" && value !== "level") {
@@ -629,12 +626,8 @@ const Player: FunctionComponent = () => {
               />
             </div>
             <div>
-              <ButtonGroup variant="contained">
-                <Button color="secondary" onClick={handleRefresh}>
-                  <RefreshIcon />
-                </Button>
+              <ButtonGroup variant="contained" color="secondary">
                 <Button
-                  variant="outlined"
                   component={RouterLink}
                   to={`/dxi/p/${params.nickname}/history`}
                   startIcon={<EventNoteIcon />}
@@ -644,7 +637,6 @@ const Player: FunctionComponent = () => {
                 {editableResult.error == null &&
                 (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
                   <Button
-                    variant="outlined"
                     component={RouterLink}
                     to={`/dxi/p/${params.nickname}/edit`}
                     startIcon={<EditIcon />}
