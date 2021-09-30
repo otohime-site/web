@@ -1,5 +1,11 @@
-import styled from "@emotion/styled"
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward"
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
+import EditIcon from "@mui/icons-material/Edit"
+import EventNoteIcon from "@mui/icons-material/EventNote"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import RefreshIcon from "@mui/icons-material/Refresh"
 import {
+  Alert,
   Card,
   CardContent,
   Button,
@@ -27,21 +33,10 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-} from "@material-ui/core"
-import {
-  green,
-  orange,
-  red,
-  deepPurple,
-  purple,
-} from "@material-ui/core/colors"
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward"
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward"
-import EditIcon from "@material-ui/icons/Edit"
-import EventNoteIcon from "@material-ui/icons/EventNote"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import RefreshIcon from "@material-ui/icons/Refresh"
-import { Alert } from "@material-ui/lab"
+  SelectChangeEvent,
+} from "@mui/material"
+import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
@@ -111,16 +106,19 @@ const StyledCard = styled(Card)`
   }
 `
 
-const TabContainer = styled("div")`
+const TabContainer = styled("div")(
+  ({ theme }) =>
+    `
   margin-top: 8px;
   position: sticky;
   top: 48px;
-  background: ${(props) => props.theme.palette.background.default};
-  ${(props) => props.theme.breakpoints.up("md")} {
+  background: ${theme.palette.background.default};
+  ${theme.breakpoints.up("md")} {
     display: flex;
     flex-direction: row;
   }
 `
+)
 
 const StyledTabs = styled(Tabs)`
   .MuiTab-root {
@@ -329,10 +327,10 @@ const Player: FunctionComponent = () => {
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
   const useDiffSetLayout = useMediaQuery<Theme>((theme) =>
-    theme.breakpoints.between("sm", "md")
+    theme.breakpoints.between("sm", "lg")
   )
   const useSingleDiffLayout = useMediaQuery<Theme>((theme) =>
-    theme.breakpoints.down("sm")
+    theme.breakpoints.down("md")
   )
   const getHeader = (sparsedIndex: number): string =>
     groupBy === "category"
@@ -344,9 +342,7 @@ const Player: FunctionComponent = () => {
   const handleRefresh = (): void => {
     refetchRecord({ requestPolicy: "network-only" })
   }
-  const handleChangeGroupBy = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ): void => {
+  const handleChangeGroupBy = (event: SelectChangeEvent<unknown>): void => {
     const { value } = event.target
     if (value !== "category" && value !== "version" && value !== "level") {
       return
@@ -373,9 +369,7 @@ const Player: FunctionComponent = () => {
   ): void => {
     setDifficulty(val)
   }
-  const handleChangeOrderBy = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ): void => {
+  const handleChangeOrderBy = (event: SelectChangeEvent<unknown>): void => {
     const { value } = event.target
     switch (value) {
       case "default":
@@ -640,6 +634,7 @@ const Player: FunctionComponent = () => {
                   <RefreshIcon />
                 </Button>
                 <Button
+                  variant="outlined"
                   component={RouterLink}
                   to={`/dxi/p/${params.nickname}/history`}
                   startIcon={<EventNoteIcon />}
@@ -649,6 +644,7 @@ const Player: FunctionComponent = () => {
                 {editableResult.error == null &&
                 (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
                   <Button
+                    variant="outlined"
                     component={RouterLink}
                     to={`/dxi/p/${params.nickname}/edit`}
                     startIcon={<EditIcon />}
@@ -660,17 +656,25 @@ const Player: FunctionComponent = () => {
                 )}
               </ButtonGroup>
               <div className="order">
-                <FormControl>
-                  <InputLabel>頁籤</InputLabel>
-                  <SizedSelect value={groupBy} onChange={handleChangeGroupBy}>
+                <FormControl variant="standard">
+                  <InputLabel id="group-by-input-label">頁籤</InputLabel>
+                  <SizedSelect
+                    labelId="group-by-input-label"
+                    value={groupBy}
+                    onChange={handleChangeGroupBy}
+                  >
                     <MenuItem value="category">分類</MenuItem>
                     <MenuItem value="version">版本</MenuItem>
                     <MenuItem value="level">樂曲等級</MenuItem>
                   </SizedSelect>
                 </FormControl>
-                <FormControl>
-                  <InputLabel>排序</InputLabel>
-                  <SizedSelect value={orderBy} onChange={handleChangeOrderBy}>
+                <FormControl variant="standard">
+                  <InputLabel id="order-by-input-label">排序</InputLabel>
+                  <SizedSelect
+                    labelId="order-by-input-label"
+                    value={orderBy}
+                    onChange={handleChangeOrderBy}
+                  >
                     <MenuItem value="default">預設順序</MenuItem>
                     {groupBy !== "level" ? (
                       <MenuItem value="level">樂曲等級</MenuItem>
@@ -683,7 +687,10 @@ const Player: FunctionComponent = () => {
                   </SizedSelect>
                 </FormControl>
                 <Tooltip title="切換排序順序">
-                  <IconButton onClick={() => setOrderByDesc(!orderByDesc)}>
+                  <IconButton
+                    onClick={() => setOrderByDesc(!orderByDesc)}
+                    size="large"
+                  >
                     {orderByDesc ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
                   </IconButton>
                 </Tooltip>
@@ -742,7 +749,7 @@ const Player: FunctionComponent = () => {
           value={currentTab}
           onChange={handleChangeTab}
           variant="scrollable"
-          scrollButtons="on"
+          scrollButtons="auto"
           indicatorColor="primary"
           textColor="primary"
         >
@@ -751,14 +758,14 @@ const Player: FunctionComponent = () => {
               key={sparsedIndex}
               value={sparsedIndex}
               label={`
-              ${getHeader(sparsedIndex)} (${row.length}) 
-            `}
+            ${getHeader(sparsedIndex)} (${row.length}) 
+          `}
             />
           ))}
         </StyledTabs>
         {groupBy !== "level" ? (
           <>
-            <Hidden smDown={true} lgUp={true} implementation="css">
+            <Hidden mdDown={true} lgUp={true} implementation="css">
               <DifficultySetTabs
                 value={difficultySet}
                 onChange={handleChangeDifficultySet}
@@ -775,7 +782,7 @@ const Player: FunctionComponent = () => {
                 value={difficulty}
                 onChange={handleChangeDifficulty}
                 variant="scrollable"
-                scrollButtons="on"
+                scrollButtons="auto"
                 aria-label="Select Difficulty"
                 indicatorColor="secondary"
                 textColor="secondary"
@@ -835,6 +842,7 @@ const Player: FunctionComponent = () => {
             >
               <TableCell>
                 <Link
+                  underline="hover"
                   color="textPrimary"
                   component={RouterLink}
                   to={`/dxi/s/${row.song_id.substring(0, 8)}/${

@@ -1,8 +1,10 @@
-import { ThemeProvider as EMThemeProvider } from "@emotion/react"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import { pink, orange } from "@material-ui/core/colors"
-import { createTheme } from "@material-ui/core/styles"
-import { ThemeProvider, StylesProvider } from "@material-ui/styles"
+import CssBaseline from "@mui/material/CssBaseline"
+import { pink, orange } from "@mui/material/colors"
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles"
 import { SnackbarProvider } from "notistack"
 import { render } from "react-dom"
 import { HelmetProvider } from "react-helmet-async"
@@ -22,20 +24,18 @@ const root = document.getElementById("root")
 render(
   <BrowserRouter>
     <HelmetProvider>
-      <StylesProvider injectFirst={true}>
-        <EMThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <SnackbarProvider maxSnack={3}>
-              <AuthProvider>
-                <GraphQLProvider>
-                  <CssBaseline />
-                  <App />
-                </GraphQLProvider>
-              </AuthProvider>
-            </SnackbarProvider>
-          </ThemeProvider>
-        </EMThemeProvider>
-      </StylesProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider maxSnack={3}>
+            <AuthProvider>
+              <GraphQLProvider>
+                <CssBaseline />
+                <App />
+              </GraphQLProvider>
+            </AuthProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </HelmetProvider>
   </BrowserRouter>,
   root

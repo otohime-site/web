@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import {
   Typography,
   Tabs,
@@ -8,7 +7,8 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from "@material-ui/core"
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
@@ -116,9 +116,10 @@ const SongStats: FunctionComponent = () => {
             <Tabs
               value={difficulty}
               variant="scrollable"
-              scrollButtons="on"
+              scrollButtons
               indicatorColor="secondary"
               textColor="secondary"
+              allowScrollButtonsMobile
             >
               {notes.map((_, i) => (
                 <Tab

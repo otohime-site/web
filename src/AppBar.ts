@@ -1,11 +1,13 @@
-import styled from "@emotion/styled"
-import { AppBar } from "@material-ui/core"
+import { AppBar } from "@mui/material"
+import { styled } from "@mui/material/styles"
 
-export default styled(AppBar)`
-  z-index: ${(props) => props.theme.zIndex.drawer + 1};
+export default styled(AppBar)(
+  ({ theme }) => `
+  z-index: ${theme.zIndex.drawer + 1};
 
   .MuiToolbar-regular {
-    height: ${(props) => props.theme.spacing(6)}px;
-    min-height: ${(props) => props.theme.spacing(6)}px;
+    height: ${theme.spacing(6)};
+    min-height: ${theme.spacing(6)};
   }
 `
+)

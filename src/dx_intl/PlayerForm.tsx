@@ -1,5 +1,8 @@
-import styled from "@emotion/styled"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import LockIcon from "@mui/icons-material/Lock"
+import PublicIcon from "@mui/icons-material/Public"
 import {
+  Alert,
   FormLabel,
   RadioGroup,
   Radio,
@@ -11,11 +14,9 @@ import {
   InputLabel,
   Button,
   Container,
-} from "@material-ui/core"
-import ArrowBackIcon from "@material-ui/icons/ArrowBack"
-import LockIcon from "@material-ui/icons/Lock"
-import PublicIcon from "@material-ui/icons/Public"
-import { Alert, Skeleton } from "@material-ui/lab"
+  Skeleton,
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { useHistory, useParams } from "react-router"
@@ -152,7 +153,7 @@ const PlayerForm: FunctionComponent = () => {
   if (loading) {
     return (
       <Container component="main" maxWidth="md">
-        <Skeleton variant="rect" width="100%" height={200} />
+        <Skeleton variant="rectangular" width="100%" height={200} />
       </Container>
     )
   }

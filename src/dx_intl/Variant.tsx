@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import DX from "./variants/dx.svg"
 import STD from "./variants/std.svg"

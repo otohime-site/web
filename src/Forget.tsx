@@ -1,11 +1,12 @@
 import {
-  Container,
-  Typography,
-  FormControlLabel,
-  Checkbox,
+  Alert,
   Button,
-} from "@material-ui/core"
-import { Alert, Skeleton } from "@material-ui/lab"
+  Checkbox,
+  Container,
+  FormControlLabel,
+  Skeleton,
+  Typography,
+} from "@mui/material"
 import { FunctionComponent, useState } from "react"
 import { useHistory } from "react-router"
 import { useMutation } from "urql"
@@ -34,7 +35,7 @@ const Forget: FunctionComponent = () => {
   if (loading) {
     return (
       <Container component="main" maxWidth="md">
-        <Skeleton variant="rect" width="100%" height={200} />
+        <Skeleton variant="rectangular" width="100%" height={200} />
       </Container>
     )
   }

@@ -1,8 +1,6 @@
-import { Button } from "@material-ui/core"
-import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-import { Skeleton } from "@material-ui/lab"
+import ExitToAppIcon from "@mui/icons-material/ExitToApp"
+import { Button, Skeleton } from "@mui/material"
 import {
-  AuthError,
   FacebookAuthProvider,
   signInWithPopup,
   signInWithRedirect,
@@ -12,12 +10,12 @@ import { useSnackbar } from "notistack"
 import { Fragment, FunctionComponent, useCallback } from "react"
 import { firebaseAuth, useAuth } from "./auth"
 
+const provider = new FacebookAuthProvider()
 const isInAppBrowser = (agent: string): boolean =>
   agent.search(/(iPhone|iPad|iPod)(?!.*Safari)/) !== -1 ||
   agent.search(/Android.*(wv|\.0\.0\.0)/) !== -1
 
 const UserBoxComponent: FunctionComponent = () => {
-  const provider = new FacebookAuthProvider()
   const [user, loading] = useAuth()
   const { enqueueSnackbar } = useSnackbar()
 

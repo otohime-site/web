@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import { TabContext, TabPanel } from "@mui/lab"
 import {
   Typography,
   Stepper,
@@ -10,8 +10,8 @@ import {
   Tab,
   Link,
   Button,
-} from "@material-ui/core"
-import { TabContext, TabPanel } from "@material-ui/lab"
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { Link as RouterLink } from "react-router-dom"
@@ -23,12 +23,16 @@ const SpacedContainer = styled("div")`
   padding: 8px;
 `
 
-const PaddedPaper = styled(Paper)`
-  padding: ${(props) => props.theme.spacing(2)}px;
+const PaddedPaper = styled(Paper)(
+  ({ theme }) => `
+  padding: ${theme.spacing(2)};
 `
-const SpacedTypo = styled(Typography)`
-  margin-bottom: ${(props) => props.theme.spacing(2)}px;
+)
+const SpacedTypo = styled(Typography)(
+  ({ theme }) => `
+  margin-bottom: ${theme.spacing(2)};
 `
+)
 
 const HomeComponent: FunctionComponent = () => {
   const [user, loading] = useAuth()

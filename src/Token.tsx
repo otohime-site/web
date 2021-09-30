@@ -1,4 +1,7 @@
+import LinkIcon from "@mui/icons-material/Link"
+import RefreshIcon from "@mui/icons-material/Refresh"
 import {
+  Alert,
   Tooltip,
   Button,
   ButtonGroup,
@@ -7,10 +10,7 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-} from "@material-ui/core"
-import LinkIcon from "@material-ui/icons/Link"
-import RefreshIcon from "@material-ui/icons/Refresh"
-import { Alert } from "@material-ui/lab"
+} from "@mui/material"
 import * as clipboard from "clipboard-polyfill"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -104,7 +104,7 @@ const User: FunctionComponent = () => {
       </Dialog>
       <QueryResult
         result={tokensResult}
-        skeletonVariant="rect"
+        skeletonVariant="rectangular"
         skeletonHeight={36}
       >
         {token.length === 0 ? (

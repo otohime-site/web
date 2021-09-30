@@ -1,18 +1,19 @@
-import styled from "@emotion/styled"
+import HomeIcon from "@mui/icons-material/Home"
+import LaundryOutlinedIcon from "@mui/icons-material/LocalLaundryServiceOutlined"
 import {
   Drawer,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-} from "@material-ui/core"
-import HomeIcon from "@material-ui/icons/Home"
-import LaundryOutlinedIcon from "@material-ui/icons/LocalLaundryServiceOutlined"
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 
-const StyledDrawer = styled(Drawer)`
-  width: ${(props) => props.theme.spacing(7) + 1}px;
+const StyledDrawer = styled(Drawer)(
+  ({ theme }) => `
+  width: calc(${theme.spacing(7)} + 1px);
   flex-shrink: 0;
   white-space: nowrap;
   &.open {
@@ -22,19 +23,11 @@ const StyledDrawer = styled(Drawer)`
     }
   }
   .paper {
-    top: ${(props) => props.theme.spacing(6)}px;
-    width: ${(props) => props.theme.spacing(7) + 1}px;
+    top: ${theme.spacing(6)};
+    width: calc(${theme.spacing(7)} + 1px);
   }
 `
-
-/*
-const StyledBadge = styled(Badge)`
-  .badge {
-    top: 50%;
-    right: -${props => props.theme.spacing(3)}px;
-  }
-`
-*/
+)
 
 const AppDrawer: FunctionComponent<{
   variant: "permanent" | "temporary"

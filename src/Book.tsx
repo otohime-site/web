@@ -1,5 +1,5 @@
-import styled from "@emotion/styled"
 import {
+  Alert,
   Button,
   Dialog,
   DialogTitle,
@@ -10,8 +10,8 @@ import {
   LinearProgress,
   Link,
   Typography,
-} from "@material-ui/core"
-import { Alert } from "@material-ui/lab"
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import { FunctionComponent, useState } from "react"
@@ -50,7 +50,7 @@ const sha256Sum = async (text: string): Promise<string> => {
     .join("")
 }
 
-const book: FunctionComponent = () => {
+const Book: FunctionComponent = () => {
   const [open, setOpen] = useState(true)
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
     undefined
@@ -254,4 +254,4 @@ const book: FunctionComponent = () => {
     </ResetDialog>
   )
 }
-export default book
+export default Book

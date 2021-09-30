@@ -6,7 +6,7 @@ import {
   TableCell,
   TableBody,
   Typography,
-} from "@material-ui/core"
+} from "@mui/material"
 import { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import { QueryResult } from "../QueryResult"

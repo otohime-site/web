@@ -1,9 +1,11 @@
-import { ThemeProvider as EMThemeProvider } from "@emotion/react"
-import styled from "@emotion/styled"
-import ScopedCssBaseline from "@material-ui/core/ScopedCssBaseline"
-import { pink, orange } from "@material-ui/core/colors"
-import { createTheme } from "@material-ui/core/styles"
-import { ThemeProvider, StylesProvider } from "@material-ui/styles"
+import ScopedCssBaseline from "@mui/material/ScopedCssBaseline"
+import { pink, orange } from "@mui/material/colors"
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+  styled,
+} from "@mui/material/styles"
 import { render } from "react-dom"
 import Book from "./Book"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
@@ -35,18 +37,17 @@ if (document.getElementById("otohime-root") != null) {
   root.setAttribute("id", "otohime-root")
   document.body.appendChild(root)
   render(
-    <Container>
-      <StylesProvider injectFirst={true}>
-        <EMThemeProvider theme={theme}>
-          <ThemeProvider theme={theme}>
-            <GraphQLBookmarkletProvider token={token}>
-              <ScopedCssBaseline />
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <GraphQLBookmarkletProvider token={token}>
+          <ScopedCssBaseline>
+            <Container>
               <Book />
-            </GraphQLBookmarkletProvider>
-          </ThemeProvider>
-        </EMThemeProvider>
-      </StylesProvider>
-    </Container>,
+            </Container>
+          </ScopedCssBaseline>
+        </GraphQLBookmarkletProvider>
+      </ThemeProvider>
+    </StyledEngineProvider>,
     root
   )
 }

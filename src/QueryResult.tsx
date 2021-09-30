@@ -1,11 +1,11 @@
-import { Alert, Skeleton } from "@material-ui/lab"
+import { Alert, Skeleton } from "@mui/material"
 import { FunctionComponent } from "react"
 import { UseQueryState } from "urql"
 
 interface Props {
   result: UseQueryState
   errorMsg?: string
-  skeletonVariant?: "text" | "circle" | "rect"
+  skeletonVariant?: "text" | "circular" | "rectangular"
   skeletonWidth?: number | string
   skeletonHeight?: number | string
 }

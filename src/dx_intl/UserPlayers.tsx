@@ -1,5 +1,5 @@
-import { Button, List } from "@material-ui/core"
-import AddIcon from "@material-ui/icons/Add"
+import AddIcon from "@mui/icons-material/Add"
+import { Button, List } from "@mui/material"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"

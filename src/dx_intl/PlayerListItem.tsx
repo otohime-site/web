@@ -1,7 +1,7 @@
-import styled from "@emotion/styled"
-import { ListItemText, ListItem, ListItemIcon } from "@material-ui/core"
-import LockIcon from "@material-ui/icons/Lock"
-import PublicIcon from "@material-ui/icons/Public"
+import LockIcon from "@mui/icons-material/Lock"
+import PublicIcon from "@mui/icons-material/Public"
+import { ListItemText, ListItemButton, ListItemIcon } from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
@@ -26,7 +26,7 @@ const getGradeOrRanks = (
   return ""
 }
 
-const StyledListItem = styled(ListItem)`
+const StyledListItemButton = styled(ListItemButton)`
   &.for-autocomplete {
     padding: 0;
     margin-left: -8px;
@@ -39,10 +39,12 @@ const StyledListItem = styled(ListItem)`
   }
 `
 
-const Description = styled("span")`
+const Description = styled("span")(
+  ({ theme }) => `
   font-size: 90%;
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${theme.palette.text.secondary};
 `
+)
 
 const formatUpdatedAt = (
   player: DxIntlPlayersQuery["dx_intl_players"][0]
@@ -71,8 +73,7 @@ const PlayerListItem: FunctionComponent<{
         }
       : {}
   return (
-    <StyledListItem
-      button
+    <StyledListItemButton
       selected={selected}
       onClick={handleSelect}
       className={forAutoComplete ?? false ? "for-autocomplete" : undefined}
@@ -116,7 +117,7 @@ const PlayerListItem: FunctionComponent<{
           )
         }
       />
-    </StyledListItem>
+    </StyledListItemButton>
   )
 }
 

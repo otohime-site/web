@@ -1,8 +1,8 @@
-import styled from "@emotion/styled"
-import { InputBase } from "@material-ui/core"
-import SearchIcon from "@material-ui/icons/Search"
-import WarningIcon from "@material-ui/icons/Warning"
-import { Autocomplete, AutocompleteChangeReason } from "@material-ui/lab"
+import SearchIcon from "@mui/icons-material/Search"
+import WarningIcon from "@mui/icons-material/Warning"
+import { Autocomplete, InputBase } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { AutocompleteChangeReason } from "@mui/material/useAutocomplete"
 import { FunctionComponent, useState } from "react"
 import { useHistory } from "react-router"
 import { useQuery } from "urql"
@@ -13,21 +13,23 @@ import {
   DxIntlPlayersWithKeywordUserDocument,
 } from "./generated/graphql"
 
-const SearchContainer = styled("div")`
+const SearchContainer = styled("div")(
+  ({ theme }) =>
+    `
   display: flex;
   align-items: center;
-  border-radius: ${(props) => props.theme.shape.borderRadius}px;
+  border-radius: ${theme.shape.borderRadius}px;
   background-color: white;
-  margin-left: ${(props) => props.theme.spacing(4)}px;
+  margin-left: ${theme.spacing(4)};
   width: auto;
   position: relative;
-  ${(props) => props.theme.breakpoints.down("xs")} {
+  ${theme.breakpoints.down("sm")} {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     display: flex;
-    margin: ${(props) => props.theme.spacing(1)}px;
+    margin: ${theme.spacing(1)}
     .MuiAutocomplete-root {
       flex-grow: 1;
     }
@@ -36,6 +38,7 @@ const SearchContainer = styled("div")`
     background-color: #fafafa;
   }
 `
+)
 
 const SearchIconHolder = styled("div")`
   position: absolute;
@@ -44,14 +47,17 @@ const SearchIconHolder = styled("div")`
   color: #cccccc;
 `
 
-const StyledInputBase = styled(InputBase)`
+const StyledInputBase = styled(InputBase)(
+  ({ theme }) =>
+    `
   display: flex;
   padding-left: 36px;
   input {
-    padding: ${(props) => props.theme.spacing(1, 1, 1, 0)};
+    padding: ${theme.spacing(1, 1, 1, 0)};
     width: 16em;
   }
 `
+)
 
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
@@ -107,7 +113,7 @@ const Search: FunctionComponent<{
     value: string | typeof options[0],
     reason: AutocompleteChangeReason
   ): void => {
-    if (typeof value === "string" || reason !== "select-option") {
+    if (typeof value === "string") {
       return
     }
     history.push(`/dxi/p/${value.nickname}`)
@@ -139,7 +145,7 @@ const Search: FunctionComponent<{
             autoFocus={shouldAutoFocus}
           />
         )}
-        renderOption={(option) => (
+        renderOption={(_, option) => (
           <PlayerListItem player={option} forAutoComplete={true} />
         )}
       />

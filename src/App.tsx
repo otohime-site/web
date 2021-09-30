@@ -1,4 +1,6 @@
-import styled from "@emotion/styled"
+import GitHubIcon from "@mui/icons-material/GitHub"
+import MenuIcon from "@mui/icons-material/Menu"
+import SearchIcon from "@mui/icons-material/Search"
 import {
   Toolbar,
   Typography,
@@ -8,10 +10,8 @@ import {
   Button,
   useTheme,
   useMediaQuery,
-} from "@material-ui/core"
-import GitHubIcon from "@material-ui/icons/GitHub"
-import MenuIcon from "@material-ui/icons/Menu"
-import SearchIcon from "@material-ui/icons/Search"
+} from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent, lazy, Suspense, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { Route, Link as RouterLink, Switch } from "react-router-dom"
@@ -47,54 +47,66 @@ const Title = styled(Typography)`
     text-decoration: none;
   }
 `
-const AppMenuButton = styled(IconButton)`
-  margin-right: ${(props) => props.theme.spacing(2)}px;
+const AppMenuButton = styled(IconButton)(
+  ({ theme }) => `
+  margin-right: ${theme.spacing(2)};
 `
-const StyledMain = styled("main")`
-  margin-top: ${(props) => props.theme.spacing(6)}px;
-  padding: ${(props) => props.theme.spacing(1)}px;
+)
+const StyledMain = styled("main")(
+  ({ theme }) => `
+  margin-top: ${theme.spacing(6)};
+  padding: ${theme.spacing(1)};
   flex: 1;
   min-width: 0;
 `
+)
 
-const StyledFooter = styled("footer")`
-  margin-top: ${(props) => props.theme.spacing(2)}px;
-  padding-left: ${(props) => props.theme.spacing(2)}px;
-  padding-top: ${(props) => props.theme.spacing(2)}px;
+const StyledFooter = styled("footer")(
+  ({ theme }) => `
+  margin-top: ${theme.spacing(2)};
+  padding-left: ${theme.spacing(2)};
+  padding-top: ${theme.spacing(2)};
   border-top: 1px solid #cccccc;
   color: #999999;
 `
+)
 
-const StyledLink = styled(Link)`
-  margin: 0 ${(props) => props.theme.spacing(2)}px;
+const StyledLink = styled(Link)(
+  ({ theme }) => `
+  margin: 0 ${theme.spacing(2)};
 `
+)
 
 const Spacing = styled("div")`
   flex-grow: 1;
 `
 
-const SearchButton = styled(Button)`
+const SearchButton = styled(Button)(
+  ({ theme }) => `
   &.search-shown {
     display: none;
   }
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${theme.breakpoints.up("sm")} {
     display: none;
   }
 `
-const UserBoxPlaceholder = styled("div")`
-  ${(props) => props.theme.breakpoints.down("xs")} {
+)
+const UserBoxPlaceholder = styled("div")(
+  ({ theme }) => `
+  ${theme.breakpoints.down("sm")} {
     display: block;
     &.search-shown {
       display: none;
     }
   }
 `
+)
 
 const App: FunctionComponent = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [searchShown, setSearchShown] = useState(false)
   const theme = useTheme()
-  const searchCollapsible = useMediaQuery(theme.breakpoints.down("xs"))
+  const searchCollapsible = useMediaQuery(theme.breakpoints.down("sm"))
 
   const showSearch = (): void => {
     setSearchShown(true)
@@ -161,7 +173,7 @@ const App: FunctionComponent = () => {
           closeDrawer={closeDrawer}
         />
       </Hidden>
-      <Hidden xsDown={true} implementation="css">
+      <Hidden smDown={true} implementation="css">
         <AppDrawer
           variant="permanent"
           drawerOpen={drawerOpen}

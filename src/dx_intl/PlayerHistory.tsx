@@ -1,5 +1,7 @@
-import styled from "@emotion/styled"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
 import {
+  Alert,
   Tab,
   Tabs,
   Button,
@@ -10,17 +12,9 @@ import {
   TableRow,
   TableCell,
   TableBody,
-} from "@material-ui/core"
-import {
-  green,
-  orange,
-  red,
-  deepPurple,
-  purple,
-} from "@material-ui/core/colors"
-import ArrowBackIcon from "@material-ui/icons/ArrowBack"
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward"
-import { Alert } from "@material-ui/lab"
+} from "@mui/material"
+import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
+import { styled } from "@mui/material/styles"
 import { formatRelative } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
@@ -48,7 +42,8 @@ interface FlattenNodeWithBeforeAfter extends FlattenedNote {
   after?: Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 }
 
-const StyledTable = styled(Table)`
+const StyledTable = styled(Table)(
+  ({ theme }) => `
   .MuiTableCell-root {
     font-family: "M PLUS 1p";
     padding: 8px;
@@ -58,7 +53,7 @@ const StyledTable = styled(Table)`
   }
   table-layout: fixed;
 
-  ${(props) => props.theme.breakpoints.down("sm")} {
+  ${theme.breakpoints.down("md")} {
     thead {
       display: none;
     }
@@ -80,34 +75,45 @@ const StyledTable = styled(Table)`
     }
   }
 `
-const FirstCol = styled("col")`
-  ${(props) => props.theme.breakpoints.down("sm")} {
+)
+const FirstCol = styled("col")(
+  ({ theme }) => `
+  ${theme.breakpoints.down("md")} {
     width: 100%;
   }
 `
-const DxCol = styled("col")`
+)
+const DxCol = styled("col")(
+  ({ theme }) => `
   width: 2.2em;
-  ${(props) => props.theme.breakpoints.down("sm")} {
+  ${theme.breakpoints.down("md")} {
     width: 0;
   }
 `
-const DiffCol = styled("col")`
+)
+const DiffCol = styled("col")(
+  ({ theme }) => `
   width: 5em;
-  ${(props) => props.theme.breakpoints.down("sm")} {
+  ${theme.breakpoints.down("md")} {
     width: 0;
   }
 `
-const ArrowCol = styled("col")`
+)
+const ArrowCol = styled("col")(
+  ({ theme }) => `
   width: 3em;
-  ${(props) => props.theme.breakpoints.down("sm")} {
+  ${theme.breakpoints.down("md")} {
     width: 0;
   }
 `
-const BACol = styled("col")`
-  ${(props) => props.theme.breakpoints.down("sm")} {
+)
+const BACol = styled("col")(
+  ({ theme }) => `
+  ${theme.breakpoints.down("md")} {
     width: 0;
   }
 `
+)
 
 const DiffCell = styled(TableCell)`
   font-size: 85%;
@@ -477,9 +483,10 @@ const PlayerHistory: FunctionComponent = () => {
       <Tabs
         value={params?.hash ?? false}
         variant="scrollable"
-        scrollButtons="on"
+        scrollButtons
         indicatorColor="primary"
         textColor="primary"
+        allowScrollButtonsMobile
       >
         {outerTimelines.timelines.map((time) => (
           <Tab

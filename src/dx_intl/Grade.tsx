@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import Grade1 from "./grades/1.svg"
 import Grade2 from "./grades/2.svg"
