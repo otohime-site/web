@@ -3,7 +3,6 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
 import EditIcon from "@mui/icons-material/Edit"
 import EventNoteIcon from "@mui/icons-material/EventNote"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import RefreshIcon from "@mui/icons-material/Refresh"
 import {
   Alert,
   Card,
@@ -189,6 +188,16 @@ const HeaderCell = styled(TableCell)`
     }
   }
 `
+
+const DeluxeCell = styled(TableCell)`
+  &.MuiTableCell-root {
+    padding: 8px 0;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 0.875em;
+  }
+`
+
 const ScoreCell = styled(TableCell)`
   &.difficulty-0 {
     border-bottom-color: ${green[100]};
@@ -215,10 +224,14 @@ const ScoreCellInner = styled("div")`
 
 const ScoreLevel = styled("span")`
   color: #999999;
-  width: 2.4em;
+  width: 2.2em;
   font-size: 80%;
+  text-align: right;
   text-transform: uppercase;
 
+  &.non-plus {
+    padding-right: 0.74em;
+  }
   &.diff {
     width: 3em;
   }
@@ -320,7 +333,7 @@ const Player: FunctionComponent = () => {
     variables: { userId: user?.uid ?? "", nickname: params.nickname },
     pause: loading || user == null,
   })
-  const [recordResult, refetchRecord] = useQuery({
+  const [recordResult] = useQuery({
     query: DxIntlRecordWithScoresDocument,
     variables: { ...params },
     pause: loading,
@@ -574,7 +587,15 @@ const Player: FunctionComponent = () => {
         className={`difficulty-${note.difficulty}`}
       >
         <ScoreCellInner>
-          <ScoreLevel className={groupBy === "level" ? "diff" : ""}>
+          <ScoreLevel
+            className={
+              groupBy === "level"
+                ? "diff"
+                : !note.level.includes("+")
+                ? "non-plus"
+                : ""
+            }
+          >
             {groupBy === "level"
               ? difficulties[note.difficulty].substring(0, 3)
               : note.level}
@@ -792,12 +813,12 @@ const Player: FunctionComponent = () => {
       <ScoreTable lang="ja">
         <colgroup>
           <col />
-          <col style={{ width: "3em" }} />
+          <col style={{ width: "2.4em" }} />
           {groupBy === "level" ? (
             <col style={{ width: "55%" }} />
           ) : (
             shownDifficulties.map((d, i) => (
-              <col key={i} style={{ width: "12em" }} />
+              <col key={i} style={{ width: "10.5em" }} />
             ))
           )}
         </colgroup>
@@ -844,9 +865,9 @@ const Player: FunctionComponent = () => {
                   {row.title}
                 </Link>
               </TableCell>
-              <TableCell>
+              <DeluxeCell>
                 <Variant deluxe={row.deluxe} />
-              </TableCell>
+              </DeluxeCell>
               {"difficulty" in row
                 ? getNoteScoreCell(row)
                 : shownDifficulties
