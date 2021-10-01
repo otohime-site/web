@@ -258,9 +258,11 @@ export const ActualScore = styled("span")`
   overflow: hidden;
 `
 export const FlagContainer = styled("span")`
-  width: 4em;
-  font-size: 75%;
-  overflow: hidden;
+  text-align: right;
+  font-size: 0.7em;
+  img {
+    vertical-align: middle;
+  }
 `
 
 export const AccordionDetailsVertical = styled(AccordionDetails)`
