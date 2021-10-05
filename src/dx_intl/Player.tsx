@@ -230,7 +230,10 @@ const ScoreLevel = styled("span")`
   text-transform: uppercase;
 
   &.non-plus {
-    padding-right: 0.74em;
+    padding-right: 1.04em;
+  }
+  &.plus {
+    padding-right: 0.3em;
   }
   &.diff {
     width: 3em;
@@ -580,7 +583,10 @@ const Player: FunctionComponent = () => {
       )
     : [...difficulties]
   const getNoteScoreCell = (
-    note: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">
+    note: Pick<
+      Dx_Intl_Notes,
+      "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
+    >
   ): JSX.Element => {
     const score = scoreMap.get(getNoteHash(note))
     return (
@@ -595,11 +601,15 @@ const Player: FunctionComponent = () => {
                 ? "diff"
                 : !note.level.includes("+")
                 ? "non-plus"
-                : ""
+                : note.internal_lv != null
+                ? ""
+                : "plus"
             }
           >
             {groupBy === "level"
               ? difficulties[note.difficulty].substring(0, 3)
+              : note.internal_lv != null
+              ? note.internal_lv.toFixed(1)
               : note.level}
           </ScoreLevel>
           {score != null ? (
@@ -815,12 +825,12 @@ const Player: FunctionComponent = () => {
       <ScoreTable lang="ja">
         <colgroup>
           <col />
-          <col style={{ width: "2.4em" }} />
+          <col style={{ width: "2.7em" }} />
           {groupBy === "level" ? (
             <col style={{ width: "55%" }} />
           ) : (
             shownDifficulties.map((d, i) => (
-              <col key={i} style={{ width: "10.5em" }} />
+              <col key={i} style={{ width: "11em" }} />
             ))
           )}
         </colgroup>
