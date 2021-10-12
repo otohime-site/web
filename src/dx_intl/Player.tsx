@@ -35,8 +35,8 @@ import {
   SelectChangeEvent,
 } from "@mui/material"
 import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
-import { styled } from "@mui/material/styles"
-import { FunctionComponent, useState } from "react"
+import { lighten, styled } from "@mui/material/styles"
+import { FunctionComponent, useState, useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
@@ -45,8 +45,6 @@ import { useAuth } from "../auth"
 import {
   DxIntlRecordWithScoresDocument,
   DxIntlSongsDocument,
-  Dx_Intl_Songs,
-  Dx_Intl_Variants,
   Dx_Intl_Notes,
   DxIntlPlayersEditableDocument,
 } from "../generated/graphql"
@@ -58,28 +56,17 @@ import {
   versions,
   levels,
   difficulties,
-  comboFlags,
-  syncFlags,
-  FlattenedNote,
   getNoteHash,
-  arrangeScoreStats,
-  arrangeComboStats,
-  arrangeSyncStats,
+  prepareSongs,
+  ScoreEntry,
+  getRatingAndRanks,
+  GROUP_BY,
+  ORDER_BY,
+  getRowGroups,
+  arrangeSortedRows,
+  RATING_NEW_COUNT,
+  RATING_OLD_COUNT,
 } from "./helper"
-
-// Use to flatten the song list
-type FlattenedVariant = { song_id: string } & Pick<
-  Dx_Intl_Songs,
-  "category" | "title" | "order"
-> &
-  Pick<Dx_Intl_Variants, "deluxe" | "version" | "active"> & {
-    dx_intl_notes: Array<
-      { __typename?: "dx_intl_notes" } & Pick<
-        Dx_Intl_Notes,
-        "difficulty" | "level"
-      >
-    >
-  }
 
 const Container = styled("div")`
   display: flex;
@@ -201,18 +188,33 @@ const DeluxeCell = styled(TableCell)`
 const ScoreCell = styled(TableCell)`
   &.difficulty-0 {
     border-bottom-color: ${green[100]};
+    &.picked {
+      background: ${lighten(green[50], 0.5)};
+    }
   }
   &.difficulty-1 {
     border-bottom-color: ${orange[100]};
+    &.picked {
+      background: ${lighten(orange[50], 0.5)};
+    }
   }
   &.difficulty-2 {
     border-bottom-color: ${red[100]};
+    &.picked {
+      background: ${lighten(red[50], 0.5)};
+    }
   }
   &.difficulty-3 {
     border-bottom-color: ${deepPurple[100]};
+    &.picked {
+      background: ${lighten(deepPurple[50], 0.5)};
+    }
   }
   &.difficulty-4 {
     border-bottom-color: ${purple[100]};
+    &.picked {
+      background: ${lighten(purple[50], 0.5)};
+    }
   }
 `
 const ScoreCellInner = styled("div")`
@@ -322,12 +324,8 @@ const WithInactiveTableRow = styled(TableRow)`
 const Player: FunctionComponent = () => {
   const [user, loading] = useAuth()
   const [currentTab, setCurrentTab] = useState(1)
-  const [groupBy, setGroupBy] = useState<"category" | "version" | "level">(
-    "category"
-  )
-  const [orderBy, setOrderBy] = useState<
-    "default" | "level" | "score" | "combo" | "sync"
-  >("default")
+  const [groupBy, setGroupBy] = useState<GROUP_BY>("category")
+  const [orderBy, setOrderBy] = useState<ORDER_BY>("default")
   const [orderByDesc, setOrderByDesc] = useState(false)
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
@@ -344,27 +342,103 @@ const Player: FunctionComponent = () => {
     pause: loading,
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
+
+  // Arrange variants
+  const { variantEntries, internalLvMap } = useMemo((): ReturnType<
+    typeof prepareSongs
+  > => {
+    if (songsResult.error != null || songsResult.data == null) {
+      return {
+        variantEntries: [],
+        internalLvMap: new Map(),
+      }
+    }
+    return prepareSongs(songsResult.data.dx_intl_songs)
+  }, [songsResult])
+
+  // Arrange score and rating value/ranks
+  const scoreMap: Map<string, ScoreEntry> = useMemo(() => {
+    if (recordResult.error != null || recordResult.data == null) {
+      return new Map()
+    }
+    const scores = recordResult.data.dx_intl_players[0].dx_intl_scores
+    return new Map(scores.map((score) => [getNoteHash(score), score]))
+  }, [recordResult])
+
+  const { ratingMap, newRanks, oldRanks } = useMemo(() => {
+    return getRatingAndRanks({ scoreMap, internalLvMap })
+  }, [scoreMap, internalLvMap])
+
+  const groupedRows = useMemo(() => {
+    return getRowGroups({
+      variantEntries,
+      newRanks,
+      oldRanks,
+      groupBy,
+      includeInactive,
+    })
+  }, [variantEntries, newRanks, oldRanks, groupBy, includeInactive])
+  console.log(groupedRows)
+  console.log(currentTab)
+
+  const { sortedRows, scoreStats, comboStats, syncStats } = useMemo(() => {
+    const index =
+      groupBy === "category" || groupBy === "version" ? difficulty : 0
+    const rows = groupedRows[currentTab] ?? []
+    return arrangeSortedRows({
+      rows,
+      index,
+      orderBy,
+      orderByDesc,
+      scoreMap,
+      ratingMap,
+    })
+  }, [
+    groupedRows,
+    currentTab,
+    groupBy,
+    difficulty,
+    orderBy,
+    orderByDesc,
+    scoreMap,
+    ratingMap,
+  ])
+
   const useDiffSetLayout = useMediaQuery<Theme>((theme) =>
     theme.breakpoints.between("sm", "lg")
   )
   const useSingleDiffLayout = useMediaQuery<Theme>((theme) =>
     theme.breakpoints.down("md")
   )
-  const getHeader = (sparsedIndex: number): string =>
-    groupBy === "category"
-      ? categories[sparsedIndex] ?? ""
-      : groupBy === "version"
-      ? versions[sparsedIndex] ?? ""
-      : `Lv ${levels[sparsedIndex]}`
+  const getHeader = (sparsedIndex: number): string => {
+    switch (groupBy) {
+      case "category":
+        return categories[sparsedIndex] ?? ""
+      case "version":
+        return versions[sparsedIndex] ?? ""
+      case "level":
+        return `Lv ${levels[sparsedIndex]}`
+      case "rating_ranks":
+        return sparsedIndex === 0 ? "新曲" : "舊曲"
+    }
+  }
 
   const handleChangeGroupBy = (event: SelectChangeEvent<unknown>): void => {
     const { value } = event.target
-    if (value !== "category" && value !== "version" && value !== "level") {
+    if (
+      value !== "category" &&
+      value !== "version" &&
+      value !== "level" &&
+      value !== "rating_ranks"
+    ) {
       return
     }
     setGroupBy(value)
     setCurrentTab(value === "category" ? 1 : 0)
-    if (value === "level" && orderBy === "level") {
+    if (
+      (value === "level" || value === "rating_ranks") &&
+      orderBy === "level"
+    ) {
       setOrderBy("default")
     }
     window.scrollTo(0, 0)
@@ -389,7 +463,9 @@ const Player: FunctionComponent = () => {
     switch (value) {
       case "default":
       case "level":
+      case "internalLv":
       case "score":
+      case "rating":
       case "combo":
       case "sync":
         setOrderBy(value)
@@ -413,168 +489,14 @@ const Player: FunctionComponent = () => {
   if (recordResult.data.dx_intl_players.length === 0) {
     return <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
   }
-  const songs = songsResult.data.dx_intl_songs
   const player = recordResult.data.dx_intl_players[0]
   const record = player.dx_intl_record
-  const scores = player.dx_intl_scores
 
   if (record == null) {
     return (
       <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
     )
   }
-
-  // First use groupBy to group all song list
-  const scoreMap = new Map(scores.map((score) => [getNoteHash(score), score]))
-  const sortNote = (
-    noteA: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">,
-    noteB: Pick<Dx_Intl_Notes, "song_id" | "deluxe" | "difficulty" | "level">
-  ): number => {
-    const factor = orderByDesc ? -1 : 1
-    switch (orderBy) {
-      case "level":
-        return (
-          (levels.indexOf(noteA.level) - levels.indexOf(noteB.level)) * factor
-        )
-      case "score":
-        return (
-          ((scoreMap.get(getNoteHash(noteA))?.score ?? -1) -
-            (scoreMap.get(getNoteHash(noteB))?.score ?? -1)) *
-          factor
-        )
-      case "combo":
-        return (
-          (comboFlags.indexOf(
-            scoreMap.get(getNoteHash(noteA))?.combo_flag ?? ""
-          ) -
-            comboFlags.indexOf(
-              scoreMap.get(getNoteHash(noteB))?.combo_flag ?? ""
-            )) *
-          factor
-        )
-      case "sync":
-        return (
-          (syncFlags.indexOf(
-            scoreMap.get(getNoteHash(noteA))?.sync_flag ?? ""
-          ) -
-            syncFlags.indexOf(
-              scoreMap.get(getNoteHash(noteB))?.sync_flag ?? ""
-            )) *
-          factor
-        )
-      default:
-        return 0
-    }
-  }
-  const sortNoteWithLevelDefault = (
-    noteA: Pick<
-      Dx_Intl_Notes,
-      "song_id" | "deluxe" | "difficulty" | "level"
-    > & {
-      deluxe: boolean
-    },
-    noteB: Pick<
-      Dx_Intl_Notes,
-      "song_id" | "deluxe" | "difficulty" | "level"
-    > & {
-      deluxe: boolean
-    }
-  ): number => {
-    if (noteA.difficulty !== noteB.difficulty) {
-      return noteA.difficulty - noteB.difficulty
-    }
-    return (noteA.deluxe ? 1 : 0) - (noteB.deluxe ? 1 : 0)
-  }
-
-  const filterActiveVariant = (variant: { active: boolean }): boolean =>
-    includeInactive || variant.active
-  const groupedRows: Array<Array<FlattenedVariant | FlattenedNote>> =
-    groupBy === "level"
-      ? songs
-          .reduce<FlattenedNote[]>(
-            (accr, song) => [
-              ...accr,
-              ...song.dx_intl_variants
-                .filter(filterActiveVariant)
-                .reduce<FlattenedNote[]>(
-                  (accrInner, variant) => [
-                    ...accrInner,
-                    ...variant.dx_intl_notes.map((note) => ({
-                      song_id: song.id,
-                      category: song.category,
-                      title: song.title,
-                      order: song.order,
-                      deluxe: variant.deluxe,
-                      version: variant.version,
-                      active: variant.active,
-                      ...note,
-                    })),
-                  ],
-                  []
-                ),
-            ],
-            []
-          )
-          .reduce<FlattenedNote[][]>((accr, curr) => {
-            const levelIndex = levels.indexOf(curr.level)
-            accr[levelIndex] = [...(accr[levelIndex] ?? []), curr]
-            return accr
-          }, [])
-          .map((notes) =>
-            orderBy === "default"
-              ? orderByDesc
-                ? notes.sort(sortNoteWithLevelDefault).reverse()
-                : notes.sort(sortNoteWithLevelDefault)
-              : notes.sort(sortNote)
-          )
-      : songs
-          .reduce<FlattenedVariant[]>(
-            (accr, song) => [
-              ...accr,
-              ...song.dx_intl_variants.map((variant) => ({
-                song_id: song.id,
-                category: song.category,
-                title: song.title,
-                order: song.order,
-                ...variant,
-              })),
-            ],
-            []
-          )
-          .filter(filterActiveVariant)
-          .reduce<FlattenedVariant[][]>((accr, curr) => {
-            const sortKey =
-              groupBy === "category" ? curr.category : curr.version
-            accr[sortKey] = [...(accr[sortKey] ?? []), curr]
-            return accr
-          }, [])
-          .map((variants) =>
-            orderBy === "default"
-              ? orderByDesc
-                ? variants.reverse()
-                : variants
-              : variants.sort((a, b) =>
-                  sortNote(
-                    {
-                      song_id: a.song_id,
-                      deluxe: a.deluxe,
-                      ...(a.dx_intl_notes[difficulty] ?? {
-                        difficulty: -1,
-                        level: -1,
-                      }),
-                    },
-                    {
-                      song_id: b.song_id,
-                      deluxe: b.deluxe,
-                      ...(b.dx_intl_notes[difficulty] ?? {
-                        difficulty: -1,
-                        level: -1,
-                      }),
-                    }
-                  )
-                )
-          )
-  const currentTabRows = groupedRows[currentTab] ?? []
   const shownDifficulties = useSingleDiffLayout
     ? Array(difficulty).concat([difficulties[difficulty]])
     : useDiffSetLayout
@@ -588,11 +510,17 @@ const Player: FunctionComponent = () => {
       "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
     >
   ): JSX.Element => {
-    const score = scoreMap.get(getNoteHash(note))
+    const hash = getNoteHash(note)
+    const score = scoreMap.get(hash)
+    const newRank = newRanks.get(hash)
+    const oldRank = oldRanks.get(hash)
+    const picked =
+      (newRank != null && newRank <= RATING_NEW_COUNT) ||
+      (oldRank != null && oldRank <= RATING_OLD_COUNT)
     return (
       <ScoreCell
         key={getNoteHash(note)}
-        className={`difficulty-${note.difficulty}`}
+        className={`difficulty-${note.difficulty}${picked ? " picked" : ""}`}
       >
         <ScoreCellInner>
           <ScoreLevel
@@ -627,21 +555,6 @@ const Player: FunctionComponent = () => {
       </ScoreCell>
     )
   }
-
-  const currentTabRowsScores = currentTabRows.map((row) => {
-    const innerNote =
-      "difficulty" in row
-        ? row
-        : {
-            song_id: row.song_id,
-            deluxe: row.deluxe,
-            ...row.dx_intl_notes[difficulty],
-          }
-    return scoreMap.get(getNoteHash(innerNote))
-  })
-  const scoreStats = arrangeScoreStats(currentTabRowsScores)
-  const comboStats = arrangeComboStats(currentTabRowsScores)
-  const syncStats = arrangeSyncStats(currentTabRowsScores)
 
   return (
     <>
@@ -691,6 +604,7 @@ const Player: FunctionComponent = () => {
                     <MenuItem value="category">分類</MenuItem>
                     <MenuItem value="version">版本</MenuItem>
                     <MenuItem value="level">樂曲等級</MenuItem>
+                    <MenuItem value="rating_ranks">Rating 組成</MenuItem>
                   </SizedSelect>
                 </FormControl>
                 <FormControl variant="standard">
@@ -706,7 +620,9 @@ const Player: FunctionComponent = () => {
                     ) : (
                       ""
                     )}
+                    <MenuItem value="internal_lv">內部等級</MenuItem>
                     <MenuItem value="score">成績</MenuItem>
+                    <MenuItem value="rating">Rating 分數</MenuItem>
                     <MenuItem value="combo">Combo 標記</MenuItem>
                     <MenuItem value="sync">Sync 標記</MenuItem>
                   </SizedSelect>
@@ -738,14 +654,28 @@ const Player: FunctionComponent = () => {
             }
             label="包含刪除曲"
           />
+          <FormControlLabel
+            control={
+              <Switch
+                value={includeInactive}
+                onChange={handleChangeIncludeInactive}
+              />
+            }
+            label="總是顯示內部等級"
+          />
         </AdvancedControls>
         <AccordionDetailsVertical>
           <StatTitleTypo variant="subtitle2">
             {getHeader(currentTab)}{" "}
-            {groupBy !== "level" ? ` - ${difficulties[difficulty]}` : ""} (
+            {groupBy !== "level" && groupBy !== "rating_ranks"
+              ? ` - ${difficulties[difficulty]}`
+              : ""}{" "}
+            (
             {
-              currentTabRows.filter(
-                (row) => "difficulty" in row || difficulty in row.dx_intl_notes
+              sortedRows.filter(
+                (row) =>
+                  (groupBy !== "level" && groupBy !== "rating_ranks") ||
+                  difficulty in row.notes
               ).length
             }
             )
@@ -788,7 +718,7 @@ const Player: FunctionComponent = () => {
             />
           ))}
         </StyledTabs>
-        {groupBy !== "level" ? (
+        {groupBy === "category" || groupBy === "version" ? (
           <>
             <Hidden mdDown={true} lgUp={true} implementation="css">
               <DifficultySetTabs
@@ -826,7 +756,7 @@ const Player: FunctionComponent = () => {
         <colgroup>
           <col />
           <col style={{ width: "2.7em" }} />
-          {groupBy === "level" ? (
+          {groupBy !== "category" && groupBy !== "version" ? (
             <col style={{ width: "55%" }} />
           ) : (
             shownDifficulties.map((d, i) => (
@@ -837,9 +767,9 @@ const Player: FunctionComponent = () => {
         <TableHead>
           <TableRow>
             <TableCell component="th" colSpan={2}>
-              {getHeader(currentTab)} ({currentTabRows.length})
+              {getHeader(currentTab)} ({sortedRows.length})
             </TableCell>
-            {groupBy === "level" ? (
+            {groupBy !== "category" && groupBy !== "version" ? (
               <TableCell component="th">Score</TableCell>
             ) : (
               shownDifficulties.map((d, i) => (
@@ -858,11 +788,11 @@ const Player: FunctionComponent = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {currentTabRows.map((row) => (
+          {sortedRows.map((row) => (
             <WithInactiveTableRow
               key={`${row.category}/${row.title}/${
                 row.deluxe ? "true" : "false"
-              }/${"difficulty" in row ? row.difficulty : ""}`}
+              }/${row.notes.length === 1 ? row.notes[0].difficulty : ""}`}
               className={row.active ? "" : "inactive"}
             >
               <TableCell>
@@ -872,7 +802,7 @@ const Player: FunctionComponent = () => {
                   component={RouterLink}
                   to={`/dxi/s/${row.song_id.substring(0, 8)}/${
                     row.deluxe ? "dx" : "std"
-                  }/${"difficulty" in row ? row.difficulty : ""}`}
+                  }/${row.notes.length === 1 ? row.notes[0].difficulty : ""}`}
                 >
                   {row.title}
                 </Link>
@@ -880,19 +810,17 @@ const Player: FunctionComponent = () => {
               <DeluxeCell>
                 <Variant deluxe={row.deluxe} />
               </DeluxeCell>
-              {"difficulty" in row
-                ? getNoteScoreCell(row)
-                : shownDifficulties
-                    .map((d, i) =>
-                      i in row.dx_intl_notes
-                        ? getNoteScoreCell({
-                            song_id: row.song_id,
-                            deluxe: row.deluxe,
-                            ...row.dx_intl_notes[i],
-                          })
-                        : ""
-                    )
-                    .filter((cell) => cell !== "")}
+              {(row.notes.length === 1 ? ["all"] : shownDifficulties)
+                .map((d, i) =>
+                  i in row.notes
+                    ? getNoteScoreCell({
+                        song_id: row.song_id,
+                        deluxe: row.deluxe,
+                        ...row.notes[i],
+                      })
+                    : ""
+                )
+                .filter((cell) => cell !== "")}
             </WithInactiveTableRow>
           ))}
         </TableBody>
