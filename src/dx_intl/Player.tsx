@@ -378,8 +378,6 @@ const Player: FunctionComponent = () => {
       includeInactive,
     })
   }, [variantEntries, newRanks, oldRanks, groupBy, includeInactive])
-  console.log(groupedRows)
-  console.log(currentTab)
 
   const { sortedRows, scoreStats, comboStats, syncStats } = useMemo(() => {
     const index =
