@@ -705,6 +705,7 @@ const Player: FunctionComponent = () => {
           onChange={handleChangeTab}
           variant="scrollable"
           scrollButtons="auto"
+          allowScrollButtonsMobile={true}
           indicatorColor="primary"
           textColor="primary"
         >
@@ -738,6 +739,7 @@ const Player: FunctionComponent = () => {
                 onChange={handleChangeDifficulty}
                 variant="scrollable"
                 scrollButtons="auto"
+                allowScrollButtonsMobile={true}
                 aria-label="Select Difficulty"
                 indicatorColor="secondary"
                 textColor="secondary"
