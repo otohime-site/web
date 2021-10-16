@@ -449,6 +449,9 @@ export const arrangeSortedRows = (params: {
       : rows
           .map((row) => {
             const note = row.notes[index]
+            if (note == null) {
+              return { ...row, sortRank: -1 }
+            }
             let sortRank
             switch (orderBy) {
               case "level":
@@ -489,8 +492,10 @@ export const arrangeSortedRows = (params: {
     sortedRows.reverse()
   }
   const columnScores = rows
-    .map((row) => scoreMap.get(row.notes[index].hash))
-    .filter((row) => row != null)
+    .map((row) =>
+      row.notes[index] != null ? scoreMap.get(row.notes[index].hash) : null
+    )
+    .filter((row): row is ScoreEntry => row != null)
   return {
     sortedRows,
     scoreStats: arrangeScoreStats(columnScores),
