@@ -90,6 +90,12 @@ const StyledCard = styled(Card)`
   .order {
     margin-top: 8px;
   }
+  .order.rating-ranks {
+    & > div:last-of-type,
+    button {
+      visibility: hidden;
+    }
+  }
 `
 
 const TabContainer = styled("div")(
@@ -238,7 +244,7 @@ const ScoreLevel = styled("span")`
     padding-right: 0.3em;
   }
   &.diff {
-    width: 3em;
+    width: 5em;
   }
 
   .difficulty-0 & {
@@ -330,6 +336,7 @@ const Player: FunctionComponent = () => {
   const [difficulty, setDifficulty] = useState(2)
   const [difficultySet, setDifficultySet] = useState(0)
   const [includeInactive, setIncludeInactive] = useState(false)
+  const [alwaysInternalLv, setAlwaysInternalLv] = useState(false)
   const params = useParams<{ nickname: string }>()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
@@ -386,8 +393,8 @@ const Player: FunctionComponent = () => {
     return arrangeSortedRows({
       rows,
       index,
-      orderBy,
-      orderByDesc,
+      orderBy: groupBy === "rating_ranks" ? "rating" : orderBy,
+      orderByDesc: groupBy === "rating_ranks" ? true : orderByDesc,
       scoreMap,
       ratingMap,
     })
@@ -478,6 +485,12 @@ const Player: FunctionComponent = () => {
     setIncludeInactive(event.target.checked)
   }
 
+  const handleChangeAlwaysInternalLv = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setAlwaysInternalLv(event.target.checked)
+  }
+
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
@@ -521,23 +534,23 @@ const Player: FunctionComponent = () => {
         className={`difficulty-${note.difficulty}${picked ? " picked" : ""}`}
       >
         <ScoreCellInner>
-          <ScoreLevel
-            className={
-              groupBy === "level"
-                ? "diff"
-                : !note.level.includes("+")
-                ? "non-plus"
-                : note.internal_lv != null
-                ? ""
-                : "plus"
-            }
-          >
-            {groupBy === "level"
-              ? difficulties[note.difficulty].substring(0, 3)
-              : note.internal_lv != null
-              ? note.internal_lv.toFixed(1)
-              : note.level}
-          </ScoreLevel>
+          {groupBy === "level" || groupBy === "rating_ranks" ? (
+            <ScoreLevel className="diff">
+              {difficulties[note.difficulty].substring(0, 3)}{" "}
+              {note.internal_lv != null
+                ? note.internal_lv.toFixed(1)
+                : note.level}
+            </ScoreLevel>
+          ) : note.internal_lv != null &&
+            (alwaysInternalLv || orderBy === "internalLv") ? (
+            <ScoreLevel>{note.internal_lv.toFixed(1)}</ScoreLevel>
+          ) : (
+            <ScoreLevel
+              className={!note.level.includes("+") ? "non-plus" : "plus"}
+            >
+              {note.level}
+            </ScoreLevel>
+          )}
           {score != null ? (
             <>
               <ActualScore>{score.score.toFixed(4)}%</ActualScore>
@@ -591,7 +604,11 @@ const Player: FunctionComponent = () => {
                   ""
                 )}
               </ButtonGroup>
-              <div className="order">
+              <div
+                className={
+                  groupBy === "rating_ranks" ? "order rating-ranks" : "order"
+                }
+              >
                 <FormControl variant="standard">
                   <InputLabel id="group-by-input-label">頁籤</InputLabel>
                   <SizedSelect
@@ -655,8 +672,8 @@ const Player: FunctionComponent = () => {
           <FormControlLabel
             control={
               <Switch
-                value={includeInactive}
-                onChange={handleChangeIncludeInactive}
+                value={alwaysInternalLv}
+                onChange={handleChangeAlwaysInternalLv}
               />
             }
             label="總是顯示內部等級"
