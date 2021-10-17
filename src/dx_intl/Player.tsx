@@ -124,10 +124,10 @@ const DifficultyTabs = styled(StyledTabs)`
 `
 
 const DifficultySetTabs = styled(StyledTabs)`
+  flex-shrink: 0;
   .MuiTab-root {
     text-transform: uppercase;
   }
-  width: 24em;
   background: #eeeeee;
 `
 
@@ -719,7 +719,7 @@ const Player: FunctionComponent = () => {
         </StyledTabs>
         {groupBy === "category" || groupBy === "version" ? (
           <>
-            <Hidden mdDown={true} lgUp={true} implementation="css">
+            <Hidden mdDown={true} lgUp={true}>
               <DifficultySetTabs
                 value={difficultySet}
                 onChange={handleChangeDifficultySet}
@@ -731,7 +731,7 @@ const Player: FunctionComponent = () => {
                 <Tab label={`${difficulties[2]} - ${difficulties[4]}`} />
               </DifficultySetTabs>
             </Hidden>
-            <Hidden mdUp={true} implementation="css">
+            <Hidden mdUp={true}>
               <DifficultyTabs
                 value={difficulty}
                 onChange={handleChangeDifficulty}
