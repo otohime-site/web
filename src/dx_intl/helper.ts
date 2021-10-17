@@ -272,7 +272,7 @@ export const prepareSongs = (
     version: number
     internalLv: number
   }> = []
-  const variantEntries = songs.reduce<VariantEntry[]>(
+  const variantEntriesRaw = songs.reduce<VariantEntry[]>(
     (accr, song) => [
       // We aggregate the result entry and caculate rating first.
       ...accr,
@@ -313,6 +313,11 @@ export const prepareSongs = (
     ],
     []
   )
+  // Sort by active or not
+  const variantEntries = [
+    ...variantEntriesRaw.filter((e) => !e.active),
+    ...variantEntriesRaw.filter((e) => e.active),
+  ]
   const internalLvMap = new Map(
     internalLvList.map((ilEntry) => [
       ilEntry.hash,
