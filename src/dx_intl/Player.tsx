@@ -618,7 +618,7 @@ const Player: FunctionComponent = () => {
                     ) : (
                       ""
                     )}
-                    <MenuItem value="internal_lv">內部等級</MenuItem>
+                    <MenuItem value="internalLv">內部等級</MenuItem>
                     <MenuItem value="score">成績</MenuItem>
                     <MenuItem value="rating">Rating 分數</MenuItem>
                     <MenuItem value="combo">Combo 標記</MenuItem>
