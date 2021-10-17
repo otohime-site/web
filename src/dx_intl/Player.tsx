@@ -311,7 +311,7 @@ export const StatContainer = styled("div")`
 const WithInactiveTableRow = styled(TableRow)`
   &.inactive {
     color: #666666;
-    .MuiTypography-colorTextPrimary {
+    a.MuiLink-root {
       color: rgba(96, 96, 96, 0.67);
       text-decoration: line-through;
     }
