@@ -184,7 +184,7 @@ const HeaderCell = styled(TableCell)`
 
 const DeluxeCell = styled(TableCell)`
   &.MuiTableCell-root {
-    padding: 8px 0;
+    padding: 0;
     text-align: center;
     vertical-align: middle;
     line-height: 0.875em;
@@ -230,6 +230,10 @@ const ScoreCellInner = styled("div")`
   align-items: center;
 `
 
+export const LevelContainer = styled("span")`
+  display: flex;
+`
+
 const ScoreLevel = styled("span")`
   color: #999999;
   width: 2.2em;
@@ -244,7 +248,8 @@ const ScoreLevel = styled("span")`
     padding-right: 0.3em;
   }
   &.diff {
-    width: 5em;
+    width: 2.4em;
+    margin-right: 0.2em;
   }
 
   .difficulty-0 & {
@@ -534,23 +539,29 @@ const Player: FunctionComponent = () => {
         className={`difficulty-${note.difficulty}${picked ? " picked" : ""}`}
       >
         <ScoreCellInner>
-          {groupBy === "level" || groupBy === "rating_ranks" ? (
-            <ScoreLevel className="diff">
-              {difficulties[note.difficulty].substring(0, 3)}{" "}
-              {note.internal_lv != null
-                ? note.internal_lv.toFixed(1)
-                : note.level}
-            </ScoreLevel>
-          ) : note.internal_lv != null &&
-            (alwaysInternalLv || orderBy === "internalLv") ? (
-            <ScoreLevel>{note.internal_lv.toFixed(1)}</ScoreLevel>
-          ) : (
-            <ScoreLevel
-              className={!note.level.includes("+") ? "non-plus" : "plus"}
-            >
-              {note.level}
-            </ScoreLevel>
-          )}
+          <LevelContainer>
+            {groupBy === "level" || groupBy === "rating_ranks" ? (
+              <ScoreLevel className="diff">
+                {difficulties[note.difficulty].substring(0, 3)}
+              </ScoreLevel>
+            ) : (
+              <></>
+            )}
+            {note.internal_lv != null &&
+            (groupBy === "level" ||
+              groupBy === "rating_ranks" ||
+              alwaysInternalLv ||
+              orderBy === "internalLv" ||
+              orderBy === "rating") ? (
+              <ScoreLevel>{note.internal_lv.toFixed(1)}</ScoreLevel>
+            ) : (
+              <ScoreLevel
+                className={!note.level.includes("+") ? "non-plus" : "plus"}
+              >
+                {note.level}
+              </ScoreLevel>
+            )}
+          </LevelContainer>
           {score != null ? (
             <>
               <ActualScore>{score.score.toFixed(4)}%</ActualScore>
@@ -772,7 +783,7 @@ const Player: FunctionComponent = () => {
       <ScoreTable lang="ja">
         <colgroup>
           <col />
-          <col style={{ width: "2.7em" }} />
+          <col style={{ width: "2.2em" }} />
           {groupBy !== "category" && groupBy !== "version" ? (
             <col style={{ width: "55%" }} />
           ) : (
