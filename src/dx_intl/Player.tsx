@@ -33,10 +33,11 @@ import {
   FormControlLabel,
   Switch,
   SelectChangeEvent,
+  Popover,
 } from "@mui/material"
 import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
 import { lighten, styled } from "@mui/material/styles"
-import { FunctionComponent, useState, useMemo } from "react"
+import React, { FunctionComponent, useState, useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
@@ -48,6 +49,7 @@ import {
   Dx_Intl_Notes,
   DxIntlPlayersEditableDocument,
 } from "../generated/graphql"
+import NoteRating from "./NoteRating"
 import Record from "./Record"
 import Variant from "./Variant"
 import { ComboFlag, SyncFlag } from "./flags"
@@ -67,6 +69,13 @@ import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
 } from "./helper"
+
+type NoteEntry = Pick<
+  Dx_Intl_Notes,
+  "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
+>
+
+type NoteRatingEntry = Parameters<typeof NoteRating>[0]
 
 const Container = styled("div")`
   display: flex;
@@ -222,6 +231,9 @@ const ScoreCell = styled(TableCell)`
       background: ${lighten(purple[50], 0.5)};
     }
   }
+  &.has-rating {
+    cursor: pointer;
+  }
 `
 const ScoreCellInner = styled("div")`
   display: flex;
@@ -249,7 +261,6 @@ const ScoreLevel = styled("span")`
   }
   &.diff {
     width: 2.4em;
-    margin-right: 0.2em;
   }
 
   .difficulty-0 & {
@@ -266,6 +277,9 @@ const ScoreLevel = styled("span")`
   }
   .difficulty-4 & {
     color: ${purple[200]};
+  }
+  .has-rating & {
+    text-decoration: underline;
   }
 `
 export const ActualScore = styled("span")`
@@ -342,6 +356,10 @@ const Player: FunctionComponent = () => {
   const [difficultySet, setDifficultySet] = useState(0)
   const [includeInactive, setIncludeInactive] = useState(false)
   const [alwaysInternalLv, setAlwaysInternalLv] = useState(false)
+  const [ratingPop, setRatingPop] = useState<{
+    anchor: HTMLElement
+    entry: NoteRatingEntry
+  } | null>(null)
   const params = useParams<{ nickname: string }>()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
@@ -373,7 +391,11 @@ const Player: FunctionComponent = () => {
     if (recordResult.error != null || recordResult.data == null) {
       return new Map()
     }
-    const scores = recordResult.data.dx_intl_players[0].dx_intl_scores
+    const player = recordResult.data.dx_intl_players[0]
+    if (player == null) {
+      return new Map()
+    }
+    const scores = player.dx_intl_scores
     return new Map(scores.map((score) => [getNoteHash(score), score]))
   }, [recordResult])
 
@@ -496,6 +518,35 @@ const Player: FunctionComponent = () => {
     setAlwaysInternalLv(event.target.checked)
   }
 
+  const handleRatingPopOpen = (
+    event: React.MouseEvent<HTMLElement>,
+    note: NoteEntry,
+    score: number | null | undefined,
+    rating?: number
+  ): void => {
+    if (window.getSelection()?.type === "Range") {
+      // Prevent selecting score trigger click
+      return
+    }
+    if (
+      note == null ||
+      note.internal_lv == null ||
+      score == null ||
+      rating == null
+    ) {
+      return
+    }
+    const internalLv = note.internal_lv
+    setRatingPop({
+      anchor: event.currentTarget,
+      entry: { internalLv, score },
+    })
+  }
+
+  const handleRatingPopClose = (event: React.MouseEvent<HTMLElement>): void => {
+    setRatingPop(null)
+  }
+
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
@@ -520,14 +571,10 @@ const Player: FunctionComponent = () => {
         difficulties.slice(2 * difficultySet, 2 * difficultySet + 3)
       )
     : [...difficulties]
-  const getNoteScoreCell = (
-    note: Pick<
-      Dx_Intl_Notes,
-      "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
-    >
-  ): JSX.Element => {
+  const getNoteScoreCell = (note: NoteEntry): JSX.Element => {
     const hash = getNoteHash(note)
     const score = scoreMap.get(hash)
+    const rating = ratingMap.get(hash)
     const newRank = newRanks.get(hash)
     const oldRank = oldRanks.get(hash)
     const picked =
@@ -536,13 +583,20 @@ const Player: FunctionComponent = () => {
     return (
       <ScoreCell
         key={getNoteHash(note)}
-        className={`difficulty-${note.difficulty}${picked ? " picked" : ""}`}
+        className={`difficulty-${note.difficulty}${picked ? " picked" : ""}${
+          rating != null ? " has-rating" : ""
+        }`}
+        onClick={(e) =>
+          rating != null
+            ? handleRatingPopOpen(e, note, score?.score, rating)
+            : ""
+        }
       >
         <ScoreCellInner>
           <LevelContainer>
             {groupBy === "level" || groupBy === "rating_ranks" ? (
               <ScoreLevel className="diff">
-                {difficulties[note.difficulty].substring(0, 3)}
+                {difficulties[note.difficulty].substring(0, 3)}&nbsp;
               </ScoreLevel>
             ) : (
               <></>
@@ -700,7 +754,8 @@ const Player: FunctionComponent = () => {
             {
               sortedRows.filter(
                 (row) =>
-                  (groupBy !== "level" && groupBy !== "rating_ranks") ||
+                  groupBy === "level" ||
+                  groupBy === "rating_ranks" ||
                   difficulty in row.notes
               ).length
             }
@@ -853,6 +908,14 @@ const Player: FunctionComponent = () => {
           ))}
         </TableBody>
       </ScoreTable>
+      <Popover
+        open={ratingPop != null}
+        anchorEl={ratingPop?.anchor}
+        onClose={handleRatingPopClose}
+        anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+      >
+        {ratingPop != null ? <NoteRating {...ratingPop.entry} /> : <></>}
+      </Popover>
     </>
   )
 }

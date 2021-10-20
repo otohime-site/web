@@ -114,6 +114,29 @@ export const difficulties = [
   "Re:Master",
 ] as const
 
+export const RANKS = [
+  "A",
+  "AA",
+  "AAA",
+  "S",
+  "S+",
+  "SS",
+  "SS+",
+  "SSS",
+  "SSS+",
+] as const
+export const RANK_SCORES: Array<[number, typeof RANKS[number], number]> = [
+  [80, "A", 0.136],
+  [90, "AA", 0.152],
+  [94, "AAA", 0.168],
+  [97, "S", 0.2],
+  [98, "S+", 0.203],
+  [99, "SS", 0.208],
+  [99.5, "SS+", 0.211],
+  [100, "SSS", 0.216],
+  [100.5, "SSS+", 0.224],
+]
+
 export const comboFlags = ["", "fc", "fc+", "ap", "ap+"] as const
 export const syncFlags = ["", "fs", "fs+", "fdx", "fdx+"] as const
 
@@ -162,23 +185,17 @@ export const getNoteHash = (instance: {
     instance.difficulty ?? "-1"
   }`
 
+// Get current index of SCORE_RANKS that matches the score
+export const getRankScoreIndex = (score: number): number =>
+  RANK_SCORES.reduce((curr, rank, idx) => (rank[0] <= score ? idx : curr), -1)
+
 const getScoreStatKey = (score: number): ScoreStat[] => {
-  if (score >= 100.5) {
-    return [...SCORE_STATS]
-  } else if (score >= 100) {
-    return SCORE_STATS.slice(0, -1)
-  } else if (score >= 99.5) {
-    return SCORE_STATS.slice(0, -2)
-  } else if (score >= 99.0) {
-    return SCORE_STATS.slice(0, -3)
-  } else if (score >= 98.0) {
-    return SCORE_STATS.slice(0, -4)
-  } else if (score >= 97.0) {
-    return SCORE_STATS.slice(0, -5)
-  } else if (score >= 80.0) {
-    return SCORE_STATS.slice(0, -6)
-  }
-  return []
+  const index = getRankScoreIndex(score)
+  return index === -1
+    ? []
+    : RANK_SCORES.slice(0, index + 1)
+        .map((s) => s[1])
+        .filter((st): st is ScoreStat => st !== "AA" && st !== "AAA")
 }
 
 export const arrangeScoreStats = (
@@ -192,15 +209,7 @@ export const arrangeScoreStats = (
     return prev
   }, new Map(SCORE_STATS.map((rank) => [rank, 0])))
 
-export const SCORE_STATS = [
-  "CLR",
-  "S",
-  "S+",
-  "SS",
-  "SS+",
-  "SSS",
-  "SSS+",
-] as const
+export const SCORE_STATS = ["A", "S", "S+", "SS", "SS+", "SSS", "SSS+"] as const
 type ScoreStat = typeof SCORE_STATS[number]
 
 export const arrangeComboStats = (
@@ -238,26 +247,10 @@ export const SYNC_STATS = ["fs", "fs+", "fdx", "fdx+"] as const
 type SyncStat = typeof SYNC_STATS[number]
 
 export const getRating = (score: number, internalLv: number): number => {
-  if (score >= 100.5) {
-    return Math.floor(0.224 * 100.5 * internalLv)
-  } else if (score >= 100) {
-    return Math.floor(0.216 * score * internalLv)
-  } else if (score >= 99.5) {
-    return Math.floor(0.211 * score * internalLv)
-  } else if (score >= 99) {
-    return Math.floor(0.208 * score * internalLv)
-  } else if (score >= 98) {
-    return Math.floor(0.203 * score * internalLv)
-  } else if (score >= 97) {
-    return Math.floor(0.2 * score * internalLv)
-  } else if (score >= 94) {
-    return Math.floor(0.168 * score * internalLv)
-  } else if (score >= 90) {
-    return Math.floor(0.152 * score * internalLv)
-  } else if (score >= 80) {
-    return Math.floor(0.136 * score * internalLv)
-  }
-  return 0
+  const rankScore = RANK_SCORES[getRankScoreIndex(score)]
+  return rankScore != null
+    ? Math.floor(rankScore[2] * Math.min(100.5, score) * internalLv)
+    : 0
 }
 
 export const prepareSongs = (
