@@ -1,16 +1,5 @@
 import { TabContext, TabPanel } from "@mui/lab"
-import {
-  Typography,
-  Stepper,
-  Step,
-  StepLabel,
-  Paper,
-  Grid,
-  Tabs,
-  Tab,
-  Link,
-  Button,
-} from "@mui/material"
+import { Typography, Paper, Grid, Tabs, Tab, Link, Button } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -18,6 +7,11 @@ import { Link as RouterLink } from "react-router-dom"
 import Token from "./Token"
 import { useAuth } from "./auth"
 import DxUserPlayers from "./dx_intl/UserPlayers"
+import Screenshot from "./screenshot.jpg"
+
+const StyledGrid = styled(Grid)`
+  padding: 16px;
+`
 
 const SpacedContainer = styled("div")`
   padding: 8px;
@@ -46,30 +40,23 @@ const HomeComponent: FunctionComponent = () => {
         <Helmet>
           <title>Otohime: 音 Game 成績單網站</title>
         </Helmet>
-        <SpacedTypo variant="h5">Otohime - 音 Game 成績單網站</SpacedTypo>
-        <Typography variant="body1">
-          目前支援 maimai DX 國際版的成績集記與排名。
-        </Typography>
-        <SpacedTypo variant="h6">如何使用</SpacedTypo>
-        <Stepper orientation="vertical" activeStep={-1}>
-          <Step>
-            <StepLabel>到官方成績單網站註冊，並登錄卡片</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>
-              以 Facebook 帳號登入 Otohime，新增一個玩家紀錄
-            </StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>取得 Bookmarklet 加入您的瀏覽器書籤</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>進入官方成績單後觸發 Bookmarklet</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>選擇玩家紀錄匯入成績即可！</StepLabel>
-          </Step>
-        </Stepper>
+        <Grid container spacing={2} alignItems="center">
+          <StyledGrid item md={6}>
+            <SpacedTypo variant="h5">音 Game 成績，輕鬆記錄</SpacedTypo>
+            <Typography variant="body1">
+              Otohime
+              可以把您遊戲機台的成績整理至單一的成績單頁面，將其設為公開或自己才能閱覽。
+              目前支援 maimai DX 國際版。
+              <ul>
+                <li>目前採用 Facebook 登入</li>
+                <li>適用桌面與可使用 Bookmarklet 的手機瀏覽器</li>
+              </ul>
+            </Typography>
+          </StyledGrid>
+          <Grid item md={6}>
+            <img src={Screenshot} style={{ width: "100%" }} />
+          </Grid>
+        </Grid>
       </>
     )
   }

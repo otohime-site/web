@@ -1,9 +1,9 @@
+import CopyWebpackPlugin from "copy-webpack-plugin"
+import HTMLWebpackPlugin from "html-webpack-plugin"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { resolve } from "path"
 import { Configuration } from "webpack"
 import { Configuration as DevServerConfiguration } from "webpack-dev-server"
-import MiniCssExtractPlugin from "mini-css-extract-plugin"
-import HTMLWebpackPlugin from "html-webpack-plugin"
-import CopyWebpackPlugin from "copy-webpack-plugin"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
 // Workaround for @types/webpack-dev-server versions...
@@ -48,7 +48,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.(svg|png|webmanifest)$/,
+        test: /\.(jpg|svg|png|webmanifest)$/,
         type: "asset/resource",
       },
     ],
