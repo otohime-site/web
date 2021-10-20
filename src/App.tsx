@@ -190,7 +190,7 @@ const App: FunctionComponent = () => {
         </Suspense>
         <StyledFooter>
           <Typography variant="body2" color="textSecondary">
-            &copy; 2020 Otohime Team。Otohime 是一個開源專案。
+            &copy; 2020－2021 Otohime Team。Otohime 是一個開源專案。
             <StyledLink
               href="https://github.com/otohime-site/"
               target="_blank"
@@ -199,7 +199,13 @@ const App: FunctionComponent = () => {
               <GitHubIcon style={{ marginRight: "8px" }} fontSize="inherit" />
               GitHub
             </StyledLink>
-            <StyledLink>關於我們</StyledLink>
+            <StyledLink
+              href="https://littlebtc.gitbook.io/otohime-docs/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              關於我們
+            </StyledLink>
           </Typography>
           <Typography variant="body2" color="textSecondary">
             Otohime
