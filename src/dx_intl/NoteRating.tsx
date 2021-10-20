@@ -1,7 +1,23 @@
-import { Table, TableBody, TableCell, TableRow } from "@mui/material"
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
+import {
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Tooltip,
+} from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import { getRankScoreIndex, getRating, RANK_SCORES } from "./helper"
+
+const RatingTable = styled(Table)`
+  width: 10em;
+  a svg {
+    margin-left: 0.5em;
+    vertical-align: middle;
+  }
+`
 
 const RatingTableCell = styled(TableCell)`
   padding: 8px;
@@ -26,12 +42,21 @@ const NoteRating: FunctionComponent<{
         ])
       : []
   return (
-    <Table>
+    <RatingTable>
       <TableBody>
         <TableRow>
-          <RatingTableCell colSpan={2}>
-            {internalLv.toFixed(1)} - {rating} / {maxRating}
-          </RatingTableCell>
+          <RatingTableCell>{internalLv.toFixed(1)}</RatingTableCell>
+          <RatingDiffCell>
+            {rating} / {maxRating}
+            <Tooltip title="顯示相關說明">
+              <Link
+                href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
+                target="_blank"
+              >
+                <HelpOutlineIcon fontSize="inherit" />
+              </Link>
+            </Tooltip>
+          </RatingDiffCell>
         </TableRow>
         {targets.length === 0 ? (
           <TableRow>
@@ -47,7 +72,7 @@ const NoteRating: FunctionComponent<{
           </TableRow>
         ))}
       </TableBody>
-    </Table>
+    </RatingTable>
   )
 }
 
