@@ -57,6 +57,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
     extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
+    hot: true,
     devMiddleware: {
       publicPath: "/",
     },
