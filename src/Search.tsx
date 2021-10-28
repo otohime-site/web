@@ -22,12 +22,14 @@ const SearchContainer = styled("div")(
   background-color: white;
   width: auto;
   position: relative;
+  margin-left: 32px;
   ${theme.breakpoints.down("sm")} {
     position: absolute;
     top: 0;
     left: 8px;
     right: 8px;
     margin-top: 4px;
+    margin-left: 0;
     display: flex;
     margin: ${theme.spacing(1)}
     .MuiAutocomplete-root {
