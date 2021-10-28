@@ -552,5 +552,11 @@ export const downloadCSV = async (params: {
     ]
   }, [])
   const csvText = papa.unparse(data)
-  saveAs(new Blob([csvText]), filename, { autoBom: true })
+  // Append BOM to ensure Excel can read it
+  saveAs(
+    new Blob([String.fromCharCode(0xfeff), csvText], {
+      type: "text/csv; charset=utf-8",
+    }),
+    filename
+  )
 }
