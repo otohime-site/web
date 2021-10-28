@@ -17,7 +17,7 @@ import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
 import { styled } from "@mui/material/styles"
 import { formatRelative } from "date-fns"
 import { zhTW } from "date-fns/locale"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
@@ -35,12 +35,9 @@ import { ActualScore, FlagContainer } from "./Player"
 import { classRankNames, courseRankNames } from "./Ranks"
 import Variant from "./Variant"
 import { ComboFlag, SyncFlag } from "./flags"
-import { difficulties, FlattenedNote, getNoteHash } from "./helper"
+import { difficulties, getNoteHash, prepareSongs, VariantEntry } from "./helper"
 
-interface FlattenNodeWithBeforeAfter extends FlattenedNote {
-  before?: Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
-  after?: Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
-}
+type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 
 const StyledTable = styled(Table)(
   ({ theme }) => `
@@ -193,6 +190,61 @@ const PlayerHistory: FunctionComponent = () => {
     },
     pause: loading || params.hash == null || params.hash.length === 0,
   })
+
+  // Arrange variants
+  const entries = useMemo<VariantEntry[]>(() => {
+    if (songsResult.error != null || songsResult.data == null) {
+      return []
+    }
+    const { variantEntries } = prepareSongs(songsResult.data.dx_intl_songs)
+    return variantEntries.reduce<VariantEntry[]>((prev, entry) => {
+      const { notes, ...restEntry } = entry
+      return [
+        ...prev,
+        ...notes.map((note) => ({
+          ...restEntry,
+          notes: [note],
+        })),
+      ]
+    }, [])
+  }, [songsResult])
+
+  const { beforeMap, afterMap } = useMemo(() => {
+    const beforeMap: Map<string, HistoryEntry> = new Map(
+      (timelineResult.data?.beforeScores ?? []).map((score) => [
+        getNoteHash({
+          song_id: score.song_id ?? "",
+          deluxe: score.deluxe ?? false,
+          difficulty: score.difficulty ?? -1,
+        }),
+        {
+          score: score.score ?? 0,
+          combo_flag: score.combo_flag ?? "",
+          sync_flag: score.sync_flag ?? "",
+        },
+      ])
+    )
+    const afterMap: Map<string, HistoryEntry> = new Map(
+      (timelineResult.data?.afterScores ?? []).map((score) => [
+        getNoteHash({
+          song_id: score.song_id ?? "",
+          deluxe: score.deluxe ?? false,
+          difficulty: score.difficulty ?? -1,
+        }),
+        {
+          score: score.score ?? 0,
+          combo_flag: score.combo_flag ?? "",
+          sync_flag: score.sync_flag ?? "",
+        },
+      ])
+    )
+
+    return {
+      beforeMap,
+      afterMap,
+    }
+  }, [timelineResult])
+
   if (timelinesResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
@@ -206,80 +258,6 @@ const PlayerHistory: FunctionComponent = () => {
         沒有歷史紀錄。可能是還沒有上傳成績，或著成績單的隱私設定為「私人」。
       </Alert>
     )
-  }
-
-  const notes: Map<string, FlattenNodeWithBeforeAfter> =
-    params.hash != null && songsResult.data != null
-      ? new Map(
-          songsResult.data.dx_intl_songs.reduce<Array<[string, FlattenedNote]>>(
-            (accr, song) => [
-              ...accr,
-              ...song.dx_intl_variants.reduce<Array<[string, FlattenedNote]>>(
-                (accrInner, variant) => [
-                  ...accrInner,
-                  ...variant.dx_intl_notes.map<[string, FlattenedNote]>(
-                    (note) => [
-                      getNoteHash({
-                        song_id: song.id,
-                        deluxe: variant.deluxe,
-                        ...note,
-                      }),
-                      {
-                        song_id: song.id,
-                        category: song.category,
-                        title: song.title,
-                        order: song.order,
-                        deluxe: variant.deluxe,
-                        version: variant.version,
-                        active: variant.active,
-                        ...note,
-                      },
-                    ]
-                  ),
-                ],
-                []
-              ),
-            ],
-            []
-          )
-        )
-      : new Map()
-
-  if (timelineResult.data != null) {
-    timelineResult.data.beforeScores.forEach((score) => {
-      const note = notes.get(
-        getNoteHash({
-          song_id: score.song_id ?? "",
-          deluxe: score.deluxe ?? false,
-          difficulty: score.difficulty ?? -1,
-        })
-      )
-      if (score == null || note == null) {
-        return
-      }
-      note.before = {
-        score: score.score ?? 0,
-        combo_flag: score.combo_flag ?? "",
-        sync_flag: score.sync_flag ?? "",
-      }
-    })
-    timelineResult.data.afterScores.forEach((score) => {
-      const note = notes.get(
-        getNoteHash({
-          song_id: score.song_id ?? "",
-          deluxe: score.deluxe ?? false,
-          difficulty: score.difficulty ?? -1,
-        })
-      )
-      if (score == null || note == null) {
-        return
-      }
-      note.after = {
-        score: score.score ?? 0,
-        combo_flag: score.combo_flag ?? "",
-        sync_flag: score.sync_flag ?? "",
-      }
-    })
   }
 
   const recordDiffRows = (
@@ -422,48 +400,56 @@ const PlayerHistory: FunctionComponent = () => {
         ) : (
           <></>
         )}
-        {[...notes.values()]
-          .filter((note) => note.before != null || note.after != null)
-          .map((note) => (
-            <TableRow key={getNoteHash(note)}>
-              <TableCell component="th">{note.title}</TableCell>
-              <TableCell>
-                <Variant deluxe={note.deluxe} />
-              </TableCell>
-              <DiffCell className={`difficulty-${note.difficulty}`}>
-                {difficulties[note.difficulty].substr(0, 3)} {note.level}
-              </DiffCell>
-              <BeforeCell>
-                {note.before != null ? (
-                  <BeforeAfterContainer>
-                    <ActualScore>{note.before.score.toFixed(4)}%</ActualScore>
-                    <FlagContainer>
-                      <ComboFlag flag={note.before.combo_flag} />
-                      <SyncFlag flag={note.before.sync_flag} />
-                    </FlagContainer>
-                  </BeforeAfterContainer>
-                ) : (
-                  <BeforeAfterContainer />
-                )}
-              </BeforeCell>
-              <TableCell>
-                <ArrowForwardIcon />
-              </TableCell>
-              <TableCell>
-                {note.after != null ? (
-                  <BeforeAfterContainer>
-                    <ActualScore>{note.after.score.toFixed(4)}%</ActualScore>
-                    <FlagContainer>
-                      <ComboFlag flag={note.after.combo_flag} />
-                      <SyncFlag flag={note.after.sync_flag} />
-                    </FlagContainer>
-                  </BeforeAfterContainer>
-                ) : (
-                  <BeforeAfterContainer />
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+        {entries
+          .filter((entry) => {
+            const hash = entry.notes[0].hash
+            return beforeMap.has(hash) || afterMap.has(hash)
+          })
+          .map((entry) => {
+            const note = entry.notes[0]
+            const before = beforeMap.get(note.hash)
+            const after = afterMap.get(note.hash)
+            return (
+              <TableRow key={note.hash}>
+                <TableCell component="th">{entry.title}</TableCell>
+                <TableCell>
+                  <Variant deluxe={entry.deluxe} />
+                </TableCell>
+                <DiffCell className={`difficulty-${note.difficulty}`}>
+                  {difficulties[note.difficulty].substr(0, 3)} {note.level}
+                </DiffCell>
+                <BeforeCell>
+                  {before != null ? (
+                    <BeforeAfterContainer>
+                      <ActualScore>{before.score.toFixed(4)}%</ActualScore>
+                      <FlagContainer>
+                        <ComboFlag flag={before.combo_flag} />
+                        <SyncFlag flag={before.sync_flag} />
+                      </FlagContainer>
+                    </BeforeAfterContainer>
+                  ) : (
+                    <BeforeAfterContainer />
+                  )}
+                </BeforeCell>
+                <TableCell>
+                  <ArrowForwardIcon />
+                </TableCell>
+                <TableCell>
+                  {after != null ? (
+                    <BeforeAfterContainer>
+                      <ActualScore>{after.score.toFixed(4)}%</ActualScore>
+                      <FlagContainer>
+                        <ComboFlag flag={after.combo_flag} />
+                        <SyncFlag flag={after.sync_flag} />
+                      </FlagContainer>
+                    </BeforeAfterContainer>
+                  ) : (
+                    <BeforeAfterContainer />
+                  )}
+                </TableCell>
+              </TableRow>
+            )
+          })}
       </TableBody>
     </StyledTable>
   )

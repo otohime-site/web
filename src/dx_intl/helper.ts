@@ -144,13 +144,6 @@ export type NoteList = Array<{
   level: Scalars["dx_intl_level"]
 }>
 
-export type FlattenedNote = { song_id: string } & Pick<
-  Dx_Intl_Songs,
-  "category" | "title" | "order"
-> &
-  Pick<Dx_Intl_Variants, "deluxe" | "version" | "active"> &
-  Pick<Dx_Intl_Notes, "difficulty" | "level">
-
 type VariantEntryNote = Pick<
   Dx_Intl_Notes,
   "difficulty" | "level" | "internal_lv"
