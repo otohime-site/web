@@ -37,7 +37,8 @@ import {
 } from "@mui/material"
 import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
 import { lighten, styled } from "@mui/material/styles"
-import React, { FunctionComponent, useState, useMemo } from "react"
+import { format } from "date-fns"
+import React, { FunctionComponent, useState, useMemo, useCallback } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
@@ -68,6 +69,7 @@ import {
   arrangeSortedRows,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
+  downloadCSV,
 } from "./helper"
 
 type NoteEntry = Pick<
@@ -442,6 +444,20 @@ const Player: FunctionComponent = () => {
   const useSingleDiffLayout = useMediaQuery<Theme>((theme) =>
     theme.breakpoints.down("md")
   )
+
+  const handleDownloadCSV = useCallback(async () => {
+    const updatedAt = recordResult.data?.dx_intl_players[0]?.updated_at
+    const updatedAtStr =
+      updatedAt != null ? format(new Date(updatedAt), "yyyy-MM-dd") : ""
+    const filename = `${params.nickname} - ${updatedAtStr}.csv`
+    await downloadCSV({
+      filename,
+      variantEntries,
+      scoreMap,
+      ratingMap,
+    })
+  }, [params, recordResult, variantEntries, scoreMap, ratingMap])
+
   const getHeader = (sparsedIndex: number): string => {
     switch (groupBy) {
       case "category":
@@ -743,6 +759,11 @@ const Player: FunctionComponent = () => {
             }
             label="總是顯示內部等級"
           />
+        </AdvancedControls>
+        <AdvancedControls>
+          <Button variant="contained" onClick={handleDownloadCSV}>
+            以 CSV 下載成績單
+          </Button>
         </AdvancedControls>
         <AccordionDetailsVertical>
           <StatTitleTypo variant="subtitle2">

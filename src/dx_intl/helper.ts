@@ -1,3 +1,4 @@
+import { saveAs } from "file-saver"
 import {
   Scalars,
   Dx_Intl_Scores,
@@ -493,4 +494,63 @@ export const arrangeSortedRows = (params: {
     comboStats: arrangeComboStats(columnScores),
     syncStats: arrangeSyncStats(columnScores),
   }
+}
+
+export const downloadCSV = async (params: {
+  filename?: string
+  variantEntries: VariantEntry[]
+  scoreMap: Map<string, ScoreEntry>
+  ratingMap: Map<string, number>
+}): Promise<void> => {
+  type CSVEntry = Omit<
+    VariantEntry,
+    "deluxe" | "active" | "song_id" | "notes"
+  > &
+    Omit<VariantEntryNote, "hash" | "internal_lv"> & {
+      deluxe: string
+      active: string
+      category_repr: string
+      version_repr: string
+      difficulty_repr: string
+      internal_lv: string
+      score: string
+      combo_flag: string
+      sync_flag: string
+      rating: string
+    }
+  const papa = await import("papaparse")
+  const { filename, variantEntries, scoreMap, ratingMap } = params
+  const data = variantEntries.reduce<CSVEntry[]>((prev, entry) => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { notes, song_id, ...restEntry } = entry
+    return [
+      ...prev,
+      ...notes.map((note) => {
+        const { hash, ...restNote } = note
+        const score = scoreMap.get(hash)
+        const rating = ratingMap.get(hash)
+        return {
+          category: restEntry.category,
+          category_repr: categories[restEntry.category] ?? "",
+          order: restEntry.order,
+          title: restEntry.title,
+          deluxe: restEntry.deluxe ? "DX" : "STD",
+          active: restEntry.active ? "Y" : "N",
+          version: restEntry.version,
+          version_repr: versions[restEntry.version] ?? "",
+          difficulty: restNote.difficulty,
+          difficulty_repr: difficulties[restNote.difficulty] ?? "",
+          level: restNote.level,
+          internal_lv:
+            restNote.internal_lv != null ? restNote.internal_lv.toFixed(1) : "",
+          score: score?.score != null ? score.score.toFixed(4) : "",
+          combo_flag: score?.combo_flag ?? "",
+          sync_flag: score?.sync_flag ?? "",
+          rating: rating != null ? rating.toString() : "",
+        }
+      }),
+    ]
+  }, [])
+  const csvText = papa.unparse(data)
+  saveAs(new Blob([csvText]), filename, { autoBom: true })
 }
