@@ -362,7 +362,7 @@ const Player: FunctionComponent = () => {
     anchor: HTMLElement
     entry: NoteRatingEntry
   } | null>(null)
-  const params = useParams<{ nickname: string }>()
+  const params = useParams<"nickname">()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname },
@@ -370,7 +370,7 @@ const Player: FunctionComponent = () => {
   })
   const [recordResult] = useQuery({
     query: DxIntlRecordWithScoresDocument,
-    variables: { ...params },
+    variables: { nickname: params.nickname },
     pause: loading,
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })

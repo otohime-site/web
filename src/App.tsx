@@ -14,7 +14,7 @@ import {
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, lazy, Suspense, useState } from "react"
 import { Helmet } from "react-helmet-async"
-import { Route, Link as RouterLink, Switch } from "react-router-dom"
+import { Route, Link as RouterLink, Routes } from "react-router-dom"
 import AppBar from "./AppBar"
 import AppDrawer from "./AppDrawer"
 import Search from "./Search"
@@ -182,11 +182,11 @@ const App: FunctionComponent = () => {
       </Hidden>
       <StyledMain>
         <Suspense fallback={<></>}>
-          <Switch>
-            <Route path="/" exact={true} component={Home} />
-            <Route path="/forget" exact={true} component={Forget} />
-            <Route path="/dxi" component={DxIntl} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/forget" element={<Forget />} />
+            <Route path="/dxi/*" element={<DxIntl />} />
+          </Routes>
         </Suspense>
         <StyledFooter>
           <Typography variant="body2" color="textSecondary">

@@ -82,7 +82,6 @@ const Rating: FunctionComponent<{
   legacy: boolean
 }> = ({ rating, legacy }) => (
   <RatingContainer
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     style={{ backgroundImage: `url(${getRatingImage(rating, legacy)}` }}
   >
     {rating}

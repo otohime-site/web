@@ -8,13 +8,13 @@ import {
   Typography,
 } from "@mui/material"
 import { FunctionComponent, useState } from "react"
-import { useHistory } from "react-router"
+import { useNavigate } from "react-router"
 import { useMutation } from "urql"
 import { useAuth } from "./auth"
 import { DeleteUserDocument } from "./generated/graphql"
 
 const Forget: FunctionComponent = () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [user, loading] = useAuth()
   const [, deleteUser] = useMutation(DeleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
@@ -27,7 +27,7 @@ const Forget: FunctionComponent = () => {
     try {
       await deleteUser()
       await user?.delete()
-      history.push("/")
+      navigate("/")
     } catch {
       alert("發生錯誤，請登出再登入後重試。")
     }

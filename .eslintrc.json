@@ -9,6 +9,7 @@
   },
   "rules": {
     "react/prop-types": "off",
-    "import/order": "error"
+    "import/order": "error",
+    "@typescript-eslint/restrict-template-expressions": "off"
   }
 }

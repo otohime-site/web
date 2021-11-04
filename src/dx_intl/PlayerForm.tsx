@@ -19,7 +19,7 @@ import {
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
-import { useHistory, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../auth"
@@ -68,8 +68,8 @@ const PlayerForm: FunctionComponent = () => {
     formState: { errors },
     reset,
   } = useForm<FormParams>()
-  const params = useParams<{ nickname?: string }>()
-  const history = useHistory()
+  const params = useParams<"nickname">()
+  const navigate = useNavigate()
   const [, insertPlayer] = useMutation(InsertDxIntlPlayerDocument)
   const [, updatePlayer] = useMutation(UpdateDxIntlPlayerDocument)
   const [, deletePlayer] = useMutation(DeleteDxIntlPlayerDocument)
@@ -90,7 +90,7 @@ const PlayerForm: FunctionComponent = () => {
         private: player.private ? "private" : "public",
       })
     }
-  }, [playerResult])
+  }, [playerResult, reset])
 
   const onSubmit = async (data: FormParams): Promise<void> => {
     if (params.nickname == null) {
@@ -106,7 +106,7 @@ const PlayerForm: FunctionComponent = () => {
         })
         return
       }
-      history.push("/")
+      navigate("/")
       return
     }
     const playerId = playerResult.data?.dx_intl_players[0]?.id
@@ -126,7 +126,7 @@ const PlayerForm: FunctionComponent = () => {
       })
       return
     }
-    history.push(`/dxi/p/${data.nickname}`)
+    navigate(`/dxi/p/${data.nickname}`)
   }
 
   const handleDeletePlayer = async (): Promise<void> => {
@@ -147,7 +147,7 @@ const PlayerForm: FunctionComponent = () => {
       throw new Error("No Player ID!")
     }
     await deletePlayer({ pk: playerId })
-    history.push("/")
+    navigate("/")
   }
 
   if (loading) {

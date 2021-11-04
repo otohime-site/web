@@ -19,7 +19,6 @@ const getGradeOrRanks = (
   if (record.course_rank != null && record.class_rank != null) {
     const courseRepr = courseRankNames[record.course_rank] ?? ""
     const classRepr = classRankNames[record.class_rank] ?? ""
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     return `${courseRepr} ${classRepr}`
   }
   // It should not happen but TypeScript won't know it

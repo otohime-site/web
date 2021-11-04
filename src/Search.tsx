@@ -4,7 +4,7 @@ import { Autocomplete, InputBase } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { AutocompleteChangeReason } from "@mui/material/useAutocomplete"
 import { FunctionComponent, useState } from "react"
-import { useHistory } from "react-router"
+import { useNavigate } from "react-router"
 import { useQuery } from "urql"
 import { useAuth } from "./auth"
 import PlayerListItem from "./dx_intl/PlayerListItem"
@@ -69,7 +69,7 @@ const Search: FunctionComponent<{
   shouldAutoFocus: boolean
 }> = ({ hideSearch, shouldAutoFocus }) => {
   const [user, loading] = useAuth()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [keyword, setKeyword] = useState("")
   const [keywordAnonResult] = useQuery({
     query: DxIntlPlayersWithKeywordAnonymousDocument,
@@ -118,7 +118,7 @@ const Search: FunctionComponent<{
     if (typeof value === "string") {
       return
     }
-    history.push(`/dxi/p/${value.nickname}`)
+    navigate(`/dxi/p/${value.nickname}`)
   }
 
   const onInputChange = (_: React.ChangeEvent<{}>, value: string): void => {

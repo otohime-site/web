@@ -28,9 +28,9 @@ const FontTypo = styled(Typography)`
 `
 
 const SongStats: FunctionComponent = () => {
-  const params =
-    useParams<{ songId: string; variant?: "std" | "dx"; difficulty?: string }>()
-  const { songId, variant } = params
+  const params = useParams<"songId" | "variant" | "difficulty">()
+  const { variant } = params
+  const songId = params.songId ?? ""
   const deluxe = variant != null ? variant === "dx" : null
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null

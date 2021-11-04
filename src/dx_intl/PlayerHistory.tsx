@@ -172,7 +172,7 @@ const hashToDateString = (hash: string): string => {
 
 const PlayerHistory: FunctionComponent = () => {
   const [, loading] = useAuth()
-  const params = useParams<{ nickname: string; hash?: string }>()
+  const params = useParams<"nickname" | "hash">()
   const [songsResult] = useQuery({
     query: DxIntlSongsDocument,
     pause: params.hash === null,
