@@ -42,7 +42,7 @@
     "@graphql-codegen/typed-document-node": "^2.0.0",
     "@graphql-codegen/typescript": "^2.0.0",
     "@graphql-codegen/typescript-operations": "^2.0.1",
-    "@trivago/prettier-plugin-sort-imports": "^2.0.4",
+    "@trivago/prettier-plugin-sort-imports": "^3.1.0",
     "@types/copy-webpack-plugin": "^8.0.1",
     "@types/file-saver": "^2.0.3",
     "@types/mini-css-extract-plugin": "^2.0.1",
