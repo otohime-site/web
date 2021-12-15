@@ -365,12 +365,12 @@ const Player: FunctionComponent = () => {
   const params = useParams<"nickname">()
   const [editableResult] = useQuery({
     query: DxIntlPlayersEditableDocument,
-    variables: { userId: user?.uid ?? "", nickname: params.nickname },
+    variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: loading || user == null,
   })
   const [recordResult] = useQuery({
     query: DxIntlRecordWithScoresDocument,
-    variables: { nickname: params.nickname },
+    variables: { nickname: params.nickname ?? "" },
     pause: loading,
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })

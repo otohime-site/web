@@ -179,13 +179,13 @@ const PlayerHistory: FunctionComponent = () => {
   })
   const [timelinesResult] = useQuery({
     query: DxIntlPlayersTimelinesDocument,
-    variables: { nickname: params.nickname },
+    variables: { nickname: params.nickname ?? "" },
     pause: loading,
   })
   const [timelineResult] = useQuery({
     query: DxIntlPlayerWithTimelineDocument,
     variables: {
-      nickname: params.nickname,
+      nickname: params.nickname ?? "",
       time: hashToDateString(params.hash ?? ""),
     },
     pause: loading || params.hash == null || params.hash.length === 0,

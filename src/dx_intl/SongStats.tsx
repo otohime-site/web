@@ -57,8 +57,12 @@ const SongStats: FunctionComponent = () => {
   const notes = variantMap.get(params.variant === "dx")?.notes ?? []
   const [statsResult] = useQuery({
     query: DxIntlScoresStatsDocument,
-    variables: { songId: song?.id ?? "", deluxe, difficulty },
-    pause: variant == null || difficulty == null,
+    variables: {
+      songId: song?.id ?? "",
+      deluxe: deluxe ?? false,
+      difficulty: difficulty ?? 0,
+    },
+    pause: variant == null || deluxe == null || difficulty == null,
   })
   const statsAccumulated = (
     statsResult.data?.dx_intl_scores_stats ?? []
