@@ -45,14 +45,13 @@
     "@trivago/prettier-plugin-sort-imports": "^3.1.0",
     "@types/file-saver": "^2.0.3",
     "@types/mini-css-extract-plugin": "^2.0.1",
-    "@types/node": "^16.4.2",
+    "@types/node": "^17.0.2",
     "@types/papaparse": "^5.3.1",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
     "@types/react-router-dom": "^5.1.7",
     "@types/webpack": "^5.28.0",
     "@types/webpack-bundle-analyzer": "^4.4.0",
-    "@types/webpack-dev-server": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "copy-webpack-plugin": "^10.1.0",
@@ -79,7 +78,7 @@
     "webpack": "^5.37.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^4.0.0"
+    "webpack-dev-server": "^4.7.0"
   },
   "lint-staged": {
     "*.ts,*.tsx,*.js": "eslint --cache --fix",
