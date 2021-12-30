@@ -8,7 +8,10 @@ import {
   Tooltip,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { FunctionComponent } from "react"
+import { FunctionComponent, useMemo } from "react"
+import { useQuery } from "urql"
+import { DxIntlPlayerScoreTimelineDocument } from "../generated/graphql"
+import { NoteEntry } from "./Player"
 import { getRankScoreIndex, getRating, RANK_SCORES } from "./helper"
 
 const RatingTable = styled(Table)`
@@ -28,19 +31,44 @@ const RatingDiffCell = styled(RatingTableCell)`
 `
 
 const NoteRating: FunctionComponent<{
-  internalLv: number
+  nickname?: string
+  note: NoteEntry
   score: number
-}> = ({ internalLv, score }) => {
-  const index = getRankScoreIndex(score)
-  const rating = getRating(score, internalLv)
-  const maxRating = getRating(100.5, internalLv)
-  const targets =
-    index >= 0
-      ? RANK_SCORES.slice(index + 1, index + 4).map(([minScore, rankName]) => [
-          rankName,
-          getRating(minScore, internalLv) - rating,
-        ])
-      : []
+}> = ({ nickname, note, score }) => {
+  const [scoreTimelineResult] = useQuery({
+    query: DxIntlPlayerScoreTimelineDocument,
+    variables: {
+      songId: note.song_id,
+      deluxe: note.deluxe,
+      difficulty: note.difficulty,
+      nickname: nickname ?? "",
+    },
+    pause: nickname == null,
+  })
+  console.log(scoreTimelineResult)
+  const internalLv = note.internal_lv
+  const [rating, maxRating, targets] = useMemo(() => {
+    if (internalLv == null) {
+      return [0, 0, []]
+    }
+    const index = getRankScoreIndex(score)
+    const rating = getRating(score, internalLv)
+    const maxRating = getRating(100.5, internalLv)
+    const targets =
+      index >= 0
+        ? RANK_SCORES.slice(index + 1, index + 4).map(
+            ([minScore, rankName]) => [
+              rankName,
+              getRating(minScore, internalLv) - rating,
+            ]
+          )
+        : []
+
+    return [rating, maxRating, targets]
+  }, [internalLv, score])
+  if (internalLv == null) {
+    return <></>
+  }
   return (
     <RatingTable>
       <TableBody>

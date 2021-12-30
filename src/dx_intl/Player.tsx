@@ -72,12 +72,15 @@ import {
   downloadCSV,
 } from "./helper"
 
-type NoteEntry = Pick<
+export type NoteEntry = Pick<
   Dx_Intl_Notes,
   "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
 >
 
-type NoteRatingEntry = Parameters<typeof NoteRating>[0]
+interface NoteRatingEntry {
+  note: NoteEntry
+  score: number
+}
 
 const Container = styled("div")`
   display: flex;
@@ -552,10 +555,9 @@ const Player: FunctionComponent = () => {
     ) {
       return
     }
-    const internalLv = note.internal_lv
     setRatingPop({
       anchor: event.currentTarget,
-      entry: { internalLv, score },
+      entry: { note, score },
     })
   }
 
@@ -935,7 +937,11 @@ const Player: FunctionComponent = () => {
         onClose={handleRatingPopClose}
         anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
       >
-        {ratingPop != null ? <NoteRating {...ratingPop.entry} /> : <></>}
+        {ratingPop != null ? (
+          <NoteRating nickname={params.nickname} {...ratingPop.entry} />
+        ) : (
+          <></>
+        )}
       </Popover>
     </>
   )
