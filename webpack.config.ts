@@ -3,6 +3,7 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { resolve } from "path"
 import { Configuration } from "webpack"
+import "webpack-dev-server"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
 const config: Configuration = {
