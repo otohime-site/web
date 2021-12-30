@@ -3,12 +3,9 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { resolve } from "path"
 import { Configuration } from "webpack"
-import { Configuration as DevServerConfiguration } from "webpack-dev-server"
 import { BookmarkletPlugin } from "./bookmarklet-plugin"
 
-// Workaround for @types/webpack-dev-server versions...
-// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/43232
-const config: Configuration & { devServer?: DevServerConfiguration } = {
+const config: Configuration = {
   mode: "development",
   watch: false,
   entry: {
@@ -31,6 +28,7 @@ const config: Configuration & { devServer?: DevServerConfiguration } = {
     new CopyWebpackPlugin({
       patterns: [
         resolve("./src/logo/favicon.ico"),
+        resolve("./src/logo/apple-touch-icon.png"),
         resolve("./src/logo/android-chrome-192x192.png"),
         resolve("./src/logo/android-chrome-512x512.png"),
       ],
