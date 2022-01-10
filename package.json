@@ -34,8 +34,7 @@
     "react-router": "^6.0.0",
     "react-router-dom": "^6.0.0",
     "subscriptions-transport-ws": "^0.9.18",
-    "urql": "^2.0.3",
-    "victory": "^36.2.0"
+    "urql": "^2.0.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.0.1",
