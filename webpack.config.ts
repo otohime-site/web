@@ -67,13 +67,20 @@ const config: Configuration = {
     https: true,
     historyApiFallback: true,
     proxy: {
-      "/graphql": {
-        target: "http://localhost:8580/",
-        pathRewrite: {
-          "^/graphql": "/v1/graphql",
-        },
-        ws: true,
-      },
+      "/graphql":
+        process.env.PROD_API != null
+          ? {
+              target: "https://api.otohi.me/",
+              changeOrigin: true,
+              ws: true,
+            }
+          : {
+              target: "http://localhost:8580/",
+              pathRewrite: {
+                "^/graphql": "/v1/graphql",
+              },
+              ws: true,
+            },
     },
     headers: {
       "Access-Control-Allow-Origin": "https://maimaidx-eng.com",
