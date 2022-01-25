@@ -39,16 +39,17 @@ export const versions = [
   "ORANGE",
   "ORANGE PLUS",
   "PiNK",
-  "PinK PLUS",
+  "PiNK PLUS",
   "MURASAKi",
   "MURASAKi PLUS",
   "MiLK",
   "MiLK PLUS",
   "FiNALE",
   "DX",
-  "DX Plus",
+  "DX PLUS",
   "Splash",
   "Splash PLUS",
+  "UNiVERSE",
 ] as const
 
 export const levels = [
