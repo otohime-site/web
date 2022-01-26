@@ -9,8 +9,6 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useMemo } from "react"
-import { useQuery } from "urql"
-import { DxIntlPlayerScoreTimelineDocument } from "../generated/graphql"
 import { NoteEntry } from "./Player"
 import { getRankScoreIndex, getRating, RANK_SCORES } from "./helper"
 
@@ -35,17 +33,6 @@ const NoteRating: FunctionComponent<{
   note: NoteEntry
   score: number
 }> = ({ nickname, note, score }) => {
-  const [scoreTimelineResult] = useQuery({
-    query: DxIntlPlayerScoreTimelineDocument,
-    variables: {
-      songId: note.song_id,
-      deluxe: note.deluxe,
-      difficulty: note.difficulty,
-      nickname: nickname ?? "",
-    },
-    pause: nickname == null,
-  })
-  console.log(scoreTimelineResult)
   const internalLv = note.internal_lv
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
