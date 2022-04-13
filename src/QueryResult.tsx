@@ -1,5 +1,5 @@
 import { Alert, Skeleton } from "@mui/material"
-import { FunctionComponent } from "react"
+import { FunctionComponent, PropsWithChildren } from "react"
 import { UseQueryState } from "urql"
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   skeletonHeight?: number | string
 }
 
-export const QueryResult: FunctionComponent<Props> = ({
+export const QueryResult: FunctionComponent<PropsWithChildren<Props>> = ({
   result,
   errorMsg,
   skeletonVariant,

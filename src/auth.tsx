@@ -11,6 +11,7 @@ import {
   useEffect,
   createContext,
   FunctionComponent,
+  PropsWithChildren,
 } from "react"
 import firebaseConfig from "./firebase"
 
@@ -22,7 +23,9 @@ export const AuthContext = createContext<{
   loading: boolean
 }>({ user: null, loading: true })
 
-export const AuthProvider: FunctionComponent = ({ children }) => {
+export const AuthProvider: FunctionComponent<PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 

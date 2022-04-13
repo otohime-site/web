@@ -64,7 +64,7 @@ const config: Configuration = {
       directory: resolve(__dirname, "./public"),
       publicPath: "/public",
     },
-    https: true,
+    server: "https",
     historyApiFallback: true,
     proxy: {
       "/graphql":
