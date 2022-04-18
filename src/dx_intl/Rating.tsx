@@ -65,16 +65,17 @@ const getRatingImage = (rating: number, legacy: boolean): any => {
 }
 
 const RatingContainer = styled("div")`
-  width: 8em;
-  height: 2em;
+  width: 7.56em;
+  height: 2.2em;
   background-size: cover;
-  padding-top: 0.2em;
-  padding-right: 0.22em;
+  padding-top: 0.4em;
+  padding-right: 0.34em;
   font-family: "M PLUS 1p";
   font-weight: 900;
   text-align: right;
-  letter-spacing: 0.22em;
-  color: #eecc66;
+  letter-spacing: 0.125em;
+  color: #e5c100;
+  -webkit-text-stroke: 0.03em #393939;
 `
 
 const Rating: FunctionComponent<{
