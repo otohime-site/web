@@ -6,7 +6,7 @@ import {
   StyledEngineProvider,
 } from "@mui/material/styles"
 import { SnackbarProvider } from "notistack"
-import { render } from "react-dom"
+import { createRoot } from "react-dom/client"
 import { HelmetProvider } from "react-helmet-async"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App"
@@ -24,8 +24,9 @@ const theme = createTheme({
   },
 })
 
-const root = document.getElementById("root")
-render(
+const container = document.getElementById("root")
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+createRoot(container!).render(
   <BrowserRouter>
     <HelmetProvider>
       <StyledEngineProvider injectFirst>
@@ -41,6 +42,5 @@ render(
         </ThemeProvider>
       </StyledEngineProvider>
     </HelmetProvider>
-  </BrowserRouter>,
-  root
+  </BrowserRouter>
 )

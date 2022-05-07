@@ -6,7 +6,7 @@ import {
   ThemeProvider,
   styled,
 } from "@mui/material/styles"
-import { render } from "react-dom"
+import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
 
@@ -38,10 +38,10 @@ if (document.getElementById("otohime-root") != null) {
 } else if (token == null) {
   alert("缺乏權杖，請確定您的 Bookmarklet 正確。")
 } else {
-  const root = document.createElement("div")
-  root.setAttribute("id", "otohime-root")
-  document.body.appendChild(root)
-  render(
+  const container = document.createElement("div")
+  container.setAttribute("id", "otohime-root")
+  document.body.appendChild(container)
+  createRoot(container).render(
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <GraphQLBookmarkletProvider token={token}>
@@ -52,7 +52,6 @@ if (document.getElementById("otohime-root") != null) {
           </ScopedCssBaseline>
         </GraphQLBookmarkletProvider>
       </ThemeProvider>
-    </StyledEngineProvider>,
-    root
+    </StyledEngineProvider>
   )
 }
