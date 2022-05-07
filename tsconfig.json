@@ -6,6 +6,11 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx"
-  }
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+  },
+  "references": [{
+    "path": "./tsconfig.vite.json"
+  }]
 }

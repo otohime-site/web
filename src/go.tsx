@@ -9,7 +9,8 @@ import {
 import { render } from "react-dom"
 import Book from "./Book"
 import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
-import "./global.css"
+
+// import "./global.css"
 
 const theme = createTheme({
   palette: {
