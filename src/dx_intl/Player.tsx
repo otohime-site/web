@@ -40,8 +40,8 @@ import { lighten, styled } from "@mui/material/styles"
 import { format } from "date-fns"
 import React, { FunctionComponent, useState, useMemo, useCallback } from "react"
 import { Helmet } from "react-helmet-async"
-import { useParams } from "react-router"
-import { Link as RouterLink } from "react-router-dom"
+import { useParams, useNavigate } from "react-router"
+import { Outlet, Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
@@ -352,6 +352,7 @@ const WithInactiveTableRow = styled(TableRow)`
 `
 
 const Player: FunctionComponent = () => {
+  const navigate = useNavigate()
   const [user, loading] = useAuth()
   const [currentTab, setCurrentTab] = useState(1)
   const [groupBy, setGroupBy] = useState<GROUP_BY>("category")
@@ -900,19 +901,10 @@ const Player: FunctionComponent = () => {
                 row.deluxe ? "true" : "false"
               }/${row.notes.length === 1 ? row.notes[0].difficulty : ""}`}
               className={row.active ? "" : "inactive"}
+              onClick={() => navigate(`s/${row.song_id.substring(0, 8)}`)}
+              style={{ cursor: "pointer" }}
             >
-              <TableCell>
-                <Link
-                  underline="hover"
-                  color="textPrimary"
-                  component={RouterLink}
-                  to={`/dxi/s/${row.song_id.substring(0, 8)}/${
-                    row.deluxe ? "dx" : "std"
-                  }/${row.notes.length === 1 ? row.notes[0].difficulty : ""}`}
-                >
-                  {row.title}
-                </Link>
-              </TableCell>
+              <TableCell>{row.title}</TableCell>
               <DeluxeCell>
                 <Variant deluxe={row.deluxe} />
               </DeluxeCell>
@@ -943,6 +935,7 @@ const Player: FunctionComponent = () => {
           <></>
         )}
       </Popover>
+      <Outlet />
     </>
   )
 }
