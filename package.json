@@ -27,7 +27,7 @@
     "clipboard-polyfill": "^3.0.3",
     "date-fns": "^2.21.3",
     "file-saver": "^2.0.5",
-    "firebase": "<9.8.0",
+    "firebase": "^9.8.1",
     "graphql": "^16.3.0",
     "notistack": "^2.0.4",
     "papaparse": "^5.3.1",
