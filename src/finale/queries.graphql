@@ -1,0 +1,155 @@
+fragment finalePlayersFields on finale_players {
+  id
+  nickname
+  private
+  created_at
+  updated_at
+  finale_record {
+    card_name
+    rating
+    max_rating
+    class
+  }
+}
+
+query finalePlayers {
+  finale_players {
+    ...finalePlayersFields
+  }
+}
+
+query finalePlayersForUser($userId: String!) {
+  finale_players(where: { user_id: { _eq: $userId } }) {
+    ...finalePlayersFields
+  }
+}
+
+fragment finaleSongsFields on finale_songs {
+  id
+  category
+  title
+  english_title
+  order
+  version
+  active
+  japan_only
+  finale_notes(order_by: { difficulty: asc }) {
+    difficulty
+    level
+  }
+}
+
+query finaleSongs {
+  finale_songs(order_by: [{ category: asc }, { order: asc }]) {
+    ...finaleSongsFields
+  }
+}
+
+query finaleSongsById($id: smallint!) {
+  finale_songs(
+    order_by: [{ category: asc }, { order: asc }]
+    where: { id: { _eq: $id } }
+  ) {
+    ...finaleSongsFields
+  }
+}
+
+query finaleRecordWithScores($nickname: String!) {
+  finale_players(where: { nickname: { _eq: $nickname } }) {
+    updated_at
+    private
+    finale_record {
+      card_name
+      title
+      rating
+      max_rating
+      class
+    }
+    finale_scores {
+      song_id
+      difficulty
+      score
+      raw_score
+      combo_flag
+      sync_flag
+      start
+    }
+  }
+}
+
+query finalePlayerScoreTimeline(
+  $nickname: String!
+  $songId: smallint!
+  $difficulty: smallint!
+) {
+  finale_scores_with_history(
+    where: {
+      song_id: { _eq: $songId }
+      difficulty: { _eq: $difficulty }
+      finale_player: { nickname: { _eq: $nickname } }
+    }
+    order_by: { start: asc }
+  ) {
+    start
+    score
+    combo_flag
+    sync_flag
+  }
+}
+
+query finalePlayersTimelines($nickname: String!) {
+  finale_players_timelines(where: { nickname: { _eq: $nickname } }) {
+    timelines
+  }
+}
+
+query finalePlayerWithTimeline($nickname: String!, $time: timestamptz!) {
+  beforeRecord: finale_records_with_history(
+    where: {
+      finale_player: { nickname: { _eq: $nickname } }
+      end: { _eq: $time }
+    }
+  ) {
+    card_name
+    title
+    rating
+    max_rating
+    class
+  }
+  afterRecord: finale_records_with_history(
+    where: {
+      finale_player: { nickname: { _eq: $nickname } }
+      start: { _eq: $time }
+    }
+  ) {
+    card_name
+    title
+    rating
+    max_rating
+    class
+  }
+  beforeScores: finale_scores_with_history(
+    where: {
+      finale_player: { nickname: { _eq: $nickname } }
+      end: { _eq: $time }
+    }
+  ) {
+    song_id
+    difficulty
+    score
+    combo_flag
+    sync_flag
+  }
+  afterScores: finale_scores_with_history(
+    where: {
+      finale_player: { nickname: { _eq: $nickname } }
+      start: { _eq: $time }
+    }
+  ) {
+    song_id
+    difficulty
+    score
+    combo_flag
+    sync_flag
+  }
+}
