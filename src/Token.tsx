@@ -11,7 +11,6 @@ import {
   DialogActions,
   Typography,
 } from "@mui/material"
-import * as clipboard from "clipboard-polyfill"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery, useMutation } from "urql"
@@ -51,7 +50,7 @@ const User: FunctionComponent = () => {
   ): Promise<void> => {
     e.preventDefault()
     try {
-      await clipboard.writeText(bookmarkletContent(token))
+      await navigator.clipboard.writeText(bookmarkletContent(token))
       setBookDialogOpen(true)
     } catch {
       alert("無法複製到剪貼簿。")
