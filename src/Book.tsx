@@ -20,6 +20,7 @@ import { QueryResult } from "./QueryResult"
 import PlayerListItem from "./dx_intl/PlayerListItem"
 import {
   DxIntlPlayersDocument,
+  DxIntlSongsRefMapCountDocument,
   InsertDxIntlRecordWithScoresDocument,
 } from "./generated/graphql"
 import host from "./host"
@@ -56,11 +57,16 @@ const Book: FunctionComponent = () => {
     undefined
   )
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
+  const [refMapCountResult] = useQuery({
+    query: DxIntlSongsRefMapCountDocument,
+  })
   const client = useClient()
   const [fetchState, setFetchState] = useState<
     "idle" | "fetching" | "error" | "done"
   >("idle")
   const [fetchProgress, setFetchProgress] = useState(0)
+  const mayFailWithMap =
+    (refMapCountResult.data?.dx_intl_songs ?? []).length === 1
   const handleFetch = async (): Promise<void> => {
     const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(
       (p) => p.id === selectedPlayerId
@@ -179,6 +185,15 @@ const Book: FunctionComponent = () => {
       onClose={handleClose}
     >
       <DialogTitle>更新成績</DialogTitle>
+      {mayFailWithMap ? (
+        <Alert severity="error">
+          由於已知的狀況，系統現在可能無法正常更新成績。
+          <br />
+          若更新失敗，請十分鐘後再試。這個問題排除時，此訊息會消失。
+        </Alert>
+      ) : (
+        <></>
+      )}
       {fetchState === "fetching" ? (
         <DialogContent>
           <Typography variant="body2">

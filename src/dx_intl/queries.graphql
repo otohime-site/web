@@ -112,6 +112,16 @@ query dxIntlSongsById($idLike: String!) {
   }
 }
 
+query dxIntlSongsRefMapCount {
+  dx_intl_songs(
+    where: {
+      _or: [{ id: { _like: "862eb64d%" } }, { id: { _like: "bf3e167f%" } }]
+    }
+  ) {
+    id
+  }
+}
+
 query dxIntlRecordWithScores($nickname: String!) {
   dx_intl_players(where: { nickname: { _eq: $nickname } }) {
     updated_at

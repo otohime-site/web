@@ -7655,6 +7655,15 @@ export type DxIntlSongsByIdQuery = {
   }>
 }
 
+export type DxIntlSongsRefMapCountQueryVariables = Exact<{
+  [key: string]: never
+}>
+
+export type DxIntlSongsRefMapCountQuery = {
+  __typename?: "query_root"
+  dx_intl_songs: Array<{ __typename?: "dx_intl_songs"; id: string }>
+}
+
 export type DxIntlRecordWithScoresQueryVariables = Exact<{
   nickname: Scalars["String"]
 }>
@@ -9260,6 +9269,100 @@ export const DxIntlSongsByIdDocument = {
 } as unknown as DocumentNode<
   DxIntlSongsByIdQuery,
   DxIntlSongsByIdQueryVariables
+>
+export const DxIntlSongsRefMapCountDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlSongsRefMapCount" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_songs" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_or" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "id" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_like" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "862eb64d%",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "id" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_like" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "bf3e167f%",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlSongsRefMapCountQuery,
+  DxIntlSongsRefMapCountQueryVariables
 >
 export const DxIntlRecordWithScoresDocument = {
   kind: "Document",
