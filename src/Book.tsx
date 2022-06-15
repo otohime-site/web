@@ -57,9 +57,9 @@ const Book: FunctionComponent = () => {
   )
   const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
   const client = useClient()
-  const [fetchState, setFetchState] = useState<"idle" | "fetching" | "done">(
-    "idle"
-  )
+  const [fetchState, setFetchState] = useState<
+    "idle" | "fetching" | "error" | "done"
+  >("idle")
   const [fetchProgress, setFetchProgress] = useState(0)
   const handleFetch = async (): Promise<void> => {
     const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(
@@ -101,7 +101,7 @@ const Book: FunctionComponent = () => {
       })
     )
 
-    await client
+    const mutation = await client
       .mutation(InsertDxIntlRecordWithScoresDocument, {
         record: {
           player_id: selectedPlayerId,
@@ -114,7 +114,19 @@ const Book: FunctionComponent = () => {
         })),
       })
       .toPromise()
+    if (mutation.error != null) {
+      throw new Error("Mutation error")
+    }
     setFetchState("done")
+  }
+
+  const handleFetchWithCatch = async (): Promise<void> => {
+    try {
+      await handleFetch()
+    } catch (e) {
+      console.error(e)
+      setFetchState("error")
+    }
   }
 
   const handleClose = (): void => {
@@ -205,6 +217,12 @@ const Book: FunctionComponent = () => {
             檢視成績單
           </Button>
         </DialogContent>
+      ) : fetchState === "error" ? (
+        <DialogContent>
+          <Alert severity="error">
+            成績擷取或上傳發生錯誤。請稍後再重試一次。
+          </Alert>
+        </DialogContent>
       ) : (
         <QueryResult
           result={dxIntlPlayersResult}
@@ -243,7 +261,7 @@ const Book: FunctionComponent = () => {
           color="primary"
           variant="text"
           disabled={fetchState !== "idle" || selectedPlayerId === undefined}
-          onClick={handleFetch}
+          onClick={handleFetchWithCatch}
         >
           上傳成績
         </Button>
