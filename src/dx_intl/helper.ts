@@ -50,6 +50,7 @@ export const versions = [
   "Splash",
   "Splash PLUS",
   "UNiVERSE",
+  "UNiVERSE PLUS",
 ] as const
 
 export const levels = [
