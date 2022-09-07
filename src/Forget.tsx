@@ -25,7 +25,7 @@ const Forget: FunctionComponent = () => {
       return
     }
     try {
-      await deleteUser()
+      await deleteUser({})
       await user?.delete()
       navigate("/")
     } catch {

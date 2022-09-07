@@ -40,7 +40,7 @@ const User: FunctionComponent = () => {
   const generateToken = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault()
     if (confirm("您舊的 Bookmarklet 連結將會失效。確定要重新產生權杖？")) {
-      await regenerateToken()
+      await regenerateToken({})
       refetchTokens({ requestPolicy: "network-only" })
     }
   }
