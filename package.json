@@ -20,6 +20,8 @@
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.0.1",
     "@otohime-site/parser": "^22.5.3",
+    "@radix-ui/react-dialog": "^1.0.0",
+    "@stitches/react": "^1.2.8",
     "@types/babel__core": "^7.1.19",
     "@urql/exchange-auth": "^1.0.0",
     "chart.js": "^3.7.1",
