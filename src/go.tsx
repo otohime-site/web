@@ -8,7 +8,7 @@ import {
 } from "@mui/material/styles"
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
-import { GraphQLBookmarkletProvider } from "./GraphQLProvider"
+import GraphQLTokenProvider from "./GraphQLTokenProvider"
 
 // import "./global.css"
 
@@ -44,13 +44,13 @@ if (document.getElementById("otohime-root") != null) {
   createRoot(container).render(
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <GraphQLBookmarkletProvider token={token}>
+        <GraphQLTokenProvider token={token}>
           <ScopedCssBaseline>
             <Container>
               <Book />
             </Container>
           </ScopedCssBaseline>
-        </GraphQLBookmarkletProvider>
+        </GraphQLTokenProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   )

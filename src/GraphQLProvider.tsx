@@ -5,14 +5,12 @@ import {
   makeOperation,
 } from "@urql/core"
 import { authExchange } from "@urql/exchange-auth"
-import { FunctionComponent, PropsWithChildren, useMemo } from "react"
+import { PropsWithChildren, useMemo } from "react"
 import { createClient, Provider as UrqlProvider } from "urql"
 import { useAuth } from "./auth"
 import { apiHost } from "./host"
 
-const GraphQLProvider: FunctionComponent<PropsWithChildren<{}>> = ({
-  children,
-}) => {
+const GraphQLProvider = ({ children }: PropsWithChildren<unknown>) => {
   const [user] = useAuth()
 
   const client = useMemo(
@@ -58,25 +56,6 @@ const GraphQLProvider: FunctionComponent<PropsWithChildren<{}>> = ({
         ],
       }),
     [user]
-  )
-
-  return <UrqlProvider value={client}>{children}</UrqlProvider>
-}
-export const GraphQLBookmarkletProvider: FunctionComponent<
-  PropsWithChildren<{ token: string }>
-> = ({ token, children }) => {
-  const client = useMemo(
-    () =>
-      createClient({
-        url: `https://${apiHost}/graphql`,
-        fetchOptions: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-        exchanges: [dedupExchange, cacheExchange, fetchExchange],
-      }),
-    [token]
   )
 
   return <UrqlProvider value={client}>{children}</UrqlProvider>
