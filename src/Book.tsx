@@ -1,22 +1,24 @@
 import {
   Alert,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   List,
   LinearProgress,
   Link,
   Typography,
 } from "@mui/material"
-import { styled } from "@mui/material/styles"
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import { FunctionComponent, useState } from "react"
+import { DialogProps } from "@radix-ui/react-alert-dialog"
+import { FunctionComponent, PropsWithChildren, useState } from "react"
 import { useQuery, useClient } from "urql"
 import { QueryResult } from "./QueryResult"
+import {
+  DialogRoot,
+  DialogTitle,
+  DialogOverlay,
+  DialogContent,
+} from "./components/Dialog"
+import { styled } from "./components/stitches.config"
 import PlayerListItem from "./dx_intl/PlayerListItem"
 import {
   DxIntlPlayersDocument,
@@ -27,11 +29,15 @@ import host from "./host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
-const ResetDialog = styled(Dialog)`
-  *:disabled {
-    background-color: unset;
-  }
-`
+const StyledDialogContent = styled(DialogContent, {
+  "& *": {
+    fontFamily: ["Roboto", "sans-serif"],
+  },
+  "& *:disabled": {
+    backgroundColor: "unset",
+  },
+})
+
 const parsedPlayer = (() => {
   try {
     return parsePlayer(document)
@@ -50,6 +56,16 @@ const sha256Sum = async (text: string): Promise<string> => {
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("")
 }
+
+const Dialog = ({
+  children,
+  ...dialogProps
+}: PropsWithChildren<DialogProps>) => (
+  <DialogRoot {...dialogProps}>
+    <DialogOverlay />
+    <StyledDialogContent>{children}</StyledDialogContent>
+  </DialogRoot>
+)
 
 const Book: FunctionComponent = () => {
   const [open, setOpen] = useState(true)
@@ -142,48 +158,29 @@ const Book: FunctionComponent = () => {
   const players = dxIntlPlayersResult.data?.dx_intl_players
   if (document.location.pathname !== "/maimai-mobile/home/") {
     return (
-      <ResetDialog
-        lang="zh-TW"
-        disableEscapeKeyDown={true}
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onOpenChange={setOpen}>
         <Alert severity="info">
           您必須先回到官方成績單首頁。按一下「OK」帶你去！
         </Alert>
-        <DialogActions>
+        <div>
           <Button color="primary" onClick={handleClose}>
             OK
           </Button>
-        </DialogActions>
-      </ResetDialog>
+        </div>
+      </Dialog>
     )
   }
   if (parsedPlayer === undefined) {
     return (
-      <ResetDialog
-        lang="zh-TW"
-        disableEscapeKeyDown={true}
-        fullWidth={true}
-        maxWidth="md"
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onOpenChange={setOpen}>
         <Alert severity="error">
           無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。
         </Alert>
-      </ResetDialog>
+      </Dialog>
     )
   }
   return (
-    <ResetDialog
-      lang="zh-TW"
-      disableEscapeKeyDown={true}
-      fullWidth={true}
-      maxWidth="md"
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTitle>更新成績</DialogTitle>
       {mayFailWithMap ? (
         <Alert severity="error">
@@ -256,7 +253,7 @@ const Book: FunctionComponent = () => {
             </Alert>
           ) : (
             <DialogContent>
-              <DialogContentText>請選擇要更新的成績單：</DialogContentText>
+              <div>請選擇要更新的成績單：</div>
               <List>
                 {players.map((player) => (
                   <PlayerListItem
@@ -271,7 +268,7 @@ const Book: FunctionComponent = () => {
           )}
         </QueryResult>
       )}
-      <DialogActions>
+      <div>
         <Button
           color="primary"
           variant="text"
@@ -283,8 +280,8 @@ const Book: FunctionComponent = () => {
         <Button disabled={fetchState === "fetching"} onClick={handleClose}>
           關閉
         </Button>
-      </DialogActions>
-    </ResetDialog>
+      </div>
+    </Dialog>
   )
 }
 export default Book
