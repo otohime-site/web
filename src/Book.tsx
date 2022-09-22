@@ -1,17 +1,10 @@
-import {
-  Alert,
-  Button,
-  List,
-  LinearProgress,
-  Link,
-  Typography,
-} from "@mui/material"
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import { DialogProps } from "@radix-ui/react-alert-dialog"
-import { FunctionComponent, PropsWithChildren, useState } from "react"
+import { PropsWithChildren, useState } from "react"
 import { useQuery, useClient } from "urql"
 import { QueryResult } from "./QueryResult"
+import { Alert } from "./components/Alert"
 import {
   DialogRoot,
   DialogTitle,
@@ -19,7 +12,7 @@ import {
   DialogContent,
 } from "./components/Dialog"
 import { styled } from "./components/stitches.config"
-import PlayerListItem from "./dx_intl/PlayerListItem"
+import PlayerListItemNew from "./dx_intl/PlayerListItemNew"
 import {
   DxIntlPlayersDocument,
   DxIntlSongsRefMapCountDocument,
@@ -67,7 +60,7 @@ const Dialog = ({
   </DialogRoot>
 )
 
-const Book: FunctionComponent = () => {
+const Book = () => {
   const [open, setOpen] = useState(true)
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
     undefined
@@ -163,9 +156,7 @@ const Book: FunctionComponent = () => {
           您必須先回到官方成績單首頁。按一下「OK」帶你去！
         </Alert>
         <div>
-          <Button color="primary" onClick={handleClose}>
-            OK
-          </Button>
+          <button onClick={handleClose}>OK</button>
         </div>
       </Dialog>
     )
@@ -192,49 +183,41 @@ const Book: FunctionComponent = () => {
         <></>
       )}
       {fetchState === "fetching" ? (
-        <DialogContent>
-          <Typography variant="body2">
+        <div>
+          <p>
             {fetchProgress < DIFFICULTIES.length
               ? "擷取成績中..."
               : "正在上傳成績單..."}
-          </Typography>
-          <LinearProgress
-            variant={
-              fetchProgress < DIFFICULTIES.length
-                ? "determinate"
-                : "indeterminate"
-            }
+          </p>
+          <progress
             value={
               fetchProgress < DIFFICULTIES.length
                 ? (fetchProgress / DIFFICULTIES.length) * 100
                 : undefined
             }
           />
-        </DialogContent>
+        </div>
       ) : fetchState === "done" ? (
-        <DialogContent>
-          <Typography variant="body2">上傳完成！</Typography>
-          <Typography variant="body2">
-            您現在可以在 Otohime 網站上檢視你的成績單了。
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
+        <div>
+          <p>上傳完成！</p>
+          <p>您現在可以在 Otohime 網站上檢視你的成績單了。</p>
+          <a
             target="_blank"
+            rel="noreferrer"
             href={`https://${host}/dxi/p/${
               (players ?? []).find((p) => p.id === selectedPlayerId)
                 ?.nickname ?? ""
             }`}
           >
             檢視成績單
-          </Button>
-        </DialogContent>
+          </a>
+        </div>
       ) : fetchState === "error" ? (
-        <DialogContent>
+        <div>
           <Alert severity="error">
             成績擷取或上傳發生錯誤。請稍後再重試一次。
           </Alert>
-        </DialogContent>
+        </div>
       ) : (
         <QueryResult
           result={dxIntlPlayersResult}
@@ -243,43 +226,42 @@ const Book: FunctionComponent = () => {
           {players == null || players.length === 0 ? (
             <Alert severity="warning">
               請到 Otohime 網站上
-              <Link
+              <a
                 target="_blank"
                 href={`https://${host}/dxi/p/new`}
-                rel="noopener"
+                rel="noreferrer"
               >
                 新增一個成績單。
-              </Link>
+              </a>
             </Alert>
           ) : (
-            <DialogContent>
+            <div>
               <div>請選擇要更新的成績單：</div>
-              <List>
+              <div>
                 {players.map((player) => (
-                  <PlayerListItem
+                  <PlayerListItemNew
                     key={player.id}
                     player={player}
                     selected={selectedPlayerId === player.id}
                     onSelect={setSelectedPlayerId}
                   />
                 ))}
-              </List>
-            </DialogContent>
+              </div>
+            </div>
           )}
         </QueryResult>
       )}
       <div>
-        <Button
+        <button
           color="primary"
-          variant="text"
           disabled={fetchState !== "idle" || selectedPlayerId === undefined}
           onClick={handleFetchWithCatch}
         >
           上傳成績
-        </Button>
-        <Button disabled={fetchState === "fetching"} onClick={handleClose}>
+        </button>
+        <button disabled={fetchState === "fetching"} onClick={handleClose}>
           關閉
-        </Button>
+        </button>
       </div>
     </Dialog>
   )

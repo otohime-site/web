@@ -1,27 +1,7 @@
-import ScopedCssBaseline from "@mui/material/ScopedCssBaseline"
-import { pink, orange } from "@mui/material/colors"
-import {
-  createTheme,
-  StyledEngineProvider,
-  ThemeProvider,
-} from "@mui/material/styles"
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import GraphQLTokenProvider from "./GraphQLTokenProvider"
 import { styled } from "./components/stitches.config"
-
-// import "./global.css"
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: pink[400],
-    },
-    secondary: {
-      main: orange[400],
-    },
-  },
-})
 
 const Container = styled("div", {
   position: "fixed",
@@ -42,16 +22,10 @@ if (document.getElementById("otohime-root") != null) {
   container.setAttribute("id", "otohime-root")
   document.body.appendChild(container)
   createRoot(container).render(
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <GraphQLTokenProvider token={token}>
-          <ScopedCssBaseline>
-            <Container lang="zh-TW">
-              <Book />
-            </Container>
-          </ScopedCssBaseline>
-        </GraphQLTokenProvider>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <GraphQLTokenProvider token={token}>
+      <Container lang="zh-TW">
+        <Book />
+      </Container>
+    </GraphQLTokenProvider>
   )
 }

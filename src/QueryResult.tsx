@@ -1,6 +1,6 @@
-import { Alert, Skeleton } from "@mui/material"
 import { FunctionComponent, PropsWithChildren } from "react"
 import { UseQueryState } from "urql"
+import { Alert } from "./components/Alert"
 
 interface Props {
   result: UseQueryState
@@ -19,13 +19,7 @@ export const QueryResult: FunctionComponent<PropsWithChildren<Props>> = ({
   children,
 }) => {
   if (result.fetching) {
-    return (
-      <Skeleton
-        variant={skeletonVariant ?? "text"}
-        width={skeletonWidth}
-        height={skeletonHeight}
-      />
-    )
+    return <div />
   }
   if (result.error != null) {
     return <Alert severity="error">{errorMsg ?? "發生問題，請重試。"}</Alert>
