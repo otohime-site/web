@@ -4,11 +4,11 @@ import {
   createTheme,
   StyledEngineProvider,
   ThemeProvider,
+  styled,
 } from "@mui/material/styles"
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import GraphQLTokenProvider from "./GraphQLTokenProvider"
-import { styled } from "./components/stitches.config"
 
 // import "./global.css"
 
@@ -23,13 +23,13 @@ const theme = createTheme({
   },
 })
 
-const Container = styled("div", {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-})
+const Container = styled("div")`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
 const token = document.body.getAttribute("data-otohime-token")
 if (document.getElementById("otohime-root") != null) {
   alert("請不要重複觸發 Bookmarklet！如有需要請重新整理頁面。")
@@ -46,7 +46,7 @@ if (document.getElementById("otohime-root") != null) {
       <ThemeProvider theme={theme}>
         <GraphQLTokenProvider token={token}>
           <ScopedCssBaseline>
-            <Container lang="zh-TW">
+            <Container>
               <Book />
             </Container>
           </ScopedCssBaseline>

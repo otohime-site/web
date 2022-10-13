@@ -20,8 +20,6 @@
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.0.1",
     "@otohime-site/parser": "^22.5.3",
-    "@radix-ui/colors": "^0.1.8",
-    "@radix-ui/react-alert-dialog": "^1.0.0",
     "@radix-ui/react-dialog": "^1.0.0",
     "@stitches/react": "^1.2.8",
     "@types/babel__core": "^7.1.19",
