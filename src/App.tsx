@@ -25,6 +25,7 @@ import LogoIcon from "./logo/logo.svg"
 const Home = lazy(async () => await import("./Home"))
 const Forget = lazy(async () => await import("./Forget"))
 const DxIntl = lazy(async () => await import("./dx_intl/index"))
+const Finale = lazy(async () => await import("./finale/index"))
 
 const AppDiv = styled("div")`
   display: flex;
@@ -186,6 +187,7 @@ const App: FunctionComponent = () => {
             <Route path="/" element={<Home />} />
             <Route path="/forget" element={<Forget />} />
             <Route path="/dxi/*" element={<DxIntl />} />
+            <Route path="/fin/*" element={<Finale />} />
           </Routes>
         </Suspense>
         <StyledFooter>

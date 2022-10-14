@@ -162,6 +162,14 @@ export type Bigint_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars["bigint"]>>
 }
 
+/** ordering argument of a cursor */
+export enum Cursor_Ordering {
+  /** ascending ordering of the cursor */
+  Asc = "ASC",
+  /** descending ordering of the cursor */
+  Desc = "DESC",
+}
+
 /** Boolean expression to compare columns of type "dx_intl_combo_flag". All fields are combined with logical 'AND'. */
 export type Dx_Intl_Combo_Flag_Comparison_Exp = {
   _eq?: InputMaybe<Scalars["dx_intl_combo_flag"]>
@@ -283,6 +291,20 @@ export type Dx_Intl_New_Rating_Stats_Stddev_Pop_Fields = {
 export type Dx_Intl_New_Rating_Stats_Stddev_Samp_Fields = {
   __typename?: "dx_intl_new_rating_stats_stddev_samp_fields"
   count?: Maybe<Scalars["Float"]>
+}
+
+/** Streaming cursor of the table "dx_intl_new_rating_stats" */
+export type Dx_Intl_New_Rating_Stats_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_New_Rating_Stats_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_New_Rating_Stats_Stream_Cursor_Value_Input = {
+  count?: InputMaybe<Scalars["bigint"]>
+  range?: InputMaybe<Scalars["String"]>
 }
 
 /** aggregate sum on columns */
@@ -423,7 +445,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "deluxe", "song_id", "difficulty" */
   DxIntlNotesPkey1 = "dx_intl_notes_pkey1",
 }
 
@@ -449,6 +471,7 @@ export type Dx_Intl_Notes_Max_Fields = {
   __typename?: "dx_intl_notes_max_fields"
   difficulty?: Maybe<Scalars["smallint"]>
   internal_lv?: Maybe<Scalars["numeric"]>
+  level?: Maybe<Scalars["dx_intl_level"]>
   song_id?: Maybe<Scalars["String"]>
 }
 
@@ -456,6 +479,7 @@ export type Dx_Intl_Notes_Max_Fields = {
 export type Dx_Intl_Notes_Max_Order_By = {
   difficulty?: InputMaybe<Order_By>
   internal_lv?: InputMaybe<Order_By>
+  level?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
 }
 
@@ -464,6 +488,7 @@ export type Dx_Intl_Notes_Min_Fields = {
   __typename?: "dx_intl_notes_min_fields"
   difficulty?: Maybe<Scalars["smallint"]>
   internal_lv?: Maybe<Scalars["numeric"]>
+  level?: Maybe<Scalars["dx_intl_level"]>
   song_id?: Maybe<Scalars["String"]>
 }
 
@@ -471,6 +496,7 @@ export type Dx_Intl_Notes_Min_Fields = {
 export type Dx_Intl_Notes_Min_Order_By = {
   difficulty?: InputMaybe<Order_By>
   internal_lv?: InputMaybe<Order_By>
+  level?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
 }
 
@@ -577,6 +603,23 @@ export type Dx_Intl_Notes_Stddev_Samp_Order_By = {
   internal_lv?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "dx_intl_notes" */
+export type Dx_Intl_Notes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Notes_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Notes_Stream_Cursor_Value_Input = {
+  deluxe?: InputMaybe<Scalars["Boolean"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  internal_lv?: InputMaybe<Scalars["numeric"]>
+  level?: InputMaybe<Scalars["dx_intl_level"]>
+  song_id?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Notes_Sum_Fields = {
   __typename?: "dx_intl_notes_sum_fields"
@@ -602,6 +645,14 @@ export enum Dx_Intl_Notes_Update_Column {
   Level = "level",
   /** column name */
   SongId = "song_id",
+}
+
+export type Dx_Intl_Notes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Notes_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Notes_Set_Input>
+  where: Dx_Intl_Notes_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -658,7 +709,6 @@ export type Dx_Intl_Players = {
   private: Scalars["Boolean"]
   /** An object relationship */
   timelines?: Maybe<Dx_Intl_Players_Timelines>
-  /** A computed field, executes function "dx_intl_players_updated_at" */
   updated_at?: Maybe<Scalars["timestamptz"]>
   /** An object relationship */
   user: Users
@@ -764,9 +814,9 @@ export type Dx_Intl_Players_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_players" */
 export enum Dx_Intl_Players_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "nickname" */
   DxIntlPlayersNicknameKey = "dx_intl_players_nickname_key",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DxIntlPlayersPkey = "dx_intl_players_pkey",
 }
 
@@ -920,6 +970,23 @@ export type Dx_Intl_Players_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "dx_intl_players" */
+export type Dx_Intl_Players_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Players_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Players_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["Int"]>
+  nickname?: InputMaybe<Scalars["String"]>
+  private?: InputMaybe<Scalars["Boolean"]>
+  user_id?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Players_Sum_Fields = {
   __typename?: "dx_intl_players_sum_fields"
@@ -1050,6 +1117,21 @@ export type Dx_Intl_Players_Timelines_Stddev_Samp_Fields = {
   id?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "dx_intl_players_timelines" */
+export type Dx_Intl_Players_Timelines_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Players_Timelines_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Players_Timelines_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars["Int"]>
+  nickname?: InputMaybe<Scalars["String"]>
+  timelines?: InputMaybe<Scalars["_timestamptz"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Players_Timelines_Sum_Fields = {
   __typename?: "dx_intl_players_timelines_sum_fields"
@@ -1086,6 +1168,14 @@ export enum Dx_Intl_Players_Update_Column {
   Private = "private",
   /** column name */
   UserId = "user_id",
+}
+
+export type Dx_Intl_Players_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Players_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Players_Set_Input>
+  where: Dx_Intl_Players_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -1205,9 +1295,9 @@ export type Dx_Intl_Records_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_records" */
 export enum Dx_Intl_Records_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DxIntlRecordsPkey = "dx_intl_records_pkey",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "player_id" */
   DxIntlRecordsPlayerIdKey = "dx_intl_records_player_id_key",
 }
 
@@ -1254,6 +1344,7 @@ export type Dx_Intl_Records_Max_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
+  trophy?: Maybe<Scalars["dx_intl_trophy"]>
 }
 
 /** aggregate min on columns */
@@ -1270,6 +1361,7 @@ export type Dx_Intl_Records_Min_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
+  trophy?: Maybe<Scalars["dx_intl_trophy"]>
 }
 
 /** response of any mutation on the table "dx_intl_records" */
@@ -1401,6 +1493,31 @@ export type Dx_Intl_Records_Stddev_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "dx_intl_records" */
+export type Dx_Intl_Records_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Records_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Records_Stream_Cursor_Value_Input = {
+  card_name?: InputMaybe<Scalars["String"]>
+  class_rank?: InputMaybe<Scalars["smallint"]>
+  course_rank?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  grade?: InputMaybe<Scalars["Int"]>
+  id?: InputMaybe<Scalars["Int"]>
+  max_rating?: InputMaybe<Scalars["smallint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  rating?: InputMaybe<Scalars["smallint"]>
+  rating_legacy?: InputMaybe<Scalars["Boolean"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  title?: InputMaybe<Scalars["String"]>
+  trophy?: InputMaybe<Scalars["dx_intl_trophy"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Records_Sum_Fields = {
   __typename?: "dx_intl_records_sum_fields"
@@ -1441,6 +1558,14 @@ export enum Dx_Intl_Records_Update_Column {
   Title = "title",
   /** column name */
   Trophy = "trophy",
+}
+
+export type Dx_Intl_Records_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Records_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Records_Set_Input>
+  where: Dx_Intl_Records_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -1575,6 +1700,7 @@ export type Dx_Intl_Records_With_History_Max_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
+  trophy?: Maybe<Scalars["dx_intl_trophy"]>
 }
 
 /** aggregate min on columns */
@@ -1591,6 +1717,7 @@ export type Dx_Intl_Records_With_History_Min_Fields = {
   rating?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
   title?: Maybe<Scalars["String"]>
+  trophy?: Maybe<Scalars["dx_intl_trophy"]>
 }
 
 /** Ordering options when selecting data from "dx_intl_records_with_history". */
@@ -1675,6 +1802,31 @@ export type Dx_Intl_Records_With_History_Stddev_Samp_Fields = {
   max_rating?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   rating?: Maybe<Scalars["Float"]>
+}
+
+/** Streaming cursor of the table "dx_intl_records_with_history" */
+export type Dx_Intl_Records_With_History_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Records_With_History_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Records_With_History_Stream_Cursor_Value_Input = {
+  card_name?: InputMaybe<Scalars["String"]>
+  class_rank?: InputMaybe<Scalars["smallint"]>
+  course_rank?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  grade?: InputMaybe<Scalars["Int"]>
+  id?: InputMaybe<Scalars["Int"]>
+  max_rating?: InputMaybe<Scalars["smallint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  rating?: InputMaybe<Scalars["smallint"]>
+  rating_legacy?: InputMaybe<Scalars["Boolean"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  title?: InputMaybe<Scalars["String"]>
+  trophy?: InputMaybe<Scalars["dx_intl_trophy"]>
 }
 
 /** aggregate sum on columns */
@@ -1833,9 +1985,9 @@ export type Dx_Intl_Scores_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_scores" */
 export enum Dx_Intl_Scores_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DxIntlScoresPkey1 = "dx_intl_scores_pkey1",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "deluxe", "song_id", "difficulty", "player_id" */
   DxIntlScoresPlayerIdSongIdDeluxeDifficultyKey = "dx_intl_scores_player_id_song_id_deluxe_difficulty_key",
 }
 
@@ -1866,6 +2018,7 @@ export type Dx_Intl_Scores_Insert_Input = {
 /** aggregate max on columns */
 export type Dx_Intl_Scores_Max_Fields = {
   __typename?: "dx_intl_scores_max_fields"
+  combo_flag?: Maybe<Scalars["dx_intl_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -1873,10 +2026,12 @@ export type Dx_Intl_Scores_Max_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["dx_intl_sync_flag"]>
 }
 
 /** order by max() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Max_Order_By = {
+  combo_flag?: InputMaybe<Order_By>
   difficulty?: InputMaybe<Order_By>
   end?: InputMaybe<Order_By>
   id?: InputMaybe<Order_By>
@@ -1884,11 +2039,13 @@ export type Dx_Intl_Scores_Max_Order_By = {
   score?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
   start?: InputMaybe<Order_By>
+  sync_flag?: InputMaybe<Order_By>
 }
 
 /** aggregate min on columns */
 export type Dx_Intl_Scores_Min_Fields = {
   __typename?: "dx_intl_scores_min_fields"
+  combo_flag?: Maybe<Scalars["dx_intl_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -1896,10 +2053,12 @@ export type Dx_Intl_Scores_Min_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["dx_intl_sync_flag"]>
 }
 
 /** order by min() on columns of table "dx_intl_scores" */
 export type Dx_Intl_Scores_Min_Order_By = {
+  combo_flag?: InputMaybe<Order_By>
   difficulty?: InputMaybe<Order_By>
   end?: InputMaybe<Order_By>
   id?: InputMaybe<Order_By>
@@ -1907,6 +2066,7 @@ export type Dx_Intl_Scores_Min_Order_By = {
   score?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
   start?: InputMaybe<Order_By>
+  sync_flag?: InputMaybe<Order_By>
 }
 
 /** response of any mutation on the table "dx_intl_scores" */
@@ -2104,6 +2264,23 @@ export type Dx_Intl_Scores_Stats_Stddev_Samp_Fields = {
   difficulty?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "dx_intl_scores_stats" */
+export type Dx_Intl_Scores_Stats_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Scores_Stats_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Scores_Stats_Stream_Cursor_Value_Input = {
+  count?: InputMaybe<Scalars["bigint"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  range?: InputMaybe<Scalars["String"]>
+  song_id?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_Stats_Sum_Fields = {
   __typename?: "dx_intl_scores_stats_sum_fields"
@@ -2183,6 +2360,28 @@ export type Dx_Intl_Scores_Stddev_Samp_Order_By = {
   score?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "dx_intl_scores" */
+export type Dx_Intl_Scores_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Scores_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Scores_Stream_Cursor_Value_Input = {
+  combo_flag?: InputMaybe<Scalars["dx_intl_combo_flag"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["bigint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  score?: InputMaybe<Scalars["numeric"]>
+  song_id?: InputMaybe<Scalars["String"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  sync_flag?: InputMaybe<Scalars["dx_intl_sync_flag"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Scores_Sum_Fields = {
   __typename?: "dx_intl_scores_sum_fields"
@@ -2222,6 +2421,14 @@ export enum Dx_Intl_Scores_Update_Column {
   Start = "start",
   /** column name */
   SyncFlag = "sync_flag",
+}
+
+export type Dx_Intl_Scores_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Scores_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Scores_Set_Input>
+  where: Dx_Intl_Scores_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -2354,6 +2561,7 @@ export type Dx_Intl_Scores_With_History_Bool_Exp = {
 /** aggregate max on columns */
 export type Dx_Intl_Scores_With_History_Max_Fields = {
   __typename?: "dx_intl_scores_with_history_max_fields"
+  combo_flag?: Maybe<Scalars["dx_intl_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -2361,11 +2569,13 @@ export type Dx_Intl_Scores_With_History_Max_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["dx_intl_sync_flag"]>
 }
 
 /** aggregate min on columns */
 export type Dx_Intl_Scores_With_History_Min_Fields = {
   __typename?: "dx_intl_scores_with_history_min_fields"
+  combo_flag?: Maybe<Scalars["dx_intl_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -2373,6 +2583,7 @@ export type Dx_Intl_Scores_With_History_Min_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["String"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["dx_intl_sync_flag"]>
 }
 
 /** Ordering options when selecting data from "dx_intl_scores_with_history". */
@@ -2440,6 +2651,28 @@ export type Dx_Intl_Scores_With_History_Stddev_Samp_Fields = {
   id?: Maybe<Scalars["Float"]>
   player_id?: Maybe<Scalars["Float"]>
   score?: Maybe<Scalars["Float"]>
+}
+
+/** Streaming cursor of the table "dx_intl_scores_with_history" */
+export type Dx_Intl_Scores_With_History_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Scores_With_History_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Scores_With_History_Stream_Cursor_Value_Input = {
+  combo_flag?: InputMaybe<Scalars["dx_intl_combo_flag"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["bigint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  score?: InputMaybe<Scalars["numeric"]>
+  song_id?: InputMaybe<Scalars["String"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  sync_flag?: InputMaybe<Scalars["dx_intl_sync_flag"]>
 }
 
 /** aggregate sum on columns */
@@ -2559,9 +2792,9 @@ export type Dx_Intl_Songs_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_songs" */
 export enum Dx_Intl_Songs_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "title", "category" */
   DxIntlSongsCategoryTitleKey1 = "dx_intl_songs_category_title_key1",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   DxIntlSongsPkey1 = "dx_intl_songs_pkey1",
 }
 
@@ -2676,6 +2909,22 @@ export type Dx_Intl_Songs_Stddev_Samp_Fields = {
   order?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "dx_intl_songs" */
+export type Dx_Intl_Songs_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Songs_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Songs_Stream_Cursor_Value_Input = {
+  category?: InputMaybe<Scalars["smallint"]>
+  id?: InputMaybe<Scalars["String"]>
+  order?: InputMaybe<Scalars["smallint"]>
+  title?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Songs_Sum_Fields = {
   __typename?: "dx_intl_songs_sum_fields"
@@ -2693,6 +2942,14 @@ export enum Dx_Intl_Songs_Update_Column {
   Order = "order",
   /** column name */
   Title = "title",
+}
+
+export type Dx_Intl_Songs_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Songs_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Songs_Set_Input>
+  where: Dx_Intl_Songs_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -2852,7 +3109,7 @@ export type Dx_Intl_Variants_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_variants" */
 export enum Dx_Intl_Variants_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "deluxe", "song_id" */
   DxIntlVariantsPkey1 = "dx_intl_variants_pkey1",
 }
 
@@ -2989,6 +3246,22 @@ export type Dx_Intl_Variants_Stddev_Samp_Order_By = {
   version?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "dx_intl_variants" */
+export type Dx_Intl_Variants_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Variants_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Variants_Stream_Cursor_Value_Input = {
+  active?: InputMaybe<Scalars["Boolean"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]>
+  song_id?: InputMaybe<Scalars["String"]>
+  version?: InputMaybe<Scalars["smallint"]>
+}
+
 /** aggregate sum on columns */
 export type Dx_Intl_Variants_Sum_Fields = {
   __typename?: "dx_intl_variants_sum_fields"
@@ -3010,6 +3283,14 @@ export enum Dx_Intl_Variants_Update_Column {
   SongId = "song_id",
   /** column name */
   Version = "version",
+}
+
+export type Dx_Intl_Variants_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Dx_Intl_Variants_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Dx_Intl_Variants_Set_Input>
+  where: Dx_Intl_Variants_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -3181,7 +3462,7 @@ export type Finale_Notes_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_notes" */
 export enum Finale_Notes_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "song_id", "difficulty" */
   FinaleNotesPkey = "finale_notes_pkey",
 }
 
@@ -3204,12 +3485,14 @@ export type Finale_Notes_Insert_Input = {
 export type Finale_Notes_Max_Fields = {
   __typename?: "finale_notes_max_fields"
   difficulty?: Maybe<Scalars["smallint"]>
+  level?: Maybe<Scalars["finale_level"]>
   song_id?: Maybe<Scalars["smallint"]>
 }
 
 /** order by max() on columns of table "finale_notes" */
 export type Finale_Notes_Max_Order_By = {
   difficulty?: InputMaybe<Order_By>
+  level?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
 }
 
@@ -3217,12 +3500,14 @@ export type Finale_Notes_Max_Order_By = {
 export type Finale_Notes_Min_Fields = {
   __typename?: "finale_notes_min_fields"
   difficulty?: Maybe<Scalars["smallint"]>
+  level?: Maybe<Scalars["finale_level"]>
   song_id?: Maybe<Scalars["smallint"]>
 }
 
 /** order by min() on columns of table "finale_notes" */
 export type Finale_Notes_Min_Order_By = {
   difficulty?: InputMaybe<Order_By>
+  level?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
 }
 
@@ -3320,6 +3605,21 @@ export type Finale_Notes_Stddev_Samp_Order_By = {
   song_id?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "finale_notes" */
+export type Finale_Notes_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Notes_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Notes_Stream_Cursor_Value_Input = {
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  level?: InputMaybe<Scalars["finale_level"]>
+  song_id?: InputMaybe<Scalars["smallint"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Notes_Sum_Fields = {
   __typename?: "finale_notes_sum_fields"
@@ -3341,6 +3641,14 @@ export enum Finale_Notes_Update_Column {
   Level = "level",
   /** column name */
   SongId = "song_id",
+}
+
+export type Finale_Notes_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Finale_Notes_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Finale_Notes_Set_Input>
+  where: Finale_Notes_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -3500,9 +3808,9 @@ export type Finale_Players_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_players" */
 export enum Finale_Players_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "nickname" */
   FinalePlayersNicknameKey = "finale_players_nickname_key",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   FinalePlayersPkey = "finale_players_pkey",
 }
 
@@ -3654,6 +3962,23 @@ export type Finale_Players_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "finale_players" */
+export type Finale_Players_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Players_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Players_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["Int"]>
+  nickname?: InputMaybe<Scalars["String"]>
+  private?: InputMaybe<Scalars["Boolean"]>
+  user_id?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Players_Sum_Fields = {
   __typename?: "finale_players_sum_fields"
@@ -3771,6 +4096,21 @@ export type Finale_Players_Timelines_Stddev_Samp_Fields = {
   id?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "finale_players_timelines" */
+export type Finale_Players_Timelines_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Players_Timelines_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Players_Timelines_Stream_Cursor_Value_Input = {
+  id?: InputMaybe<Scalars["Int"]>
+  nickname?: InputMaybe<Scalars["String"]>
+  timelines?: InputMaybe<Scalars["_timestamptz"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Players_Timelines_Sum_Fields = {
   __typename?: "finale_players_timelines_sum_fields"
@@ -3807,6 +4147,14 @@ export enum Finale_Players_Update_Column {
   Private = "private",
   /** column name */
   UserId = "user_id",
+}
+
+export type Finale_Players_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Finale_Players_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Finale_Players_Set_Input>
+  where: Finale_Players_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -3915,9 +4263,9 @@ export type Finale_Records_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_records" */
 export enum Finale_Records_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   FinaleRecordsPkey = "finale_records_pkey",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "player_id" */
   FinaleRecordsPlayerIdKey = "finale_records_player_id_key",
 }
 
@@ -4075,6 +4423,27 @@ export type Finale_Records_Stddev_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "finale_records" */
+export type Finale_Records_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Records_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Records_Stream_Cursor_Value_Input = {
+  card_name?: InputMaybe<Scalars["String"]>
+  class?: InputMaybe<Scalars["String"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["Int"]>
+  max_rating?: InputMaybe<Scalars["numeric"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  rating?: InputMaybe<Scalars["numeric"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  title?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Records_Sum_Fields = {
   __typename?: "finale_records_sum_fields"
@@ -4104,6 +4473,14 @@ export enum Finale_Records_Update_Column {
   Start = "start",
   /** column name */
   Title = "title",
+}
+
+export type Finale_Records_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Finale_Records_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Finale_Records_Set_Input>
+  where: Finale_Records_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -4295,6 +4672,27 @@ export type Finale_Records_With_History_Stddev_Samp_Fields = {
   rating?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "finale_records_with_history" */
+export type Finale_Records_With_History_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Records_With_History_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Records_With_History_Stream_Cursor_Value_Input = {
+  card_name?: InputMaybe<Scalars["String"]>
+  class?: InputMaybe<Scalars["String"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["Int"]>
+  max_rating?: InputMaybe<Scalars["numeric"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  rating?: InputMaybe<Scalars["numeric"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  title?: InputMaybe<Scalars["String"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Records_With_History_Sum_Fields = {
   __typename?: "finale_records_with_history_sum_fields"
@@ -4443,9 +4841,9 @@ export type Finale_Scores_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_scores" */
 export enum Finale_Scores_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   FinaleScoresPkey = "finale_scores_pkey",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "song_id", "difficulty", "player_id" */
   FinaleScoresPlayerIdSongIdDifficultyKey = "finale_scores_player_id_song_id_difficulty_key",
 }
 
@@ -4478,6 +4876,7 @@ export type Finale_Scores_Insert_Input = {
 /** aggregate max on columns */
 export type Finale_Scores_Max_Fields = {
   __typename?: "finale_scores_max_fields"
+  combo_flag?: Maybe<Scalars["finale_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -4486,10 +4885,12 @@ export type Finale_Scores_Max_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["finale_sync_flag"]>
 }
 
 /** order by max() on columns of table "finale_scores" */
 export type Finale_Scores_Max_Order_By = {
+  combo_flag?: InputMaybe<Order_By>
   difficulty?: InputMaybe<Order_By>
   end?: InputMaybe<Order_By>
   id?: InputMaybe<Order_By>
@@ -4498,11 +4899,13 @@ export type Finale_Scores_Max_Order_By = {
   score?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
   start?: InputMaybe<Order_By>
+  sync_flag?: InputMaybe<Order_By>
 }
 
 /** aggregate min on columns */
 export type Finale_Scores_Min_Fields = {
   __typename?: "finale_scores_min_fields"
+  combo_flag?: Maybe<Scalars["finale_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -4511,10 +4914,12 @@ export type Finale_Scores_Min_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["finale_sync_flag"]>
 }
 
 /** order by min() on columns of table "finale_scores" */
 export type Finale_Scores_Min_Order_By = {
+  combo_flag?: InputMaybe<Order_By>
   difficulty?: InputMaybe<Order_By>
   end?: InputMaybe<Order_By>
   id?: InputMaybe<Order_By>
@@ -4523,6 +4928,7 @@ export type Finale_Scores_Min_Order_By = {
   score?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
   start?: InputMaybe<Order_By>
+  sync_flag?: InputMaybe<Order_By>
 }
 
 /** response of any mutation on the table "finale_scores" */
@@ -4663,6 +5069,28 @@ export type Finale_Scores_Stddev_Samp_Order_By = {
   song_id?: InputMaybe<Order_By>
 }
 
+/** Streaming cursor of the table "finale_scores" */
+export type Finale_Scores_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Scores_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Scores_Stream_Cursor_Value_Input = {
+  combo_flag?: InputMaybe<Scalars["finale_combo_flag"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["bigint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  raw_score?: InputMaybe<Scalars["Int"]>
+  score?: InputMaybe<Scalars["numeric"]>
+  song_id?: InputMaybe<Scalars["smallint"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  sync_flag?: InputMaybe<Scalars["finale_sync_flag"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Scores_Sum_Fields = {
   __typename?: "finale_scores_sum_fields"
@@ -4706,6 +5134,14 @@ export enum Finale_Scores_Update_Column {
   Start = "start",
   /** column name */
   SyncFlag = "sync_flag",
+}
+
+export type Finale_Scores_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Finale_Scores_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Finale_Scores_Set_Input>
+  where: Finale_Scores_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -4852,6 +5288,7 @@ export type Finale_Scores_With_History_Bool_Exp = {
 /** aggregate max on columns */
 export type Finale_Scores_With_History_Max_Fields = {
   __typename?: "finale_scores_with_history_max_fields"
+  combo_flag?: Maybe<Scalars["finale_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -4860,11 +5297,13 @@ export type Finale_Scores_With_History_Max_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["finale_sync_flag"]>
 }
 
 /** aggregate min on columns */
 export type Finale_Scores_With_History_Min_Fields = {
   __typename?: "finale_scores_with_history_min_fields"
+  combo_flag?: Maybe<Scalars["finale_combo_flag"]>
   difficulty?: Maybe<Scalars["smallint"]>
   end?: Maybe<Scalars["timestamptz"]>
   id?: Maybe<Scalars["bigint"]>
@@ -4873,6 +5312,7 @@ export type Finale_Scores_With_History_Min_Fields = {
   score?: Maybe<Scalars["numeric"]>
   song_id?: Maybe<Scalars["smallint"]>
   start?: Maybe<Scalars["timestamptz"]>
+  sync_flag?: Maybe<Scalars["finale_sync_flag"]>
 }
 
 /** Ordering options when selecting data from "finale_scores_with_history". */
@@ -4946,6 +5386,28 @@ export type Finale_Scores_With_History_Stddev_Samp_Fields = {
   raw_score?: Maybe<Scalars["Float"]>
   score?: Maybe<Scalars["Float"]>
   song_id?: Maybe<Scalars["Float"]>
+}
+
+/** Streaming cursor of the table "finale_scores_with_history" */
+export type Finale_Scores_With_History_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Scores_With_History_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Scores_With_History_Stream_Cursor_Value_Input = {
+  combo_flag?: InputMaybe<Scalars["finale_combo_flag"]>
+  difficulty?: InputMaybe<Scalars["smallint"]>
+  end?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["bigint"]>
+  player_id?: InputMaybe<Scalars["Int"]>
+  raw_score?: InputMaybe<Scalars["Int"]>
+  score?: InputMaybe<Scalars["numeric"]>
+  song_id?: InputMaybe<Scalars["smallint"]>
+  start?: InputMaybe<Scalars["timestamptz"]>
+  sync_flag?: InputMaybe<Scalars["finale_sync_flag"]>
 }
 
 /** aggregate sum on columns */
@@ -5083,7 +5545,7 @@ export type Finale_Songs_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_songs" */
 export enum Finale_Songs_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   FinaleSongsPkey = "finale_songs_pkey",
 }
 
@@ -5230,6 +5692,26 @@ export type Finale_Songs_Stddev_Samp_Fields = {
   version?: Maybe<Scalars["Float"]>
 }
 
+/** Streaming cursor of the table "finale_songs" */
+export type Finale_Songs_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Finale_Songs_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Finale_Songs_Stream_Cursor_Value_Input = {
+  active?: InputMaybe<Scalars["Boolean"]>
+  category?: InputMaybe<Scalars["smallint"]>
+  english_title?: InputMaybe<Scalars["String"]>
+  id?: InputMaybe<Scalars["smallint"]>
+  japan_only?: InputMaybe<Scalars["Boolean"]>
+  order?: InputMaybe<Scalars["smallint"]>
+  title?: InputMaybe<Scalars["String"]>
+  version?: InputMaybe<Scalars["smallint"]>
+}
+
 /** aggregate sum on columns */
 export type Finale_Songs_Sum_Fields = {
   __typename?: "finale_songs_sum_fields"
@@ -5257,6 +5739,14 @@ export enum Finale_Songs_Update_Column {
   Title = "title",
   /** column name */
   Version = "version",
+}
+
+export type Finale_Songs_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Finale_Songs_Inc_Input>
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Finale_Songs_Set_Input>
+  where: Finale_Songs_Bool_Exp
 }
 
 /** aggregate var_pop on columns */
@@ -5410,54 +5900,98 @@ export type Mutation_Root = {
   update_dx_intl_notes?: Maybe<Dx_Intl_Notes_Mutation_Response>
   /** update single row of the table: "dx_intl_notes" */
   update_dx_intl_notes_by_pk?: Maybe<Dx_Intl_Notes>
+  /** update multiples rows of table: "dx_intl_notes" */
+  update_dx_intl_notes_many?: Maybe<
+    Array<Maybe<Dx_Intl_Notes_Mutation_Response>>
+  >
   /** update data of the table: "dx_intl_players" */
   update_dx_intl_players?: Maybe<Dx_Intl_Players_Mutation_Response>
   /** update single row of the table: "dx_intl_players" */
   update_dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>
+  /** update multiples rows of table: "dx_intl_players" */
+  update_dx_intl_players_many?: Maybe<
+    Array<Maybe<Dx_Intl_Players_Mutation_Response>>
+  >
   /** update data of the table: "dx_intl_records" */
   update_dx_intl_records?: Maybe<Dx_Intl_Records_Mutation_Response>
   /** update single row of the table: "dx_intl_records" */
   update_dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
+  /** update multiples rows of table: "dx_intl_records" */
+  update_dx_intl_records_many?: Maybe<
+    Array<Maybe<Dx_Intl_Records_Mutation_Response>>
+  >
   /** update data of the table: "dx_intl_scores" */
   update_dx_intl_scores?: Maybe<Dx_Intl_Scores_Mutation_Response>
   /** update single row of the table: "dx_intl_scores" */
   update_dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>
+  /** update multiples rows of table: "dx_intl_scores" */
+  update_dx_intl_scores_many?: Maybe<
+    Array<Maybe<Dx_Intl_Scores_Mutation_Response>>
+  >
   /** update data of the table: "dx_intl_songs" */
   update_dx_intl_songs?: Maybe<Dx_Intl_Songs_Mutation_Response>
   /** update single row of the table: "dx_intl_songs" */
   update_dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>
+  /** update multiples rows of table: "dx_intl_songs" */
+  update_dx_intl_songs_many?: Maybe<
+    Array<Maybe<Dx_Intl_Songs_Mutation_Response>>
+  >
   /** update data of the table: "dx_intl_variants" */
   update_dx_intl_variants?: Maybe<Dx_Intl_Variants_Mutation_Response>
   /** update single row of the table: "dx_intl_variants" */
   update_dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>
+  /** update multiples rows of table: "dx_intl_variants" */
+  update_dx_intl_variants_many?: Maybe<
+    Array<Maybe<Dx_Intl_Variants_Mutation_Response>>
+  >
   /** update data of the table: "finale_notes" */
   update_finale_notes?: Maybe<Finale_Notes_Mutation_Response>
   /** update single row of the table: "finale_notes" */
   update_finale_notes_by_pk?: Maybe<Finale_Notes>
+  /** update multiples rows of table: "finale_notes" */
+  update_finale_notes_many?: Maybe<Array<Maybe<Finale_Notes_Mutation_Response>>>
   /** update data of the table: "finale_players" */
   update_finale_players?: Maybe<Finale_Players_Mutation_Response>
   /** update single row of the table: "finale_players" */
   update_finale_players_by_pk?: Maybe<Finale_Players>
+  /** update multiples rows of table: "finale_players" */
+  update_finale_players_many?: Maybe<
+    Array<Maybe<Finale_Players_Mutation_Response>>
+  >
   /** update data of the table: "finale_records" */
   update_finale_records?: Maybe<Finale_Records_Mutation_Response>
   /** update single row of the table: "finale_records" */
   update_finale_records_by_pk?: Maybe<Finale_Records>
+  /** update multiples rows of table: "finale_records" */
+  update_finale_records_many?: Maybe<
+    Array<Maybe<Finale_Records_Mutation_Response>>
+  >
   /** update data of the table: "finale_scores" */
   update_finale_scores?: Maybe<Finale_Scores_Mutation_Response>
   /** update single row of the table: "finale_scores" */
   update_finale_scores_by_pk?: Maybe<Finale_Scores>
+  /** update multiples rows of table: "finale_scores" */
+  update_finale_scores_many?: Maybe<
+    Array<Maybe<Finale_Scores_Mutation_Response>>
+  >
   /** update data of the table: "finale_songs" */
   update_finale_songs?: Maybe<Finale_Songs_Mutation_Response>
   /** update single row of the table: "finale_songs" */
   update_finale_songs_by_pk?: Maybe<Finale_Songs>
+  /** update multiples rows of table: "finale_songs" */
+  update_finale_songs_many?: Maybe<Array<Maybe<Finale_Songs_Mutation_Response>>>
   /** update data of the table: "tokens" */
   update_tokens?: Maybe<Tokens_Mutation_Response>
   /** update single row of the table: "tokens" */
   update_tokens_by_pk?: Maybe<Tokens>
+  /** update multiples rows of table: "tokens" */
+  update_tokens_many?: Maybe<Array<Maybe<Tokens_Mutation_Response>>>
   /** update data of the table: "users" */
   update_users?: Maybe<Users_Mutation_Response>
   /** update single row of the table: "users" */
   update_users_by_pk?: Maybe<Users>
+  /** update multiples rows of table: "users" */
+  update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>
 }
 
 /** mutation root */
@@ -5765,6 +6299,11 @@ export type Mutation_RootUpdate_Dx_Intl_Notes_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Notes_ManyArgs = {
+  updates: Array<Dx_Intl_Notes_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_Dx_Intl_PlayersArgs = {
   _inc?: InputMaybe<Dx_Intl_Players_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Players_Set_Input>
@@ -5776,6 +6315,11 @@ export type Mutation_RootUpdate_Dx_Intl_Players_By_PkArgs = {
   _inc?: InputMaybe<Dx_Intl_Players_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Players_Set_Input>
   pk_columns: Dx_Intl_Players_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Players_ManyArgs = {
+  updates: Array<Dx_Intl_Players_Updates>
 }
 
 /** mutation root */
@@ -5793,6 +6337,11 @@ export type Mutation_RootUpdate_Dx_Intl_Records_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Records_ManyArgs = {
+  updates: Array<Dx_Intl_Records_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_Dx_Intl_ScoresArgs = {
   _inc?: InputMaybe<Dx_Intl_Scores_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Scores_Set_Input>
@@ -5804,6 +6353,11 @@ export type Mutation_RootUpdate_Dx_Intl_Scores_By_PkArgs = {
   _inc?: InputMaybe<Dx_Intl_Scores_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Scores_Set_Input>
   pk_columns: Dx_Intl_Scores_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Scores_ManyArgs = {
+  updates: Array<Dx_Intl_Scores_Updates>
 }
 
 /** mutation root */
@@ -5821,6 +6375,11 @@ export type Mutation_RootUpdate_Dx_Intl_Songs_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Songs_ManyArgs = {
+  updates: Array<Dx_Intl_Songs_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_Dx_Intl_VariantsArgs = {
   _inc?: InputMaybe<Dx_Intl_Variants_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Variants_Set_Input>
@@ -5832,6 +6391,11 @@ export type Mutation_RootUpdate_Dx_Intl_Variants_By_PkArgs = {
   _inc?: InputMaybe<Dx_Intl_Variants_Inc_Input>
   _set?: InputMaybe<Dx_Intl_Variants_Set_Input>
   pk_columns: Dx_Intl_Variants_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Dx_Intl_Variants_ManyArgs = {
+  updates: Array<Dx_Intl_Variants_Updates>
 }
 
 /** mutation root */
@@ -5849,6 +6413,11 @@ export type Mutation_RootUpdate_Finale_Notes_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Finale_Notes_ManyArgs = {
+  updates: Array<Finale_Notes_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_Finale_PlayersArgs = {
   _inc?: InputMaybe<Finale_Players_Inc_Input>
   _set?: InputMaybe<Finale_Players_Set_Input>
@@ -5860,6 +6429,11 @@ export type Mutation_RootUpdate_Finale_Players_By_PkArgs = {
   _inc?: InputMaybe<Finale_Players_Inc_Input>
   _set?: InputMaybe<Finale_Players_Set_Input>
   pk_columns: Finale_Players_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Finale_Players_ManyArgs = {
+  updates: Array<Finale_Players_Updates>
 }
 
 /** mutation root */
@@ -5877,6 +6451,11 @@ export type Mutation_RootUpdate_Finale_Records_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Finale_Records_ManyArgs = {
+  updates: Array<Finale_Records_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_Finale_ScoresArgs = {
   _inc?: InputMaybe<Finale_Scores_Inc_Input>
   _set?: InputMaybe<Finale_Scores_Set_Input>
@@ -5888,6 +6467,11 @@ export type Mutation_RootUpdate_Finale_Scores_By_PkArgs = {
   _inc?: InputMaybe<Finale_Scores_Inc_Input>
   _set?: InputMaybe<Finale_Scores_Set_Input>
   pk_columns: Finale_Scores_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Finale_Scores_ManyArgs = {
+  updates: Array<Finale_Scores_Updates>
 }
 
 /** mutation root */
@@ -5905,6 +6489,11 @@ export type Mutation_RootUpdate_Finale_Songs_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Finale_Songs_ManyArgs = {
+  updates: Array<Finale_Songs_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_TokensArgs = {
   _set?: InputMaybe<Tokens_Set_Input>
   where: Tokens_Bool_Exp
@@ -5917,6 +6506,11 @@ export type Mutation_RootUpdate_Tokens_By_PkArgs = {
 }
 
 /** mutation root */
+export type Mutation_RootUpdate_Tokens_ManyArgs = {
+  updates: Array<Tokens_Updates>
+}
+
+/** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
   _set?: InputMaybe<Users_Set_Input>
   where: Users_Bool_Exp
@@ -5926,6 +6520,11 @@ export type Mutation_RootUpdate_UsersArgs = {
 export type Mutation_RootUpdate_Users_By_PkArgs = {
   _set?: InputMaybe<Users_Set_Input>
   pk_columns: Users_Pk_Columns_Input
+}
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_ManyArgs = {
+  updates: Array<Users_Updates>
 }
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -6482,32 +7081,44 @@ export type Subscription_Root = {
   dx_intl_new_rating_stats: Array<Dx_Intl_New_Rating_Stats>
   /** fetch aggregated fields from the table: "dx_intl_new_rating_stats" */
   dx_intl_new_rating_stats_aggregate: Dx_Intl_New_Rating_Stats_Aggregate
+  /** fetch data from the table in a streaming manner : "dx_intl_new_rating_stats" */
+  dx_intl_new_rating_stats_stream: Array<Dx_Intl_New_Rating_Stats>
   /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
   /** An aggregate relationship */
   dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate
   /** fetch data from the table: "dx_intl_notes" using primary key columns */
   dx_intl_notes_by_pk?: Maybe<Dx_Intl_Notes>
+  /** fetch data from the table in a streaming manner : "dx_intl_notes" */
+  dx_intl_notes_stream: Array<Dx_Intl_Notes>
   /** An array relationship */
   dx_intl_players: Array<Dx_Intl_Players>
   /** An aggregate relationship */
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>
+  /** fetch data from the table in a streaming manner : "dx_intl_players" */
+  dx_intl_players_stream: Array<Dx_Intl_Players>
   /** fetch data from the table: "dx_intl_players_timelines" */
   dx_intl_players_timelines: Array<Dx_Intl_Players_Timelines>
   /** fetch aggregated fields from the table: "dx_intl_players_timelines" */
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
+  /** fetch data from the table in a streaming manner : "dx_intl_players_timelines" */
+  dx_intl_players_timelines_stream: Array<Dx_Intl_Players_Timelines>
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
   /** fetch aggregated fields from the table: "dx_intl_records" */
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
+  /** fetch data from the table in a streaming manner : "dx_intl_records" */
+  dx_intl_records_stream: Array<Dx_Intl_Records>
   /** fetch data from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history: Array<Dx_Intl_Records_With_History>
   /** fetch aggregated fields from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history_aggregate: Dx_Intl_Records_With_History_Aggregate
+  /** fetch data from the table in a streaming manner : "dx_intl_records_with_history" */
+  dx_intl_records_with_history_stream: Array<Dx_Intl_Records_With_History>
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
   /** An aggregate relationship */
@@ -6518,76 +7129,106 @@ export type Subscription_Root = {
   dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>
   /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
   dx_intl_scores_stats_aggregate: Dx_Intl_Scores_Stats_Aggregate
+  /** fetch data from the table in a streaming manner : "dx_intl_scores_stats" */
+  dx_intl_scores_stats_stream: Array<Dx_Intl_Scores_Stats>
+  /** fetch data from the table in a streaming manner : "dx_intl_scores" */
+  dx_intl_scores_stream: Array<Dx_Intl_Scores>
   /** fetch data from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history: Array<Dx_Intl_Scores_With_History>
   /** fetch aggregated fields from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history_aggregate: Dx_Intl_Scores_With_History_Aggregate
+  /** fetch data from the table in a streaming manner : "dx_intl_scores_with_history" */
+  dx_intl_scores_with_history_stream: Array<Dx_Intl_Scores_With_History>
   /** fetch data from the table: "dx_intl_songs" */
   dx_intl_songs: Array<Dx_Intl_Songs>
   /** fetch aggregated fields from the table: "dx_intl_songs" */
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>
+  /** fetch data from the table in a streaming manner : "dx_intl_songs" */
+  dx_intl_songs_stream: Array<Dx_Intl_Songs>
   /** An array relationship */
   dx_intl_variants: Array<Dx_Intl_Variants>
   /** An aggregate relationship */
   dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate
   /** fetch data from the table: "dx_intl_variants" using primary key columns */
   dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>
+  /** fetch data from the table in a streaming manner : "dx_intl_variants" */
+  dx_intl_variants_stream: Array<Dx_Intl_Variants>
   /** An array relationship */
   finale_notes: Array<Finale_Notes>
   /** An aggregate relationship */
   finale_notes_aggregate: Finale_Notes_Aggregate
   /** fetch data from the table: "finale_notes" using primary key columns */
   finale_notes_by_pk?: Maybe<Finale_Notes>
+  /** fetch data from the table in a streaming manner : "finale_notes" */
+  finale_notes_stream: Array<Finale_Notes>
   /** An array relationship */
   finale_players: Array<Finale_Players>
   /** An aggregate relationship */
   finale_players_aggregate: Finale_Players_Aggregate
   /** fetch data from the table: "finale_players" using primary key columns */
   finale_players_by_pk?: Maybe<Finale_Players>
+  /** fetch data from the table in a streaming manner : "finale_players" */
+  finale_players_stream: Array<Finale_Players>
   /** fetch data from the table: "finale_players_timelines" */
   finale_players_timelines: Array<Finale_Players_Timelines>
   /** fetch aggregated fields from the table: "finale_players_timelines" */
   finale_players_timelines_aggregate: Finale_Players_Timelines_Aggregate
+  /** fetch data from the table in a streaming manner : "finale_players_timelines" */
+  finale_players_timelines_stream: Array<Finale_Players_Timelines>
   /** fetch data from the table: "finale_records" */
   finale_records: Array<Finale_Records>
   /** fetch aggregated fields from the table: "finale_records" */
   finale_records_aggregate: Finale_Records_Aggregate
   /** fetch data from the table: "finale_records" using primary key columns */
   finale_records_by_pk?: Maybe<Finale_Records>
+  /** fetch data from the table in a streaming manner : "finale_records" */
+  finale_records_stream: Array<Finale_Records>
   /** fetch data from the table: "finale_records_with_history" */
   finale_records_with_history: Array<Finale_Records_With_History>
   /** fetch aggregated fields from the table: "finale_records_with_history" */
   finale_records_with_history_aggregate: Finale_Records_With_History_Aggregate
+  /** fetch data from the table in a streaming manner : "finale_records_with_history" */
+  finale_records_with_history_stream: Array<Finale_Records_With_History>
   /** An array relationship */
   finale_scores: Array<Finale_Scores>
   /** An aggregate relationship */
   finale_scores_aggregate: Finale_Scores_Aggregate
   /** fetch data from the table: "finale_scores" using primary key columns */
   finale_scores_by_pk?: Maybe<Finale_Scores>
+  /** fetch data from the table in a streaming manner : "finale_scores" */
+  finale_scores_stream: Array<Finale_Scores>
   /** fetch data from the table: "finale_scores_with_history" */
   finale_scores_with_history: Array<Finale_Scores_With_History>
   /** fetch aggregated fields from the table: "finale_scores_with_history" */
   finale_scores_with_history_aggregate: Finale_Scores_With_History_Aggregate
+  /** fetch data from the table in a streaming manner : "finale_scores_with_history" */
+  finale_scores_with_history_stream: Array<Finale_Scores_With_History>
   /** fetch data from the table: "finale_songs" */
   finale_songs: Array<Finale_Songs>
   /** fetch aggregated fields from the table: "finale_songs" */
   finale_songs_aggregate: Finale_Songs_Aggregate
   /** fetch data from the table: "finale_songs" using primary key columns */
   finale_songs_by_pk?: Maybe<Finale_Songs>
+  /** fetch data from the table in a streaming manner : "finale_songs" */
+  finale_songs_stream: Array<Finale_Songs>
   /** fetch data from the table: "tokens" */
   tokens: Array<Tokens>
   /** fetch aggregated fields from the table: "tokens" */
   tokens_aggregate: Tokens_Aggregate
   /** fetch data from the table: "tokens" using primary key columns */
   tokens_by_pk?: Maybe<Tokens>
+  /** fetch data from the table in a streaming manner : "tokens" */
+  tokens_stream: Array<Tokens>
   /** fetch data from the table: "users" */
   users: Array<Users>
   /** fetch aggregated fields from the table: "users" */
   users_aggregate: Users_Aggregate
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>
+  /** fetch data from the table in a streaming manner : "users" */
+  users_stream: Array<Users>
 }
 
 export type Subscription_RootDx_Intl_New_Rating_StatsArgs = {
@@ -6603,6 +7244,12 @@ export type Subscription_RootDx_Intl_New_Rating_Stats_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Dx_Intl_New_Rating_Stats_Order_By>>
+  where?: InputMaybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_New_Rating_Stats_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_New_Rating_Stats_Stream_Cursor_Input>>
   where?: InputMaybe<Dx_Intl_New_Rating_Stats_Bool_Exp>
 }
 
@@ -6628,6 +7275,12 @@ export type Subscription_RootDx_Intl_Notes_By_PkArgs = {
   song_id: Scalars["String"]
 }
 
+export type Subscription_RootDx_Intl_Notes_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Notes_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Notes_Bool_Exp>
+}
+
 export type Subscription_RootDx_Intl_PlayersArgs = {
   distinct_on?: InputMaybe<Array<Dx_Intl_Players_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6648,6 +7301,12 @@ export type Subscription_RootDx_Intl_Players_By_PkArgs = {
   id: Scalars["Int"]
 }
 
+export type Subscription_RootDx_Intl_Players_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Players_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Players_Bool_Exp>
+}
+
 export type Subscription_RootDx_Intl_Players_TimelinesArgs = {
   distinct_on?: InputMaybe<Array<Dx_Intl_Players_Timelines_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6661,6 +7320,12 @@ export type Subscription_RootDx_Intl_Players_Timelines_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Dx_Intl_Players_Timelines_Order_By>>
+  where?: InputMaybe<Dx_Intl_Players_Timelines_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Players_Timelines_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Players_Timelines_Stream_Cursor_Input>>
   where?: InputMaybe<Dx_Intl_Players_Timelines_Bool_Exp>
 }
 
@@ -6684,6 +7349,12 @@ export type Subscription_RootDx_Intl_Records_By_PkArgs = {
   id: Scalars["Int"]
 }
 
+export type Subscription_RootDx_Intl_Records_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Records_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Records_Bool_Exp>
+}
+
 export type Subscription_RootDx_Intl_Records_With_HistoryArgs = {
   distinct_on?: InputMaybe<Array<Dx_Intl_Records_With_History_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6697,6 +7368,12 @@ export type Subscription_RootDx_Intl_Records_With_History_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Dx_Intl_Records_With_History_Order_By>>
+  where?: InputMaybe<Dx_Intl_Records_With_History_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Records_With_History_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Records_With_History_Stream_Cursor_Input>>
   where?: InputMaybe<Dx_Intl_Records_With_History_Bool_Exp>
 }
 
@@ -6736,6 +7413,18 @@ export type Subscription_RootDx_Intl_Scores_Stats_AggregateArgs = {
   where?: InputMaybe<Dx_Intl_Scores_Stats_Bool_Exp>
 }
 
+export type Subscription_RootDx_Intl_Scores_Stats_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Scores_Stats_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Scores_Stats_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Scores_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Scores_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+}
+
 export type Subscription_RootDx_Intl_Scores_With_HistoryArgs = {
   distinct_on?: InputMaybe<Array<Dx_Intl_Scores_With_History_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6749,6 +7438,12 @@ export type Subscription_RootDx_Intl_Scores_With_History_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Dx_Intl_Scores_With_History_Order_By>>
+  where?: InputMaybe<Dx_Intl_Scores_With_History_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Scores_With_History_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Scores_With_History_Stream_Cursor_Input>>
   where?: InputMaybe<Dx_Intl_Scores_With_History_Bool_Exp>
 }
 
@@ -6772,6 +7467,12 @@ export type Subscription_RootDx_Intl_Songs_By_PkArgs = {
   id: Scalars["String"]
 }
 
+export type Subscription_RootDx_Intl_Songs_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Songs_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Songs_Bool_Exp>
+}
+
 export type Subscription_RootDx_Intl_VariantsArgs = {
   distinct_on?: InputMaybe<Array<Dx_Intl_Variants_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6791,6 +7492,12 @@ export type Subscription_RootDx_Intl_Variants_AggregateArgs = {
 export type Subscription_RootDx_Intl_Variants_By_PkArgs = {
   deluxe: Scalars["Boolean"]
   song_id: Scalars["String"]
+}
+
+export type Subscription_RootDx_Intl_Variants_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Dx_Intl_Variants_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
 }
 
 export type Subscription_RootFinale_NotesArgs = {
@@ -6814,6 +7521,12 @@ export type Subscription_RootFinale_Notes_By_PkArgs = {
   song_id: Scalars["smallint"]
 }
 
+export type Subscription_RootFinale_Notes_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Notes_Stream_Cursor_Input>>
+  where?: InputMaybe<Finale_Notes_Bool_Exp>
+}
+
 export type Subscription_RootFinale_PlayersArgs = {
   distinct_on?: InputMaybe<Array<Finale_Players_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6834,6 +7547,12 @@ export type Subscription_RootFinale_Players_By_PkArgs = {
   id: Scalars["Int"]
 }
 
+export type Subscription_RootFinale_Players_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Players_Stream_Cursor_Input>>
+  where?: InputMaybe<Finale_Players_Bool_Exp>
+}
+
 export type Subscription_RootFinale_Players_TimelinesArgs = {
   distinct_on?: InputMaybe<Array<Finale_Players_Timelines_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6847,6 +7566,12 @@ export type Subscription_RootFinale_Players_Timelines_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Finale_Players_Timelines_Order_By>>
+  where?: InputMaybe<Finale_Players_Timelines_Bool_Exp>
+}
+
+export type Subscription_RootFinale_Players_Timelines_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Players_Timelines_Stream_Cursor_Input>>
   where?: InputMaybe<Finale_Players_Timelines_Bool_Exp>
 }
 
@@ -6870,6 +7595,12 @@ export type Subscription_RootFinale_Records_By_PkArgs = {
   id: Scalars["Int"]
 }
 
+export type Subscription_RootFinale_Records_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Records_Stream_Cursor_Input>>
+  where?: InputMaybe<Finale_Records_Bool_Exp>
+}
+
 export type Subscription_RootFinale_Records_With_HistoryArgs = {
   distinct_on?: InputMaybe<Array<Finale_Records_With_History_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6883,6 +7614,12 @@ export type Subscription_RootFinale_Records_With_History_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Finale_Records_With_History_Order_By>>
+  where?: InputMaybe<Finale_Records_With_History_Bool_Exp>
+}
+
+export type Subscription_RootFinale_Records_With_History_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Records_With_History_Stream_Cursor_Input>>
   where?: InputMaybe<Finale_Records_With_History_Bool_Exp>
 }
 
@@ -6906,6 +7643,12 @@ export type Subscription_RootFinale_Scores_By_PkArgs = {
   id: Scalars["bigint"]
 }
 
+export type Subscription_RootFinale_Scores_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Scores_Stream_Cursor_Input>>
+  where?: InputMaybe<Finale_Scores_Bool_Exp>
+}
+
 export type Subscription_RootFinale_Scores_With_HistoryArgs = {
   distinct_on?: InputMaybe<Array<Finale_Scores_With_History_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6919,6 +7662,12 @@ export type Subscription_RootFinale_Scores_With_History_AggregateArgs = {
   limit?: InputMaybe<Scalars["Int"]>
   offset?: InputMaybe<Scalars["Int"]>
   order_by?: InputMaybe<Array<Finale_Scores_With_History_Order_By>>
+  where?: InputMaybe<Finale_Scores_With_History_Bool_Exp>
+}
+
+export type Subscription_RootFinale_Scores_With_History_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Scores_With_History_Stream_Cursor_Input>>
   where?: InputMaybe<Finale_Scores_With_History_Bool_Exp>
 }
 
@@ -6942,6 +7691,12 @@ export type Subscription_RootFinale_Songs_By_PkArgs = {
   id: Scalars["smallint"]
 }
 
+export type Subscription_RootFinale_Songs_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Finale_Songs_Stream_Cursor_Input>>
+  where?: InputMaybe<Finale_Songs_Bool_Exp>
+}
+
 export type Subscription_RootTokensArgs = {
   distinct_on?: InputMaybe<Array<Tokens_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6962,6 +7717,12 @@ export type Subscription_RootTokens_By_PkArgs = {
   id: Scalars["uuid"]
 }
 
+export type Subscription_RootTokens_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Tokens_Stream_Cursor_Input>>
+  where?: InputMaybe<Tokens_Bool_Exp>
+}
+
 export type Subscription_RootUsersArgs = {
   distinct_on?: InputMaybe<Array<Users_Select_Column>>
   limit?: InputMaybe<Scalars["Int"]>
@@ -6980,6 +7741,12 @@ export type Subscription_RootUsers_AggregateArgs = {
 
 export type Subscription_RootUsers_By_PkArgs = {
   id: Scalars["String"]
+}
+
+export type Subscription_RootUsers_StreamArgs = {
+  batch_size: Scalars["Int"]
+  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>
+  where?: InputMaybe<Users_Bool_Exp>
 }
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -7039,9 +7806,9 @@ export type Tokens_Bool_Exp = {
 
 /** unique or primary key constraints on table "tokens" */
 export enum Tokens_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   TokensPkey = "tokens_pkey",
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "user_id" */
   TokensUserIdKey = "tokens_user_id_key",
 }
 
@@ -7122,6 +7889,21 @@ export type Tokens_Set_Input = {
   user_id?: InputMaybe<Scalars["String"]>
 }
 
+/** Streaming cursor of the table "tokens" */
+export type Tokens_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Tokens_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Tokens_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["uuid"]>
+  user_id?: InputMaybe<Scalars["String"]>
+}
+
 /** update columns of table "tokens" */
 export enum Tokens_Update_Column {
   /** column name */
@@ -7130,6 +7912,12 @@ export enum Tokens_Update_Column {
   Id = "id",
   /** column name */
   UserId = "user_id",
+}
+
+export type Tokens_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Tokens_Set_Input>
+  where: Tokens_Bool_Exp
 }
 
 /** columns and relationships of "users" */
@@ -7220,7 +8008,7 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
-  /** unique or primary key constraint */
+  /** unique or primary key constraint on columns "id" */
   UsersPkey = "users_pkey",
 }
 
@@ -7298,12 +8086,32 @@ export type Users_Set_Input = {
   id?: InputMaybe<Scalars["String"]>
 }
 
+/** Streaming cursor of the table "users" */
+export type Users_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Users_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Users_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars["timestamptz"]>
+  id?: InputMaybe<Scalars["String"]>
+}
+
 /** update columns of table "users" */
 export enum Users_Update_Column {
   /** column name */
   CreatedAt = "created_at",
   /** column name */
   Id = "id",
+}
+
+export type Users_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Users_Set_Input>
+  where: Users_Bool_Exp
 }
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */

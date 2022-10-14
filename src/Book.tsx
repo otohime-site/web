@@ -22,15 +22,11 @@ import host from "./host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
-const StyledDialogContent = styled(DialogContent, {
-  "& *": {
-    fontFamily: ["Roboto", "sans-serif"],
-  },
-  "& *:disabled": {
-    backgroundColor: "unset",
-  },
-})
-
+const ResetDialog = styled(Dialog)`
+  *:disabled {
+    background-color: unset;
+  }
+`
 const parsedPlayer = (() => {
   try {
     return parsePlayer(document)
@@ -151,27 +147,46 @@ const Book = () => {
   const players = dxIntlPlayersResult.data?.dx_intl_players
   if (document.location.pathname !== "/maimai-mobile/home/") {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <ResetDialog
+        lang="zh-TW"
+        disableEscapeKeyDown={true}
+        open={open}
+        onClose={handleClose}
+      >
         <Alert severity="info">
           您必須先回到官方成績單首頁。按一下「OK」帶你去！
         </Alert>
         <div>
           <button onClick={handleClose}>OK</button>
         </div>
-      </Dialog>
+      </ResetDialog>
     )
   }
   if (parsedPlayer === undefined) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <ResetDialog
+        lang="zh-TW"
+        disableEscapeKeyDown={true}
+        fullWidth={true}
+        maxWidth="md"
+        open={open}
+        onClose={handleClose}
+      >
         <Alert severity="error">
           無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。
         </Alert>
-      </Dialog>
+      </ResetDialog>
     )
   }
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <ResetDialog
+      lang="zh-TW"
+      disableEscapeKeyDown={true}
+      fullWidth={true}
+      maxWidth="md"
+      open={open}
+      onClose={handleClose}
+    >
       <DialogTitle>更新成績</DialogTitle>
       {mayFailWithMap ? (
         <Alert severity="error">
@@ -263,7 +278,7 @@ const Book = () => {
           關閉
         </button>
       </div>
-    </Dialog>
+    </ResetDialog>
   )
 }
 export default Book
