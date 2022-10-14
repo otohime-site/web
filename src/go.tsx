@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import GraphQLTokenProvider from "./GraphQLTokenProvider"
+import { styled } from "./components/stitches.config"
 
 const Container = styled("div", {
   position: "fixed",
