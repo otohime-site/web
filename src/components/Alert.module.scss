@@ -1,0 +1,19 @@
+@import "@radix-ui/colors/indigo.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/yellow.css";
+
+.Alert {
+  padding: 8px;
+  &[data-severity="info"] {
+    background: var(--indigo3);
+    color: var(--indigo12);
+  }
+  &[data-severity="error"] {
+    background: var(--red3);
+    color: var(--red12);
+  }
+  &[data-severity="warning"] {
+    background: var(--yellow3);
+    color: var(--yellow12);
+  }
+}
