@@ -5,7 +5,7 @@ export const Alert = ({
   severity,
   children,
 }: PropsWithChildren<{ severity: "info" | "error" | "warning" }>) => (
-  <div className={classes.Alert} data-severity={severity}>
+  <div className={classes.alert} data-severity={severity}>
     {children}
   </div>
 )

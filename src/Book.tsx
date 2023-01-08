@@ -1,17 +1,12 @@
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import { DialogProps } from "@radix-ui/react-alert-dialog"
-import { PropsWithChildren, useState } from "react"
+import { DialogTitle } from "@radix-ui/react-dialog"
+import { useState } from "react"
 import { useQuery, useClient } from "urql"
+import classes from "./Book.module.scss"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./components/Alert"
-import {
-  DialogRoot,
-  DialogTitle,
-  DialogOverlay,
-  DialogContent,
-} from "./components/Dialog"
-import { styled } from "./components/stitches.config"
+import { Dialog } from "./components/Dialog"
 import PlayerListItemNew from "./dx_intl/PlayerListItemNew"
 import {
   DxIntlPlayersDocument,
@@ -21,15 +16,6 @@ import {
 import host from "./host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
-
-const StyledDialogContent = styled(DialogContent, {
-  "& *": {
-    fontFamily: ["Roboto", "sans-serif"],
-  },
-  "& *:disabled": {
-    backgroundColor: "unset",
-  },
-})
 
 const parsedPlayer = (() => {
   try {
@@ -49,16 +35,6 @@ const sha256Sum = async (text: string): Promise<string> => {
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("")
 }
-
-const Dialog = ({
-  children,
-  ...dialogProps
-}: PropsWithChildren<DialogProps>) => (
-  <DialogRoot {...dialogProps}>
-    <DialogOverlay />
-    <StyledDialogContent>{children}</StyledDialogContent>
-  </DialogRoot>
-)
 
 const Book = () => {
   const [open, setOpen] = useState(true)

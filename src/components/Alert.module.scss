@@ -2,7 +2,7 @@
 @import "@radix-ui/colors/red.css";
 @import "@radix-ui/colors/yellow.css";
 
-.Alert {
+.alert {
   padding: 8px;
   &[data-severity="info"] {
     background: var(--indigo3);
