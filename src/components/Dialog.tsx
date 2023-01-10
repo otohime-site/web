@@ -5,7 +5,7 @@ import {
   Root,
 } from "@radix-ui/react-dialog"
 import { PropsWithChildren } from "react"
-import classes from "./Dialog.module.scss"
+import classes from "./Dialog.module.css"
 
 export const Dialog = ({
   children,

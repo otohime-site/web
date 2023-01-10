@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react"
-import classes from "./Alert.module.scss"
+import classes from "./Alert.module.css"
 
 export const Alert = ({
   severity,
