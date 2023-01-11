@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useQuery, useClient } from "urql"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./components/Alert"
+import { Button } from "./components/Button"
 import { Dialog } from "./components/Dialog"
 import PlayerListItemNew from "./dx_intl/PlayerListItemNew"
 import {
@@ -227,16 +228,16 @@ const Book = () => {
         </QueryResult>
       )}
       <div>
-        <button
+        <Button
           color="primary"
           disabled={fetchState !== "idle" || selectedPlayerId === undefined}
           onClick={handleFetchWithCatch}
         >
           上傳成績
-        </button>
-        <button disabled={fetchState === "fetching"} onClick={handleClose}>
+        </Button>
+        <Button disabled={fetchState === "fetching"} onClick={handleClose}>
           關閉
-        </button>
+        </Button>
       </div>
     </Dialog>
   )

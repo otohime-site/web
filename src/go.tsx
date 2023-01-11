@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import GraphQLTokenProvider from "./GraphQLTokenProvider"
+import classes from "./go.module.css"
 
 const token = document.body.getAttribute("data-otohime-token")
 if (document.getElementById("otohime-root") != null) {
@@ -13,9 +14,7 @@ if (document.getElementById("otohime-root") != null) {
   const container = document.createElement("div")
   container.setAttribute("id", "otohime-root")
   container.setAttribute("lang", "zh-TW")
-  container.style.all = "initial"
-  container.style.position = "fixed"
-  container.style.inset = "0"
+  container.className = classes.root
   document.body.appendChild(container)
   createRoot(container).render(
     <GraphQLTokenProvider token={token}>
