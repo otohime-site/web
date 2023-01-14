@@ -19,7 +19,7 @@ const DIFFICULTIES = [0, 1, 2, 3, 4]
 
 const parsedPlayer = (() => {
   try {
-    return parsePlayer(document)
+    return parsePlayer(window.parent.document)
   } catch {
     return undefined
   }
@@ -69,7 +69,7 @@ const Book = () => {
     const entries = await DIFFICULTIES.reduce<Promise<ScoresParseEntry[]>>(
       async (prevPromise, _, difficulty) => {
         const prev = await prevPromise
-        const resp = await fetch(
+        const resp = await window.parent.fetch(
           `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`
         )
         if (!resp.ok) {
@@ -125,7 +125,7 @@ const Book = () => {
     window.location.href = "/"
   }
   const players = dxIntlPlayersResult.data?.dx_intl_players
-  if (document.location.pathname !== "/maimai-mobile/home/") {
+  if (window.parent.document.location.pathname !== "/maimai-mobile/home/") {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <Alert severity="info">
