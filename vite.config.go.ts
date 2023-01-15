@@ -9,12 +9,11 @@ export default defineConfig({
     // Using library mode will result in large bundle
     // https://stackoverflow.com/questions/73713323/
     rollupOptions: {
-      input: resolve(__dirname, "src/go.tsx"),
+      input: resolve(__dirname, "src/ryugujo.tsx"),
       output: {
         format: "iife",
         dir: resolve(__dirname, "dist"),
-        entryFileNames: "go.js",
-        assetFileNames: "go.css",
+        entryFileNames: "ryugujo.js",
       },
     },
   },

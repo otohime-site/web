@@ -122,7 +122,7 @@ const Book = () => {
 
   const handleClose = (): void => {
     setOpen(false)
-    window.location.href = "/"
+    window.parent.location.reload()
   }
   const players = dxIntlPlayersResult.data?.dx_intl_players
   if (window.parent.document.location.pathname !== "/maimai-mobile/home/") {

@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client"
 import Book from "./Book"
 import GraphQLTokenProvider from "./GraphQLTokenProvider"
-import classes from "./go.module.css"
+import classes from "./ryugujo.module.css"
 
 const token = document.body.getAttribute("data-otohime-token")
 if (document.getElementById("otohime-root") != null) {
