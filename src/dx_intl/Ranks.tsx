@@ -48,6 +48,7 @@ import courseShin8 from "./course_ranks/shin8.svg"
 import courseShin9 from "./course_ranks/shin9.svg"
 import courseShin10 from "./course_ranks/shin10.svg"
 import courseShinKaiden from "./course_ranks/shinkaiden.svg"
+import courseUraKaiden from "./course_ranks/urakaiden.svg"
 
 export const courseRankNames = [
   "初心者",
@@ -73,6 +74,7 @@ export const courseRankNames = [
   "真九段",
   "真十段",
   "真皆伝",
+  "裏皆伝",
 ] as const
 
 export const classRankNames = [
@@ -128,6 +130,7 @@ const courseRankImages = [
   courseShin9,
   courseShin10,
   courseShinKaiden,
+  courseUraKaiden,
 ]
 
 const classRankImages = [
