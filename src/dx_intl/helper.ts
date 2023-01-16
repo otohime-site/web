@@ -51,6 +51,7 @@ export const versions = [
   "Splash PLUS",
   "UNiVERSE",
   "UNiVERSE PLUS",
+  "FESTiVAL",
 ] as const
 
 export const levels = [
@@ -79,7 +80,7 @@ export const levels = [
   "15",
 ] as const
 
-export const levelCompareKey: Record<typeof levels[number], number> = {
+export const levelCompareKey: Record<(typeof levels)[number], number> = {
   "1": 1.0,
   "2": 2.0,
   "3": 3.0,
@@ -128,7 +129,7 @@ export const RANKS = [
   "SSS",
   "SSS+",
 ] as const
-export const RANK_SCORES: Array<[number, typeof RANKS[number], number]> = [
+export const RANK_SCORES: Array<[number, (typeof RANKS)[number], number]> = [
   [80, "A", 0.136],
   [90, "AA", 0.152],
   [94, "AAA", 0.168],
@@ -206,7 +207,7 @@ export const arrangeScoreStats = (
   }, new Map(SCORE_STATS.map((rank) => [rank, 0])))
 
 export const SCORE_STATS = ["A", "S", "S+", "SS", "SS+", "SSS", "SSS+"] as const
-type ScoreStat = typeof SCORE_STATS[number]
+type ScoreStat = (typeof SCORE_STATS)[number]
 
 export const arrangeComboStats = (
   scores: Array<Pick<Dx_Intl_Scores, "combo_flag"> | undefined>
@@ -223,7 +224,7 @@ export const arrangeComboStats = (
   }, new Map(COMBO_STATS.map((combo) => [combo, 0])))
 
 export const COMBO_STATS = ["fc", "fc+", "ap", "ap+"] as const
-type ComboStat = typeof COMBO_STATS[number]
+type ComboStat = (typeof COMBO_STATS)[number]
 
 export const arrangeSyncStats = (
   scores: Array<Pick<Dx_Intl_Scores, "sync_flag"> | undefined>
@@ -240,7 +241,7 @@ export const arrangeSyncStats = (
   }, new Map(SYNC_STATS.map((sync) => [sync, 0])))
 
 export const SYNC_STATS = ["fs", "fs+", "fdx", "fdx+"] as const
-type SyncStat = typeof SYNC_STATS[number]
+type SyncStat = (typeof SYNC_STATS)[number]
 
 export const getRating = (score: number, internalLv: number): number => {
   const rankScore = RANK_SCORES[getRankScoreIndex(score)]
