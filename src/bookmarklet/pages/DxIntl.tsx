@@ -124,28 +124,30 @@ const Book = () => {
     }
   }
 
-  const handleClose = (): void => {
-    setOpen(false)
-    window.parent.location.reload()
+  const onOpenChange = (open: boolean): void => {
+    setOpen(open)
+    if (!open) {
+      window.parent.location.reload()
+    }
   }
   const players = dxIntlPlayersResult.data?.dx_intl_players
   if (window.parent.document.location.pathname !== "/maimai-mobile/home/") {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <Alert severity="info">
             您必須先回到官方成績單首頁。按一下「OK」帶你去！
           </Alert>
-          <div>
-            <button onClick={handleClose}>OK</button>
-          </div>
+          <DialogClose asChild>
+            <Button>OK</Button>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     )
   }
   if (parsedPlayer === undefined) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <Alert severity="error">
             無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。
@@ -155,7 +157,7 @@ const Book = () => {
     )
   }
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogTitle>更新成績</DialogTitle>
         {mayFailWithMap ? (
@@ -245,9 +247,7 @@ const Book = () => {
             上傳成績
           </Button>
           <DialogClose asChild>
-            <button disabled={fetchState === "fetching"} onClick={handleClose}>
-              關閉
-            </button>
+            <button disabled={fetchState === "fetching"}>關閉</button>
           </DialogClose>
         </div>
       </DialogContent>
