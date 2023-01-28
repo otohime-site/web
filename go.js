@@ -20,9 +20,6 @@ const HEAD_PROD = `
   const injected = document
     .querySelector("script[src$='go.js']")
     .getAttribute("src")
-  const scripts = injected.includes("localhost")
-    ? "https://localhost:8080/@vite/client|https://localhost:8080/src/bookmarklet/entry.tsx"
-    : "https://otohi.me/ryugujo.js"
   const token = (
     document.body.getAttribute("data-otohime-token") ?? ""
   ).replace(/[^0-9a-z]/g, "")
