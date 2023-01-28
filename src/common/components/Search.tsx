@@ -6,12 +6,12 @@ import { AutocompleteChangeReason } from "@mui/material/useAutocomplete"
 import { FunctionComponent, useState } from "react"
 import { useNavigate } from "react-router"
 import { useQuery } from "urql"
-import { useAuth } from "./auth"
-import PlayerListItem from "./dx_intl/PlayerListItem"
+import { useAuth } from "../../auth"
+import PlayerListItem from "../../dx_intl/PlayerListItem"
 import {
   DxIntlPlayersWithKeywordAnonymousDocument,
   DxIntlPlayersWithKeywordUserDocument,
-} from "./generated/graphql"
+} from "../../generated/graphql"
 
 const SearchContainer = styled("div")(
   ({ theme }) =>
@@ -112,7 +112,7 @@ const Search: FunctionComponent<{
 
   const onItemChange = (
     _: React.ChangeEvent<{}>,
-    value: string | typeof options[0],
+    value: string | (typeof options)[0],
     reason: AutocompleteChangeReason
   ): void => {
     if (typeof value === "string") {

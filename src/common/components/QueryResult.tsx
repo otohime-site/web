@@ -1,6 +1,6 @@
 import { FunctionComponent, PropsWithChildren } from "react"
 import { UseQueryState } from "urql"
-import { Alert } from "./common/components/ui/Alert"
+import { Alert } from "./ui/Alert"
 
 interface Props {
   result: UseQueryState

@@ -14,7 +14,7 @@ import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
-import { QueryResult } from "../QueryResult"
+import { QueryResult } from "../common/components/QueryResult"
 import {
   DxIntlScoresStatsDocument,
   DxIntlSongsByIdDocument,

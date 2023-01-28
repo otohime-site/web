@@ -10,8 +10,8 @@ import { createRoot } from "react-dom/client"
 import { HelmetProvider } from "react-helmet-async"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App"
-import GraphQLProvider from "./GraphQLProvider"
 import { AuthProvider } from "./auth"
+import GraphQLProvider from "./common/components/GraphQLProvider"
 
 const theme = createTheme({
   palette: {

@@ -14,10 +14,13 @@ import {
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useQuery, useMutation } from "urql"
+import { useAuth } from "../../auth"
+import {
+  TokensDocument,
+  RegenerateTokenDocument,
+} from "../../generated/graphql"
+import host from "../../host"
 import { QueryResult } from "./QueryResult"
-import { useAuth } from "./auth"
-import { TokensDocument, RegenerateTokenDocument } from "./generated/graphql"
-import host from "./host"
 
 const bookmarkletContent = (token: string): string => `
 javascript:
