@@ -31,6 +31,17 @@
           "data-otohime-token",
           document.body.getAttribute("data-otohime-token")
         )
+        if (injected.includes("localhost")) {
+          const srf = frame.contentDocument.createElement("script")
+          srf.textContent = `
+          import RefreshRuntime from "https://localhost:8080/@react-refresh"
+          RefreshRuntime.injectIntoGlobalHook(window)
+          window.$RefreshReg$ = () => {}
+          window.$RefreshSig$ = () => (type) => type
+          `
+          srf.type = "module"
+          frame.contentDocument.head.appendChild(srf)
+        }
         frame.contentWindow.__vite_plugin_react_preamble_installed__ = true
         const s = frame.contentDocument.createElement("script")
         s.setAttribute("src", url)
