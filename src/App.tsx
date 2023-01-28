@@ -22,8 +22,8 @@ import UserBox from "./UserBox"
 import "./global.css"
 import LogoIcon from "./logo/logo.svg"
 
-const Home = lazy(async () => await import("./Home"))
-const Forget = lazy(async () => await import("./Forget"))
+const Home = lazy(async () => await import("./common/pages/Home"))
+const Forget = lazy(async () => await import("./common/pages/Forget"))
 const DxIntl = lazy(async () => await import("./dx_intl/index"))
 const Finale = lazy(async () => await import("./finale/index"))
 

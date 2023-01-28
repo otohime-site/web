@@ -4,10 +4,10 @@ import { styled } from "@mui/material/styles"
 import { FunctionComponent, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { Link as RouterLink } from "react-router-dom"
-import Token from "./Token"
-import { useAuth } from "./auth"
-import DxUserPlayers from "./dx_intl/UserPlayers"
-import Screenshot from "./screenshot.jpg"
+import Token from "../../Token"
+import { useAuth } from "../../auth"
+import DxUserPlayers from "../../dx_intl/UserPlayers"
+import Screenshot from "../../screenshot.jpg"
 
 const StyledGrid = styled(Grid)`
   padding: 16px;

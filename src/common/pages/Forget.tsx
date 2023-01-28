@@ -10,8 +10,8 @@ import {
 import { FunctionComponent, useState } from "react"
 import { useNavigate } from "react-router"
 import { useMutation } from "urql"
-import { useAuth } from "./auth"
-import { DeleteUserDocument } from "./generated/graphql"
+import { useAuth } from "../../auth"
+import { DeleteUserDocument } from "../../generated/graphql"
 
 const Forget: FunctionComponent = () => {
   const navigate = useNavigate()
