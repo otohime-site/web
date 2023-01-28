@@ -8,7 +8,7 @@ import {
 } from "firebase/auth"
 import { useSnackbar } from "notistack"
 import { Fragment, FunctionComponent, useCallback } from "react"
-import { firebaseAuth, useAuth } from "./auth"
+import { firebaseAuth, useAuth } from "../../auth"
 
 const provider = new FacebookAuthProvider()
 const isInAppBrowser = (agent: string): boolean =>
