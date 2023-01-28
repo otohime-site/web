@@ -8,12 +8,14 @@ import {
 import { Link } from "react-router-dom"
 import classes from "./Button.module.css"
 
-export const Button = ({
-  className,
-  children,
-}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) => (
-  <button className={`${classes.button} ${className ?? ""}`}>{children}</button>
-)
+export const Button = forwardRef<
+  HTMLButtonElement,
+  PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>
+>(({ className, children }, forwardedRef) => (
+  <button className={`${classes.button} ${className ?? ""}`} ref={forwardedRef}>
+    {children}
+  </button>
+))
 
 Button.displayName = "Button"
 
