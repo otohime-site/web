@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client"
-import Book from "./Book"
-import GraphQLTokenProvider from "./GraphQLTokenProvider"
-import classes from "./ryugujo.module.css"
+import GraphQLTokenProvider from "./components/GraphQLTokenProvider"
+import classes from "./entry.module.css"
+import DxIntl from "./pages/DxIntl"
 
 const token = document.body.getAttribute("data-otohime-token")
 if (document.getElementById("otohime-root") != null) {
@@ -18,7 +18,7 @@ if (document.getElementById("otohime-root") != null) {
   document.body.appendChild(container)
   createRoot(container).render(
     <GraphQLTokenProvider token={token}>
-      <Book />
+      <DxIntl />
     </GraphQLTokenProvider>
   )
 }

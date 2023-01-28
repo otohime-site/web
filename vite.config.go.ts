@@ -9,7 +9,7 @@ export default defineConfig({
     // Using library mode will result in large bundle
     // https://stackoverflow.com/questions/73713323/
     rollupOptions: {
-      input: resolve(__dirname, "src/ryugujo.tsx"),
+      input: resolve(__dirname, "src/bookmarklet/entry.tsx"),
       output: {
         format: "iife",
         dir: resolve(__dirname, "dist"),

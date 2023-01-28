@@ -3,17 +3,17 @@ import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import { DialogTitle } from "@radix-ui/react-dialog"
 import { useState } from "react"
 import { useQuery, useClient } from "urql"
-import { QueryResult } from "./QueryResult"
-import { Alert } from "./common/components/Alert"
-import { Button } from "./common/components/Button"
-import { Dialog } from "./common/components/Dialog"
-import PlayerListItemNew from "./dx_intl/PlayerListItemNew"
+import { QueryResult } from "../../QueryResult"
+import { Alert } from "../../common/components/Alert"
+import { Button } from "../../common/components/Button"
+import { Dialog } from "../../common/components/Dialog"
+import PlayerListItemNew from "../../dx_intl/PlayerListItemNew"
 import {
   DxIntlPlayersDocument,
   DxIntlSongsRefMapCountDocument,
   InsertDxIntlRecordWithScoresDocument,
-} from "./generated/graphql"
-import host from "./host"
+} from "../../generated/graphql"
+import host from "../../host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 

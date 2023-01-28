@@ -7,7 +7,7 @@
     .querySelector("script[src$='go.js']")
     .getAttribute("src")
   const scripts = injected.includes("localhost")
-    ? "https://localhost:8080/@vite/client|https://localhost:8080/src/ryugujo.tsx"
+    ? "https://localhost:8080/@vite/client|https://localhost:8080/src/bookmarklet/entry.tsx"
     : "https://otohi.me/ryugujo.js"
 
   const frame = document.createElement("iframe")
