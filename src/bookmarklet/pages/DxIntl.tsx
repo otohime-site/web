@@ -4,9 +4,9 @@ import { DialogTitle } from "@radix-ui/react-dialog"
 import { useState } from "react"
 import { useQuery, useClient } from "urql"
 import { QueryResult } from "../../QueryResult"
-import { Alert } from "../../common/components/Alert"
-import { Button } from "../../common/components/Button"
-import { Dialog } from "../../common/components/Dialog"
+import { Alert } from "../../common/components/ui/Alert"
+import { Button } from "../../common/components/ui/Button"
+import { Dialog } from "../../common/components/ui/Dialog"
 import PlayerListItemNew from "../../dx_intl/PlayerListItemNew"
 import {
   DxIntlPlayersDocument,
