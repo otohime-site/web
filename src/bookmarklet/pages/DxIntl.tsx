@@ -178,10 +178,9 @@ const Book = () => {
             </p>
             <progress
               value={
-                fetchProgress < DIFFICULTIES.length
-                  ? (fetchProgress / DIFFICULTIES.length) * 100
-                  : undefined
+                fetchProgress < DIFFICULTIES.length ? fetchProgress : undefined
               }
+              max={DIFFICULTIES.length + 1}
             />
           </div>
         ) : fetchState === "done" ? (
