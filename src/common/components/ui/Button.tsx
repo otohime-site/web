@@ -5,16 +5,22 @@ import {
   forwardRef,
   PropsWithChildren,
 } from "react"
+import { Interactive } from "react-interactive"
 import { Link } from "react-router-dom"
 import classes from "./Button.module.css"
 
 export const Button = forwardRef<
   HTMLButtonElement,
   PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>
->(({ className, children }, forwardedRef) => (
-  <button className={`${classes.button} ${className ?? ""}`} ref={forwardedRef}>
+>(({ className, children, ...props }, forwardedRef) => (
+  <Interactive
+    as="button"
+    {...props}
+    className={`${classes.button} ${className ?? ""}`}
+    ref={forwardedRef}
+  >
     {children}
-  </button>
+  </Interactive>
 ))
 
 Button.displayName = "Button"
@@ -22,14 +28,15 @@ Button.displayName = "Button"
 export const LinkButton = forwardRef<
   ElementRef<typeof Link>,
   ComponentPropsWithoutRef<typeof Link>
->((props, forwardedRef) => (
-  <Link
+>(({ className, children, ...props }, forwardedRef) => (
+  <Interactive
+    as={Link}
     {...props}
-    className={`${classes.button} ${props.className ?? ""}`}
+    className={`${classes.button} ${className ?? ""}`}
     ref={forwardedRef}
   >
-    {props.children}
-  </Link>
+    {children}
+  </Interactive>
 ))
 
 LinkButton.displayName = "LinkButton"

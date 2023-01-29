@@ -127,7 +127,7 @@ const Book = () => {
   const onOpenChange = (open: boolean): void => {
     setOpen(open)
     if (!open) {
-      window.parent.location.reload()
+      window.parent.location.href = "/"
     }
   }
   const players = dxIntlPlayersResult.data?.dx_intl_players
@@ -247,7 +247,7 @@ const Book = () => {
             上傳成績
           </Button>
           <DialogClose asChild>
-            <button disabled={fetchState === "fetching"}>關閉</button>
+            <Button disabled={fetchState === "fetching"}>關閉</Button>
           </DialogClose>
         </div>
       </DialogContent>
