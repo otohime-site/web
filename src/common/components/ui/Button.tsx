@@ -11,12 +11,14 @@ import classes from "./Button.module.css"
 
 export const Button = forwardRef<
   HTMLButtonElement,
-  PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>
->(({ className, children, ...props }, forwardedRef) => (
+  PropsWithChildren<
+    ButtonHTMLAttributes<HTMLButtonElement> & { variant: "plum" }
+  >
+>(({ variant, className, children, ...props }, forwardedRef) => (
   <Interactive
     as="button"
     {...props}
-    className={`${classes.button} ${className ?? ""}`}
+    className={`${classes.button} ${variant} ${className ?? ""}`}
     ref={forwardedRef}
   >
     {children}
