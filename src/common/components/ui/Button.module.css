@@ -13,7 +13,7 @@
 
 .button:global(.plum) {
   background: var(--plum3);
-  border-color: var(--plum7);
+  border-color: var(--plum6);
   color: var(--plum12);
 }
 
@@ -23,13 +23,17 @@
   border-color: var(--plum8);
 }
 
+.button:global(.plum.focus) {
+  box-shadow: inset 0 0 0 2px var(--plum7);
+}
+
 .button:global(.plum.active) {
   background: var(--plum5);
 }
 
 .button:disabled {
   background: var(--mauve2);
-  border-color: var(--mauve7);
+  border-color: var(--mauve6);
   color: var(--mauve8);
   cursor: default;
 }
