@@ -8,6 +8,7 @@ import {
 import { Interactive } from "react-interactive"
 import { Link } from "react-router-dom"
 import classes from "./Button.module.css"
+import colorClasses from "./colors.module.css"
 
 export const Button = forwardRef<
   HTMLButtonElement,
@@ -18,7 +19,7 @@ export const Button = forwardRef<
   <Interactive
     as="button"
     {...props}
-    className={`${classes.button} ${variant} ${className ?? ""}`}
+    className={`${classes.button} ${colorClasses[variant]} ${className ?? ""}`}
     ref={forwardedRef}
   >
     {children}

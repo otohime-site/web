@@ -1,0 +1,16 @@
+@import "@radix-ui/colors/plum.css";
+
+.plum {
+  --scale1: var(--plum1);
+  --scale2: var(--plum2);
+  --scale3: var(--plum3);
+  --scale4: var(--plum4);
+  --scale5: var(--plum5);
+  --scale6: var(--plum6);
+  --scale7: var(--plum7);
+  --scale8: var(--plum8);
+  --scale9: var(--plum9);
+  --scale10: var(--plum10);
+  --scale11: var(--plum11);
+  --scale12: var(--plum12);
+}
