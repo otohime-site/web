@@ -13,7 +13,7 @@ import colorClasses from "./colors.module.css"
 export const Button = forwardRef<
   HTMLButtonElement,
   PropsWithChildren<
-    ButtonHTMLAttributes<HTMLButtonElement> & { variant: "violet" }
+    ButtonHTMLAttributes<HTMLButtonElement> & { variant: "violet" | "indigo" }
   >
 >(({ variant, className, children, ...props }, forwardedRef) => (
   <Interactive
