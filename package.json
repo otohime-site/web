@@ -23,7 +23,7 @@
     "@radix-ui/colors": "^0.1.8",
     "@radix-ui/react-alert-dialog": "^1.0.0",
     "@radix-ui/react-dialog": "^1.0.0",
-    "@radix-ui/react-radio-group": "^1.1.0",
+    "@radix-ui/react-radio-group": "^1.1.1",
     "@types/babel__core": "^7.1.19",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
