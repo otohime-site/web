@@ -22,7 +22,7 @@
   box-shadow: inset 0 0 0 2px var(--scale7);
 }
 
-.button:global(.plum.active) {
+.button:global(.active) {
   background: var(--scale5);
 }
 

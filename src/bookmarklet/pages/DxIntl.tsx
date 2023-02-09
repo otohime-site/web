@@ -139,7 +139,7 @@ const Book = () => {
             您必須先回到官方成績單首頁。按一下「OK」帶你去！
           </Alert>
           <DialogClose asChild>
-            <Button variant="plum">OK</Button>
+            <Button variant="violet">OK</Button>
           </DialogClose>
         </DialogContent>
       </Dialog>
@@ -239,14 +239,14 @@ const Book = () => {
         )}
         <div>
           <Button
-            variant="plum"
+            variant="violet"
             disabled={fetchState !== "idle" || selectedPlayerId === undefined}
             onClick={handleFetchWithCatch}
           >
             上傳成績
           </Button>
           <DialogClose asChild>
-            <Button variant="plum" disabled={fetchState === "fetching"}>
+            <Button variant="violet" disabled={fetchState === "fetching"}>
               關閉
             </Button>
           </DialogClose>

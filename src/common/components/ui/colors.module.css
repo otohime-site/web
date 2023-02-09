@@ -1,16 +1,16 @@
-@import "@radix-ui/colors/plum.css";
+@import "@radix-ui/colors/violet.css";
 
-.plum {
-  --scale1: var(--plum1);
-  --scale2: var(--plum2);
-  --scale3: var(--plum3);
-  --scale4: var(--plum4);
-  --scale5: var(--plum5);
-  --scale6: var(--plum6);
-  --scale7: var(--plum7);
-  --scale8: var(--plum8);
-  --scale9: var(--plum9);
-  --scale10: var(--plum10);
-  --scale11: var(--plum11);
-  --scale12: var(--plum12);
+.violet {
+  --scale1: var(--violet1);
+  --scale2: var(--violet2);
+  --scale3: var(--violet3);
+  --scale4: var(--violet4);
+  --scale5: var(--violet5);
+  --scale6: var(--violet6);
+  --scale7: var(--violet7);
+  --scale8: var(--violet8);
+  --scale9: var(--violet9);
+  --scale10: var(--violet10);
+  --scale11: var(--violet11);
+  --scale12: var(--violet12);
 }
