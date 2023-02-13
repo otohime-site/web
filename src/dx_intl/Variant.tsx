@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
-import DX from "./variants/dx.svg"
-import STD from "./variants/std.svg"
+import DX from "./images/variants/dx.svg"
+import STD from "./images/variants/std.svg"
 
 const VariantImage = styled("img")`
   height: 1em;
