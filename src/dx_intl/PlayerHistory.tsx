@@ -2,18 +2,18 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
 import {
   Alert,
-  Tab,
-  Tabs,
   Button,
   Card,
   CardContent,
+  Tab,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
+  Tabs,
 } from "@mui/material"
-import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
+import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
 import { styled } from "@mui/material/styles"
 import { formatRelative } from "date-fns"
 import { zhTW } from "date-fns/locale"
@@ -24,18 +24,18 @@ import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
-  DxIntlSongsDocument,
   DxIntlPlayersTimelinesDocument,
   DxIntlPlayerWithTimelineDocument,
   DxIntlPlayerWithTimelineQuery,
+  DxIntlSongsDocument,
   Dx_Intl_Scores,
 } from "../generated/graphql"
-import { gradeNames } from "./Grade"
 import { ActualScore, FlagContainer } from "./Player"
 import { classRankNames, courseRankNames } from "./Ranks"
 import Variant from "./Variant"
 import { ComboFlag, SyncFlag } from "./flags"
 import { difficulties, getNoteHash, prepareSongs, VariantEntry } from "./helper"
+import { gradeNames } from "./models/constants"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 

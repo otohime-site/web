@@ -7,7 +7,7 @@ import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
-import { gradeNames } from "./Grade"
+import { gradeNames } from "./models/constants"
 import { courseRankNames, classRankNames } from "./Ranks"
 
 const getGradeOrRanks = (
