@@ -4,73 +4,73 @@ import EditIcon from "@mui/icons-material/Edit"
 import EventNoteIcon from "@mui/icons-material/EventNote"
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {
-  Alert,
-  Card,
-  CardContent,
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Tabs,
-  Tab,
-  ButtonGroup,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  useMediaQuery,
-  Theme,
-  IconButton,
-  Tooltip,
-  Hidden,
-  Link,
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Typography,
+  Alert,
+  Button,
+  ButtonGroup,
+  Card,
+  CardContent,
+  FormControl,
   FormControlLabel,
-  Switch,
-  SelectChangeEvent,
+  Hidden,
+  IconButton,
+  InputLabel,
+  Link,
+  MenuItem,
   Popover,
+  Select,
+  SelectChangeEvent,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tabs,
+  Theme,
+  Tooltip,
+  Typography,
+  useMediaQuery,
 } from "@mui/material"
-import { green, orange, red, deepPurple, purple } from "@mui/material/colors"
+import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
 import { lighten, styled } from "@mui/material/styles"
 import { format } from "date-fns"
-import React, { FunctionComponent, useState, useMemo, useCallback } from "react"
+import React, { FunctionComponent, useCallback, useMemo, useState } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
+  DxIntlPlayersEditableDocument,
   DxIntlRecordWithScoresDocument,
   DxIntlSongsDocument,
   Dx_Intl_Notes,
-  DxIntlPlayersEditableDocument,
 } from "../generated/graphql"
+import { ComboFlag, SyncFlag } from "./flags"
+import {
+  arrangeSortedRows,
+  categories,
+  difficulties,
+  downloadCSV,
+  getNoteHash,
+  getRatingAndRanks,
+  getRowGroups,
+  GROUP_BY,
+  levels,
+  ORDER_BY,
+  prepareSongs,
+  RATING_NEW_COUNT,
+  RATING_OLD_COUNT,
+  ScoreEntry,
+  versions,
+} from "./helper"
 import NoteRating from "./NoteRating"
 import Record from "./Record"
 import Variant from "./Variant"
-import { ComboFlag, SyncFlag } from "./flags"
-import {
-  categories,
-  versions,
-  levels,
-  difficulties,
-  getNoteHash,
-  prepareSongs,
-  ScoreEntry,
-  getRatingAndRanks,
-  GROUP_BY,
-  ORDER_BY,
-  getRowGroups,
-  arrangeSortedRows,
-  RATING_NEW_COUNT,
-  RATING_OLD_COUNT,
-  downloadCSV,
-} from "./helper"
 
 export type NoteEntry = Pick<
   Dx_Intl_Notes,
@@ -494,17 +494,20 @@ const Player: FunctionComponent = () => {
     }
     window.scrollTo(0, 0)
   }
-  const handleChangeTab = (event: React.ChangeEvent<{}>, val: number): void => {
+  const handleChangeTab = (
+    event: React.ChangeEvent<unknown>,
+    val: number
+  ): void => {
     setCurrentTab(val)
   }
   const handleChangeDifficultySet = (
-    event: React.ChangeEvent<{}>,
+    event: React.ChangeEvent<unknown>,
     val: number
   ): void => {
     setDifficultySet(val)
   }
   const handleChangeDifficulty = (
-    event: React.ChangeEvent<{}>,
+    event: React.ChangeEvent<unknown>,
     val: number
   ): void => {
     setDifficulty(val)
@@ -561,7 +564,7 @@ const Player: FunctionComponent = () => {
     })
   }
 
-  const handleRatingPopClose = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleRatingPopClose = (): void => {
     setRatingPop(null)
   }
 

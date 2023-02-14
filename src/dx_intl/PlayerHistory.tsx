@@ -15,8 +15,7 @@ import {
 } from "@mui/material"
 import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
 import { styled } from "@mui/material/styles"
-import { formatRelative } from "date-fns"
-import { zhTW } from "date-fns/locale"
+import { formatRelative, zhTW } from "date-fns"
 import { FunctionComponent, useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
@@ -30,12 +29,12 @@ import {
   DxIntlSongsDocument,
   Dx_Intl_Scores,
 } from "../generated/graphql"
-import { ActualScore, FlagContainer } from "./Player"
-import { classRankNames, courseRankNames } from "./Ranks"
-import Variant from "./Variant"
 import { ComboFlag, SyncFlag } from "./flags"
 import { difficulties, getNoteHash, prepareSongs, VariantEntry } from "./helper"
 import { gradeNames } from "./models/constants"
+import { ActualScore, FlagContainer } from "./Player"
+import { classRankNames, courseRankNames } from "./Ranks"
+import Variant from "./Variant"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 

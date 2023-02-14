@@ -1,14 +1,6 @@
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
 import Grade1 from "./images/grades/1.svg"
-import Grade2 from "./images/grades/2.svg"
-import Grade3 from "./images/grades/3.svg"
-import Grade4 from "./images/grades/4.svg"
-import Grade5 from "./images/grades/5.svg"
-import Grade6 from "./images/grades/6.svg"
-import Grade7 from "./images/grades/7.svg"
-import Grade8 from "./images/grades/8.svg"
-import Grade9 from "./images/grades/9.svg"
 import Grade10 from "./images/grades/10.svg"
 import Grade11 from "./images/grades/11.svg"
 import Grade12 from "./images/grades/12.svg"
@@ -19,18 +11,26 @@ import Grade16 from "./images/grades/16.svg"
 import Grade17 from "./images/grades/17.svg"
 import Grade18 from "./images/grades/18.svg"
 import Grade19 from "./images/grades/19.svg"
+import Grade2 from "./images/grades/2.svg"
 import Grade20 from "./images/grades/20.svg"
 import Grade21 from "./images/grades/21.svg"
 import Grade22 from "./images/grades/22.svg"
 import Grade23 from "./images/grades/23.svg"
 import Grade24 from "./images/grades/24.svg"
 import Grade25 from "./images/grades/25.svg"
+import Grade3 from "./images/grades/3.svg"
+import Grade4 from "./images/grades/4.svg"
+import Grade5 from "./images/grades/5.svg"
+import Grade6 from "./images/grades/6.svg"
+import Grade7 from "./images/grades/7.svg"
+import Grade8 from "./images/grades/8.svg"
+import Grade9 from "./images/grades/9.svg"
 
 const GradeContainer = styled("img")`
   height: 2em;
 `
 
-const getGradeImage = (grade: number): any => {
+const getGradeImage = (grade: number) => {
   switch (grade) {
     case 1:
       return Grade1

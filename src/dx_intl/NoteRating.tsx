@@ -9,8 +9,8 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useMemo } from "react"
-import { NoteEntry } from "./Player"
 import { getRankScoreIndex, getRating, RANK_SCORES } from "./helper"
+import { NoteEntry } from "./Player"
 
 const RatingTable = styled(Table)`
   width: 10em;
@@ -32,7 +32,7 @@ const NoteRating: FunctionComponent<{
   nickname?: string
   note: NoteEntry
   score: number
-}> = ({ nickname, note, score }) => {
+}> = ({ note, score }) => {
   const internalLv = note.internal_lv
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
@@ -81,7 +81,7 @@ const NoteRating: FunctionComponent<{
           <></>
         )}
         {targets.map((t) => (
-          <TableRow>
+          <TableRow key={t[0]}>
             <RatingTableCell>{t[0]}</RatingTableCell>
             <RatingDiffCell>+{t[1]}</RatingDiffCell>
           </TableRow>

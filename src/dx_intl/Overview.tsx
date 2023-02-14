@@ -1,10 +1,10 @@
 import {
   Container,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
   Typography,
 } from "@mui/material"
 import { FunctionComponent } from "react"
@@ -56,7 +56,7 @@ const Overview: FunctionComponent = () => {
           </TableHead>
           <TableBody>
             {baseRatingAccumulated.map((br) => (
-              <TableRow>
+              <TableRow key={br.range}>
                 <TableCell>{br.range ?? ""}</TableCell>
                 <TableCell>{br.count ?? "0"}</TableCell>
                 <TableCell>{br.accumulated}</TableCell>

@@ -1,14 +1,13 @@
 import LockIcon from "@mui/icons-material/Lock"
 import PublicIcon from "@mui/icons-material/Public"
-import { ListItemText, ListItemButton, ListItemIcon } from "@mui/material"
+import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { formatDistance } from "date-fns"
-import { zhTW } from "date-fns/locale"
+import { formatDistance, zhTW } from "date-fns"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
 import { gradeNames } from "./models/constants"
-import { courseRankNames, classRankNames } from "./Ranks"
+import { classRankNames, courseRankNames } from "./Ranks"
 
 const getGradeOrRanks = (
   record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">

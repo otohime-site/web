@@ -1,12 +1,12 @@
 import { saveAs } from "file-saver"
 import {
-  Scalars,
+  DxIntlRecordWithScoresQuery,
+  DxIntlSongsQuery,
+  Dx_Intl_Notes,
   Dx_Intl_Scores,
   Dx_Intl_Songs,
   Dx_Intl_Variants,
-  Dx_Intl_Notes,
-  DxIntlSongsQuery,
-  DxIntlRecordWithScoresQuery,
+  Scalars,
 } from "../generated/graphql"
 
 export type GROUP_BY = "category" | "version" | "level" | "rating_ranks"
@@ -383,6 +383,7 @@ export const getRowGroups = (params: {
       const index = entry[groupBy]
       accr[index] = [...(accr[index] ?? []), entry]
     } else if (groupBy === "level") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { notes, ...restEntry } = entry
       entry.notes.forEach((note) => {
         const levelIndex = levels.indexOf(note.level)
@@ -395,6 +396,7 @@ export const getRowGroups = (params: {
         ]
       })
     } else if (groupBy === "rating_ranks") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { notes, ...restEntry } = entry
       entry.notes.forEach((note) => {
         const hash = getNoteHash({
@@ -480,6 +482,7 @@ export const arrangeSortedRows = (params: {
             orderByDesc ? b.sortRank - a.sortRank : a.sortRank - b.sortRank
           )
           .map((row) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { sortRank, ...others } = row
             return others
           })
@@ -524,7 +527,7 @@ export const downloadCSV = async (params: {
   const papa = await import("papaparse")
   const { filename, variantEntries, scoreMap, ratingMap } = params
   const data = variantEntries.reduce<CSVEntry[]>((prev, entry) => {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
+    // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/no-unused-vars
     const { notes, song_id, ...restEntry } = entry
     return [
       ...prev,

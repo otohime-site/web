@@ -6,12 +6,11 @@ import {
   User,
 } from "firebase/auth"
 import {
-  useContext,
-  useState,
-  useEffect,
   createContext,
-  FunctionComponent,
-  PropsWithChildren,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react"
 import firebaseConfig from "./firebase"
 
@@ -23,17 +22,12 @@ export const AuthContext = createContext<{
   loading: boolean
 }>({ user: null, loading: true })
 
-export const AuthProvider: FunctionComponent<PropsWithChildren<{}>> = ({
-  children,
-}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getRedirectResult(firebaseAuth).then(
-      () => {},
-      () => {}
-    )
+    getRedirectResult(firebaseAuth).then()
     const unlisten = onAuthStateChanged(firebaseAuth, (user) => {
       setUser(user)
       setLoading(false)

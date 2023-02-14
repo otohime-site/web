@@ -1,12 +1,12 @@
 import {
-  Typography,
-  Tabs,
   Tab,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
+  Tabs,
+  Typography,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
@@ -146,7 +146,7 @@ const SongStats: FunctionComponent = () => {
                 </TableHead>
                 <TableBody>
                   {statsAccumulated.map((s) => (
-                    <TableRow>
+                    <TableRow key={s.range}>
                       <TableCell>{s.range ?? ""}</TableCell>
                       <TableCell>{s.count ?? "0"}</TableCell>
                       <TableCell>{s.accumulated}</TableCell>
