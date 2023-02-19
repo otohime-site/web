@@ -1,5 +1,5 @@
 import { formatDistance } from "date-fns"
-import zhTW from "date-fns/locale/zh-TW"
+import { zhTW } from "date-fns/locale"
 import { MdLock, MdPublic } from "react-icons/md"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
 import { gradeNames } from "./models/constants"
