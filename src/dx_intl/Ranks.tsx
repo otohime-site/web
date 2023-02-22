@@ -49,62 +49,7 @@ import courseShin8 from "./images/course_ranks/shin8.svg"
 import courseShin9 from "./images/course_ranks/shin9.svg"
 import courseShinKaiden from "./images/course_ranks/shinkaiden.svg"
 import courseUraKaiden from "./images/course_ranks/urakaiden.svg"
-
-export const courseRankNames = [
-  "初心者",
-  "初段",
-  "二段",
-  "三段",
-  "四段",
-  "五段",
-  "六段",
-  "七段",
-  "八段",
-  "九段",
-  "十段",
-  "", // intentionally left blank
-  "真初段",
-  "真二段",
-  "真三段",
-  "真四段",
-  "真五段",
-  "真六段",
-  "真七段",
-  "真八段",
-  "真九段",
-  "真十段",
-  "真皆伝",
-  "裏皆伝",
-] as const
-
-export const classRankNames = [
-  "B5",
-  "B4",
-  "B3",
-  "B2",
-  "B1",
-  "A5",
-  "A4",
-  "A3",
-  "A2",
-  "A1",
-  "S5",
-  "S4",
-  "S3",
-  "S2",
-  "S1",
-  "SS5",
-  "SS4",
-  "SS3",
-  "SS2",
-  "SS1",
-  "SSS5",
-  "SSS4",
-  "SSS3",
-  "SSS2",
-  "SSS1",
-  "LEGEND",
-]
+import { classRankNames, legacyCourseRankNames } from "./models/constants"
 
 const courseRankImages = [
   course0,
@@ -171,7 +116,7 @@ export const CourseRank: FunctionComponent<{
 }> = ({ courseRank }) => (
   <RankContainer
     src={courseRankImages[courseRank]}
-    alt={courseRankNames[courseRank]}
+    alt={legacyCourseRankNames[courseRank]}
   />
 )
 

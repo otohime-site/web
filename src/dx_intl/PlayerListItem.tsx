@@ -7,8 +7,11 @@ import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
-import { gradeNames } from "./models/constants"
-import { classRankNames, courseRankNames } from "./Ranks"
+import {
+  classRankNames,
+  gradeNames,
+  legacyCourseRankNames,
+} from "./models/constants"
 
 const getGradeOrRanks = (
   record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">
@@ -17,7 +20,7 @@ const getGradeOrRanks = (
     return gradeNames[record.grade] ?? ""
   }
   if (record.course_rank != null && record.class_rank != null) {
-    const courseRepr = courseRankNames[record.course_rank] ?? ""
+    const courseRepr = legacyCourseRankNames[record.course_rank] ?? ""
     const classRepr = classRankNames[record.class_rank] ?? ""
     return `${courseRepr} ${classRepr}`
   }

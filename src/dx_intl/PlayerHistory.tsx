@@ -32,9 +32,12 @@ import {
 } from "../generated/graphql"
 import { ComboFlag, SyncFlag } from "./flags"
 import { difficulties, getNoteHash, prepareSongs, VariantEntry } from "./helper"
-import { gradeNames } from "./models/constants"
+import {
+  classRankNames,
+  gradeNames,
+  legacyCourseRankNames,
+} from "./models/constants"
 import { ActualScore, FlagContainer } from "./Player"
-import { classRankNames, courseRankNames } from "./Ranks"
 import Variant from "./Variant"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
@@ -334,7 +337,7 @@ const PlayerHistory: FunctionComponent = () => {
           <TableCell colSpan={3}>段位</TableCell>
           <BeforeCell>
             {before?.course_rank != null
-              ? courseRankNames[before.course_rank] ?? ""
+              ? legacyCourseRankNames[before.course_rank] ?? ""
               : ""}
           </BeforeCell>
           <TableCell>
@@ -342,7 +345,7 @@ const PlayerHistory: FunctionComponent = () => {
           </TableCell>
           <TableCell>
             {after?.course_rank != null
-              ? courseRankNames[after.course_rank] ?? ""
+              ? legacyCourseRankNames[after.course_rank] ?? ""
               : ""}
           </TableCell>
         </TableRow>
