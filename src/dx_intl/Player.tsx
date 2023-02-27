@@ -53,21 +53,23 @@ import {
 import { ComboFlag, SyncFlag } from "./flags"
 import {
   arrangeSortedRows,
-  categories,
-  difficulties,
   downloadCSV,
   getNoteHash,
   getRatingAndRanks,
   getRowGroups,
   GROUP_BY,
-  levels,
   ORDER_BY,
   prepareSongs,
+  ScoreEntry,
+} from "./helper"
+import {
+  categories,
+  difficulties,
+  levels,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
-  ScoreEntry,
   versions,
-} from "./helper"
+} from "./models/constants"
 import NoteRating from "./NoteRating"
 import Record from "./Record"
 import Variant from "./Variant"

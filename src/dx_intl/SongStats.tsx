@@ -20,7 +20,8 @@ import {
   DxIntlSongsByIdDocument,
   Dx_Intl_Scores_Stats,
 } from "../generated/graphql"
-import { difficulties, NoteList } from "./helper"
+import { NoteList } from "./helper"
+import { difficulties } from "./models/constants"
 
 const FontTypo = styled(Typography)`
   font-family: "M PLUS 1p";

@@ -31,9 +31,10 @@ import {
   Dx_Intl_Scores,
 } from "../generated/graphql"
 import { ComboFlag, SyncFlag } from "./flags"
-import { difficulties, getNoteHash, prepareSongs, VariantEntry } from "./helper"
+import { getNoteHash, prepareSongs, VariantEntry } from "./helper"
 import {
   classRankNames,
+  difficulties,
   gradeNames,
   legacyCourseRankNames,
 } from "./models/constants"

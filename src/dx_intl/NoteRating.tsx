@@ -9,7 +9,8 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useMemo } from "react"
-import { getRankScoreIndex, getRating, RANK_SCORES } from "./helper"
+import { getRankScoreIndex, getRating } from "./helper"
+import { RANK_SCORES } from "./models/constants"
 import { NoteEntry } from "./Player"
 
 const RatingTable = styled(Table)`
