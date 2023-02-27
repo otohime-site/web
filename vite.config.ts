@@ -1,9 +1,9 @@
 import basicSsl from "@vitejs/plugin-basic-ssl"
-import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react-swc"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  plugins: [react(), basicSsl()],
+  plugins: [react({ jsxImportSource: "@emotion/react" }), basicSsl()],
   build: {
     emptyOutDir: false, // as the library will empty it
   },

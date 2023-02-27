@@ -1,9 +1,10 @@
-import react from "@vitejs/plugin-react"
+import react from "@vitejs/plugin-react-swc"
 import { resolve } from "path"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 
 export default defineConfig({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins: [react(), (visualizer as any)()],
   build: {
     // Using library mode will result in large bundle
