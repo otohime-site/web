@@ -18,9 +18,9 @@ import { styled } from "@mui/material/styles"
 import { formatRelative } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import { FunctionComponent, useMemo } from "react"
-import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
+import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
@@ -459,9 +459,7 @@ const PlayerHistory: FunctionComponent = () => {
   )
   return (
     <>
-      <Helmet>
-        <title>成績單歷史紀錄 - Otohime</title>
-      </Helmet>
+      <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
       <Button
         variant="contained"
         startIcon={<ArrowBackIcon />}

@@ -1,9 +1,9 @@
 import { TabContext, TabPanel } from "@mui/lab"
-import { Typography, Paper, Grid, Tabs, Tab, Link, Button } from "@mui/material"
+import { Button, Grid, Link, Paper, Tab, Tabs, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useState } from "react"
-import { Helmet } from "react-helmet-async"
 import { Link as RouterLink } from "react-router-dom"
+import { Titled } from "react-titled"
 import { useAuth } from "../../auth"
 import DxUserPlayers from "../../dx_intl/UserPlayers"
 import Screenshot from "../../screenshot.jpg"
@@ -37,9 +37,7 @@ const HomeComponent: FunctionComponent = () => {
   if (user == null) {
     return (
       <>
-        <Helmet>
-          <title>Otohime: 音 Game 成績單網站</title>
-        </Helmet>
+        <Titled title="Otohime: 音 Game 成績單網站" />
         <Grid container spacing={2} alignItems="center">
           <StyledGrid item md={6}>
             <SpacedTypo variant="h5">音 Game 成績，輕鬆記錄</SpacedTypo>
@@ -62,9 +60,7 @@ const HomeComponent: FunctionComponent = () => {
   }
   return (
     <SpacedContainer>
-      <Helmet>
-        <title>首頁 - Otohime</title>
-      </Helmet>
+      <Titled title={(title) => `首頁 - ${title}`} />
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <PaddedPaper>

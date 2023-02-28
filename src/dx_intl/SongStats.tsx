@@ -10,9 +10,9 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
-import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
+import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { QueryResult } from "../common/components/QueryResult"
 import {
@@ -88,9 +88,11 @@ const SongStats: FunctionComponent = () => {
       <QueryResult result={songsResult}>
         {song != null ? (
           <>
-            <Helmet>
-              <title>{song.title} - maimai DX 曲目成績統計 - Otohime</title>
-            </Helmet>
+            <Titled
+              title={(title) =>
+                `${song.title} - maimai DX 曲目成績統計 - ${title}`
+              }
+            />
             <FontTypo variant="h6">{song.title}</FontTypo>
             <Tabs
               value={params.variant}

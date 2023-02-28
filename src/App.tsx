@@ -2,19 +2,18 @@ import GitHubIcon from "@mui/icons-material/GitHub"
 import MenuIcon from "@mui/icons-material/Menu"
 import SearchIcon from "@mui/icons-material/Search"
 import {
-  Toolbar,
-  Typography,
+  Button,
+  Hidden,
   IconButton,
   Link,
-  Hidden,
-  Button,
-  useTheme,
+  Toolbar,
+  Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, lazy, Suspense, useState } from "react"
-import { Helmet } from "react-helmet-async"
-import { Route, Link as RouterLink, Routes } from "react-router-dom"
+import { Link as RouterLink, Route, Routes } from "react-router-dom"
 import AppBar from "./common/components/AppBar"
 import AppDrawer from "./common/components/AppDrawer"
 import Search from "./common/components/Search"
@@ -127,9 +126,6 @@ const App: FunctionComponent = () => {
 
   return (
     <AppDiv>
-      <Helmet>
-        <title>Otohime</title>
-      </Helmet>
       <AppBar position="fixed" className={drawerOpen ? "open" : ""}>
         <Toolbar>
           <AppMenuButton

@@ -2,22 +2,22 @@ import LinkIcon from "@mui/icons-material/Link"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import {
   Alert,
-  Tooltip,
   Button,
   ButtonGroup,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  Tooltip,
   Typography,
 } from "@mui/material"
 import { FunctionComponent, useState } from "react"
-import { Helmet } from "react-helmet-async"
-import { useQuery, useMutation } from "urql"
+import { Titled } from "react-titled"
+import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
 import {
-  TokensDocument,
   RegenerateTokenDocument,
+  TokensDocument,
 } from "../../generated/graphql"
 import host from "../../host"
 import { QueryResult } from "./QueryResult"
@@ -77,13 +77,7 @@ const User: FunctionComponent = () => {
       : tokensResult.data.tokens[0].id
   return (
     <div>
-      {bookDialogOpen ? (
-        <Helmet>
-          <title>更新 Otohime 成績</title>
-        </Helmet>
-      ) : (
-        <></>
-      )}
+      {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
       <Dialog open={bookDialogOpen} onClose={handleClose}>
         <DialogTitle>Bookmarklet 操作說明</DialogTitle>
         <DialogContent>

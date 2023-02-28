@@ -1,14 +1,14 @@
+import { orange, pink } from "@mui/material/colors"
 import CssBaseline from "@mui/material/CssBaseline"
-import { pink, orange } from "@mui/material/colors"
 import {
   createTheme,
-  ThemeProvider,
   StyledEngineProvider,
+  ThemeProvider,
 } from "@mui/material/styles"
 import { SnackbarProvider } from "notistack"
 import { createRoot } from "react-dom/client"
-import { HelmetProvider } from "react-helmet-async"
 import { BrowserRouter } from "react-router-dom"
+import { Titled } from "react-titled"
 import App from "./App"
 import { AuthProvider } from "./auth"
 import GraphQLProvider from "./common/components/GraphQLProvider"
@@ -28,7 +28,7 @@ const container = document.getElementById("root")
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 createRoot(container!).render(
   <BrowserRouter>
-    <HelmetProvider>
+    <Titled title="Otohime">
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <SnackbarProvider maxSnack={3}>
@@ -41,6 +41,6 @@ createRoot(container!).render(
           </SnackbarProvider>
         </ThemeProvider>
       </StyledEngineProvider>
-    </HelmetProvider>
+    </Titled>
   </BrowserRouter>
 )

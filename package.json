@@ -38,12 +38,12 @@
     "react": "^18.0.0",
     "react-chartjs-2": "^5.0.1",
     "react-dom": "^18.0.0",
-    "react-helmet-async": "^1.3.0",
     "react-hook-form": "^7.6.4",
     "react-icons": "^4.4.0",
     "react-interactive": "^1.1.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
+    "react-titled": "^2.0.0",
     "subscriptions-transport-ws": "^0.11.0",
     "urql": "^3.0.3"
   },

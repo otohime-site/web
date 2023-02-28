@@ -39,9 +39,9 @@ import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
 import { lighten, styled } from "@mui/material/styles"
 import { format } from "date-fns"
 import React, { FunctionComponent, useCallback, useMemo, useState } from "react"
-import { Helmet } from "react-helmet-async"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
+import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import {
@@ -657,9 +657,9 @@ const Player: FunctionComponent = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{record.card_name} - maimai DX 成績單 - Otohime</title>
-      </Helmet>
+      <Titled
+        title={(title) => `${record.card_name} - maimai DX 成績單 - ${title}`}
+      />
       <StyledCard>
         <CardContent>
           <Container>
