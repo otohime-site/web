@@ -76,6 +76,9 @@
     "typescript-plugin-css-modules": "^4.1.1",
     "vite": "^4.0.3"
   },
+  "overrides": {
+    "rollup": ">=3.0.0"
+  },
   "lint-staged": {
     "*.{ts,tsx,js}": [
       "eslint --cache --fix",

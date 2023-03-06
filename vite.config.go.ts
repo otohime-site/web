@@ -5,7 +5,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  plugins: [react(), (visualizer as any)()],
+  plugins: [react(), visualizer()],
   build: {
     // Using library mode will result in large bundle
     // https://stackoverflow.com/questions/73713323/
