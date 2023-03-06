@@ -60,3 +60,6 @@ typings/
 src/firebase.ts
 .parcel-cache/
 dist/
+
+stats.html
+stats-go.html
