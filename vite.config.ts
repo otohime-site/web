@@ -32,8 +32,6 @@ export default defineConfig({
     hmr: {
       host: "localhost",
       port: 8080,
-      // https://github.com/vitejs/vite/pull/11497
-      protocol: "wss",
     },
   },
 })
