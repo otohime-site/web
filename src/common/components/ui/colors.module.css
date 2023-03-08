@@ -1,6 +1,3 @@
-@import "@radix-ui/colors/violet.css";
-@import "@radix-ui/colors/indigo.css";
-
 .violet {
   --scale1: var(--violet1);
   --scale2: var(--violet2);

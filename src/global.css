@@ -1,7 +1,40 @@
+/* Google fonts */
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&family=M+PLUS+1p:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=McLaren&display=swap&text=Otohime");
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@900&display=swap&text=0123456789");
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:700");
+
+/* Radix UI colors */
+@import "@radix-ui/colors/indigo.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/yellow.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+@import "@radix-ui/colors/indigo.css";
+
+html {
+  /* 14px @ 320px - 18px @ 1800px */
+  font-size: clamp(0.87rem, 0.27vw + 0.82rem, 1.13rem);
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.52rem;
+  margin: 0.5rem 0;
+}
+
+h3 {
+  font-size: 1.32rem;
+  margin: 0.5rem 0;
+}
+
+h4 {
+  font-size: 1.15rem;
+  margin: 0.5rem 0;
+}
 
 /* Fixing https://github.com/mui-org/material-ui/issues/26251 */
 .MuiButton-label {
