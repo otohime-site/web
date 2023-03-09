@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import Grade1 from "../images/grades/1.svg"
 import Grade10 from "../images/grades/10.svg"
 import Grade11 from "../images/grades/11.svg"
@@ -82,8 +81,8 @@ const getGradeImage = (grade: number) => {
   return ""
 }
 
-const Grade: FunctionComponent<{
-  grade: number
-}> = ({ grade }) => <img className={classes.grade} src={getGradeImage(grade)} />
+const Grade = ({ grade }: { grade: number }) => (
+  <img className={classes.grade} src={getGradeImage(grade)} />
+)
 
 export default Grade

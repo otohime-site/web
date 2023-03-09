@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import classA1 from "../images/class_ranks/A1.svg"
 import classA2 from "../images/class_ranks/A2.svg"
 import classA3 from "../images/class_ranks/A3.svg"
@@ -107,9 +106,7 @@ const classRankImages = [
   classLegend,
 ]
 
-export const CourseRank: FunctionComponent<{
-  courseRank: number
-}> = ({ courseRank }) => (
+export const CourseRank = ({ courseRank }: { courseRank: number }) => (
   <img
     className={classes.ranks}
     src={courseRankImages[courseRank]}
@@ -117,9 +114,7 @@ export const CourseRank: FunctionComponent<{
   />
 )
 
-export const ClassRank: FunctionComponent<{
-  classRank: number
-}> = ({ classRank }) => (
+export const ClassRank = ({ classRank }: { classRank: number }) => (
   <img
     className={classes.ranks}
     src={classRankImages[classRank]}

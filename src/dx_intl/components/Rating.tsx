@@ -1,5 +1,3 @@
-import { styled } from "@mui/material/styles"
-import { FunctionComponent } from "react"
 import Blue from "../images/ratings/blue.svg"
 import Bronze from "../images/ratings/bronze.svg"
 import Gold from "../images/ratings/gold.svg"
@@ -11,6 +9,7 @@ import Purple from "../images/ratings/purple.svg"
 import Rainbow from "../images/ratings/rainbow.svg"
 import Red from "../images/ratings/red.svg"
 import Silver from "../images/ratings/silver.svg"
+import classes from "./Rating.module.css"
 
 const getRatingImage = (rating: number, legacy: boolean): any => {
   if (legacy) {
@@ -64,29 +63,13 @@ const getRatingImage = (rating: number, legacy: boolean): any => {
   return Normal
 }
 
-const RatingContainer = styled("div")`
-  width: 7.56em;
-  height: 2.2em;
-  background-size: cover;
-  padding-top: 0.4em;
-  padding-right: 0.34em;
-  font-family: "M PLUS 1p";
-  font-weight: 900;
-  text-align: right;
-  letter-spacing: 0.125em;
-  color: #e5c100;
-  -webkit-text-stroke: 0.03em #393939;
-`
-
-const Rating: FunctionComponent<{
-  rating: number
-  legacy: boolean
-}> = ({ rating, legacy }) => (
-  <RatingContainer
+const Rating = ({ rating, legacy }: { rating: number; legacy: boolean }) => (
+  <div
+    className={classes.rating}
     style={{ backgroundImage: `url(${getRatingImage(rating, legacy)}` }}
   >
     {rating}
-  </RatingContainer>
+  </div>
 )
 
 export default Rating
