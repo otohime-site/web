@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles"
 import { FunctionComponent } from "react"
+import { classRankNames, legacyCourseRankNames } from "../models/constants"
 import classA1 from "./images/class_ranks/A1.svg"
 import classA2 from "./images/class_ranks/A2.svg"
 import classA3 from "./images/class_ranks/A3.svg"
@@ -49,7 +50,6 @@ import courseShin8 from "./images/course_ranks/shin8.svg"
 import courseShin9 from "./images/course_ranks/shin9.svg"
 import courseShinKaiden from "./images/course_ranks/shinkaiden.svg"
 import courseUraKaiden from "./images/course_ranks/urakaiden.svg"
-import { classRankNames, legacyCourseRankNames } from "./models/constants"
 
 const courseRankImages = [
   course0,
