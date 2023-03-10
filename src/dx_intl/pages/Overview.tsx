@@ -9,11 +9,11 @@ import {
 } from "@mui/material"
 import { FunctionComponent } from "react"
 import { useQuery } from "urql"
-import { QueryResult } from "../common/components/QueryResult"
+import { QueryResult } from "../../common/components/QueryResult"
 import {
   DxIntlNewRatingStatsDocument,
   Dx_Intl_New_Rating_Stats,
-} from "../generated/graphql"
+} from "../../generated/graphql"
 
 const Overview: FunctionComponent = () => {
   const [baseRatingResult] = useQuery({ query: DxIntlNewRatingStatsDocument })

@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react"
 import { Route, Routes } from "react-router-dom"
-import Overview from "./Overview"
+import Overview from "./pages/Overview"
+import SongStats from "./pages/SongStats"
 import Player from "./Player"
 import PlayerForm from "./PlayerForm"
 import PlayerHistory from "./PlayerHistory"
-import SongStats from "./SongStats"
 
 const DxIntl: FunctionComponent = () => (
   <Routes>

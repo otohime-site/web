@@ -14,14 +14,14 @@ import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { QueryResult } from "../common/components/QueryResult"
+import { QueryResult } from "../../common/components/QueryResult"
 import {
   DxIntlScoresStatsDocument,
   DxIntlSongsByIdDocument,
   Dx_Intl_Scores_Stats,
-} from "../generated/graphql"
-import { NoteList } from "./helper"
-import { difficulties } from "./models/constants"
+} from "../../generated/graphql"
+import { NoteList } from "../helper"
+import { difficulties } from "../models/constants"
 
 const FontTypo = styled(Typography)`
   font-family: "M PLUS 1p";
