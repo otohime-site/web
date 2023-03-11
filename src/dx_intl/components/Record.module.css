@@ -1,3 +1,29 @@
+.info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 22em;
+}
+
+.inner-col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-name {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  width: 9em;
+  background: white;
+  border: 0.1em solid #cccccc;
+  border-radius: 0.2em;
+  font-size: 133%;
+  font-weight: 800;
+  font-family: "M PLUS Rounded 1c";
+}
+
 .title {
   width: 22em;
   text-align: center;

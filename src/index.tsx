@@ -7,6 +7,7 @@ import {
 } from "@mui/material/styles"
 import { SnackbarProvider } from "notistack"
 import { createRoot } from "react-dom/client"
+import { IconContext } from "react-icons"
 import { BrowserRouter } from "react-router-dom"
 import { Titled } from "react-titled"
 import App from "./App"
@@ -34,8 +35,10 @@ createRoot(container!).render(
           <SnackbarProvider maxSnack={3}>
             <AuthProvider>
               <GraphQLProvider>
-                <CssBaseline />
-                <App />
+                <IconContext.Provider value={{ className: "react-icons" }}>
+                  <CssBaseline />
+                  <App />
+                </IconContext.Provider>
               </GraphQLProvider>
             </AuthProvider>
           </SnackbarProvider>

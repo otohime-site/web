@@ -1,49 +1,17 @@
-import LockIcon from "@mui/icons-material/Lock"
-import PublicIcon from "@mui/icons-material/Public"
-import { Tooltip, Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
 import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
-import { FunctionComponent } from "react"
+import { MdLock, MdPublic } from "react-icons/md"
 import { Dx_Intl_Records } from "../../generated/graphql"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
 import Rating from "./Rating"
 import classes from "./Record.module.css"
 
-const Subtitle = styled("div")`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 22em;
-`
-
-const CardName = styled("div")`
-  margin-top: 0.1em;
-  margin-bottom: 0.1em;
-  width: 9em;
-  background: white;
-  border: 0.1em solid #cccccc;
-  border-radius: 0.2em;
-  font-size: 133%;
-  font-weight: 800;
-  font-family: "M PLUS Rounded 1c";
-`
-
-const AlignedTypo = styled(Typography)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-
-const AlignedDiv = styled("div")`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-
-const Record: FunctionComponent<{
+const Record = ({
+  record,
+  isPrivate,
+  updatedAt,
+}: {
   record: Pick<
     Dx_Intl_Records,
     | "card_name"
@@ -58,38 +26,39 @@ const Record: FunctionComponent<{
   >
   isPrivate: boolean
   updatedAt: string | null | undefined
-}> = ({ record, isPrivate, updatedAt }) => (
+}) => (
   <div>
-    <Subtitle>
+    <div className={classes["info-row"]}>
       <Rating rating={record.rating} legacy={record.rating_legacy} />
-      <AlignedTypo variant="body2">
+      <div className={classes["inner-col"]}>
         {updatedAt != null
           ? formatDistance(new Date(updatedAt), new Date(), {
               locale: zhTW,
             })
           : ""}
         前更新
-        {isPrivate ? <LockIcon /> : <PublicIcon />}
-      </AlignedTypo>
-    </Subtitle>
-    <Subtitle>
-      <CardName>{record.card_name}</CardName>
+        {isPrivate ? <MdLock /> : <MdPublic />}
+      </div>
+    </div>
+    <div className={classes["info-row"]}>
+      <div className={classes["card-name"]}>{record.card_name}</div>
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
       {record.grade != null ? <Grade grade={record.grade} /> : ""}
       {record.course_rank != null && record.class_rank != null ? (
-        <AlignedDiv>
+        <div className={classes["inner-col"]}>
           <CourseRank courseRank={record.course_rank} />
           <ClassRank classRank={record.class_rank} />
-        </AlignedDiv>
+        </div>
       ) : (
         ""
       )}
-    </Subtitle>
-    <Tooltip title={record.title}>
-      <div className={`${classes.title} ${classes[record.trophy]}`}>
-        {record.title}
-      </div>
-    </Tooltip>
+    </div>
+    <div
+      className={`${classes.title} ${classes[record.trophy]}`}
+      title={record.title}
+    >
+      {record.title}
+    </div>
   </div>
 )
 

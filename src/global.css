@@ -17,6 +17,10 @@ html {
   font-size: clamp(0.87rem, 0.27vw + 0.82rem, 1.13rem);
 }
 
+p {
+  margin: 0;
+}
+
 h1 {
   font-size: 1.75rem;
 }
@@ -34,6 +38,10 @@ h3 {
 h4 {
   font-size: 1.15rem;
   margin: 0.5rem 0;
+}
+
+.react-icons {
+  font-size: 1.5em;
 }
 
 /* Fixing https://github.com/mui-org/material-ui/issues/26251 */
