@@ -71,7 +71,7 @@ import {
   versions,
 } from "./models/constants"
 import NoteRating from "./NoteRating"
-import Record from "./Record"
+import Record from "./pages/Record"
 import Variant from "./Variant"
 
 export type NoteEntry = Pick<
