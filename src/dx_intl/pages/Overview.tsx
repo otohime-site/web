@@ -1,12 +1,3 @@
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material"
 import { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -39,33 +30,31 @@ const Overview: FunctionComponent = () => {
   )
 
   return (
-    <Container component="main">
-      <Typography variant="h5">maimai DX 國際版玩家統計</Typography>
-      <Typography variant="h6">Rating</Typography>
-      <Typography variant="body2">
-        只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。
-      </Typography>
+    <main>
+      <h4>maimai DX 國際版玩家統計</h4>
+      <h5>Rating</h5>
+      <p>只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。</p>
       <QueryResult result={baseRatingResult}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell component="th">範圍</TableCell>
-              <TableCell component="th">玩家數</TableCell>
-              <TableCell component="th">累計</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+        <table>
+          <thead>
+            <tr>
+              <th>範圍</th>
+              <th>玩家數</th>
+              <th>累計</th>
+            </tr>
+          </thead>
+          <tbody>
             {baseRatingAccumulated.map((br) => (
-              <TableRow key={br.range}>
-                <TableCell>{br.range ?? ""}</TableCell>
-                <TableCell>{br.count ?? "0"}</TableCell>
-                <TableCell>{br.accumulated}</TableCell>
-              </TableRow>
+              <tr key={br.range}>
+                <td>{br.range ?? ""}</td>
+                <td>{br.count ?? "0"}</td>
+                <td>{br.accumulated}</td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </QueryResult>
-    </Container>
+    </main>
   )
 }
 
