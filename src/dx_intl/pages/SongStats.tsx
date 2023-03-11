@@ -1,17 +1,5 @@
-import {
-  Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tabs,
-  Typography,
-} from "@mui/material"
-import { styled } from "@mui/material/styles"
-import { FunctionComponent } from "react"
 import { useParams } from "react-router"
-import { Link as RouterLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -23,12 +11,10 @@ import {
 import { NoteList } from "../helper"
 import { difficulties } from "../models/constants"
 
-const FontTypo = styled(Typography)`
-  font-family: "M PLUS 1p";
-  font-weight: 700;
-`
+//  font-family: "M PLUS 1p";
+//  font-weight: 700;
 
-const SongStats: FunctionComponent = () => {
+const SongStats = () => {
   const params = useParams<"songId" | "variant" | "difficulty">()
   const { variant } = params
   const songId = params.songId ?? ""
@@ -93,70 +79,48 @@ const SongStats: FunctionComponent = () => {
                 `${song.title} - maimai DX 曲目成績統計 - ${title}`
               }
             />
-            <FontTypo variant="h6">{song.title}</FontTypo>
-            <Tabs
-              value={params.variant}
-              indicatorColor="primary"
-              textColor="primary"
-            >
+            <h4>{song.title}</h4>
+            <div>
               {variantMap.has(false) ? (
-                <Tab
-                  value="std"
-                  label="STANDARD"
-                  component={RouterLink}
-                  to={`/dxi/s/${params.songId}/std/`}
-                />
+                <Link to={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
               ) : (
                 ""
               )}
               {variantMap.has(true) ? (
-                <Tab
-                  value="dx"
-                  label="DELUXE"
-                  component={RouterLink}
-                  to={`/dxi/s/${params.songId}/dx/`}
-                />
+                <Link to={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
               ) : (
                 ""
               )}
-            </Tabs>
-            <Tabs
-              value={difficulty}
-              variant="scrollable"
-              scrollButtons
-              indicatorColor="secondary"
-              textColor="secondary"
-              allowScrollButtonsMobile
-            >
+            </div>
+            <div>
               {notes.map((_, i) => (
-                <Tab
-                  value={i}
-                  key={i}
-                  label={difficulties[i]}
-                  component={RouterLink}
+                <Link
                   to={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
-                />
+                  key={i}
+                >
+                  {difficulties[i]}
+                </Link>
               ))}
-            </Tabs>
+            </div>
             <QueryResult result={statsResult}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell component="th">評等</TableCell>
-                    <TableCell component="th">玩家數</TableCell>
-                    <TableCell component="th">累計</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+              <table>
+                <thead>
+                  <tr>
+                    <th>評等</th>
+                    <th>玩家數</th>
+                    <th>累計</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {statsAccumulated.map((s) => (
-                    <TableRow key={s.range}>
-                      <TableCell>{s.range ?? ""}</TableCell>
-                      <TableCell>{s.count ?? "0"}</TableCell>
-                      <TableCell>{s.accumulated}</TableCell>
-                    </TableRow>
+                    <tr key={s.range}>
+                      <td>{s.range ?? ""}</td>
+                      <td>{s.count ?? "0"}</td>
+                      <td>{s.accumulated}</td>
+                    </tr>
                   ))}
-                </TableBody>
-              </Table>
+                </tbody>
+              </table>
             </QueryResult>
           </>
         ) : (
