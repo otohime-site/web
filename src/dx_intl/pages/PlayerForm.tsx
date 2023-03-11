@@ -3,32 +3,32 @@ import LockIcon from "@mui/icons-material/Lock"
 import PublicIcon from "@mui/icons-material/Public"
 import {
   Alert,
-  FormLabel,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
-  Typography,
-  FormControl,
-  FormHelperText,
-  Input,
-  InputLabel,
   Button,
   Container,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Input,
+  InputLabel,
+  Radio,
+  RadioGroup,
   Skeleton,
+  Typography,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { FunctionComponent, useEffect } from "react"
-import { useForm, Controller } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"
-import { useAuth } from "../auth"
+import { useAuth } from "../../auth"
 import {
   DeleteDxIntlPlayerDocument,
   DxIntlPlayersEditableDocument,
   InsertDxIntlPlayerDocument,
   UpdateDxIntlPlayerDocument,
-} from "../generated/graphql"
+} from "../../generated/graphql"
 
 const StyledFormControl = styled(FormControl)`
   margin: 16px 0;

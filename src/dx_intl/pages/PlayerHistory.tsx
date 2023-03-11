@@ -22,24 +22,24 @@ import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { useAuth } from "../auth"
+import { useAuth } from "../../auth"
 import {
   DxIntlPlayersTimelinesDocument,
   DxIntlPlayerWithTimelineDocument,
   DxIntlPlayerWithTimelineQuery,
   DxIntlSongsDocument,
   Dx_Intl_Scores,
-} from "../generated/graphql"
-import { ComboFlag, SyncFlag } from "./flags"
-import { getNoteHash, prepareSongs, VariantEntry } from "./helper"
+} from "../../generated/graphql"
+import { ComboFlag, SyncFlag } from "../flags"
+import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
 import {
   classRankNames,
   difficulties,
   gradeNames,
   legacyCourseRankNames,
-} from "./models/constants"
+} from "../models/constants"
+import Variant from "../Variant"
 import { ActualScore, FlagContainer } from "./Player"
-import Variant from "./Variant"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 

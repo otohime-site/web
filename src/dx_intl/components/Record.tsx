@@ -6,9 +6,9 @@ import { formatDistance } from "date-fns"
 import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
 import { Dx_Intl_Records } from "../../generated/graphql"
-import Grade from "../components/Grade"
-import { ClassRank, CourseRank } from "../components/Ranks"
-import Rating from "../components/Rating"
+import Grade from "./Grade"
+import { ClassRank, CourseRank } from "./Ranks"
+import Rating from "./Rating"
 import classes from "./Record.module.css"
 
 const Subtitle = styled("div")`

@@ -43,14 +43,15 @@ import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { useAuth } from "../auth"
+import { useAuth } from "../../auth"
 import {
   DxIntlPlayersEditableDocument,
   DxIntlRecordWithScoresDocument,
   DxIntlSongsDocument,
   Dx_Intl_Notes,
-} from "../generated/graphql"
-import { ComboFlag, SyncFlag } from "./flags"
+} from "../../generated/graphql"
+import Record from "../components/Record"
+import { ComboFlag, SyncFlag } from "../flags"
 import {
   arrangeSortedRows,
   downloadCSV,
@@ -61,7 +62,7 @@ import {
   ORDER_BY,
   prepareSongs,
   ScoreEntry,
-} from "./helper"
+} from "../helper"
 import {
   categories,
   difficulties,
@@ -69,10 +70,9 @@ import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   versions,
-} from "./models/constants"
-import NoteRating from "./NoteRating"
-import Record from "./pages/Record"
-import Variant from "./Variant"
+} from "../models/constants"
+import NoteRating from "../NoteRating"
+import Variant from "../Variant"
 
 export type NoteEntry = Pick<
   Dx_Intl_Notes,

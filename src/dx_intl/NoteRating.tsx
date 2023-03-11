@@ -11,7 +11,7 @@ import { styled } from "@mui/material/styles"
 import { FunctionComponent, useMemo } from "react"
 import { getRankScoreIndex, getRating } from "./helper"
 import { RANK_SCORES } from "./models/constants"
-import { NoteEntry } from "./Player"
+import { NoteEntry } from "./pages/Player"
 
 const RatingTable = styled(Table)`
   width: 10em;
