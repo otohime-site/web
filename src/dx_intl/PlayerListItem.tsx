@@ -2,10 +2,9 @@ import LockIcon from "@mui/icons-material/Lock"
 import PublicIcon from "@mui/icons-material/Public"
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { formatDistance } from "date-fns"
-import { zhTW } from "date-fns/locale"
 import { FunctionComponent } from "react"
 import { Link as RouterLink } from "react-router-dom"
+import { formatRelative } from "../common/utils"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
 import {
   classRankNames,
@@ -51,11 +50,7 @@ const Description = styled("span")(
 const formatUpdatedAt = (
   player: DxIntlPlayersQuery["dx_intl_players"][0]
 ): string =>
-  player.updated_at != null
-    ? formatDistance(new Date(player.updated_at), new Date(), {
-        locale: zhTW,
-      })
-    : "?"
+  player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
 const PlayerListItem: FunctionComponent<{
   player: DxIntlPlayersQuery["dx_intl_players"][0]
@@ -95,11 +90,8 @@ const PlayerListItem: FunctionComponent<{
               ) : (
                 <>
                   {" "}
-                  /{" "}
-                  {formatDistance(new Date(player.created_at), new Date(), {
-                    locale: zhTW,
-                  })}
-                  前建立
+                  / {formatRelative(new Date(player.created_at))}
+                  建立
                 </>
               )}
             </Description>
@@ -112,7 +104,7 @@ const PlayerListItem: FunctionComponent<{
                 <>
                   / {player.dx_intl_record.rating}{" "}
                   {getGradeOrRanks(player.dx_intl_record)}
-                  {` / ${formatUpdatedAt(player)} 前更新`}
+                  {` / ${formatUpdatedAt(player)}更新`}
                 </>
               )}
             </Description>

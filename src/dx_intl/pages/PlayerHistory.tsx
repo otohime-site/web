@@ -15,14 +15,13 @@ import {
 } from "@mui/material"
 import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
 import { styled } from "@mui/material/styles"
-import { formatRelative } from "date-fns"
-import { zhTW } from "date-fns/locale"
 import { FunctionComponent, useMemo } from "react"
 import { useParams } from "react-router"
 import { Link as RouterLink } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { useAuth } from "../../auth"
+import { formatDateTime } from "../../common/utils"
 import {
   DxIntlPlayersTimelinesDocument,
   DxIntlPlayerWithTimelineDocument,
@@ -480,7 +479,7 @@ const PlayerHistory: FunctionComponent = () => {
           <Tab
             key={dateStringToHash(time)}
             value={dateStringToHash(time)}
-            label={formatRelative(new Date(time), new Date(), { locale: zhTW })}
+            label={formatDateTime(new Date(time))}
             component={RouterLink}
             to={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
           />

@@ -1,6 +1,5 @@
-import { formatDistance } from "date-fns"
-import { zhTW } from "date-fns/locale"
 import { MdLock, MdPublic } from "react-icons/md"
+import { formatRelative } from "../common/utils"
 import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
 import {
   classRankNames,
@@ -26,11 +25,7 @@ const getGradeOrRanks = (
 const formatUpdatedAt = (
   player: DxIntlPlayersQuery["dx_intl_players"][0]
 ): string =>
-  player.updated_at != null
-    ? formatDistance(new Date(player.updated_at), new Date(), {
-        locale: zhTW,
-      })
-    : "?"
+  player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
 const PlayerListItemNew = ({
   player,
@@ -60,11 +55,8 @@ const PlayerListItemNew = ({
               ) : (
                 <>
                   {" "}
-                  /{" "}
-                  {formatDistance(new Date(player.created_at), new Date(), {
-                    locale: zhTW,
-                  })}
-                  前建立
+                  / {formatRelative(new Date(player.created_at))}
+                  建立
                 </>
               )}
             </div>
@@ -77,7 +69,7 @@ const PlayerListItemNew = ({
                 <>
                   / {player.dx_intl_record.rating}{" "}
                   {getGradeOrRanks(player.dx_intl_record)}
-                  {` / ${formatUpdatedAt(player)} 前更新`}
+                  {` / ${formatUpdatedAt(player)}更新`}
                 </>
               )}
             </div>

@@ -1,6 +1,5 @@
-import { formatDistance } from "date-fns"
-import { zhTW } from "date-fns/locale"
 import { MdLock, MdPublic } from "react-icons/md"
+import { formatRelative } from "../../common/utils"
 import { Dx_Intl_Records } from "../../generated/graphql"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
@@ -31,12 +30,8 @@ const Record = ({
     <div className={classes["info-row"]}>
       <Rating rating={record.rating} legacy={record.rating_legacy} />
       <div className={classes["inner-col"]}>
-        {updatedAt != null
-          ? formatDistance(new Date(updatedAt), new Date(), {
-              locale: zhTW,
-            })
-          : ""}
-        前更新
+        {updatedAt != null ? formatRelative(new Date(updatedAt)) : ""}
+        更新
         {isPrivate ? <MdLock /> : <MdPublic />}
       </div>
     </div>
