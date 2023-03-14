@@ -1,5 +1,4 @@
 import { orange, pink } from "@mui/material/colors"
-import CssBaseline from "@mui/material/CssBaseline"
 import {
   createTheme,
   StyledEngineProvider,
@@ -36,7 +35,6 @@ createRoot(container!).render(
             <AuthProvider>
               <GraphQLProvider>
                 <IconContext.Provider value={{ className: "react-icons" }}>
-                  <CssBaseline />
                   <App />
                 </IconContext.Provider>
               </GraphQLProvider>

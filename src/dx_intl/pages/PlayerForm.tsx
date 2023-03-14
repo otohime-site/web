@@ -1,10 +1,7 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import LockIcon from "@mui/icons-material/Lock"
 import PublicIcon from "@mui/icons-material/Public"
 import {
   Alert,
-  Button,
-  Container,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -13,16 +10,16 @@ import {
   InputLabel,
   Radio,
   RadioGroup,
-  Skeleton,
-  Typography,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
+import * as Form from "@radix-ui/react-form"
 import { FunctionComponent, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { MdArrowBack } from "react-icons/md"
 import { useNavigate, useParams } from "react-router"
-import { Link as RouterLink } from "react-router-dom"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
+import { Button, LinkButton } from "../../common/components/ui/Button"
 import {
   DeleteDxIntlPlayerDocument,
   DxIntlPlayersEditableDocument,
@@ -48,10 +45,6 @@ const ActionsContainer = styled("div")`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-`
-
-const SpacedTypo = styled(Typography)`
-  margin-left: 8px;
 `
 
 interface FormParams {
@@ -151,46 +144,31 @@ const PlayerForm: FunctionComponent = () => {
   }
 
   if (loading) {
-    return (
-      <Container component="main" maxWidth="md">
-        <Skeleton variant="rectangular" width="100%" height={200} />
-      </Container>
-    )
+    return <main>Loading...</main>
   }
 
   if (user == null) {
     return (
-      <Container component="main" maxWidth="md">
+      <main>
         <Alert severity="info">請先登入。</Alert>
-      </Container>
+      </main>
     )
   }
   return (
-    <Container component="main" maxWidth="sm">
+    <main>
       <LabelContainer>
         {params.nickname != null ? (
-          <Button
-            variant="contained"
-            startIcon={<ArrowBackIcon />}
-            component={RouterLink}
-            to={`/dxi/p/${params.nickname}`}
-          >
-            回成績單
-          </Button>
+          <LinkButton to={`/dxi/p/${params.nickname}`} variant="violet">
+            <MdArrowBack />
+          </LinkButton>
         ) : (
-          <Button
-            variant="contained"
-            startIcon={<ArrowBackIcon />}
-            component={RouterLink}
-            to="/"
-          >
-            回首頁
-          </Button>
+          <LinkButton to="/" variant="violet">
+            <MdArrowBack />
+          </LinkButton>
         )}
-        <SpacedTypo variant="h6">
-          {params.nickname == null ? "新增成績單" : "編輯成績單"}
-        </SpacedTypo>
+        <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
       </LabelContainer>
+      <Form.Root>QQ</Form.Root>
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFormControl fullWidth error={errors.nickname != null}>
           <InputLabel htmlFor="nickname">暱稱</InputLabel>
@@ -270,21 +248,21 @@ const PlayerForm: FunctionComponent = () => {
           )}
         </StyledFormControl>
         {params.nickname == null ? (
-          <Button variant="contained" type="submit" color="primary">
-            新增成績單
+          <Button variant="violet" type="submit" color="primary">
+            新增
           </Button>
         ) : (
           <ActionsContainer>
-            <Button variant="contained" type="submit" color="primary">
-              編輯成績單
+            <Button variant="violet" type="submit" color="primary">
+              編輯
             </Button>
-            <Button variant="contained" onClick={handleDeletePlayer}>
+            <Button variant="indigo" onClick={handleDeletePlayer}>
               刪除成績單
             </Button>
           </ActionsContainer>
         )}
       </form>
-    </Container>
+    </main>
   )
 }
 

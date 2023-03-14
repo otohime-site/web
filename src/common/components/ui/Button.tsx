@@ -30,12 +30,12 @@ Button.displayName = "Button"
 
 export const LinkButton = forwardRef<
   ElementRef<typeof Link>,
-  ComponentPropsWithoutRef<typeof Link>
->(({ className, children, ...props }, forwardedRef) => (
+  ComponentPropsWithoutRef<typeof Link> & { variant: "violet" | "indigo" }
+>(({ variant, className, children, ...props }, forwardedRef) => (
   <Interactive
     as={Link}
     {...props}
-    className={`${classes.button} ${className ?? ""}`}
+    className={`${classes.button} ${colorClasses[variant]} ${className ?? ""}`}
     ref={forwardedRef}
   >
     {children}

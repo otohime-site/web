@@ -17,7 +17,21 @@ html {
   font-size: clamp(0.87rem, 0.27vw + 0.82rem, 1.13rem);
 }
 
-p {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+}
+
+p,
+ul,
+div {
   margin: 0;
 }
 
@@ -41,7 +55,8 @@ h4 {
 }
 
 .react-icons {
-  font-size: 1.5em;
+  font-size: 1.2em;
+  vertical-align: text-top;
 }
 
 /* Fixing https://github.com/mui-org/material-ui/issues/26251 */
