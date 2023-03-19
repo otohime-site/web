@@ -1,24 +1,9 @@
-import LockIcon from "@mui/icons-material/Lock"
-import PublicIcon from "@mui/icons-material/Public"
-import {
-  Alert,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Input,
-  InputLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material"
-import { styled } from "@mui/material/styles"
 import * as Form from "@radix-ui/react-form"
-import { FunctionComponent, useEffect } from "react"
-import { Controller, useForm } from "react-hook-form"
 import { MdArrowBack } from "react-icons/md"
 import { useNavigate, useParams } from "react-router"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
+import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
 import {
   DeleteDxIntlPlayerDocument,
@@ -27,40 +12,8 @@ import {
   UpdateDxIntlPlayerDocument,
 } from "../../generated/graphql"
 
-const StyledFormControl = styled(FormControl)`
-  margin: 16px 0;
-`
-
-const StyledList = styled("ul")`
-  margin: 0;
-`
-
-const LabelContainer = styled("div")`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-const ActionsContainer = styled("div")`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`
-
-interface FormParams {
-  nickname: string
-  private: "public" | "private"
-}
-
-const PlayerForm: FunctionComponent = () => {
+const PlayerForm = () => {
   const [user, loading] = useAuth()
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors },
-    reset,
-  } = useForm<FormParams>()
   const params = useParams<"nickname">()
   const navigate = useNavigate()
   const [, insertPlayer] = useMutation(InsertDxIntlPlayerDocument)
@@ -72,31 +25,25 @@ const PlayerForm: FunctionComponent = () => {
     pause: loading || (user == null && params.nickname != null),
   })
 
-  useEffect(() => {
-    if (
-      playerResult.error == null &&
-      playerResult.data?.dx_intl_players[0] != null
-    ) {
-      const player = playerResult.data?.dx_intl_players[0]
-      reset({
-        nickname: player.nickname,
-        private: player.private ? "private" : "public",
-      })
-    }
-  }, [playerResult, reset])
+  const onSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault()
+    event.stopPropagation()
 
-  const onSubmit = async (data: FormParams): Promise<void> => {
+    const formData = new FormData(event.currentTarget)
+    const data = {
+      nickname: (formData.get("nickname") as string) ?? "",
+      private: formData.get("private") === "private",
+    }
     if (params.nickname == null) {
-      const result = await insertPlayer({
-        nickname: data.nickname,
-        private: data.private === "private",
-      })
+      const result = await insertPlayer(data)
       if (result.error != null) {
-        setError("nickname", {
+        /*setError("nickname", {
           message: result.error.message.includes("Unique")
             ? "暱稱已經被使用。"
             : "發生不明錯誤。",
-        })
+        })*/
         return
       }
       navigate("/")
@@ -108,15 +55,14 @@ const PlayerForm: FunctionComponent = () => {
     }
     const result = await updatePlayer({
       pk: playerId,
-      nickname: data.nickname,
-      private: data.private === "private",
+      ...data,
     })
     if (result.error != null) {
-      setError("nickname", {
+      /*setError("nickname", {
         message: result.error.message.includes("Unique")
           ? "暱稱已經被使用。"
           : "發生不明錯誤。",
-      })
+      })*/
       return
     }
     navigate(`/dxi/p/${data.nickname}`)
@@ -156,7 +102,7 @@ const PlayerForm: FunctionComponent = () => {
   }
   return (
     <main>
-      <LabelContainer>
+      <div>
         {params.nickname != null ? (
           <LinkButton to={`/dxi/p/${params.nickname}`} variant="violet">
             <MdArrowBack />
@@ -167,101 +113,41 @@ const PlayerForm: FunctionComponent = () => {
           </LinkButton>
         )}
         <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
-      </LabelContainer>
-      <Form.Root>QQ</Form.Root>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <StyledFormControl fullWidth error={errors.nickname != null}>
-          <InputLabel htmlFor="nickname">暱稱</InputLabel>
-          <Controller
-            render={({ field }) => <Input id="nickname" {...field} />}
-            name="nickname"
-            control={control}
-            defaultValue=""
-            rules={{
-              required: { value: true, message: "請輸入暱稱。" },
-              pattern: {
-                value: /^[0-9a-z\-_]{2,20}$/,
-                message: "暱稱格式不正確。",
-              },
-            }}
-          />
-          {errors.nickname == null ? (
-            <FormHelperText>
-              可包含小寫英數字與「-」、「_」，將成為成績單網址一部分。
-            </FormHelperText>
-          ) : (
-            <FormHelperText>{errors.nickname.message}</FormHelperText>
-          )}
-        </StyledFormControl>
-        <StyledFormControl fullWidth error={errors.private != null}>
-          <FormLabel component="legend">隱私設定</FormLabel>
-          <Controller
-            name="private"
-            control={control}
-            defaultValue="public"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                <FormControlLabel
-                  value="public"
-                  control={<Radio />}
-                  label={
-                    <LabelContainer>
-                      <PublicIcon /> 公開
-                    </LabelContainer>
-                  }
-                />
-                <FormHelperText>
-                  <StyledList>
-                    <li>
-                      任何擁有成績單網址的人都能瀏覽，別人也能用暱稱搜尋到你的成績單。
-                    </li>
-                    <li>
-                      <i>
-                        同時會將你的成績與 Rating 加入全站排行中（敬請期待！）
-                      </i>
-                    </li>
-                  </StyledList>
-                </FormHelperText>
-                <FormControlLabel
-                  value="private"
-                  control={<Radio />}
-                  label={
-                    <LabelContainer>
-                      <LockIcon /> 私人
-                    </LabelContainer>
-                  }
-                />
-                <FormHelperText>
-                  <StyledList>
-                    <li>只有以你的帳號登入才能檢視這個成績單。</li>
-                    <li>成績與 Rating 就只有你自己知道了 :)</li>
-                  </StyledList>
-                </FormHelperText>
-              </RadioGroup>
-            )}
-          ></Controller>
-          {errors.private != null ? (
-            <FormHelperText>請選擇一個。</FormHelperText>
-          ) : (
-            ""
-          )}
-        </StyledFormControl>
+      </div>
+      <Form.Root onSubmit={onSubmit}>
+        <Form.Field name="nickname">
+          <Form.Label>暱稱</Form.Label>
+          <Form.Control asChild>
+            <input
+              pattern="^[0-9a-z\-_]{2,20}$"
+              required
+              defaultValue={params.nickname ?? ""}
+            />
+          </Form.Control>
+          <Form.Message match="valueMissing">請輸入暱稱。</Form.Message>
+          <Form.Message match="patternMismatch">暱稱格式不正確。</Form.Message>
+        </Form.Field>
+        <label>
+          <input type="radio" name="private" value="public" required /> Public
+        </label>
+        <label>
+          <input type="radio" name="private" value="private" required /> Private
+        </label>
         {params.nickname == null ? (
           <Button variant="violet" type="submit" color="primary">
             新增
           </Button>
         ) : (
-          <ActionsContainer>
+          <div>
             <Button variant="violet" type="submit" color="primary">
               編輯
             </Button>
             <Button variant="indigo" onClick={handleDeletePlayer}>
               刪除成績單
             </Button>
-          </ActionsContainer>
+          </div>
         )}
-      </form>
+      </Form.Root>
     </main>
   )
 }
