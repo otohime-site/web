@@ -1,0 +1,19 @@
+.text-field {
+  border: 1px solid var(--mauve7);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  padding: 0.5em;
+  outline: none;
+}
+
+.text-field:global(.focus) {
+  border-color: var(--mauve8);
+}
+
+.text-field:invalid {
+  border-color: var(--red7);
+}
+
+.text-field:global(.focus):invalid {
+  border-color: var(--red8);
+}

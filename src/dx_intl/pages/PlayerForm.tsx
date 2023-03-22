@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
+import { TextField } from "../../common/components/ui/TextField"
 import {
   DeleteDxIntlPlayerDocument,
   DxIntlPlayersEditableDocument,
@@ -118,7 +119,7 @@ const PlayerForm = () => {
         <Form.Field name="nickname">
           <Form.Label>暱稱</Form.Label>
           <Form.Control asChild>
-            <input
+            <TextField
               pattern="^[0-9a-z\-_]{2,20}$"
               required
               defaultValue={params.nickname ?? ""}
