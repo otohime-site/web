@@ -1,0 +1,19 @@
+.radio-card-private dt {
+  color: var(--mauve11);
+  font-weight: bold;
+}
+
+.radio-card-private[data-state="checked"] dt {
+  color: var(--violet11);
+  font-weight: bold;
+}
+
+.radio-card-private dd {
+  font-size: 0.9em;
+  color: var(--mauve11);
+}
+
+.notes {
+  font-size: 0.9em;
+  color: var(--mauve12);
+}

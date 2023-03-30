@@ -1,10 +1,11 @@
 import * as Form from "@radix-ui/react-form"
-import { MdArrowBack } from "react-icons/md"
+import { MdArrowBack, MdLock, MdPublic } from "react-icons/md"
 import { useNavigate, useParams } from "react-router"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
+import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { TextField } from "../../common/components/ui/TextField"
 import {
   DeleteDxIntlPlayerDocument,
@@ -12,6 +13,8 @@ import {
   InsertDxIntlPlayerDocument,
   UpdateDxIntlPlayerDocument,
 } from "../../generated/graphql"
+
+import classes from "./PlayerForm.module.css"
 
 const PlayerForm = () => {
   const [user, loading] = useAuth()
@@ -117,7 +120,7 @@ const PlayerForm = () => {
       </div>
       <Form.Root onSubmit={onSubmit}>
         <Form.Field name="nickname">
-          <Form.Label>暱稱</Form.Label>
+          <Form.Label>暱稱（作為網址的一部分）</Form.Label>
           <Form.Control asChild>
             <TextField
               pattern="^[0-9a-z\-_]{2,20}$"
@@ -128,12 +131,57 @@ const PlayerForm = () => {
           <Form.Message match="valueMissing">請輸入暱稱。</Form.Message>
           <Form.Message match="patternMismatch">暱稱格式不正確。</Form.Message>
         </Form.Field>
-        <label>
-          <input type="radio" name="private" value="public" required /> Public
-        </label>
-        <label>
-          <input type="radio" name="private" value="private" required /> Private
-        </label>
+        隱私設定
+        <RadioCardRoot
+          name="private"
+          defaultValue={
+            playerResult.data?.dx_intl_players[0]?.private
+              ? "private"
+              : "public"
+          }
+        >
+          <RadioCard className={classes["radio-card-private"]} value="public">
+            <div>
+              <dt>
+                <MdPublic /> 公開
+              </dt>
+              <dd>
+                <ul>
+                  <li>憑成績單網址或搜尋即可瀏覽。</li>
+                  <li>成績、達成狀況、Rating 會加入全站統計。</li>
+                </ul>
+              </dd>
+            </div>
+          </RadioCard>
+          <RadioCard className={classes["radio-card-private"]} value="private">
+            <div>
+              <dt>
+                <MdLock />
+                私人
+              </dt>
+              <dd>
+                <ul>
+                  <li>需要登入原登錄的帳號。</li>
+                  <li>不會加入任何全站統計跟排行榜中。</li>
+                </ul>
+              </dd>
+            </div>
+          </RadioCard>
+        </RadioCardRoot>
+        <div className={classes.notes}>
+          <p>
+            Otohime 會記錄的東西如下，也建議您詳閱我們的
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              隱私政策與資料使用方針
+            </a>
+            。
+          </p>
+          <ul>
+            <li>雜湊後的 Friend ID（不公開，僅用於自動對應多卡成績）</li>
+            <li>卡名、Rating、稱號、段位與對戰階級</li>
+            <li>每個譜面的分數、Combo Flag、Sync Flag</li>
+          </ul>
+        </div>
         {params.nickname == null ? (
           <Button variant="violet" type="submit" color="primary">
             新增

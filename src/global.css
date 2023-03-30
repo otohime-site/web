@@ -6,7 +6,7 @@
 
 /* Radix UI colors */
 @import "@radix-ui/colors/indigo.css";
-@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/blue.css";
 @import "@radix-ui/colors/yellow.css";
 @import "@radix-ui/colors/mauve.css";
 @import "@radix-ui/colors/violet.css";
@@ -29,10 +29,22 @@ body {
   line-height: 1.5;
 }
 
+a {
+  color: var(--violet11);
+}
+
 p,
 ul,
+li,
+dt,
+dd,
 div {
   margin: 0;
+  padding: 0;
+}
+
+ul {
+  padding-left: 1.2em;
 }
 
 h1 {
