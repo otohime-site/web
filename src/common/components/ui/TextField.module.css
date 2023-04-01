@@ -10,10 +10,10 @@
   border-color: var(--mauve8);
 }
 
-.text-field:invalid {
+.text-field[data-invalid="true"] {
   border-color: var(--red7);
 }
 
-.text-field:global(.focus):invalid {
+.text-field:global(.focus)[data-invalid="true"] {
   border-color: var(--red8);
 }

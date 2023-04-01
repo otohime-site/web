@@ -14,6 +14,7 @@ import {
   UpdateDxIntlPlayerDocument,
 } from "../../generated/graphql"
 
+import { useState } from "react"
 import classes from "./PlayerForm.module.css"
 
 const PlayerForm = () => {
@@ -28,6 +29,12 @@ const PlayerForm = () => {
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: loading || (user == null && params.nickname != null),
   })
+  const serverErrorsBase = {
+    nickname: false,
+    others: false,
+  }
+  const [serverErrors, setServerErrors] = useState({ ...serverErrorsBase })
+  console.log(serverErrors)
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement>
@@ -43,11 +50,12 @@ const PlayerForm = () => {
     if (params.nickname == null) {
       const result = await insertPlayer(data)
       if (result.error != null) {
-        /*setError("nickname", {
-          message: result.error.message.includes("Unique")
-            ? "暱稱已經被使用。"
-            : "發生不明錯誤。",
-        })*/
+        setServerErrors({
+          ...serverErrorsBase,
+          ...(result.error.message.includes("Unique")
+            ? { nickname: true }
+            : { others: true }),
+        })
         return
       }
       navigate("/")
@@ -62,11 +70,12 @@ const PlayerForm = () => {
       ...data,
     })
     if (result.error != null) {
-      /*setError("nickname", {
-        message: result.error.message.includes("Unique")
-          ? "暱稱已經被使用。"
-          : "發生不明錯誤。",
-      })*/
+      setServerErrors({
+        ...serverErrorsBase,
+        ...(result.error.message.includes("Unique")
+          ? { nickname: true }
+          : { others: true }),
+      })
       return
     }
     navigate(`/dxi/p/${data.nickname}`)
@@ -118,8 +127,14 @@ const PlayerForm = () => {
         )}
         <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
       </div>
-      <Form.Root onSubmit={onSubmit}>
-        <Form.Field name="nickname">
+      <Form.Root
+        onSubmit={onSubmit}
+        onClearServerErrors={() => setServerErrors({ ...serverErrorsBase })}
+      >
+        <Form.Field
+          name="nickname"
+          serverInvalid={serverErrors.nickname || serverErrors.others}
+        >
           <Form.Label>暱稱（作為網址的一部分）</Form.Label>
           <Form.Control asChild>
             <TextField
@@ -130,6 +145,10 @@ const PlayerForm = () => {
           </Form.Control>
           <Form.Message match="valueMissing">請輸入暱稱。</Form.Message>
           <Form.Message match="patternMismatch">暱稱格式不正確。</Form.Message>
+          {serverErrors.nickname && <Form.Message>暱稱已被使用。</Form.Message>}
+          {serverErrors.others && (
+            <Form.Message>發生不明錯誤，請重試。</Form.Message>
+          )}
         </Form.Field>
         隱私設定
         <RadioCardRoot
