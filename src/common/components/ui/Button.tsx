@@ -8,7 +8,7 @@ import {
 import { Interactive } from "react-interactive"
 import { Link } from "react-router-dom"
 import classes from "./Button.module.css"
-import colorClasses from "./colors.module.css"
+import colorClasses from "./colors.module.scss"
 
 export const Button = forwardRef<
   HTMLButtonElement,

@@ -71,6 +71,7 @@
     "organize-imports-cli": "^0.10.0",
     "prettier": "^2.6.2",
     "rollup-plugin-visualizer": "^5.8.3",
+    "sass": "^1.60.0",
     "ts-node": "^10.1.0",
     "typescript": "^5.0.2",
     "typescript-plugin-css-modules": "^5.0.0",

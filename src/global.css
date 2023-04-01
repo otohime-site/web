@@ -4,15 +4,6 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@900&display=swap&text=0123456789");
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:700");
 
-/* Radix UI colors */
-@import "@radix-ui/colors/indigo.css";
-@import "@radix-ui/colors/red.css";
-@import "@radix-ui/colors/blue.css";
-@import "@radix-ui/colors/yellow.css";
-@import "@radix-ui/colors/mauve.css";
-@import "@radix-ui/colors/violet.css";
-@import "@radix-ui/colors/indigo.css";
-
 html {
   /* 14px @ 320px - 18px @ 1800px */
   font-size: clamp(0.87rem, 0.27vw + 0.82rem, 1.13rem);
