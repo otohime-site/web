@@ -1,26 +1,12 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward"
-import {
-  Alert,
-  Button,
-  Card,
-  CardContent,
-  Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tabs,
-} from "@mui/material"
-import { deepPurple, green, orange, purple, red } from "@mui/material/colors"
-import { styled } from "@mui/material/styles"
 import { FunctionComponent, useMemo } from "react"
+import { MdArrowBack, MdNavigateNext } from "react-icons/md"
 import { useParams } from "react-router"
-import { Link as RouterLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { useAuth } from "../../auth"
+import { Alert } from "../../common/components/ui/Alert"
+import { LinkButton } from "../../common/components/ui/Button"
 import { formatDateTime } from "../../common/utils"
 import {
   DxIntlPlayersTimelinesDocument,
@@ -38,114 +24,9 @@ import {
   legacyCourseRankNames,
 } from "../models/constants"
 import Variant from "../Variant"
-import { ActualScore, FlagContainer } from "./Player"
+import classes from "./PlayerHistory.module.css"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
-
-const StyledTable = styled(Table)(
-  ({ theme }) => `
-  .MuiTableCell-root {
-    font-family: "M PLUS 1p";
-    padding: 8px;
-  }
-  .MuiTableCell-head {
-    font-weight: 700;
-  }
-  table-layout: fixed;
-
-  ${theme.breakpoints.down("md")} {
-    thead {
-      display: none;
-    }
-
-    tr,
-    th,
-    td {
-      display: block;
-    }
-    tr {
-      clear: left;
-      margin-top: 0.5em;
-      border-bottom: 1px solid #cccccc;
-    }
-    th,
-    td {
-      float: left;
-      border-bottom: none;
-    }
-  }
-`
-)
-const FirstCol = styled("col")(
-  ({ theme }) => `
-  ${theme.breakpoints.down("md")} {
-    width: 100%;
-  }
-`
-)
-const DxCol = styled("col")(
-  ({ theme }) => `
-  width: 2.2em;
-  ${theme.breakpoints.down("md")} {
-    width: 0;
-  }
-`
-)
-const DiffCol = styled("col")(
-  ({ theme }) => `
-  width: 5em;
-  ${theme.breakpoints.down("md")} {
-    width: 0;
-  }
-`
-)
-const ArrowCol = styled("col")(
-  ({ theme }) => `
-  width: 3em;
-  ${theme.breakpoints.down("md")} {
-    width: 0;
-  }
-`
-)
-const BACol = styled("col")(
-  ({ theme }) => `
-  ${theme.breakpoints.down("md")} {
-    width: 0;
-  }
-`
-)
-
-const DiffCell = styled(TableCell)`
-  font-size: 85%;
-  text-transform: uppercase;
-  &.difficulty-0 {
-    color: ${green[700]};
-  }
-  &.difficulty-1 {
-    color: ${orange[700]};
-  }
-  &.difficulty-2 {
-    color: ${red[700]};
-  }
-  &.difficulty-3 {
-    color: ${deepPurple[700]};
-  }
-  &.difficulty-4 {
-    color: ${purple[700]};
-  }
-`
-
-const BeforeCell = styled(TableCell)`
-  clear: left;
-`
-
-const BeforeAfterContainer = styled("div")`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 10em;
-`
 
 // Deal with precision for Postgres...
 const dateStringToHash = (str: string): string => {
@@ -269,106 +150,106 @@ const PlayerHistory: FunctionComponent = () => {
   ): React.ReactNode => (
     <>
       {before?.card_name !== after?.card_name ? (
-        <TableRow>
-          <TableCell colSpan={3}>Name</TableCell>
-          <BeforeCell>{before?.card_name ?? ""}</BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>{after?.card_name ?? ""}</TableCell>
-        </TableRow>
+        <tr>
+          <td colSpan={3}>Name</td>
+          <td>{before?.card_name ?? ""}</td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>{after?.card_name ?? ""}</td>
+        </tr>
       ) : (
         <></>
       )}
       {before?.title !== after?.title ? (
-        <TableRow>
-          <TableCell colSpan={3}>Title</TableCell>
-          <BeforeCell>{before?.title ?? ""}</BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>{after?.title ?? ""}</TableCell>
-        </TableRow>
+        <tr>
+          <td colSpan={3}>Title</td>
+          <td>{before?.title ?? ""}</td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>{after?.title ?? ""}</td>
+        </tr>
       ) : (
         <></>
       )}
       {before?.rating !== after?.rating ? (
-        <TableRow>
-          <TableCell colSpan={3}>Rating</TableCell>
-          <BeforeCell>{before?.rating ?? ""}</BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>{after?.rating ?? ""}</TableCell>
-        </TableRow>
+        <tr>
+          <td colSpan={3}>Rating</td>
+          <td>{before?.rating ?? ""}</td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>{after?.rating ?? ""}</td>
+        </tr>
       ) : (
         <></>
       )}
       {before?.max_rating !== after?.max_rating ? (
-        <TableRow>
-          <TableCell colSpan={3}>Max Rating</TableCell>
-          <BeforeCell>
+        <tr>
+          <td colSpan={3}>Max Rating</td>
+          <td>
             {(before?.max_rating ?? 0) >= 0 ? before?.max_rating ?? "" : ""}
-          </BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>
+          </td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>
             {(after?.max_rating ?? 0) >= 0 ? after?.max_rating ?? "" : ""}
-          </TableCell>
-        </TableRow>
+          </td>
+        </tr>
       ) : (
         <></>
       )}
       {before?.grade !== after?.grade ? (
-        <TableRow>
-          <TableCell colSpan={3}>Grade</TableCell>
-          <BeforeCell>{gradeNames[before?.grade ?? 0] ?? ""}</BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>{gradeNames[after?.grade ?? 0] ?? ""}</TableCell>
-        </TableRow>
+        <tr>
+          <td colSpan={3}>Grade</td>
+          <td>{gradeNames[before?.grade ?? 0] ?? ""}</td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>{gradeNames[after?.grade ?? 0] ?? ""}</td>
+        </tr>
       ) : (
         <></>
       )}
       {(before?.course_rank ?? null) !== (after?.course_rank ?? null) ? (
-        <TableRow>
-          <TableCell colSpan={3}>段位</TableCell>
-          <BeforeCell>
+        <tr>
+          <td colSpan={3}>段位</td>
+          <td>
             {before?.course_rank != null
               ? legacyCourseRankNames[before.course_rank] ?? ""
               : ""}
-          </BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>
+          </td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>
             {after?.course_rank != null
               ? legacyCourseRankNames[after.course_rank] ?? ""
               : ""}
-          </TableCell>
-        </TableRow>
+          </td>
+        </tr>
       ) : (
         <></>
       )}
       {(before?.class_rank ?? null) !== (after?.class_rank ?? null) ? (
-        <TableRow>
-          <TableCell colSpan={3}>對戰階級</TableCell>
-          <BeforeCell>
+        <tr>
+          <td colSpan={3}>對戰階級</td>
+          <td>
             {before?.class_rank != null
               ? classRankNames[before.class_rank] ?? ""
               : ""}
-          </BeforeCell>
-          <TableCell>
-            <ArrowForwardIcon />
-          </TableCell>
-          <TableCell>
+          </td>
+          <td>
+            <MdNavigateNext />
+          </td>
+          <td>
             {after?.class_rank != null
               ? classRankNames[after.class_rank] ?? ""
               : ""}
-          </TableCell>
-        </TableRow>
+          </td>
+        </tr>
       ) : (
         <></>
       )}
@@ -378,26 +259,24 @@ const PlayerHistory: FunctionComponent = () => {
   const showTimelineResult = (
     data: DxIntlPlayerWithTimelineQuery
   ): React.ReactNode => (
-    <StyledTable>
+    <table className={classes.table}>
       <colgroup>
-        <FirstCol />
-        <DxCol />
-        <DiffCol />
-        <BACol />
-        <ArrowCol />
-        <BACol />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
       </colgroup>
-      <TableHead>
-        <TableRow>
-          <TableCell component="th" colSpan={3}>
-            項目
-          </TableCell>
-          <TableCell component="th">Before</TableCell>
-          <TableCell component="th"></TableCell>
-          <TableCell component="th">After</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
+      <thead>
+        <tr>
+          <th colSpan={3}>項目</th>
+          <th>Before</th>
+          <th></th>
+          <th>After</th>
+        </tr>
+      </thead>
+      <tbody>
         {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
           recordDiffRows(data.beforeRecord[0], data.afterRecord[0])
         ) : (
@@ -413,82 +292,72 @@ const PlayerHistory: FunctionComponent = () => {
             const before = beforeMap.get(note.hash)
             const after = afterMap.get(note.hash)
             return (
-              <TableRow key={note.hash}>
-                <TableCell component="th">{entry.title}</TableCell>
-                <TableCell>
+              <tr key={note.hash}>
+                <th>{entry.title}</th>
+                <td>
                   <Variant deluxe={entry.deluxe} />
-                </TableCell>
-                <DiffCell className={`difficulty-${note.difficulty}`}>
-                  {difficulties[note.difficulty].substr(0, 3)} {note.level}
-                </DiffCell>
-                <BeforeCell>
+                </td>
+                <td
+                  className={`${classes["diff"]} ${
+                    classes["diff" + note.difficulty]
+                  }`}
+                >
+                  {difficulties[note.difficulty].slice(0, 3)} {note.level}
+                </td>
+                <td>
                   {before != null ? (
-                    <BeforeAfterContainer>
-                      <ActualScore>{before.score.toFixed(4)}%</ActualScore>
-                      <FlagContainer>
+                    <div className={classes.container}>
+                      <span className={classes.score}>
+                        {before.score.toFixed(4)}%
+                      </span>
+                      <span className={classes.flags}>
                         <ComboFlag flag={before.combo_flag} />
                         <SyncFlag flag={before.sync_flag} />
-                      </FlagContainer>
-                    </BeforeAfterContainer>
+                      </span>
+                    </div>
                   ) : (
-                    <BeforeAfterContainer />
+                    <div className={classes.container} />
                   )}
-                </BeforeCell>
-                <TableCell>
-                  <ArrowForwardIcon />
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
+                  <MdNavigateNext />
+                </td>
+                <td>
                   {after != null ? (
-                    <BeforeAfterContainer>
-                      <ActualScore>{after.score.toFixed(4)}%</ActualScore>
-                      <FlagContainer>
-                        <ComboFlag flag={after.combo_flag} />
-                        <SyncFlag flag={after.sync_flag} />
-                      </FlagContainer>
-                    </BeforeAfterContainer>
+                    <div className={classes.container}>
+                      <span className={classes.score}>
+                        {after.score.toFixed(4)}%
+                      </span>
+                      <span className={classes.flags}></span>
+                    </div>
                   ) : (
-                    <BeforeAfterContainer />
+                    <div className={classes.container} />
                   )}
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             )
           })}
-      </TableBody>
-    </StyledTable>
+      </tbody>
+    </table>
   )
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <Button
-        variant="contained"
-        startIcon={<ArrowBackIcon />}
-        component={RouterLink}
-        to={`/dxi/p/${params.nickname}`}
-      >
-        回成績單
-      </Button>
-      <Tabs
-        value={params?.hash ?? false}
-        variant="scrollable"
-        scrollButtons
-        indicatorColor="primary"
-        textColor="primary"
-        allowScrollButtonsMobile
-      >
+      <LinkButton to={`/dxi/p/${params.nickname}`} variant="violet">
+        <MdArrowBack /> 回成績單
+      </LinkButton>
+      <div>
         {outerTimelines.timelines.map((time) => (
-          <Tab
-            key={dateStringToHash(time)}
-            value={dateStringToHash(time)}
-            label={formatDateTime(new Date(time))}
-            component={RouterLink}
+          <Link
             to={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
-          />
+            key={time}
+          >
+            {formatDateTime(new Date(time))}
+          </Link>
         ))}
-      </Tabs>
+      </div>
       {params.hash == null ? (
-        <Card>
-          <CardContent>請選擇一個時間檢視該時間的歷程。</CardContent>
-        </Card>
+        <div>請選擇一個時間檢視該時間的歷程。</div>
       ) : timelineResult.data == null ? (
         <></>
       ) : (

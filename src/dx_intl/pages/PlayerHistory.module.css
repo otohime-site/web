@@ -1,0 +1,49 @@
+.table {
+  font-family: "M PLUS 1p";
+  padding: 8px;
+  width: 100%;
+}
+.table th {
+  font-weight: 700;
+}
+
+.diff {
+  font-size: 85%;
+  text-transform: uppercase;
+}
+.diff0 {
+  color: var(--green11);
+}
+.diff1 {
+  color: var(--orange11);
+}
+.diff2 {
+  color: var(--red11);
+}
+.diff3 {
+  color: var(--violet11);
+}
+.diff4 {
+  color: var(--indigo11);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 10em;
+}
+
+.flags {
+  text-align: right;
+  font-size: 0.7em;
+}
+.flags img {
+  vertical-align: middle;
+}
+.score {
+  width: 5.5em;
+  text-align: right;
+  overflow: hidden;
+}
