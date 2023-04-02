@@ -15,8 +15,8 @@ import {
   DxIntlSongsDocument,
   Dx_Intl_Scores,
 } from "../../generated/graphql"
+import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
-import { ComboFlag, SyncFlag } from "../flags"
 import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
 import {
   classRankNames,

@@ -50,9 +50,9 @@ import {
   DxIntlSongsDocument,
   Dx_Intl_Notes,
 } from "../../generated/graphql"
+import { ComboFlag, SyncFlag } from "../components/Flags"
 import Record from "../components/Record"
 import Variant from "../components/Variant"
-import { ComboFlag, SyncFlag } from "../flags"
 import {
   arrangeSortedRows,
   downloadCSV,
