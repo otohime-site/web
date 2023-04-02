@@ -15,6 +15,7 @@ import {
   DxIntlSongsDocument,
   Dx_Intl_Scores,
 } from "../../generated/graphql"
+import Variant from "../components/Variant"
 import { ComboFlag, SyncFlag } from "../flags"
 import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
 import {
@@ -23,7 +24,6 @@ import {
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
-import Variant from "../Variant"
 import classes from "./PlayerHistory.module.css"
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
@@ -328,7 +328,10 @@ const PlayerHistory: FunctionComponent = () => {
                       <span className={classes.score}>
                         {after.score.toFixed(4)}%
                       </span>
-                      <span className={classes.flags}></span>
+                      <span className={classes.flags}>
+                        <ComboFlag flag={after.combo_flag} />
+                        <SyncFlag flag={after.sync_flag} />
+                      </span>
                     </div>
                   ) : (
                     <div className={classes.container} />

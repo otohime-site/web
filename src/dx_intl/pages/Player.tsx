@@ -51,6 +51,7 @@ import {
   Dx_Intl_Notes,
 } from "../../generated/graphql"
 import Record from "../components/Record"
+import Variant from "../components/Variant"
 import { ComboFlag, SyncFlag } from "../flags"
 import {
   arrangeSortedRows,
@@ -72,7 +73,6 @@ import {
   versions,
 } from "../models/constants"
 import NoteRating from "../NoteRating"
-import Variant from "../Variant"
 
 export type NoteEntry = Pick<
   Dx_Intl_Notes,
