@@ -21,10 +21,11 @@
   color: var(--red11);
 }
 .diff3 {
-  color: var(--violet11);
+  color: var(--plum11);
 }
 .diff4 {
-  color: var(--indigo11);
+  color: var(--violet11);
+  box-shadow: inset 0 0 0 1px var(--violet7);
 }
 
 .container {
