@@ -210,7 +210,7 @@ const PlayerForm = () => {
             <Button variant="violet" type="submit" color="primary">
               編輯
             </Button>
-            <Button variant="indigo" onClick={handleDeletePlayer}>
+            <Button variant="red" onClick={handleDeletePlayer}>
               刪除成績單
             </Button>
           </div>
