@@ -1,76 +1,18 @@
-import SearchIcon from "@mui/icons-material/Search"
-import WarningIcon from "@mui/icons-material/Warning"
-import { Autocomplete, InputBase } from "@mui/material"
-import { styled } from "@mui/material/styles"
-import { AutocompleteChangeReason } from "@mui/material/useAutocomplete"
-import { FunctionComponent, useState } from "react"
-import { useNavigate } from "react-router"
+import { useState } from "react"
 import { useQuery } from "urql"
 import { useAuth } from "../../auth"
-import PlayerListItem from "../../dx_intl/PlayerListItem"
 import {
   DxIntlPlayersWithKeywordAnonymousDocument,
   DxIntlPlayersWithKeywordUserDocument,
 } from "../../generated/graphql"
 
-const SearchContainer = styled("div")(
-  ({ theme }) =>
-    `
-  display: flex;
-  align-items: center;
-  border-radius: ${theme.shape.borderRadius}px;
-  background-color: white;
-  width: auto;
-  position: relative;
-  margin-left: 32px;
-  ${theme.breakpoints.down("sm")} {
-    position: absolute;
-    top: 0;
-    left: 8px;
-    right: 8px;
-    margin-top: 4px;
-    margin-left: 0;
-    display: flex;
-    margin: ${theme.spacing(1)}
-    .MuiAutocomplete-root {
-      flex-grow: 1;
-    }
-  }
-  &:hover {
-    background-color: #fafafa;
-  }
-`
-)
-
-const SearchIconHolder = styled("div")`
-  position: absolute;
-  top: 5px;
-  left: 8px;
-  color: #cccccc;
-`
-
-const StyledInputBase = styled(InputBase)(
-  ({ theme }) =>
-    `
-  display: flex;
-  padding-left: 36px;
-  input {
-    padding: ${theme.spacing(1, 1, 1, 0)};
-    width: 16em;
-  }
-`
-)
-
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
 
-const Search: FunctionComponent<{
-  hideSearch: () => void
-  shouldAutoFocus: boolean
-}> = ({ hideSearch, shouldAutoFocus }) => {
+const Search = () => {
   const [user, loading] = useAuth()
-  const navigate = useNavigate()
-  const [keyword, setKeyword] = useState("")
+  // const navigate = useNavigate()
+  const [keyword] = useState("")
   const [keywordAnonResult] = useQuery({
     query: DxIntlPlayersWithKeywordAnonymousDocument,
     variables: {
@@ -110,52 +52,10 @@ const Search: FunctionComponent<{
           })),
         ]
 
-  const onItemChange = (
-    _: React.ChangeEvent<{}>,
-    value: string | (typeof options)[0],
-    reason: AutocompleteChangeReason
-  ): void => {
-    if (typeof value === "string") {
-      return
-    }
-    navigate(`/dxi/p/${value.nickname}`)
-  }
+  console.log(hasError)
+  console.log(options)
 
-  const onInputChange = (_: React.ChangeEvent<{}>, value: string): void => {
-    setKeyword(value)
-  }
-
-  return (
-    <SearchContainer>
-      <SearchIconHolder>
-        {hasError ? <WarningIcon /> : <SearchIcon />}
-      </SearchIconHolder>
-      <Autocomplete
-        freeSolo
-        disableClearable
-        options={options}
-        getOptionLabel={(option) => ""}
-        filterOptions={(option) => option}
-        groupBy={(option) => option.from}
-        onChange={onItemChange}
-        onInputChange={onInputChange}
-        renderInput={(params) => (
-          <StyledInputBase
-            ref={params.InputProps.ref}
-            inputProps={params.inputProps}
-            placeholder="搜尋玩家暱稱..."
-            onBlur={hideSearch}
-            autoFocus={shouldAutoFocus}
-          />
-        )}
-        renderOption={(props, option) => (
-          <li {...props}>
-            <PlayerListItem player={option} forAutoComplete={true} />
-          </li>
-        )}
-      />
-    </SearchContainer>
-  )
+  return <></>
 }
 
 export default Search

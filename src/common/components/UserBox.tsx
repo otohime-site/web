@@ -1,12 +1,9 @@
-import ExitToAppIcon from "@mui/icons-material/ExitToApp"
-import { Button, Skeleton } from "@mui/material"
 import {
   FacebookAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   signOut,
 } from "firebase/auth"
-import { useSnackbar } from "notistack"
 import { Fragment, FunctionComponent, useCallback } from "react"
 import { firebaseAuth, useAuth } from "../../auth"
 
@@ -17,7 +14,6 @@ const isInAppBrowser = (agent: string): boolean =>
 
 const UserBoxComponent: FunctionComponent = () => {
   const [user, loading] = useAuth()
-  const { enqueueSnackbar } = useSnackbar()
 
   const handleLogin = useCallback(async (): Promise<void> => {
     try {
@@ -28,34 +24,31 @@ const UserBoxComponent: FunctionComponent = () => {
       }
     } catch (e: any) {
       if (e.code === "auth/popup-blocked") {
-        enqueueSnackbar("彈出視窗被瀏覽器阻擋。請試著重點一次「登入」。", {
-          variant: "error",
-        })
+        // TODO: rework
+        console.log("彈出視窗被瀏覽器阻擋。請試著重點一次「登入」。")
       } else {
-        enqueueSnackbar("登入失敗，請再試一次。", { variant: "error" })
+        // TODO: rework
+        console.log("登入失敗，請再試一次。")
       }
     }
-  }, [enqueueSnackbar])
+  }, [])
   const handleLogout = async (): Promise<void> => {
     await signOut(firebaseAuth)
   }
   if (loading) {
-    return <Skeleton variant="text" width={60} />
+    return <></>
   } else if (user !== null) {
     return (
       <Fragment>
-        <Button color="inherit" onClick={handleLogout}>
-          <ExitToAppIcon />
-          登出
-        </Button>
+        <a onClick={handleLogout}>登出</a>
       </Fragment>
     )
   }
   return (
     <Fragment>
-      <Button color="inherit" onClick={handleLogin}>
+      <a color="inherit" onClick={handleLogin}>
         登入
-      </Button>
+      </a>
     </Fragment>
   )
 }

@@ -1,12 +1,12 @@
-import AddIcon from "@mui/icons-material/Add"
-import { Button, List } from "@mui/material"
 import { FunctionComponent } from "react"
-import { Link as RouterLink } from "react-router-dom"
+import { MdAdd } from "react-icons/md"
+import { Link } from "react-router-dom"
 import { useQuery } from "urql"
 import { useAuth } from "../auth"
 import { QueryResult } from "../common/components/QueryResult"
+import { LinkButton } from "../common/components/ui/Button"
 import { DxIntlPlayersForUserDocument } from "../generated/graphql"
-import PlayerListItem from "./PlayerListItem"
+import PlayerListItemNew from "./PlayerListItemNew"
 
 const UserPlayers: FunctionComponent = () => {
   const [user, loading] = useAuth()
@@ -23,23 +23,22 @@ const UserPlayers: FunctionComponent = () => {
   return (
     <QueryResult result={playersResult}>
       {players != null && players.length > 0 ? (
-        <List>
+        <ul>
           {players.map((p) => (
-            <PlayerListItem key={p.id} player={p} addLink />
+            <li key={p.id}>
+              <Link to={`/dxi/p/${p.nickname}`}>
+                <PlayerListItemNew player={p} />
+              </Link>
+            </li>
           ))}
-        </List>
+        </ul>
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
-      <Button
-        component={RouterLink}
-        to="/dxi/p/new"
-        variant="contained"
-        color="secondary"
-        startIcon={<AddIcon />}
-      >
+      <LinkButton to="/dxi/p/new" variant="violet">
+        <MdAdd />
         新增成績單
-      </Button>
+      </LinkButton>
     </QueryResult>
   )
 }

@@ -1,17 +1,5 @@
-import LinkIcon from "@mui/icons-material/Link"
-import RefreshIcon from "@mui/icons-material/Refresh"
-import {
-  Alert,
-  Button,
-  ButtonGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Tooltip,
-  Typography,
-} from "@mui/material"
 import { FunctionComponent, useState } from "react"
+import { MdLink, MdRefresh } from "react-icons/md"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
@@ -21,6 +9,8 @@ import {
 } from "../../generated/graphql"
 import host from "../../host"
 import { QueryResult } from "./QueryResult"
+import { Alert } from "./ui/Alert"
+import { Button } from "./ui/Button"
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -78,27 +68,27 @@ const User: FunctionComponent = () => {
   return (
     <div>
       {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
-      <Dialog open={bookDialogOpen} onClose={handleClose}>
-        <DialogTitle>Bookmarklet 操作說明</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2">
-            連結已經複製到剪貼簿！接下來的步驟大致如下：
-          </Typography>
-          <ol>
-            <li>將這個網頁加入書籤。（標題已經幫你改好了）</li>
-            <li>打開瀏覽器的書籤，並選擇編輯書籤。</li>
-            <li>將剛加入的書籤網址清空，將剪貼簿的內容貼上於網址中即可。</li>
-          </ol>
-          <Typography variant="body2">
-            接下來只要進到官方成績單網站後，選開書籤，點擊「更新 Otohime
-            成績」即可。 但如果你使用 Android 的
-            Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>關閉</Button>
-        </DialogActions>
-      </Dialog>
+      {bookDialogOpen && (
+        <div>
+          <h3>Bookmarklet 操作說明</h3>
+          <div>
+            <p>連結已經複製到剪貼簿！接下來的步驟大致如下：</p>
+            <ol>
+              <li>將這個網頁加入書籤。（標題已經幫你改好了）</li>
+              <li>打開瀏覽器的書籤，並選擇編輯書籤。</li>
+              <li>將剛加入的書籤網址清空，將剪貼簿的內容貼上於網址中即可。</li>
+            </ol>
+            <p>
+              接下來只要進到官方成績單網站後，選開書籤，點擊「更新 Otohime
+              成績」即可。 但如果你使用 Android 的
+              Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
+            </p>
+            <Button variant="indigo" onClick={handleClose}>
+              關閉
+            </Button>
+          </div>
+        </div>
+      )}
       <QueryResult
         result={tokensResult}
         skeletonVariant="rectangular"
@@ -106,34 +96,29 @@ const User: FunctionComponent = () => {
       >
         {token.length === 0 ? (
           <Button
-            variant="contained"
-            color="secondary"
+            variant="violet"
             disabled={regenerateTokenResult.fetching}
             onClick={generateToken}
           >
             產生權杖
           </Button>
         ) : (
-          <ButtonGroup variant="contained">
-            <Button
-              color="primary"
+          <div>
+            <a
               href={bookmarkletContent(token)}
               onClick={async (e) => await copyBookmarklet(e, token)}
-              startIcon={<LinkIcon />}
             >
+              <MdLink />
               更新 Otohime 成績
+            </a>
+            <Button
+              variant="violet"
+              disabled={regenerateTokenResult.fetching}
+              onClick={generateToken}
+            >
+              <MdRefresh /> 重新產生
             </Button>
-            <Tooltip title="重新產生權杖">
-              <Button
-                href="#"
-                color="secondary"
-                disabled={regenerateTokenResult.fetching}
-                onClick={generateToken}
-              >
-                <RefreshIcon />
-              </Button>
-            </Tooltip>
-          </ButtonGroup>
+          </div>
         )}
       </QueryResult>
     </div>
