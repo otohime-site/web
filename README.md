@@ -1,5 +1,7 @@
 ### The Otohime front-end
 
+<strong>The main branch is under huge rewrite and may not function as expected. Please refer to the latest release tag for a working version.</strong>
+
 It is a TypeScript / React project.
 
 #### Get Started
@@ -43,11 +45,11 @@ Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
 
 ### License
 
-Copyright (c) 2018 - 2021 Otohime Team (Hsiao-Ting Yu and others)
+Copyright (c) 2018 - 2023 Otohime Team (Hsiao-Ting Yu and others)
 
 Licensed under MIT license, see LICENSE.md.
 
-Artworks in `public/favicon.ico`, `src/logo`, `src/dx_intl/course_ranks` and `src/dx_intl/class_ranks`, `src/dx_intl/ratings` are released separately:
+Artworks in `public/favicon.ico`, `src/logo`, `src/dx_intl/images/course_ranks` and `src/dx_intl/images/class_ranks`, `src/dx_intl/images/ratings` are released separately:
 
 (C) 2021-2022 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
