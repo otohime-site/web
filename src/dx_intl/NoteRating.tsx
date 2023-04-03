@@ -1,39 +1,18 @@
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
-import {
-  Link,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Tooltip,
-} from "@mui/material"
-import { styled } from "@mui/material/styles"
-import { FunctionComponent, useMemo } from "react"
+import { useMemo } from "react"
+import { MdHelpOutline } from "react-icons/md"
+import { Link } from "react-router-dom"
 import { getRankScoreIndex, getRating } from "./helper"
 import { RANK_SCORES } from "./models/constants"
 import { NoteEntry } from "./pages/Player"
 
-const RatingTable = styled(Table)`
-  width: 10em;
-  a svg {
-    margin-left: 0.5em;
-    vertical-align: middle;
-  }
-`
-
-const RatingTableCell = styled(TableCell)`
-  padding: 8px;
-`
-
-const RatingDiffCell = styled(RatingTableCell)`
-  text-align: right;
-`
-
-const NoteRating: FunctionComponent<{
+const NoteRating = ({
+  note,
+  score,
+}: {
   nickname?: string
   note: NoteEntry
   score: number
-}> = ({ note, score }) => {
+}) => {
   const internalLv = note.internal_lv
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
@@ -58,37 +37,36 @@ const NoteRating: FunctionComponent<{
     return <></>
   }
   return (
-    <RatingTable>
-      <TableBody>
-        <TableRow>
-          <RatingTableCell>{internalLv.toFixed(1)}</RatingTableCell>
-          <RatingDiffCell>
+    <table>
+      <tbody>
+        <tr>
+          <td>{internalLv.toFixed(1)}</td>
+          <td>
             {rating} / {maxRating}
-            <Tooltip title="顯示相關說明">
-              <Link
-                href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
-                target="_blank"
-              >
-                <HelpOutlineIcon fontSize="inherit" />
-              </Link>
-            </Tooltip>
-          </RatingDiffCell>
-        </TableRow>
+            <Link
+              to="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
+              target="_blank"
+              title="顯示相關說明"
+            >
+              <MdHelpOutline />
+            </Link>
+          </td>
+        </tr>
         {targets.length === 0 ? (
-          <TableRow>
-            <RatingTableCell colSpan={2}>已拿滿！</RatingTableCell>
-          </TableRow>
+          <tr>
+            <td colSpan={2}>已拿滿！</td>
+          </tr>
         ) : (
           <></>
         )}
         {targets.map((t) => (
-          <TableRow key={t[0]}>
-            <RatingTableCell>{t[0]}</RatingTableCell>
-            <RatingDiffCell>+{t[1]}</RatingDiffCell>
-          </TableRow>
+          <tr key={t[0]}>
+            <td>{t[0]}</td>
+            <td>+{t[1]}</td>
+          </tr>
         ))}
-      </TableBody>
-    </RatingTable>
+      </tbody>
+    </table>
   )
 }
 
