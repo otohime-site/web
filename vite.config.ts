@@ -4,11 +4,7 @@ import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  plugins: [
-    react({ jsxImportSource: "@emotion/react" }),
-    basicSsl(),
-    visualizer(),
-  ],
+  plugins: [react(), basicSsl(), visualizer()],
   build: {
     emptyOutDir: false, // as the library will empty it
   },
