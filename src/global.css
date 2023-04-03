@@ -58,6 +58,11 @@ h4 {
   margin: 0.5rem 0;
 }
 
+h5 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
 .react-icons {
   font-size: 1.2em;
   vertical-align: text-top;
