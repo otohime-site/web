@@ -1,12 +1,13 @@
 import { FunctionComponent } from "react"
 import { MdAdd } from "react-icons/md"
+import { Interactive } from "react-interactive"
 import { Link } from "react-router-dom"
 import { useQuery } from "urql"
-import { useAuth } from "../auth"
-import { QueryResult } from "../common/components/QueryResult"
-import { LinkButton } from "../common/components/ui/Button"
-import { DxIntlPlayersForUserDocument } from "../generated/graphql"
-import PlayerListItemNew from "./PlayerListItemNew"
+import { useAuth } from "../../auth"
+import { QueryResult } from "../../common/components/QueryResult"
+import { LinkButton } from "../../common/components/ui/Button"
+import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
+import PlayerListItemNew from "./PlayerItem"
 
 const UserPlayers: FunctionComponent = () => {
   const [user, loading] = useAuth()
@@ -23,15 +24,13 @@ const UserPlayers: FunctionComponent = () => {
   return (
     <QueryResult result={playersResult}>
       {players != null && players.length > 0 ? (
-        <ul>
+        <div>
           {players.map((p) => (
-            <li key={p.id}>
-              <Link to={`/dxi/p/${p.nickname}`}>
-                <PlayerListItemNew player={p} />
-              </Link>
-            </li>
+            <Interactive as={Link} key={p.id} to={`/dxi/p/${p.nickname}`}>
+              <PlayerListItemNew player={p} />
+            </Interactive>
           ))}
-        </ul>
+        </div>
       ) : (
         "目前沒有成績單。請新增一個！"
       )}

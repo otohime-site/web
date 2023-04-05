@@ -11,7 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "../../common/components/ui/Dialog"
-import PlayerListItemNew from "../../dx_intl/PlayerListItemNew"
+import PlayerListItemNew from "../../dx_intl/components/PlayerItem"
 import {
   DxIntlPlayersDocument,
   DxIntlSongsRefMapCountDocument,

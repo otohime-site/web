@@ -1,6 +1,6 @@
 import { Titled } from "react-titled"
 import { useAuth } from "../../auth"
-import DxUserPlayers from "../../dx_intl/UserPlayers"
+import DxUserPlayers from "../../dx_intl/components/UserPlayers"
 import Token from "../components/Token"
 
 const HomeComponent = () => {

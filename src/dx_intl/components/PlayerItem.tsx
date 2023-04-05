@@ -1,11 +1,11 @@
 import { MdLock, MdPublic } from "react-icons/md"
-import { formatRelative } from "../common/utils"
-import { DxIntlPlayersQuery, Dx_Intl_Records } from "../generated/graphql"
+import { formatRelative } from "../../common/utils"
+import { DxIntlPlayersQuery, Dx_Intl_Records } from "../../generated/graphql"
 import {
   classRankNames,
   gradeNames,
   legacyCourseRankNames,
-} from "./models/constants"
+} from "../models/constants"
 
 const getGradeOrRanks = (
   record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">
