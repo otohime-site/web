@@ -7,7 +7,7 @@ import { useAuth } from "../../auth"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
-import PlayerListItemNew from "./PlayerItem"
+import PlayerItem from "./PlayerItem"
 
 const UserPlayers: FunctionComponent = () => {
   const [user, loading] = useAuth()
@@ -27,7 +27,7 @@ const UserPlayers: FunctionComponent = () => {
         <div>
           {players.map((p) => (
             <Interactive as={Link} key={p.id} to={`/dxi/p/${p.nickname}`}>
-              <PlayerListItemNew player={p} />
+              <PlayerItem player={p} />
             </Interactive>
           ))}
         </div>

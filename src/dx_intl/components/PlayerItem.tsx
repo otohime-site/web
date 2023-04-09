@@ -27,7 +27,7 @@ const formatUpdatedAt = (
 ): string =>
   player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
-const PlayerListItemNew = ({
+const PlayerItem = ({
   player,
   selected,
   forAutoComplete,
@@ -80,4 +80,4 @@ const PlayerListItemNew = ({
   )
 }
 
-export default PlayerListItemNew
+export default PlayerItem

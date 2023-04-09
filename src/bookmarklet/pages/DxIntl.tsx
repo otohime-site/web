@@ -11,7 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "../../common/components/ui/Dialog"
-import PlayerListItemNew from "../../dx_intl/components/PlayerItem"
+import PlayerItem from "../../dx_intl/components/PlayerItem"
 import {
   DxIntlPlayersDocument,
   DxIntlSongsRefMapCountDocument,
@@ -225,7 +225,7 @@ const Book = () => {
                 <div>請選擇要更新的成績單：</div>
                 <div>
                   {players.map((player) => (
-                    <PlayerListItemNew
+                    <PlayerItem
                       key={player.id}
                       player={player}
                       selected={selectedPlayerId === player.id}
