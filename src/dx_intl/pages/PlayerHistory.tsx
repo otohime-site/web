@@ -346,7 +346,7 @@ const PlayerHistory: FunctionComponent = () => {
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <LinkButton to={`/dxi/p/${params.nickname}`} variant="violet">
+      <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
         <MdArrowBack /> 回成績單
       </LinkButton>
       <div>

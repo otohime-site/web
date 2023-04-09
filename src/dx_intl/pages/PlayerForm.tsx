@@ -117,11 +117,11 @@ const PlayerForm = () => {
     <main>
       <div>
         {params.nickname != null ? (
-          <LinkButton to={`/dxi/p/${params.nickname}`} variant="violet">
+          <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
             <MdArrowBack />
           </LinkButton>
         ) : (
-          <LinkButton to="/" variant="violet">
+          <LinkButton to="/" color="violet">
             <MdArrowBack />
           </LinkButton>
         )}
@@ -202,15 +202,15 @@ const PlayerForm = () => {
           </ul>
         </div>
         {params.nickname == null ? (
-          <Button variant="violet" type="submit" color="primary">
+          <Button color="violet" type="submit">
             新增
           </Button>
         ) : (
           <div>
-            <Button variant="violet" type="submit" color="primary">
+            <Button color="violet" type="submit">
               編輯
             </Button>
-            <Button variant="red" onClick={handleDeletePlayer}>
+            <Button color="red" onClick={handleDeletePlayer}>
               刪除成績單
             </Button>
           </div>

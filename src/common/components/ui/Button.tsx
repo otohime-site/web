@@ -10,18 +10,30 @@ import { Link } from "react-router-dom"
 import classes from "./Button.module.css"
 import colorClasses from "./colors.module.scss"
 
+const colors = [
+  "indigo",
+  "red",
+  "blue",
+  "green",
+  "yellow",
+  "mauve",
+  "violet",
+  "indigo",
+  "plum",
+] as const
+
 export const Button = forwardRef<
   HTMLButtonElement,
   PropsWithChildren<
     ButtonHTMLAttributes<HTMLButtonElement> & {
-      variant: "violet" | "indigo" | "red"
+      color: (typeof colors)[number]
     }
   >
->(({ variant, className, children, ...props }, forwardedRef) => (
+>(({ color, className, children, ...props }, forwardedRef) => (
   <Interactive
     as="button"
     {...props}
-    className={`${classes.button} ${colorClasses[variant]} ${className ?? ""}`}
+    className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
     ref={forwardedRef}
   >
     {children}
@@ -32,12 +44,12 @@ Button.displayName = "Button"
 
 export const LinkButton = forwardRef<
   ElementRef<typeof Link>,
-  ComponentPropsWithoutRef<typeof Link> & { variant: "violet" | "indigo" }
->(({ variant, className, children, ...props }, forwardedRef) => (
+  ComponentPropsWithoutRef<typeof Link> & { color: (typeof colors)[number] }
+>(({ color, className, children, ...props }, forwardedRef) => (
   <Interactive
     as={Link}
     {...props}
-    className={`${classes.button} ${colorClasses[variant]} ${className ?? ""}`}
+    className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
     ref={forwardedRef}
   >
     {children}

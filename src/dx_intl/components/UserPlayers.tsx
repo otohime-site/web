@@ -24,7 +24,7 @@ const UserPlayers: FunctionComponent = () => {
       {players != null && players.length > 0 ? (
         <div>
           {players.map((p) => (
-            <LinkButton variant="violet" key={p.id} to={`/dxi/p/${p.nickname}`}>
+            <LinkButton color="violet" key={p.id} to={`/dxi/p/${p.nickname}`}>
               <PlayerItem player={p} />
             </LinkButton>
           ))}
@@ -32,7 +32,7 @@ const UserPlayers: FunctionComponent = () => {
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
-      <LinkButton to="/dxi/p/new" variant="violet">
+      <LinkButton to="/dxi/p/new" color="violet">
         <MdAdd />
         新增成績單
       </LinkButton>

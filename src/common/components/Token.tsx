@@ -83,7 +83,7 @@ const User: FunctionComponent = () => {
               成績」即可。 但如果你使用 Android 的
               Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
             </p>
-            <Button variant="indigo" onClick={handleClose}>
+            <Button color="indigo" onClick={handleClose}>
               關閉
             </Button>
           </div>
@@ -96,7 +96,7 @@ const User: FunctionComponent = () => {
       >
         {token.length === 0 ? (
           <Button
-            variant="violet"
+            color="violet"
             disabled={regenerateTokenResult.fetching}
             onClick={generateToken}
           >
@@ -112,7 +112,7 @@ const User: FunctionComponent = () => {
               更新 Otohime 成績
             </a>
             <Button
-              variant="violet"
+              color="violet"
               disabled={regenerateTokenResult.fetching}
               onClick={generateToken}
             >

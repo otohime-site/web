@@ -64,7 +64,7 @@ const Forget: FunctionComponent = () => {
         <p>
           如果執行失敗，可能是您登入太久了，請您嘗試登出、再登入、再重新執行一次。
         </p>
-        <Button variant="red" disabled={!confirmed} onClick={bye}>
+        <Button color="red" disabled={!confirmed} onClick={bye}>
           Bye :)
         </Button>
       </Alert>
