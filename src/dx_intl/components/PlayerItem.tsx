@@ -6,6 +6,7 @@ import {
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
+import classes from "./PlayerItem.module.scss"
 
 const getGradeOrRanks = (
   record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">
@@ -29,26 +30,21 @@ const formatUpdatedAt = (
 
 const PlayerItem = ({
   player,
-  selected,
   forAutoComplete,
-  onSelect,
 }: {
   player: DxIntlPlayersQuery["dx_intl_players"][0]
   selected?: boolean
   forAutoComplete?: boolean
   onSelect?: (id: number) => void
 }) => {
-  const handleSelect = (): void => {
-    if (onSelect != null) onSelect(player.id)
-  }
   return (
-    <div onClick={handleSelect}>
-      <div>{player.private ? <MdLock /> : <MdPublic />}</div>
+    <div className={classes["player-item"]}>
+      {player.private ? <MdLock /> : <MdPublic />}
       <div>
-        {player.nickname}
-        <div>
+        <p>{player.nickname}</p>
+        <p>
           {player.dx_intl_record == null ? (
-            <div>
+            <>
               尚無紀錄
               {forAutoComplete ?? false ? (
                 <></>
@@ -59,9 +55,9 @@ const PlayerItem = ({
                   建立
                 </>
               )}
-            </div>
+            </>
           ) : (
-            <div>
+            <>
               {player.dx_intl_record.card_name}
               {forAutoComplete ?? false ? (
                 <></>
@@ -72,9 +68,9 @@ const PlayerItem = ({
                   {` / ${formatUpdatedAt(player)}更新`}
                 </>
               )}
-            </div>
+            </>
           )}
-        </div>
+        </p>
       </div>
     </div>
   )

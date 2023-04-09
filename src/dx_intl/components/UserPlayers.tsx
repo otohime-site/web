@@ -1,7 +1,5 @@
 import { FunctionComponent } from "react"
 import { MdAdd } from "react-icons/md"
-import { Interactive } from "react-interactive"
-import { Link } from "react-router-dom"
 import { useQuery } from "urql"
 import { useAuth } from "../../auth"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -26,9 +24,9 @@ const UserPlayers: FunctionComponent = () => {
       {players != null && players.length > 0 ? (
         <div>
           {players.map((p) => (
-            <Interactive as={Link} key={p.id} to={`/dxi/p/${p.nickname}`}>
+            <LinkButton variant="violet" key={p.id} to={`/dxi/p/${p.nickname}`}>
               <PlayerItem player={p} />
-            </Interactive>
+            </LinkButton>
           ))}
         </div>
       ) : (

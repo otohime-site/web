@@ -1,0 +1,16 @@
+.player-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 8px;
+  color: var(--mauve12);
+}
+
+.player-item svg {
+  margin-right: 16px; 
+}
+
+.player-item p:last-child {
+  font-size: 0.84em;
+  color: var(--mauve11);
+}
