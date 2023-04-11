@@ -21,7 +21,7 @@
     "@radix-ui/react-form": "^0.0.2",
     "@radix-ui/react-radio-group": "^1.1.2",
     "@types/babel__core": "^7.1.19",
-    "@urql/exchange-auth": "^1.0.0",
+    "@urql/exchange-auth": "^2.1.0",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "chart.js": "^4.0.1",
     "chartjs-adapter-date-fns": "^3.0.0",
@@ -38,8 +38,7 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-titled": "^2.0.0",
-    "subscriptions-transport-ws": "^0.11.0",
-    "urql": "^3.0.3"
+    "urql": "^4.0.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.0.0",
