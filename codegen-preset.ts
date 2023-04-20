@@ -37,7 +37,7 @@ const config: CodegenConfig = {
       uuid: "string",
     },
   },
-  hooks: { afterAllFileWrite: ["prettier --write"] },
+  hooks: { afterAllFileWrite: ["organize-imports-cli", "prettier --write"] },
 }
 
 export default config
