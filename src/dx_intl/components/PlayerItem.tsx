@@ -39,39 +39,39 @@ const PlayerItem = ({
 }) => {
   return (
     <div className={classes["player-item"]}>
-      <p>
-        <span>{player.nickname}</span>
-        {player.private ? <MdLock /> : <MdPublic />}
-      </p>
-      <p>
-        {player.dx_intl_record == null ? (
-          <>
-            尚無紀錄
-            {forAutoComplete ?? false ? (
-              <></>
-            ) : (
-              <>
-                {" "}
-                / {formatRelative(new Date(player.created_at))}
-                建立
-              </>
-            )}
-          </>
-        ) : (
-          <>
-            {player.dx_intl_record.card_name}
-            {forAutoComplete ?? false ? (
-              <></>
-            ) : (
-              <>
-                / {player.dx_intl_record.rating}{" "}
-                {getGradeOrRanks(player.dx_intl_record)}
-                {` / ${formatUpdatedAt(player)}更新`}
-              </>
-            )}
-          </>
-        )}
-      </p>
+      <div>
+        <p>{player.nickname}</p>
+        <p>
+          {player.dx_intl_record == null ? (
+            <>
+              尚無紀錄
+              {forAutoComplete ?? false ? (
+                <></>
+              ) : (
+                <>
+                  {" "}
+                  / {formatRelative(new Date(player.created_at))}
+                  建立
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              {player.dx_intl_record.card_name}
+              {forAutoComplete ?? false ? (
+                <></>
+              ) : (
+                <>
+                  / {player.dx_intl_record.rating}{" "}
+                  {getGradeOrRanks(player.dx_intl_record)}
+                  {` / ${formatUpdatedAt(player)}更新`}
+                </>
+              )}
+            </>
+          )}
+        </p>
+      </div>
+      {player.private ? <MdLock /> : <MdPublic />}
     </div>
   )
 }

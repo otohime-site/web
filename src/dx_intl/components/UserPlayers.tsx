@@ -22,9 +22,9 @@ const UserPlayers: FunctionComponent = () => {
   return (
     <QueryResult result={playersResult}>
       {players != null && players.length > 0 ? (
-        <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {players.map((p) => (
-            <LinkButton color="violet" key={p.id} to={`/dxi/p/${p.nickname}`}>
+            <LinkButton color="mauve" key={p.id} to={`/dxi/p/${p.nickname}`}>
               <PlayerItem player={p} />
             </LinkButton>
           ))}

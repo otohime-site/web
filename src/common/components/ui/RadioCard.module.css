@@ -58,3 +58,7 @@
   border-radius: 50%;
   background: var(--violet9);
 }
+
+.radio-card > :last-child {
+  flex: 1;
+}

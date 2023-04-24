@@ -1,16 +1,16 @@
 .player-item {
-  width: 100%;
-}
-.player-item p:first-child {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  font-weight: bold;
   justify-content: space-between;
+  align-items: center;
+}
+
+.player-item p:first-child {
+  font-weight: bold;
 }
 
 .player-item svg {
-  margin-right: 8px; 
+  font-size: 1.2em;
 }
 
 .player-item p:last-child {

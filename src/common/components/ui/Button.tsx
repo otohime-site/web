@@ -20,6 +20,7 @@ const colors = [
   "violet",
   "indigo",
   "plum",
+  "mauve",
 ] as const
 
 export const Button = forwardRef<
