@@ -16,6 +16,7 @@
   background: transparent;
   user-select: unset;
   font-size: 1em;
+  cursor: pointer;
 }
 
 .radio-card:hover {

@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "../../common/components/ui/Dialog"
+import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
 import {
   DxIntlPlayersDocument,
@@ -223,16 +224,18 @@ const Book = () => {
             ) : (
               <div>
                 <div>請選擇要更新的成績單：</div>
-                <div>
+                <RadioCardRoot
+                  value={selectedPlayerId?.toString()}
+                  onValueChange={(val) =>
+                    setSelectedPlayerId(parseInt(val, 10))
+                  }
+                >
                   {players.map((player) => (
-                    <PlayerItem
-                      key={player.id}
-                      player={player}
-                      selected={selectedPlayerId === player.id}
-                      onSelect={setSelectedPlayerId}
-                    />
+                    <RadioCard key={player.id} value={player.id.toString()}>
+                      <PlayerItem player={player} />
+                    </RadioCard>
                   ))}
-                </div>
+                </RadioCardRoot>
               </div>
             )}
           </QueryResult>
