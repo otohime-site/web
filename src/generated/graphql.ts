@@ -1,5 +1,4 @@
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core"
-
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -372,6 +371,33 @@ export type Dx_Intl_Notes_Aggregate = {
   nodes: Array<Dx_Intl_Notes>
 }
 
+export type Dx_Intl_Notes_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_And>
+  bool_or?: InputMaybe<Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_Or>
+  count?: InputMaybe<Dx_Intl_Notes_Aggregate_Bool_Exp_Count>
+}
+
+export type Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Dx_Intl_Notes_Select_Column_Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_And_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Notes_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Dx_Intl_Notes_Select_Column_Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Notes_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Notes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Dx_Intl_Notes_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Notes_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "dx_intl_notes" */
 export type Dx_Intl_Notes_Aggregate_Fields = {
   __typename?: "dx_intl_notes_aggregate_fields"
@@ -437,6 +463,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
   deluxe?: InputMaybe<Boolean_Comparison_Exp>
   difficulty?: InputMaybe<Smallint_Comparison_Exp>
   dx_intl_scores?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+  dx_intl_scores_aggregate?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp>
   dx_intl_variant?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
   internal_lv?: InputMaybe<Numeric_Comparison_Exp>
   level?: InputMaybe<Dx_Intl_Level_Comparison_Exp>
@@ -553,6 +580,18 @@ export enum Dx_Intl_Notes_Select_Column {
   Level = "level",
   /** column name */
   SongId = "song_id",
+}
+
+/** select "dx_intl_notes_aggregate_bool_exp_bool_and_arguments_columns" columns of table "dx_intl_notes" */
+export enum Dx_Intl_Notes_Select_Column_Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Deluxe = "deluxe",
+}
+
+/** select "dx_intl_notes_aggregate_bool_exp_bool_or_arguments_columns" columns of table "dx_intl_notes" */
+export enum Dx_Intl_Notes_Select_Column_Dx_Intl_Notes_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Deluxe = "deluxe",
 }
 
 /** input type for updating data in table "dx_intl_notes" */
@@ -740,6 +779,33 @@ export type Dx_Intl_Players_Aggregate = {
   nodes: Array<Dx_Intl_Players>
 }
 
+export type Dx_Intl_Players_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Dx_Intl_Players_Aggregate_Bool_Exp_Bool_And>
+  bool_or?: InputMaybe<Dx_Intl_Players_Aggregate_Bool_Exp_Bool_Or>
+  count?: InputMaybe<Dx_Intl_Players_Aggregate_Bool_Exp_Count>
+}
+
+export type Dx_Intl_Players_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Dx_Intl_Players_Select_Column_Dx_Intl_Players_Aggregate_Bool_Exp_Bool_And_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Players_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Players_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Dx_Intl_Players_Select_Column_Dx_Intl_Players_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Players_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Players_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Dx_Intl_Players_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Players_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "dx_intl_players" */
 export type Dx_Intl_Players_Aggregate_Fields = {
   __typename?: "dx_intl_players_aggregate_fields"
@@ -803,6 +869,7 @@ export type Dx_Intl_Players_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>
   dx_intl_record?: InputMaybe<Dx_Intl_Records_Bool_Exp>
   dx_intl_scores?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+  dx_intl_scores_aggregate?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp>
   id?: InputMaybe<Int_Comparison_Exp>
   nickname?: InputMaybe<String_Comparison_Exp>
   private?: InputMaybe<Boolean_Comparison_Exp>
@@ -926,6 +993,18 @@ export enum Dx_Intl_Players_Select_Column {
   Private = "private",
   /** column name */
   UserId = "user_id",
+}
+
+/** select "dx_intl_players_aggregate_bool_exp_bool_and_arguments_columns" columns of table "dx_intl_players" */
+export enum Dx_Intl_Players_Select_Column_Dx_Intl_Players_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Private = "private",
+}
+
+/** select "dx_intl_players_aggregate_bool_exp_bool_or_arguments_columns" columns of table "dx_intl_players" */
+export enum Dx_Intl_Players_Select_Column_Dx_Intl_Players_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Private = "private",
 }
 
 /** input type for updating data in table "dx_intl_players" */
@@ -1903,6 +1982,33 @@ export type Dx_Intl_Scores_Aggregate = {
   nodes: Array<Dx_Intl_Scores>
 }
 
+export type Dx_Intl_Scores_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_And>
+  bool_or?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_Or>
+  count?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp_Count>
+}
+
+export type Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Dx_Intl_Scores_Select_Column_Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_And_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Dx_Intl_Scores_Select_Column_Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Scores_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Dx_Intl_Scores_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "dx_intl_scores" */
 export type Dx_Intl_Scores_Aggregate_Fields = {
   __typename?: "dx_intl_scores_aggregate_fields"
@@ -2128,6 +2234,18 @@ export enum Dx_Intl_Scores_Select_Column {
   Start = "start",
   /** column name */
   SyncFlag = "sync_flag",
+}
+
+/** select "dx_intl_scores_aggregate_bool_exp_bool_and_arguments_columns" columns of table "dx_intl_scores" */
+export enum Dx_Intl_Scores_Select_Column_Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Deluxe = "deluxe",
+}
+
+/** select "dx_intl_scores_aggregate_bool_exp_bool_or_arguments_columns" columns of table "dx_intl_scores" */
+export enum Dx_Intl_Scores_Select_Column_Dx_Intl_Scores_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Deluxe = "deluxe",
 }
 
 /** input type for updating data in table "dx_intl_scores" */
@@ -2785,6 +2903,7 @@ export type Dx_Intl_Songs_Bool_Exp = {
   _or?: InputMaybe<Array<Dx_Intl_Songs_Bool_Exp>>
   category?: InputMaybe<Smallint_Comparison_Exp>
   dx_intl_variants?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
+  dx_intl_variants_aggregate?: InputMaybe<Dx_Intl_Variants_Aggregate_Bool_Exp>
   id?: InputMaybe<String_Comparison_Exp>
   order?: InputMaybe<Smallint_Comparison_Exp>
   title?: InputMaybe<String_Comparison_Exp>
@@ -3039,6 +3158,33 @@ export type Dx_Intl_Variants_Aggregate = {
   nodes: Array<Dx_Intl_Variants>
 }
 
+export type Dx_Intl_Variants_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_And>
+  bool_or?: InputMaybe<Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_Or>
+  count?: InputMaybe<Dx_Intl_Variants_Aggregate_Bool_Exp_Count>
+}
+
+export type Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Dx_Intl_Variants_Select_Column_Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_And_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Dx_Intl_Variants_Select_Column_Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Dx_Intl_Variants_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Dx_Intl_Variants_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "dx_intl_variants" */
 export type Dx_Intl_Variants_Aggregate_Fields = {
   __typename?: "dx_intl_variants_aggregate_fields"
@@ -3102,6 +3248,7 @@ export type Dx_Intl_Variants_Bool_Exp = {
   active?: InputMaybe<Boolean_Comparison_Exp>
   deluxe?: InputMaybe<Boolean_Comparison_Exp>
   dx_intl_notes?: InputMaybe<Dx_Intl_Notes_Bool_Exp>
+  dx_intl_notes_aggregate?: InputMaybe<Dx_Intl_Notes_Aggregate_Bool_Exp>
   dx_intl_song?: InputMaybe<Dx_Intl_Songs_Bool_Exp>
   song_id?: InputMaybe<String_Comparison_Exp>
   version?: InputMaybe<Smallint_Comparison_Exp>
@@ -3203,6 +3350,22 @@ export enum Dx_Intl_Variants_Select_Column {
   SongId = "song_id",
   /** column name */
   Version = "version",
+}
+
+/** select "dx_intl_variants_aggregate_bool_exp_bool_and_arguments_columns" columns of table "dx_intl_variants" */
+export enum Dx_Intl_Variants_Select_Column_Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Active = "active",
+  /** column name */
+  Deluxe = "deluxe",
+}
+
+/** select "dx_intl_variants_aggregate_bool_exp_bool_or_arguments_columns" columns of table "dx_intl_variants" */
+export enum Dx_Intl_Variants_Select_Column_Dx_Intl_Variants_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Active = "active",
+  /** column name */
+  Deluxe = "deluxe",
 }
 
 /** input type for updating data in table "dx_intl_variants" */
@@ -3391,6 +3554,17 @@ export type Finale_Notes_Aggregate = {
   nodes: Array<Finale_Notes>
 }
 
+export type Finale_Notes_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Finale_Notes_Aggregate_Bool_Exp_Count>
+}
+
+export type Finale_Notes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Finale_Notes_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Finale_Notes_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "finale_notes" */
 export type Finale_Notes_Aggregate_Fields = {
   __typename?: "finale_notes_aggregate_fields"
@@ -3455,6 +3629,7 @@ export type Finale_Notes_Bool_Exp = {
   _or?: InputMaybe<Array<Finale_Notes_Bool_Exp>>
   difficulty?: InputMaybe<Smallint_Comparison_Exp>
   finale_scores?: InputMaybe<Finale_Scores_Bool_Exp>
+  finale_scores_aggregate?: InputMaybe<Finale_Scores_Aggregate_Bool_Exp>
   finale_song?: InputMaybe<Finale_Songs_Bool_Exp>
   level?: InputMaybe<Finale_Level_Comparison_Exp>
   song_id?: InputMaybe<Smallint_Comparison_Exp>
@@ -3735,6 +3910,33 @@ export type Finale_Players_Aggregate = {
   nodes: Array<Finale_Players>
 }
 
+export type Finale_Players_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Finale_Players_Aggregate_Bool_Exp_Bool_And>
+  bool_or?: InputMaybe<Finale_Players_Aggregate_Bool_Exp_Bool_Or>
+  count?: InputMaybe<Finale_Players_Aggregate_Bool_Exp_Count>
+}
+
+export type Finale_Players_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Finale_Players_Select_Column_Finale_Players_Aggregate_Bool_Exp_Bool_And_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Finale_Players_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Finale_Players_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Finale_Players_Select_Column_Finale_Players_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Finale_Players_Bool_Exp>
+  predicate: Boolean_Comparison_Exp
+}
+
+export type Finale_Players_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Finale_Players_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Finale_Players_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "finale_players" */
 export type Finale_Players_Aggregate_Fields = {
   __typename?: "finale_players_aggregate_fields"
@@ -3798,6 +4000,7 @@ export type Finale_Players_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>
   finale_record?: InputMaybe<Finale_Records_Bool_Exp>
   finale_scores?: InputMaybe<Finale_Scores_Bool_Exp>
+  finale_scores_aggregate?: InputMaybe<Finale_Scores_Aggregate_Bool_Exp>
   id?: InputMaybe<Int_Comparison_Exp>
   nickname?: InputMaybe<String_Comparison_Exp>
   private?: InputMaybe<Boolean_Comparison_Exp>
@@ -3918,6 +4121,18 @@ export enum Finale_Players_Select_Column {
   Private = "private",
   /** column name */
   UserId = "user_id",
+}
+
+/** select "finale_players_aggregate_bool_exp_bool_and_arguments_columns" columns of table "finale_players" */
+export enum Finale_Players_Select_Column_Finale_Players_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Private = "private",
+}
+
+/** select "finale_players_aggregate_bool_exp_bool_or_arguments_columns" columns of table "finale_players" */
+export enum Finale_Players_Select_Column_Finale_Players_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Private = "private",
 }
 
 /** input type for updating data in table "finale_players" */
@@ -4755,6 +4970,17 @@ export type Finale_Scores_Aggregate = {
   nodes: Array<Finale_Scores>
 }
 
+export type Finale_Scores_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Finale_Scores_Aggregate_Bool_Exp_Count>
+}
+
+export type Finale_Scores_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Finale_Scores_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]>
+  filter?: InputMaybe<Finale_Scores_Bool_Exp>
+  predicate: Int_Comparison_Exp
+}
+
 /** aggregate fields of "finale_scores" */
 export type Finale_Scores_Aggregate_Fields = {
   __typename?: "finale_scores_aggregate_fields"
@@ -5536,6 +5762,7 @@ export type Finale_Songs_Bool_Exp = {
   category?: InputMaybe<Smallint_Comparison_Exp>
   english_title?: InputMaybe<String_Comparison_Exp>
   finale_notes?: InputMaybe<Finale_Notes_Bool_Exp>
+  finale_notes_aggregate?: InputMaybe<Finale_Notes_Aggregate_Bool_Exp>
   id?: InputMaybe<Smallint_Comparison_Exp>
   japan_only?: InputMaybe<Boolean_Comparison_Exp>
   order?: InputMaybe<Smallint_Comparison_Exp>
@@ -7081,7 +7308,7 @@ export type Subscription_Root = {
   dx_intl_new_rating_stats: Array<Dx_Intl_New_Rating_Stats>
   /** fetch aggregated fields from the table: "dx_intl_new_rating_stats" */
   dx_intl_new_rating_stats_aggregate: Dx_Intl_New_Rating_Stats_Aggregate
-  /** fetch data from the table in a streaming manner : "dx_intl_new_rating_stats" */
+  /** fetch data from the table in a streaming manner: "dx_intl_new_rating_stats" */
   dx_intl_new_rating_stats_stream: Array<Dx_Intl_New_Rating_Stats>
   /** An array relationship */
   dx_intl_notes: Array<Dx_Intl_Notes>
@@ -7089,7 +7316,7 @@ export type Subscription_Root = {
   dx_intl_notes_aggregate: Dx_Intl_Notes_Aggregate
   /** fetch data from the table: "dx_intl_notes" using primary key columns */
   dx_intl_notes_by_pk?: Maybe<Dx_Intl_Notes>
-  /** fetch data from the table in a streaming manner : "dx_intl_notes" */
+  /** fetch data from the table in a streaming manner: "dx_intl_notes" */
   dx_intl_notes_stream: Array<Dx_Intl_Notes>
   /** An array relationship */
   dx_intl_players: Array<Dx_Intl_Players>
@@ -7097,13 +7324,13 @@ export type Subscription_Root = {
   dx_intl_players_aggregate: Dx_Intl_Players_Aggregate
   /** fetch data from the table: "dx_intl_players" using primary key columns */
   dx_intl_players_by_pk?: Maybe<Dx_Intl_Players>
-  /** fetch data from the table in a streaming manner : "dx_intl_players" */
+  /** fetch data from the table in a streaming manner: "dx_intl_players" */
   dx_intl_players_stream: Array<Dx_Intl_Players>
   /** fetch data from the table: "dx_intl_players_timelines" */
   dx_intl_players_timelines: Array<Dx_Intl_Players_Timelines>
   /** fetch aggregated fields from the table: "dx_intl_players_timelines" */
   dx_intl_players_timelines_aggregate: Dx_Intl_Players_Timelines_Aggregate
-  /** fetch data from the table in a streaming manner : "dx_intl_players_timelines" */
+  /** fetch data from the table in a streaming manner: "dx_intl_players_timelines" */
   dx_intl_players_timelines_stream: Array<Dx_Intl_Players_Timelines>
   /** fetch data from the table: "dx_intl_records" */
   dx_intl_records: Array<Dx_Intl_Records>
@@ -7111,13 +7338,13 @@ export type Subscription_Root = {
   dx_intl_records_aggregate: Dx_Intl_Records_Aggregate
   /** fetch data from the table: "dx_intl_records" using primary key columns */
   dx_intl_records_by_pk?: Maybe<Dx_Intl_Records>
-  /** fetch data from the table in a streaming manner : "dx_intl_records" */
+  /** fetch data from the table in a streaming manner: "dx_intl_records" */
   dx_intl_records_stream: Array<Dx_Intl_Records>
   /** fetch data from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history: Array<Dx_Intl_Records_With_History>
   /** fetch aggregated fields from the table: "dx_intl_records_with_history" */
   dx_intl_records_with_history_aggregate: Dx_Intl_Records_With_History_Aggregate
-  /** fetch data from the table in a streaming manner : "dx_intl_records_with_history" */
+  /** fetch data from the table in a streaming manner: "dx_intl_records_with_history" */
   dx_intl_records_with_history_stream: Array<Dx_Intl_Records_With_History>
   /** An array relationship */
   dx_intl_scores: Array<Dx_Intl_Scores>
@@ -7129,15 +7356,15 @@ export type Subscription_Root = {
   dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>
   /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
   dx_intl_scores_stats_aggregate: Dx_Intl_Scores_Stats_Aggregate
-  /** fetch data from the table in a streaming manner : "dx_intl_scores_stats" */
+  /** fetch data from the table in a streaming manner: "dx_intl_scores_stats" */
   dx_intl_scores_stats_stream: Array<Dx_Intl_Scores_Stats>
-  /** fetch data from the table in a streaming manner : "dx_intl_scores" */
+  /** fetch data from the table in a streaming manner: "dx_intl_scores" */
   dx_intl_scores_stream: Array<Dx_Intl_Scores>
   /** fetch data from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history: Array<Dx_Intl_Scores_With_History>
   /** fetch aggregated fields from the table: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history_aggregate: Dx_Intl_Scores_With_History_Aggregate
-  /** fetch data from the table in a streaming manner : "dx_intl_scores_with_history" */
+  /** fetch data from the table in a streaming manner: "dx_intl_scores_with_history" */
   dx_intl_scores_with_history_stream: Array<Dx_Intl_Scores_With_History>
   /** fetch data from the table: "dx_intl_songs" */
   dx_intl_songs: Array<Dx_Intl_Songs>
@@ -7145,7 +7372,7 @@ export type Subscription_Root = {
   dx_intl_songs_aggregate: Dx_Intl_Songs_Aggregate
   /** fetch data from the table: "dx_intl_songs" using primary key columns */
   dx_intl_songs_by_pk?: Maybe<Dx_Intl_Songs>
-  /** fetch data from the table in a streaming manner : "dx_intl_songs" */
+  /** fetch data from the table in a streaming manner: "dx_intl_songs" */
   dx_intl_songs_stream: Array<Dx_Intl_Songs>
   /** An array relationship */
   dx_intl_variants: Array<Dx_Intl_Variants>
@@ -7153,7 +7380,7 @@ export type Subscription_Root = {
   dx_intl_variants_aggregate: Dx_Intl_Variants_Aggregate
   /** fetch data from the table: "dx_intl_variants" using primary key columns */
   dx_intl_variants_by_pk?: Maybe<Dx_Intl_Variants>
-  /** fetch data from the table in a streaming manner : "dx_intl_variants" */
+  /** fetch data from the table in a streaming manner: "dx_intl_variants" */
   dx_intl_variants_stream: Array<Dx_Intl_Variants>
   /** An array relationship */
   finale_notes: Array<Finale_Notes>
@@ -7161,7 +7388,7 @@ export type Subscription_Root = {
   finale_notes_aggregate: Finale_Notes_Aggregate
   /** fetch data from the table: "finale_notes" using primary key columns */
   finale_notes_by_pk?: Maybe<Finale_Notes>
-  /** fetch data from the table in a streaming manner : "finale_notes" */
+  /** fetch data from the table in a streaming manner: "finale_notes" */
   finale_notes_stream: Array<Finale_Notes>
   /** An array relationship */
   finale_players: Array<Finale_Players>
@@ -7169,13 +7396,13 @@ export type Subscription_Root = {
   finale_players_aggregate: Finale_Players_Aggregate
   /** fetch data from the table: "finale_players" using primary key columns */
   finale_players_by_pk?: Maybe<Finale_Players>
-  /** fetch data from the table in a streaming manner : "finale_players" */
+  /** fetch data from the table in a streaming manner: "finale_players" */
   finale_players_stream: Array<Finale_Players>
   /** fetch data from the table: "finale_players_timelines" */
   finale_players_timelines: Array<Finale_Players_Timelines>
   /** fetch aggregated fields from the table: "finale_players_timelines" */
   finale_players_timelines_aggregate: Finale_Players_Timelines_Aggregate
-  /** fetch data from the table in a streaming manner : "finale_players_timelines" */
+  /** fetch data from the table in a streaming manner: "finale_players_timelines" */
   finale_players_timelines_stream: Array<Finale_Players_Timelines>
   /** fetch data from the table: "finale_records" */
   finale_records: Array<Finale_Records>
@@ -7183,13 +7410,13 @@ export type Subscription_Root = {
   finale_records_aggregate: Finale_Records_Aggregate
   /** fetch data from the table: "finale_records" using primary key columns */
   finale_records_by_pk?: Maybe<Finale_Records>
-  /** fetch data from the table in a streaming manner : "finale_records" */
+  /** fetch data from the table in a streaming manner: "finale_records" */
   finale_records_stream: Array<Finale_Records>
   /** fetch data from the table: "finale_records_with_history" */
   finale_records_with_history: Array<Finale_Records_With_History>
   /** fetch aggregated fields from the table: "finale_records_with_history" */
   finale_records_with_history_aggregate: Finale_Records_With_History_Aggregate
-  /** fetch data from the table in a streaming manner : "finale_records_with_history" */
+  /** fetch data from the table in a streaming manner: "finale_records_with_history" */
   finale_records_with_history_stream: Array<Finale_Records_With_History>
   /** An array relationship */
   finale_scores: Array<Finale_Scores>
@@ -7197,13 +7424,13 @@ export type Subscription_Root = {
   finale_scores_aggregate: Finale_Scores_Aggregate
   /** fetch data from the table: "finale_scores" using primary key columns */
   finale_scores_by_pk?: Maybe<Finale_Scores>
-  /** fetch data from the table in a streaming manner : "finale_scores" */
+  /** fetch data from the table in a streaming manner: "finale_scores" */
   finale_scores_stream: Array<Finale_Scores>
   /** fetch data from the table: "finale_scores_with_history" */
   finale_scores_with_history: Array<Finale_Scores_With_History>
   /** fetch aggregated fields from the table: "finale_scores_with_history" */
   finale_scores_with_history_aggregate: Finale_Scores_With_History_Aggregate
-  /** fetch data from the table in a streaming manner : "finale_scores_with_history" */
+  /** fetch data from the table in a streaming manner: "finale_scores_with_history" */
   finale_scores_with_history_stream: Array<Finale_Scores_With_History>
   /** fetch data from the table: "finale_songs" */
   finale_songs: Array<Finale_Songs>
@@ -7211,7 +7438,7 @@ export type Subscription_Root = {
   finale_songs_aggregate: Finale_Songs_Aggregate
   /** fetch data from the table: "finale_songs" using primary key columns */
   finale_songs_by_pk?: Maybe<Finale_Songs>
-  /** fetch data from the table in a streaming manner : "finale_songs" */
+  /** fetch data from the table in a streaming manner: "finale_songs" */
   finale_songs_stream: Array<Finale_Songs>
   /** fetch data from the table: "tokens" */
   tokens: Array<Tokens>
@@ -7219,7 +7446,7 @@ export type Subscription_Root = {
   tokens_aggregate: Tokens_Aggregate
   /** fetch data from the table: "tokens" using primary key columns */
   tokens_by_pk?: Maybe<Tokens>
-  /** fetch data from the table in a streaming manner : "tokens" */
+  /** fetch data from the table in a streaming manner: "tokens" */
   tokens_stream: Array<Tokens>
   /** fetch data from the table: "users" */
   users: Array<Users>
@@ -7227,7 +7454,7 @@ export type Subscription_Root = {
   users_aggregate: Users_Aggregate
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>
-  /** fetch data from the table in a streaming manner : "users" */
+  /** fetch data from the table in a streaming manner: "users" */
   users_stream: Array<Users>
 }
 
@@ -8001,7 +8228,9 @@ export type Users_Bool_Exp = {
   _or?: InputMaybe<Array<Users_Bool_Exp>>
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>
   dx_intl_players?: InputMaybe<Dx_Intl_Players_Bool_Exp>
+  dx_intl_players_aggregate?: InputMaybe<Dx_Intl_Players_Aggregate_Bool_Exp>
   finale_players?: InputMaybe<Finale_Players_Bool_Exp>
+  finale_players_aggregate?: InputMaybe<Finale_Players_Aggregate_Bool_Exp>
   id?: InputMaybe<String_Comparison_Exp>
   token?: InputMaybe<Tokens_Bool_Exp>
 }
@@ -9280,7 +9509,38 @@ export const DxIntlPlayersDocument = {
         ],
       },
     },
-    ...DxIntlPlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables>
 export const DxIntlPlayersForUserDocument = {
@@ -9353,7 +9613,38 @@ export const DxIntlPlayersForUserDocument = {
         ],
       },
     },
-    ...DxIntlPlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   DxIntlPlayersForUserQuery,
@@ -9454,7 +9745,38 @@ export const DxIntlPlayersWithKeywordAnonymousDocument = {
         ],
       },
     },
-    ...DxIntlPlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   DxIntlPlayersWithKeywordAnonymousQuery,
@@ -9664,7 +9986,38 @@ export const DxIntlPlayersWithKeywordUserDocument = {
         ],
       },
     },
-    ...DxIntlPlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   DxIntlPlayersWithKeywordUserQuery,
@@ -9970,7 +10323,85 @@ export const DxIntlSongsDocument = {
         ],
       },
     },
-    ...DxIntlSongsFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlSongsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_songs" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "category" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "order" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_variants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "deluxe" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+                { kind: "Field", name: { kind: "Name", value: "version" } },
+                { kind: "Field", name: { kind: "Name", value: "active" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dx_intl_notes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "difficulty" },
+                            value: { kind: "EnumValue", value: "asc" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_lv" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "difficulty" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "level" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables>
 export const DxIntlSongsByIdDocument = {
@@ -10072,7 +10503,85 @@ export const DxIntlSongsByIdDocument = {
         ],
       },
     },
-    ...DxIntlSongsFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlSongsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_songs" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "category" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "order" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_variants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "deluxe" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+                { kind: "Field", name: { kind: "Name", value: "version" } },
+                { kind: "Field", name: { kind: "Name", value: "active" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dx_intl_notes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "difficulty" },
+                            value: { kind: "EnumValue", value: "asc" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "internal_lv" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "difficulty" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "level" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   DxIntlSongsByIdQuery,
@@ -11364,7 +11873,37 @@ export const FinalePlayersDocument = {
         ],
       },
     },
-    ...FinalePlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finalePlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+                { kind: "Field", name: { kind: "Name", value: "class" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<FinalePlayersQuery, FinalePlayersQueryVariables>
 export const FinalePlayersForUserDocument = {
@@ -11437,7 +11976,37 @@ export const FinalePlayersForUserDocument = {
         ],
       },
     },
-    ...FinalePlayersFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finalePlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+                { kind: "Field", name: { kind: "Name", value: "class" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   FinalePlayersForUserQuery,
@@ -11500,7 +12069,54 @@ export const FinaleSongsDocument = {
         ],
       },
     },
-    ...FinaleSongsFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finaleSongsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_songs" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "category" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "english_title" } },
+          { kind: "Field", name: { kind: "Name", value: "order" } },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "active" } },
+          { kind: "Field", name: { kind: "Name", value: "japan_only" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_notes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "difficulty" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "difficulty" } },
+                { kind: "Field", name: { kind: "Name", value: "level" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<FinaleSongsQuery, FinaleSongsQueryVariables>
 export const FinaleSongsByIdDocument = {
@@ -11599,7 +12215,54 @@ export const FinaleSongsByIdDocument = {
         ],
       },
     },
-    ...FinaleSongsFieldsFragmentDoc.definitions,
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finaleSongsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_songs" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "category" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "english_title" } },
+          { kind: "Field", name: { kind: "Name", value: "order" } },
+          { kind: "Field", name: { kind: "Name", value: "version" } },
+          { kind: "Field", name: { kind: "Name", value: "active" } },
+          { kind: "Field", name: { kind: "Name", value: "japan_only" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_notes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "difficulty" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "difficulty" } },
+                { kind: "Field", name: { kind: "Name", value: "level" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
   FinaleSongsByIdQuery,

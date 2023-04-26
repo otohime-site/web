@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen-preset.ts",
+    "codegen-old": "graphql-codegen --config codegen.yml",
     "prepare": "husky install"
   },
   "dependencies": {

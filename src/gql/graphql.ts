@@ -8357,52 +8357,52 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars["uuid"]>>
 }
 
-export type DxIntlPlayersFieldsFragment = {
-  __typename?: "dx_intl_players"
-  id: number
-  nickname: string
-  private: boolean
-  created_at: string
-  updated_at?: string | null
-  dx_intl_record?: {
-    __typename?: "dx_intl_records"
-    card_name: string
-    rating: number
-    grade?: number | null
-    course_rank?: number | null
-    class_rank?: number | null
-  } | null
-} & { " $fragmentName"?: "DxIntlPlayersFieldsFragment" }
+export type TokensQueryVariables = Exact<{ [key: string]: never }>
 
-export const DxIntlPlayersFieldsFragmentDoc = {
+export type TokensQuery = {
+  __typename?: "query_root"
+  tokens: Array<{ __typename?: "tokens"; id: string; created_at: string }>
+}
+
+export type RegenerateTokenMutationVariables = Exact<{ [key: string]: never }>
+
+export type RegenerateTokenMutation = {
+  __typename?: "mutation_root"
+  delete_tokens?: {
+    __typename?: "tokens_mutation_response"
+    affected_rows: number
+  } | null
+  insert_tokens_one?: { __typename?: "tokens"; id: string } | null
+}
+
+export type DeleteUserMutationVariables = Exact<{ [key: string]: never }>
+
+export type DeleteUserMutation = {
+  __typename?: "mutation_root"
+  delete_users?: {
+    __typename?: "users_mutation_response"
+    affected_rows: number
+  } | null
+}
+
+export const TokensDocument = {
   kind: "Document",
   definitions: [
     {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlPlayersFields" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "dx_intl_players" },
-      },
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Tokens" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "nickname" } },
-          { kind: "Field", name: { kind: "Name", value: "private" } },
-          { kind: "Field", name: { kind: "Name", value: "created_at" } },
-          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
           {
             kind: "Field",
-            name: { kind: "Name", value: "dx_intl_record" },
+            name: { kind: "Name", value: "tokens" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "card_name" } },
-                { kind: "Field", name: { kind: "Name", value: "rating" } },
-                { kind: "Field", name: { kind: "Name", value: "grade" } },
-                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
-                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "created_at" } },
               ],
             },
           },
@@ -8410,4 +8410,94 @@ export const DxIntlPlayersFieldsFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<DxIntlPlayersFieldsFragment, unknown>
+} as unknown as DocumentNode<TokensQuery, TokensQueryVariables>
+export const RegenerateTokenDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "regenerateToken" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "delete_tokens" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: { kind: "ObjectValue", fields: [] },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "affected_rows" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "insert_tokens_one" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "object" },
+                value: { kind: "ObjectValue", fields: [] },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RegenerateTokenMutation,
+  RegenerateTokenMutationVariables
+>
+export const DeleteUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "deleteUser" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "delete_users" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: { kind: "ObjectValue", fields: [] },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "affected_rows" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>

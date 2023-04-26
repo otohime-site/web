@@ -2,14 +2,22 @@ import { FunctionComponent, useState } from "react"
 import { useNavigate } from "react-router"
 import { useMutation } from "urql"
 import { useAuth } from "../../auth"
-import { DeleteUserDocument } from "../../generated/graphql"
+import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
 import { Button } from "../components/ui/Button"
+
+const deleteUserDocument = graphql(`
+  mutation deleteUser {
+    delete_users(where: {}) {
+      affected_rows
+    }
+  }
+`)
 
 const Forget: FunctionComponent = () => {
   const navigate = useNavigate()
   const [user, loading] = useAuth()
-  const [, deleteUser] = useMutation(DeleteUserDocument)
+  const [, deleteUser] = useMutation(deleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
 
   const bye = async (): Promise<void> => {

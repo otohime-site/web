@@ -3,10 +3,7 @@ import { MdLink, MdRefresh } from "react-icons/md"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import { useAuth } from "../../auth"
-import {
-  RegenerateTokenDocument,
-  TokensDocument,
-} from "../../generated/graphql"
+import { graphql } from "../../gql"
 import host from "../../host"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./ui/Alert"
@@ -22,11 +19,31 @@ document.body.setAttribute('data-otohime-token', ${JSON.stringify(
 void(0);
 `
 
+const tokensDocument = graphql(`
+  query Tokens {
+    tokens {
+      id
+      created_at
+    }
+  }
+`)
+
+const regenerateTokenDocument = graphql(`
+  mutation regenerateToken {
+    delete_tokens(where: {}) {
+      affected_rows
+    }
+    insert_tokens_one(object: {}) {
+      id
+    }
+  }
+`)
+
 const User: FunctionComponent = () => {
   const [user, loading] = useAuth()
-  const [tokensResult, refetchTokens] = useQuery({ query: TokensDocument })
+  const [tokensResult, refetchTokens] = useQuery({ query: tokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(
-    RegenerateTokenDocument
+    regenerateTokenDocument
   )
   const [bookDialogOpen, setBookDialogOpen] = useState(false)
   const handleClose = (): void => setBookDialogOpen(false)
