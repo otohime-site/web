@@ -4,7 +4,18 @@ import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  plugins: [react(), basicSsl(), visualizer()],
+  plugins: [
+    react({
+      plugins: [
+        [
+          "@graphql-codegen/client-preset-swc-plugin",
+          { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
+        ],
+      ],
+    }),
+    basicSsl(),
+    visualizer(),
+  ],
   build: {
     emptyOutDir: false, // as the library will empty it
   },
