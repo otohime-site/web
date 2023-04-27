@@ -286,20 +286,3 @@ query dxIntlNewRatingStats {
     count
   }
 }
-
-query dxIntlScoresStats(
-  $songId: String!
-  $deluxe: Boolean!
-  $difficulty: smallint!
-) {
-  dx_intl_scores_stats(
-    where: {
-      song_id: { _eq: $songId }
-      deluxe: { _eq: $deluxe }
-      difficulty: { _eq: $difficulty }
-    }
-  ) {
-    range
-    count
-  }
-}

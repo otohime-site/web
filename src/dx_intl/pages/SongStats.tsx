@@ -3,16 +3,32 @@ import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
-import {
-  DxIntlScoresStatsDocument,
-  DxIntlSongsByIdDocument,
-  Dx_Intl_Scores_Stats,
-} from "../../generated/graphql"
+import { DxIntlSongsByIdDocument } from "../../generated/graphql"
+import { graphql } from "../../gql"
 import { NoteList } from "../helper"
 import { difficulties } from "../models/constants"
 
 //  font-family: "M PLUS 1p";
 //  font-weight: 700;
+
+const dxIntlScoresStatsDocument = graphql(`
+  query dxIntlScoresStats(
+    $songId: String!
+    $deluxe: Boolean!
+    $difficulty: smallint!
+  ) {
+    dx_intl_scores_stats(
+      where: {
+        song_id: { _eq: $songId }
+        deluxe: { _eq: $deluxe }
+        difficulty: { _eq: $difficulty }
+      }
+    ) {
+      range
+      count
+    }
+  }
+`)
 
 const SongStats = () => {
   const params = useParams<"songId" | "variant" | "difficulty">()
@@ -43,7 +59,7 @@ const SongStats = () => {
   )
   const notes = variantMap.get(params.variant === "dx")?.notes ?? []
   const [statsResult] = useQuery({
-    query: DxIntlScoresStatsDocument,
+    query: dxIntlScoresStatsDocument,
     variables: {
       songId: song?.id ?? "",
       deluxe: deluxe ?? false,
@@ -54,9 +70,11 @@ const SongStats = () => {
   const statsAccumulated = (
     statsResult.data?.dx_intl_scores_stats ?? []
   ).reduce<
-    Array<
-      Pick<Dx_Intl_Scores_Stats, "range" | "count"> & { accumulated: number }
-    >
+    Array<{
+      range?: string | null
+      count?: number | null
+      accumulated: number
+    }>
   >(
     (accr, curr) => [
       ...accr,
