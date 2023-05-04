@@ -19,6 +19,8 @@ const documents = {
     types.RegenerateTokenDocument,
   "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n":
     types.DeleteUserDocument,
+  "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n":
+    types.DxIntlNewRatingStatsDocument,
   "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n":
     types.DxIntlScoresStatsDocument,
 }
@@ -55,6 +57,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"
 ): (typeof documents)["\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

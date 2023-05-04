@@ -1,21 +1,27 @@
 import { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
-import {
-  DxIntlNewRatingStatsDocument,
-  Dx_Intl_New_Rating_Stats,
-} from "../../generated/graphql"
+import { graphql } from "../../gql"
+
+const dxIntlNewRatingStatsDocument = graphql(`
+  query dxIntlNewRatingStats {
+    dx_intl_new_rating_stats {
+      range
+      count
+    }
+  }
+`)
 
 const Overview: FunctionComponent = () => {
-  const [baseRatingResult] = useQuery({ query: DxIntlNewRatingStatsDocument })
+  const [baseRatingResult] = useQuery({ query: dxIntlNewRatingStatsDocument })
   const baseRatingAccumulated = (
     baseRatingResult.data?.dx_intl_new_rating_stats ?? []
   ).reduce<
-    Array<
-      Pick<Dx_Intl_New_Rating_Stats, "range" | "count"> & {
-        accumulated: number
-      }
-    >
+    Array<{
+      range?: string | null
+      count?: number | null
+      accumulated: number
+    }>
   >(
     (accr, curr) => [
       ...accr,

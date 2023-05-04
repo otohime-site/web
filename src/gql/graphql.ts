@@ -8385,6 +8385,17 @@ export type DeleteUserMutation = {
   } | null
 }
 
+export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
+
+export type DxIntlNewRatingStatsQuery = {
+  __typename?: "query_root"
+  dx_intl_new_rating_stats: Array<{
+    __typename?: "dx_intl_new_rating_stats"
+    range?: string | null
+    count?: number | null
+  }>
+}
+
 export type DxIntlScoresStatsQueryVariables = Exact<{
   songId: Scalars["String"]
   deluxe: Scalars["Boolean"]
@@ -8516,6 +8527,35 @@ export const DeleteUserDocument = {
     },
   ],
 } as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>
+export const DxIntlNewRatingStatsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlNewRatingStats" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_new_rating_stats" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "range" } },
+                { kind: "Field", name: { kind: "Name", value: "count" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlNewRatingStatsQuery,
+  DxIntlNewRatingStatsQueryVariables
+>
 export const DxIntlScoresStatsDocument = {
   kind: "Document",
   definitions: [

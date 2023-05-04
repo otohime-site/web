@@ -8816,17 +8816,6 @@ export type InsertDxIntlRecordWithScoresMutation = {
   } | null
 }
 
-export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
-
-export type DxIntlNewRatingStatsQuery = {
-  __typename?: "query_root"
-  dx_intl_new_rating_stats: Array<{
-    __typename?: "dx_intl_new_rating_stats"
-    range?: string | null
-    count?: number | null
-  }>
-}
-
 export type FinalePlayersFieldsFragment = {
   __typename?: "finale_players"
   id: number
@@ -11523,35 +11512,6 @@ export const InsertDxIntlRecordWithScoresDocument = {
 } as unknown as DocumentNode<
   InsertDxIntlRecordWithScoresMutation,
   InsertDxIntlRecordWithScoresMutationVariables
->
-export const DxIntlNewRatingStatsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "dxIntlNewRatingStats" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "dx_intl_new_rating_stats" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "range" } },
-                { kind: "Field", name: { kind: "Name", value: "count" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DxIntlNewRatingStatsQuery,
-  DxIntlNewRatingStatsQueryVariables
 >
 export const FinalePlayersDocument = {
   kind: "Document",

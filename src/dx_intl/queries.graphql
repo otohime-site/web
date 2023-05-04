@@ -279,10 +279,3 @@ mutation InsertDxIntlRecordWithScores(
     affected_rows
   }
 }
-
-query dxIntlNewRatingStats {
-  dx_intl_new_rating_stats {
-    range
-    count
-  }
-}
