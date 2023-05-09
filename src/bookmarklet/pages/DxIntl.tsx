@@ -13,13 +13,47 @@ import {
 } from "../../common/components/ui/Dialog"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
-import {
-  DxIntlPlayersDocument,
-  InsertDxIntlRecordWithScoresDocument,
-} from "../../generated/graphql"
+import { DxIntlPlayersDocument } from "../../generated/graphql"
+import { graphql } from "../../gql"
 import host from "../../host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
+
+const insertDxIntlRecordWithScoresDocument = graphql(`
+  mutation InsertDxIntlRecordWithScores(
+    $record: dx_intl_records_insert_input!
+    $scores: [dx_intl_scores_insert_input!]!
+  ) {
+    insert_dx_intl_records_one(
+      object: $record
+      on_conflict: {
+        constraint: dx_intl_records_player_id_key
+        update_columns: [
+          card_name
+          title
+          trophy
+          rating
+          rating_legacy
+          max_rating
+          grade
+          course_rank
+          class_rank
+        ]
+      }
+    ) {
+      __typename
+    }
+    insert_dx_intl_scores(
+      objects: $scores
+      on_conflict: {
+        constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key
+        update_columns: [score, combo_flag, sync_flag]
+      }
+    ) {
+      affected_rows
+    }
+  }
+`)
 
 const parsedPlayer = (() => {
   try {
@@ -92,7 +126,7 @@ const Book = () => {
     )
 
     const mutation = await client
-      .mutation(InsertDxIntlRecordWithScoresDocument, {
+      .mutation(insertDxIntlRecordWithScoresDocument, {
         record: {
           player_id: selectedPlayerId,
           max_rating: -1,

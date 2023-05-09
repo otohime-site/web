@@ -112,16 +112,6 @@ query dxIntlSongsById($idLike: String!) {
   }
 }
 
-query dxIntlSongsRefMapCount {
-  dx_intl_songs(
-    where: {
-      _or: [{ id: { _like: "862eb64d%" } }, { id: { _like: "bf3e167f%" } }]
-    }
-  ) {
-    id
-  }
-}
-
 query dxIntlRecordWithScores($nickname: String!) {
   dx_intl_players(where: { nickname: { _eq: $nickname } }) {
     updated_at
@@ -243,39 +233,5 @@ query dxIntlPlayersEditable($userId: String!, $nickname: String!) {
     id
     nickname
     private
-  }
-}
-
-mutation InsertDxIntlRecordWithScores(
-  $record: dx_intl_records_insert_input!
-  $scores: [dx_intl_scores_insert_input!]!
-) {
-  insert_dx_intl_records_one(
-    object: $record
-    on_conflict: {
-      constraint: dx_intl_records_player_id_key
-      update_columns: [
-        card_name
-        title
-        trophy
-        rating
-        rating_legacy
-        max_rating
-        grade
-        course_rank
-        class_rank
-      ]
-    }
-  ) {
-    __typename
-  }
-  insert_dx_intl_scores(
-    objects: $scores
-    on_conflict: {
-      constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key
-      update_columns: [score, combo_flag, sync_flag]
-    }
-  ) {
-    affected_rows
   }
 }

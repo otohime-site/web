@@ -13,6 +13,8 @@ import * as types from "./graphql"
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  "\n  mutation InsertDxIntlRecordWithScores(\n    $record: dx_intl_records_insert_input!\n    $scores: [dx_intl_scores_insert_input!]!\n  ) {\n    insert_dx_intl_records_one(\n      object: $record\n      on_conflict: {\n        constraint: dx_intl_records_player_id_key\n        update_columns: [\n          card_name\n          title\n          trophy\n          rating\n          rating_legacy\n          max_rating\n          grade\n          course_rank\n          class_rank\n        ]\n      }\n    ) {\n      __typename\n    }\n    insert_dx_intl_scores(\n      objects: $scores\n      on_conflict: {\n        constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key\n        update_columns: [score, combo_flag, sync_flag]\n      }\n    ) {\n      affected_rows\n    }\n  }\n":
+    types.InsertDxIntlRecordWithScoresDocument,
   "\n  query Tokens {\n    tokens {\n      id\n      created_at\n    }\n  }\n":
     types.TokensDocument,
   "\n  mutation regenerateToken {\n    delete_tokens(where: {}) {\n      affected_rows\n    }\n    insert_tokens_one(object: {}) {\n      id\n    }\n  }\n":
@@ -39,6 +41,12 @@ const documents = {
  */
 export function graphql(source: string): unknown
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation InsertDxIntlRecordWithScores(\n    $record: dx_intl_records_insert_input!\n    $scores: [dx_intl_scores_insert_input!]!\n  ) {\n    insert_dx_intl_records_one(\n      object: $record\n      on_conflict: {\n        constraint: dx_intl_records_player_id_key\n        update_columns: [\n          card_name\n          title\n          trophy\n          rating\n          rating_legacy\n          max_rating\n          grade\n          course_rank\n          class_rank\n        ]\n      }\n    ) {\n      __typename\n    }\n    insert_dx_intl_scores(\n      objects: $scores\n      on_conflict: {\n        constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key\n        update_columns: [score, combo_flag, sync_flag]\n      }\n    ) {\n      affected_rows\n    }\n  }\n"
+): (typeof documents)["\n  mutation InsertDxIntlRecordWithScores(\n    $record: dx_intl_records_insert_input!\n    $scores: [dx_intl_scores_insert_input!]!\n  ) {\n    insert_dx_intl_records_one(\n      object: $record\n      on_conflict: {\n        constraint: dx_intl_records_player_id_key\n        update_columns: [\n          card_name\n          title\n          trophy\n          rating\n          rating_legacy\n          max_rating\n          grade\n          course_rank\n          class_rank\n        ]\n      }\n    ) {\n      __typename\n    }\n    insert_dx_intl_scores(\n      objects: $scores\n      on_conflict: {\n        constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key\n        update_columns: [score, combo_flag, sync_flag]\n      }\n    ) {\n      affected_rows\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

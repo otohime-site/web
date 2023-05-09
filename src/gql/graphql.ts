@@ -8357,6 +8357,20 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars["uuid"]>>
 }
 
+export type InsertDxIntlRecordWithScoresMutationVariables = Exact<{
+  record: Dx_Intl_Records_Insert_Input
+  scores: Array<Dx_Intl_Scores_Insert_Input> | Dx_Intl_Scores_Insert_Input
+}>
+
+export type InsertDxIntlRecordWithScoresMutation = {
+  __typename?: "mutation_root"
+  insert_dx_intl_records_one?: { __typename: "dx_intl_records" } | null
+  insert_dx_intl_scores?: {
+    __typename?: "dx_intl_scores_mutation_response"
+    affected_rows: number
+  } | null
+}
+
 export type TokensQueryVariables = Exact<{ [key: string]: never }>
 
 export type TokensQuery = {
@@ -8411,6 +8425,168 @@ export type DxIntlScoresStatsQuery = {
   }>
 }
 
+export const InsertDxIntlRecordWithScoresDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "InsertDxIntlRecordWithScores" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "record" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "dx_intl_records_insert_input" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "scores" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "dx_intl_scores_insert_input" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "insert_dx_intl_records_one" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "object" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "record" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "on_conflict" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "constraint" },
+                      value: {
+                        kind: "EnumValue",
+                        value: "dx_intl_records_player_id_key",
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "update_columns" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          { kind: "EnumValue", value: "card_name" },
+                          { kind: "EnumValue", value: "title" },
+                          { kind: "EnumValue", value: "trophy" },
+                          { kind: "EnumValue", value: "rating" },
+                          { kind: "EnumValue", value: "rating_legacy" },
+                          { kind: "EnumValue", value: "max_rating" },
+                          { kind: "EnumValue", value: "grade" },
+                          { kind: "EnumValue", value: "course_rank" },
+                          { kind: "EnumValue", value: "class_rank" },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "__typename" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "insert_dx_intl_scores" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "objects" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "scores" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "on_conflict" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "constraint" },
+                      value: {
+                        kind: "EnumValue",
+                        value:
+                          "dx_intl_scores_player_id_song_id_deluxe_difficulty_key",
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "update_columns" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          { kind: "EnumValue", value: "score" },
+                          { kind: "EnumValue", value: "combo_flag" },
+                          { kind: "EnumValue", value: "sync_flag" },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "affected_rows" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  InsertDxIntlRecordWithScoresMutation,
+  InsertDxIntlRecordWithScoresMutationVariables
+>
 export const TokensDocument = {
   kind: "Document",
   definitions: [
