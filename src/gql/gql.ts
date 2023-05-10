@@ -27,6 +27,14 @@ const documents = {
     types.DxIntlPlayersFragmentFragmentDoc,
   "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n":
     types.DxIntlNewRatingStatsDocument,
+  "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n":
+    types.DxIntlPlayersEditableDocument,
+  "\n  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {\n    insert_dx_intl_players_one(\n      object: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n":
+    types.InsertDxIntlPlayerDocument,
+  "\n  mutation updateDxIntlPlayer(\n    $pk: Int!\n    $nickname: String!\n    $private: Boolean!\n  ) {\n    update_dx_intl_players_by_pk(\n      pk_columns: { id: $pk }\n      _set: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n":
+    types.UpdateDxIntlPlayerDocument,
+  "\n  mutation deleteDxIntlPlayer($pk: Int!) {\n    delete_dx_intl_players_by_pk(id: $pk) {\n      id\n    }\n  }\n":
+    types.DeleteDxIntlPlayerDocument,
   "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n":
     types.DxIntlScoresStatsDocument,
 }
@@ -87,6 +95,30 @@ export function graphql(
 export function graphql(
   source: "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"
 ): (typeof documents)["\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {\n    insert_dx_intl_players_one(\n      object: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {\n    insert_dx_intl_players_one(\n      object: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation updateDxIntlPlayer(\n    $pk: Int!\n    $nickname: String!\n    $private: Boolean!\n  ) {\n    update_dx_intl_players_by_pk(\n      pk_columns: { id: $pk }\n      _set: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation updateDxIntlPlayer(\n    $pk: Int!\n    $nickname: String!\n    $private: Boolean!\n  ) {\n    update_dx_intl_players_by_pk(\n      pk_columns: { id: $pk }\n      _set: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation deleteDxIntlPlayer($pk: Int!) {\n    delete_dx_intl_players_by_pk(id: $pk) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation deleteDxIntlPlayer($pk: Int!) {\n    delete_dx_intl_players_by_pk(id: $pk) {\n      id\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

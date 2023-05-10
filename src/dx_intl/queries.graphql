@@ -54,27 +54,6 @@ query dxIntlPlayersWithKeywordUser($userId: String!, $nickname_like: String!) {
   }
 }
 
-mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {
-  insert_dx_intl_players_one(
-    object: { nickname: $nickname, private: $private }
-  ) {
-    id
-  }
-}
-mutation updateDxIntlPlayer($pk: Int!, $nickname: String!, $private: Boolean!) {
-  update_dx_intl_players_by_pk(
-    pk_columns: { id: $pk }
-    _set: { nickname: $nickname, private: $private }
-  ) {
-    id
-  }
-}
-mutation deleteDxIntlPlayer($pk: Int!) {
-  delete_dx_intl_players_by_pk(id: $pk) {
-    id
-  }
-}
-
 fragment dxIntlSongsFields on dx_intl_songs {
   id
   category
@@ -218,15 +197,5 @@ query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
     score
     combo_flag
     sync_flag
-  }
-}
-
-query dxIntlPlayersEditable($userId: String!, $nickname: String!) {
-  dx_intl_players(
-    where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }
-  ) {
-    id
-    nickname
-    private
   }
 }

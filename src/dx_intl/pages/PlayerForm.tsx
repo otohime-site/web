@@ -7,25 +7,65 @@ import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { TextField } from "../../common/components/ui/TextField"
-import {
-  DeleteDxIntlPlayerDocument,
-  DxIntlPlayersEditableDocument,
-  InsertDxIntlPlayerDocument,
-  UpdateDxIntlPlayerDocument,
-} from "../../generated/graphql"
 
 import { useState } from "react"
+import { graphql } from "../../gql"
 import classes from "./PlayerForm.module.css"
+
+const dxIntlPlayersEditableDocument = graphql(`
+  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {
+    dx_intl_players(
+      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }
+    ) {
+      id
+      nickname
+      private
+    }
+  }
+`)
+
+const insertDxIntlPlayerDocument = graphql(`
+  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {
+    insert_dx_intl_players_one(
+      object: { nickname: $nickname, private: $private }
+    ) {
+      id
+    }
+  }
+`)
+
+const updateDxIntlPlayerDocument = graphql(`
+  mutation updateDxIntlPlayer(
+    $pk: Int!
+    $nickname: String!
+    $private: Boolean!
+  ) {
+    update_dx_intl_players_by_pk(
+      pk_columns: { id: $pk }
+      _set: { nickname: $nickname, private: $private }
+    ) {
+      id
+    }
+  }
+`)
+
+const deleteDxIntlPlayerDocument = graphql(`
+  mutation deleteDxIntlPlayer($pk: Int!) {
+    delete_dx_intl_players_by_pk(id: $pk) {
+      id
+    }
+  }
+`)
 
 const PlayerForm = () => {
   const [user, loading] = useAuth()
   const params = useParams<"nickname">()
   const navigate = useNavigate()
-  const [, insertPlayer] = useMutation(InsertDxIntlPlayerDocument)
-  const [, updatePlayer] = useMutation(UpdateDxIntlPlayerDocument)
-  const [, deletePlayer] = useMutation(DeleteDxIntlPlayerDocument)
+  const [, insertPlayer] = useMutation(insertDxIntlPlayerDocument)
+  const [, updatePlayer] = useMutation(updateDxIntlPlayerDocument)
+  const [, deletePlayer] = useMutation(deleteDxIntlPlayerDocument)
   const [playerResult] = useQuery({
-    query: DxIntlPlayersEditableDocument,
+    query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: loading || (user == null && params.nickname != null),
   })
@@ -34,7 +74,6 @@ const PlayerForm = () => {
     others: false,
   }
   const [serverErrors, setServerErrors] = useState({ ...serverErrorsBase })
-  console.log(serverErrors)
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement>
