@@ -102,7 +102,7 @@ const PlayerForm = () => {
     navigate("/")
   }
 
-  if (loading) {
+  if (loading || playerResult.fetching) {
     return <main>Loading...</main>
   }
 
