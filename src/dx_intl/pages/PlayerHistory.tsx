@@ -9,22 +9,31 @@ import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { formatDateTime } from "../../common/utils"
 import {
-  DxIntlPlayersTimelinesDocument,
   DxIntlPlayerWithTimelineDocument,
   DxIntlPlayerWithTimelineQuery,
   DxIntlSongsDocument,
   Dx_Intl_Scores,
 } from "../../generated/graphql"
+import { graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
 import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
 import {
   classRankNames,
   difficulties,
+  difficultyClasses,
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
 import classes from "./PlayerHistory.module.css"
+
+const dxIntlPlayersTimelinesDocument = graphql(`
+  query dxIntlPlayersTimelines($nickname: String!) {
+    dx_intl_players_timelines(where: { nickname: { _eq: $nickname } }) {
+      timelines
+    }
+  }
+`)
 
 type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
 
@@ -62,7 +71,7 @@ const PlayerHistory: FunctionComponent = () => {
     pause: params.hash === null,
   })
   const [timelinesResult] = useQuery({
-    query: DxIntlPlayersTimelinesDocument,
+    query: dxIntlPlayersTimelinesDocument,
     variables: { nickname: params.nickname ?? "" },
     pause: loading,
   })
@@ -299,7 +308,7 @@ const PlayerHistory: FunctionComponent = () => {
                 </td>
                 <td
                   className={`${classes["diff"]} ${
-                    classes["diff" + note.difficulty]
+                    classes[difficultyClasses[note.difficulty]]
                   }`}
                 >
                   {difficulties[note.difficulty].slice(0, 3)} {note.level}

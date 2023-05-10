@@ -113,12 +113,6 @@ query dxIntlRecordWithScores($nickname: String!) {
   }
 }
 
-query dxIntlPlayersTimelines($nickname: String!) {
-  dx_intl_players_timelines(where: { nickname: { _eq: $nickname } }) {
-    timelines
-  }
-}
-
 query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
   beforeRecord: dx_intl_records_with_history(
     where: {

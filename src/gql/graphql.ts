@@ -8494,6 +8494,18 @@ export type DeleteDxIntlPlayerMutation = {
   } | null
 }
 
+export type DxIntlPlayersTimelinesQueryVariables = Exact<{
+  nickname: Scalars["String"]
+}>
+
+export type DxIntlPlayersTimelinesQuery = {
+  __typename?: "query_root"
+  dx_intl_players_timelines: Array<{
+    __typename?: "dx_intl_players_timelines"
+    timelines?: string[] | null
+  }>
+}
+
 export type DxIntlScoresStatsQueryVariables = Exact<{
   songId: Scalars["String"]
   deluxe: Scalars["Boolean"]
@@ -9260,6 +9272,78 @@ export const DeleteDxIntlPlayerDocument = {
 } as unknown as DocumentNode<
   DeleteDxIntlPlayerMutation,
   DeleteDxIntlPlayerMutationVariables
+>
+export const DxIntlPlayersTimelinesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayersTimelines" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nickname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players_timelines" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "nickname" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "timelines" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlPlayersTimelinesQuery,
+  DxIntlPlayersTimelinesQueryVariables
 >
 export const DxIntlScoresStatsDocument = {
   kind: "Document",

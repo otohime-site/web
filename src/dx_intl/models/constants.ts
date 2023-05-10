@@ -97,6 +97,15 @@ export const difficulties = [
   "Re:Master",
 ] as const
 
+// Make typescript-plugin-css-modules happy
+export const difficultyClasses = [
+  "diff0",
+  "diff1",
+  "diff2",
+  "diff3",
+  "diff4",
+] as const
+
 export const RANKS = [
   "A",
   "AA",
