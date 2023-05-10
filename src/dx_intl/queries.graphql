@@ -13,11 +13,6 @@ fragment dxIntlPlayersFields on dx_intl_players {
   }
 }
 
-query dxIntlPlayers {
-  dx_intl_players {
-    ...dxIntlPlayersFields
-  }
-}
 
 query dxIntlPlayersForUser($userId: String!) {
   dx_intl_players(where: { user_id: { _eq: $userId } }) {

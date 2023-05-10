@@ -13,11 +13,20 @@ import {
 } from "../../common/components/ui/Dialog"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
-import { DxIntlPlayersDocument } from "../../generated/graphql"
-import { graphql } from "../../gql"
+import { dxIntlPlayersFragment } from "../../dx_intl/models/fragments"
+import { graphql, useFragment } from "../../gql"
 import host from "../../host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
+
+// Needed as bookmarklet will not know user ID
+const dxIntlPlayersDocument = graphql(`
+  query dxIntlPlayers {
+    dx_intl_players {
+      ...dxIntlPlayersFragment
+    }
+  }
+`)
 
 const insertDxIntlRecordWithScoresDocument = graphql(`
   mutation InsertDxIntlRecordWithScores(
@@ -79,16 +88,18 @@ const Book = () => {
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
     undefined
   )
-  const [dxIntlPlayersResult] = useQuery({ query: DxIntlPlayersDocument })
+  const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
+  const players = useFragment(
+    dxIntlPlayersFragment,
+    dxIntlPlayersResult.data?.dx_intl_players ?? []
+  )
   const client = useClient()
   const [fetchState, setFetchState] = useState<
     "idle" | "fetching" | "error" | "done"
   >("idle")
   const [fetchProgress, setFetchProgress] = useState(0)
   const handleFetch = async (): Promise<void> => {
-    const player = (dxIntlPlayersResult.data?.dx_intl_players ?? []).find(
-      (p) => p.id === selectedPlayerId
-    )
+    const player = players.find((p) => p.id === selectedPlayerId)
     if (player == null) {
       return
     }
@@ -159,7 +170,7 @@ const Book = () => {
       window.parent.location.href = "/"
     }
   }
-  const players = dxIntlPlayersResult.data?.dx_intl_players
+
   if (window.parent.document.location.pathname !== "/maimai-mobile/home/") {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>

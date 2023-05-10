@@ -1,6 +1,9 @@
 import { MdLock, MdPublic } from "react-icons/md"
 import { formatRelative } from "../../common/utils"
-import { DxIntlPlayersQuery, Dx_Intl_Records } from "../../generated/graphql"
+import {
+  DxIntlPlayersForUserQuery,
+  Dx_Intl_Records,
+} from "../../generated/graphql"
 import {
   classRankNames,
   gradeNames,
@@ -24,7 +27,7 @@ const getGradeOrRanks = (
 }
 
 const formatUpdatedAt = (
-  player: DxIntlPlayersQuery["dx_intl_players"][0]
+  player: DxIntlPlayersForUserQuery["dx_intl_players"][0]
 ): string =>
   player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
@@ -32,7 +35,7 @@ const PlayerItem = ({
   player,
   forAutoComplete,
 }: {
-  player: DxIntlPlayersQuery["dx_intl_players"][0]
+  player: DxIntlPlayersForUserQuery["dx_intl_players"][0]
   selected?: boolean
   forAutoComplete?: boolean
   onSelect?: (id: number) => void

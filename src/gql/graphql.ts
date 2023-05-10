@@ -8357,6 +8357,19 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars["uuid"]>>
 }
 
+export type DxIntlPlayersQueryVariables = Exact<{ [key: string]: never }>
+
+export type DxIntlPlayersQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<
+    { __typename?: "dx_intl_players" } & {
+      " $fragmentRefs"?: {
+        DxIntlPlayersFragmentFragment: DxIntlPlayersFragmentFragment
+      }
+    }
+  >
+}
+
 export type InsertDxIntlRecordWithScoresMutationVariables = Exact<{
   record: Dx_Intl_Records_Insert_Input
   scores: Array<Dx_Intl_Scores_Insert_Input> | Dx_Intl_Scores_Insert_Input
@@ -8399,6 +8412,23 @@ export type DeleteUserMutation = {
   } | null
 }
 
+export type DxIntlPlayersFragmentFragment = {
+  __typename?: "dx_intl_players"
+  id: number
+  nickname: string
+  private: boolean
+  created_at: string
+  updated_at?: string | null
+  dx_intl_record?: {
+    __typename?: "dx_intl_records"
+    card_name: string
+    rating: number
+    grade?: number | null
+    course_rank?: number | null
+    class_rank?: number | null
+  } | null
+} & { " $fragmentName"?: "DxIntlPlayersFragmentFragment" }
+
 export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
 
 export type DxIntlNewRatingStatsQuery = {
@@ -8425,6 +8455,103 @@ export type DxIntlScoresStatsQuery = {
   }>
 }
 
+export const DxIntlPlayersFragmentFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFragment" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlPlayersFragmentFragment, unknown>
+export const DxIntlPlayersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayers" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlPlayersFragment" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFragment" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlPlayersQuery, DxIntlPlayersQueryVariables>
 export const InsertDxIntlRecordWithScoresDocument = {
   kind: "Document",
   definitions: [
