@@ -8,7 +8,11 @@ export const dxIntlPlayersFragment = graphql(`
     created_at
     updated_at
     dx_intl_record {
-      ...dxIntlRecordsFragment
+      card_name
+      rating
+      grade
+      course_rank
+      class_rank
     }
   }
 `)

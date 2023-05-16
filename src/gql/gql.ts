@@ -23,7 +23,7 @@ const documents = {
     types.RegenerateTokenDocument,
   "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n":
     types.DeleteUserDocument,
-  "\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      ...dxIntlRecordsFragment \n    }\n  }\n":
+  "\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n":
     types.DxIntlPlayersFragmentFragmentDoc,
   "\n  fragment dxIntlSongsFragment on dx_intl_songs {\n    id\n    category\n    title\n    order\n    dx_intl_variants(order_by: { deluxe: asc }) {\n      deluxe\n      version\n      active\n      dx_intl_notes(order_by: { difficulty: asc }) {\n        internal_lv\n        difficulty\n        level\n      }\n    }\n  }\n":
     types.DxIntlSongsFragmentFragmentDoc,
@@ -95,8 +95,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      ...dxIntlRecordsFragment \n    }\n  }\n"
-): (typeof documents)["\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      ...dxIntlRecordsFragment \n    }\n  }\n"]
+  source: "\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n"
+): (typeof documents)["\n  fragment dxIntlPlayersFragment on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

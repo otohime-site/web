@@ -8419,13 +8419,14 @@ export type DxIntlPlayersFragmentFragment = {
   private: boolean
   created_at: string
   updated_at?: string | null
-  dx_intl_record?:
-    | ({ __typename?: "dx_intl_records" } & {
-        " $fragmentRefs"?: {
-          DxIntlRecordsFragmentFragment: DxIntlRecordsFragmentFragment
-        }
-      })
-    | null
+  dx_intl_record?: {
+    __typename?: "dx_intl_records"
+    card_name: string
+    rating: number
+    grade?: number | null
+    course_rank?: number | null
+    class_rank?: number | null
+  } | null
 } & { " $fragmentName"?: "DxIntlPlayersFragmentFragment" }
 
 export type DxIntlSongsFragmentFragment = {
@@ -8586,33 +8587,6 @@ export type DxIntlScoresStatsQuery = {
   }>
 }
 
-export const DxIntlRecordsFragmentFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlRecordsFragment" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "dx_intl_records" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "card_name" } },
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          { kind: "Field", name: { kind: "Name", value: "trophy" } },
-          { kind: "Field", name: { kind: "Name", value: "rating" } },
-          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
-          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
-          { kind: "Field", name: { kind: "Name", value: "grade" } },
-          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
-          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<DxIntlRecordsFragmentFragment, unknown>
 export const DxIntlPlayersFragmentFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -8637,35 +8611,14 @@ export const DxIntlPlayersFragmentFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "dxIntlRecordsFragment" },
-                },
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
               ],
             },
           },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlRecordsFragment" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "dx_intl_records" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "card_name" } },
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          { kind: "Field", name: { kind: "Name", value: "trophy" } },
-          { kind: "Field", name: { kind: "Name", value: "rating" } },
-          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
-          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
-          { kind: "Field", name: { kind: "Name", value: "grade" } },
-          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
-          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
         ],
       },
     },
@@ -8755,6 +8708,33 @@ export const DxIntlSongsFragmentFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<DxIntlSongsFragmentFragment, unknown>
+export const DxIntlRecordsFragmentFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlRecordsFragment" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_records" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "card_name" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "trophy" } },
+          { kind: "Field", name: { kind: "Name", value: "rating" } },
+          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
+          { kind: "Field", name: { kind: "Name", value: "grade" } },
+          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlRecordsFragmentFragment, unknown>
 export const DxIntlScoresFragmentFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -8807,28 +8787,6 @@ export const DxIntlPlayersDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlRecordsFragment" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "dx_intl_records" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "card_name" } },
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          { kind: "Field", name: { kind: "Name", value: "trophy" } },
-          { kind: "Field", name: { kind: "Name", value: "rating" } },
-          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
-          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
-          { kind: "Field", name: { kind: "Name", value: "grade" } },
-          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
-          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "dxIntlPlayersFragment" },
       typeCondition: {
         kind: "NamedType",
@@ -8848,10 +8806,11 @@ export const DxIntlPlayersDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "dxIntlRecordsFragment" },
-                },
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
               ],
             },
           },
