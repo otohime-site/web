@@ -13,8 +13,8 @@ import {
 } from "../../common/components/ui/Dialog"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
-import { dxIntlPlayersFragment } from "../../dx_intl/models/fragments"
-import { graphql, useFragment } from "../../gql"
+import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
+import { getFragmentData, graphql } from "../../gql"
 import host from "../../host"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
@@ -23,7 +23,7 @@ const DIFFICULTIES = [0, 1, 2, 3, 4]
 const dxIntlPlayersDocument = graphql(`
   query dxIntlPlayers {
     dx_intl_players {
-      ...dxIntlPlayersFragment
+      ...dxIntlPlayersFields
     }
   }
 `)
@@ -89,8 +89,8 @@ const Book = () => {
     undefined
   )
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
-  const players = useFragment(
-    dxIntlPlayersFragment,
+  const players = getFragmentData(
+    dxIntlPlayersFields,
     dxIntlPlayersResult.data?.dx_intl_players ?? []
   )
   const client = useClient()

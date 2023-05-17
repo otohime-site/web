@@ -8364,7 +8364,7 @@ export type DxIntlPlayersQuery = {
   dx_intl_players: Array<
     { __typename?: "dx_intl_players" } & {
       " $fragmentRefs"?: {
-        DxIntlPlayersFragmentFragment: DxIntlPlayersFragmentFragment
+        DxIntlPlayersFieldsFragment: DxIntlPlayersFieldsFragment
       }
     }
   >
@@ -8412,7 +8412,7 @@ export type DeleteUserMutation = {
   } | null
 }
 
-export type DxIntlPlayersFragmentFragment = {
+export type DxIntlPlayersFieldsFragment = {
   __typename?: "dx_intl_players"
   id: number
   nickname: string
@@ -8427,9 +8427,9 @@ export type DxIntlPlayersFragmentFragment = {
     course_rank?: number | null
     class_rank?: number | null
   } | null
-} & { " $fragmentName"?: "DxIntlPlayersFragmentFragment" }
+} & { " $fragmentName"?: "DxIntlPlayersFieldsFragment" }
 
-export type DxIntlSongsFragmentFragment = {
+export type DxIntlSongsFieldsFragment = {
   __typename?: "dx_intl_songs"
   id: string
   category: number
@@ -8470,9 +8470,9 @@ export type DxIntlSongsFragmentFragment = {
         | "15"
     }>
   }>
-} & { " $fragmentName"?: "DxIntlSongsFragmentFragment" }
+} & { " $fragmentName"?: "DxIntlSongsFieldsFragment" }
 
-export type DxIntlRecordsFragmentFragment = {
+export type DxIntlRecordsFieldsFragment = {
   __typename?: "dx_intl_records"
   card_name: string
   title: string
@@ -8483,9 +8483,9 @@ export type DxIntlRecordsFragmentFragment = {
   grade?: number | null
   course_rank?: number | null
   class_rank?: number | null
-} & { " $fragmentName"?: "DxIntlRecordsFragmentFragment" }
+} & { " $fragmentName"?: "DxIntlRecordsFieldsFragment" }
 
-export type DxIntlScoresFragmentFragment = {
+export type DxIntlScoresFieldsFragment = {
   __typename?: "dx_intl_scores"
   song_id: string
   deluxe: boolean
@@ -8493,7 +8493,30 @@ export type DxIntlScoresFragmentFragment = {
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
   sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
-} & { " $fragmentName"?: "DxIntlScoresFragmentFragment" }
+} & { " $fragmentName"?: "DxIntlScoresFieldsFragment" }
+
+export type DxIntlRecordsWithHistoryFieldsFragment = {
+  __typename?: "dx_intl_records_with_history"
+  card_name?: string | null
+  title?: string | null
+  trophy?: "normal" | "bronze" | "silver" | "gold" | "rainbow" | null
+  rating?: number | null
+  max_rating?: number | null
+  rating_legacy?: boolean | null
+  grade?: number | null
+  course_rank?: number | null
+  class_rank?: number | null
+} & { " $fragmentName"?: "DxIntlRecordsWithHistoryFieldsFragment" }
+
+export type DxIntlScoresWithHistoryFieldsFragment = {
+  __typename?: "dx_intl_scores_with_history"
+  song_id?: string | null
+  deluxe?: boolean | null
+  difficulty?: number | null
+  score?: number | null
+  combo_flag?: "" | "fc" | "fc+" | "ap" | "ap+" | null
+  sync_flag?: "" | "fs" | "fs+" | "fdx" | "fdx+" | null
+} & { " $fragmentName"?: "DxIntlScoresWithHistoryFieldsFragment" }
 
 export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
 
@@ -8572,6 +8595,43 @@ export type DxIntlPlayersTimelinesQuery = {
   }>
 }
 
+export type DxIntlPlayerWithTimelineQueryVariables = Exact<{
+  nickname: Scalars["String"]
+  time: Scalars["timestamptz"]
+}>
+
+export type DxIntlPlayerWithTimelineQuery = {
+  __typename?: "query_root"
+  beforeRecord: Array<
+    { __typename?: "dx_intl_records_with_history" } & {
+      " $fragmentRefs"?: {
+        DxIntlRecordsWithHistoryFieldsFragment: DxIntlRecordsWithHistoryFieldsFragment
+      }
+    }
+  >
+  afterRecord: Array<
+    { __typename?: "dx_intl_records_with_history" } & {
+      " $fragmentRefs"?: {
+        DxIntlRecordsWithHistoryFieldsFragment: DxIntlRecordsWithHistoryFieldsFragment
+      }
+    }
+  >
+  beforeScores: Array<
+    { __typename?: "dx_intl_scores_with_history" } & {
+      " $fragmentRefs"?: {
+        DxIntlScoresWithHistoryFieldsFragment: DxIntlScoresWithHistoryFieldsFragment
+      }
+    }
+  >
+  afterScores: Array<
+    { __typename?: "dx_intl_scores_with_history" } & {
+      " $fragmentRefs"?: {
+        DxIntlScoresWithHistoryFieldsFragment: DxIntlScoresWithHistoryFieldsFragment
+      }
+    }
+  >
+}
+
 export type DxIntlScoresStatsQueryVariables = Exact<{
   songId: Scalars["String"]
   deluxe: Scalars["Boolean"]
@@ -8587,12 +8647,12 @@ export type DxIntlScoresStatsQuery = {
   }>
 }
 
-export const DxIntlPlayersFragmentFragmentDoc = {
+export const DxIntlPlayersFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlPlayersFragment" },
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "dx_intl_players" },
@@ -8623,13 +8683,13 @@ export const DxIntlPlayersFragmentFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<DxIntlPlayersFragmentFragment, unknown>
-export const DxIntlSongsFragmentFragmentDoc = {
+} as unknown as DocumentNode<DxIntlPlayersFieldsFragment, unknown>
+export const DxIntlSongsFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlSongsFragment" },
+      name: { kind: "Name", value: "dxIntlSongsFields" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "dx_intl_songs" },
@@ -8707,13 +8767,13 @@ export const DxIntlSongsFragmentFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<DxIntlSongsFragmentFragment, unknown>
-export const DxIntlRecordsFragmentFragmentDoc = {
+} as unknown as DocumentNode<DxIntlSongsFieldsFragment, unknown>
+export const DxIntlRecordsFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlRecordsFragment" },
+      name: { kind: "Name", value: "dxIntlRecordsFields" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "dx_intl_records" },
@@ -8734,13 +8794,13 @@ export const DxIntlRecordsFragmentFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<DxIntlRecordsFragmentFragment, unknown>
-export const DxIntlScoresFragmentFragmentDoc = {
+} as unknown as DocumentNode<DxIntlRecordsFieldsFragment, unknown>
+export const DxIntlScoresFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlScoresFragment" },
+      name: { kind: "Name", value: "dxIntlScoresFields" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "dx_intl_scores" },
@@ -8758,7 +8818,58 @@ export const DxIntlScoresFragmentFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<DxIntlScoresFragmentFragment, unknown>
+} as unknown as DocumentNode<DxIntlScoresFieldsFragment, unknown>
+export const DxIntlRecordsWithHistoryFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlRecordsWithHistoryFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_records_with_history" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "card_name" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "trophy" } },
+          { kind: "Field", name: { kind: "Name", value: "rating" } },
+          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
+          { kind: "Field", name: { kind: "Name", value: "grade" } },
+          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlRecordsWithHistoryFieldsFragment, unknown>
+export const DxIntlScoresWithHistoryFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlScoresWithHistoryFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_scores_with_history" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "song_id" } },
+          { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+          { kind: "Field", name: { kind: "Name", value: "difficulty" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "combo_flag" } },
+          { kind: "Field", name: { kind: "Name", value: "sync_flag" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DxIntlScoresWithHistoryFieldsFragment, unknown>
 export const DxIntlPlayersDocument = {
   kind: "Document",
   definitions: [
@@ -8777,7 +8888,7 @@ export const DxIntlPlayersDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "dxIntlPlayersFragment" },
+                  name: { kind: "Name", value: "dxIntlPlayersFields" },
                 },
               ],
             },
@@ -8787,7 +8898,7 @@ export const DxIntlPlayersDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlPlayersFragment" },
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "dx_intl_players" },
@@ -9545,6 +9656,376 @@ export const DxIntlPlayersTimelinesDocument = {
 } as unknown as DocumentNode<
   DxIntlPlayersTimelinesQuery,
   DxIntlPlayersTimelinesQueryVariables
+>
+export const DxIntlPlayerWithTimelineDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayerWithTimeline" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nickname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "time" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "timestamptz" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "beforeRecord" },
+            name: { kind: "Name", value: "dx_intl_records_with_history" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_player" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "nickname" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "nickname" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "end" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "time" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "dxIntlRecordsWithHistoryFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "afterRecord" },
+            name: { kind: "Name", value: "dx_intl_records_with_history" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_player" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "nickname" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "nickname" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "start" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "time" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "dxIntlRecordsWithHistoryFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "beforeScores" },
+            name: { kind: "Name", value: "dx_intl_scores_with_history" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_player" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "nickname" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "nickname" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "end" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "time" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "dxIntlScoresWithHistoryFields",
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "afterScores" },
+            name: { kind: "Name", value: "dx_intl_scores_with_history" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "dx_intl_player" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "nickname" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "nickname" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "start" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "time" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "dxIntlScoresWithHistoryFields",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlRecordsWithHistoryFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_records_with_history" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "card_name" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "trophy" } },
+          { kind: "Field", name: { kind: "Name", value: "rating" } },
+          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
+          { kind: "Field", name: { kind: "Name", value: "grade" } },
+          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlScoresWithHistoryFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_scores_with_history" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "song_id" } },
+          { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+          { kind: "Field", name: { kind: "Name", value: "difficulty" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "combo_flag" } },
+          { kind: "Field", name: { kind: "Name", value: "sync_flag" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlPlayerWithTimelineQuery,
+  DxIntlPlayerWithTimelineQueryVariables
 >
 export const DxIntlScoresStatsDocument = {
   kind: "Document",

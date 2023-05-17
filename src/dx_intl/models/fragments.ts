@@ -1,7 +1,7 @@
 import { graphql } from "../../gql"
 
-export const dxIntlPlayersFragment = graphql(`
-  fragment dxIntlPlayersFragment on dx_intl_players {
+export const dxIntlPlayersFields = graphql(`
+  fragment dxIntlPlayersFields on dx_intl_players {
     id
     nickname
     private
@@ -17,8 +17,8 @@ export const dxIntlPlayersFragment = graphql(`
   }
 `)
 
-export const dxIntlSongsFragment = graphql(`
-  fragment dxIntlSongsFragment on dx_intl_songs {
+export const dxIntlSongsFields = graphql(`
+  fragment dxIntlSongsFields on dx_intl_songs {
     id
     category
     title
@@ -36,8 +36,8 @@ export const dxIntlSongsFragment = graphql(`
   }
 `)
 
-export const dxIntlRecordsFragment = graphql(`
-  fragment dxIntlRecordsFragment on dx_intl_records {
+export const dxIntlRecordsFields = graphql(`
+  fragment dxIntlRecordsFields on dx_intl_records {
     card_name
     title
     trophy
@@ -50,8 +50,33 @@ export const dxIntlRecordsFragment = graphql(`
   }
 `)
 
-export const dxIntlScoresFragment = graphql(`
-  fragment dxIntlScoresFragment on dx_intl_scores {
+export const dxIntlScoresFields = graphql(`
+  fragment dxIntlScoresFields on dx_intl_scores {
+    song_id
+    deluxe
+    difficulty
+    score
+    combo_flag
+    sync_flag
+  }
+`)
+
+export const dxIntlRecordsWithHistoryFields = graphql(`
+  fragment dxIntlRecordsWithHistoryFields on dx_intl_records_with_history {
+    card_name
+    title
+    trophy
+    rating
+    max_rating
+    rating_legacy
+    grade
+    course_rank
+    class_rank
+  }
+`)
+
+export const dxIntlScoresWithHistoryFields = graphql(`
+  fragment dxIntlScoresWithHistoryFields on dx_intl_scores_with_history {
     song_id
     deluxe
     difficulty

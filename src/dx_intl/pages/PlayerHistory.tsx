@@ -1,3 +1,4 @@
+import { ResultOf } from "@graphql-typed-document-node/core"
 import { FunctionComponent, useMemo } from "react"
 import { MdArrowBack, MdNavigateNext } from "react-icons/md"
 import { useParams } from "react-router"
@@ -8,13 +9,8 @@ import { useAuth } from "../../auth"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { formatDateTime } from "../../common/utils"
-import {
-  DxIntlPlayerWithTimelineDocument,
-  DxIntlPlayerWithTimelineQuery,
-  DxIntlSongsDocument,
-  Dx_Intl_Scores,
-} from "../../generated/graphql"
-import { graphql } from "../../gql"
+import { DxIntlSongsDocument } from "../../generated/graphql"
+import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
 import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
@@ -25,6 +21,10 @@ import {
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
+import {
+  dxIntlRecordsWithHistoryFields,
+  dxIntlScoresWithHistoryFields,
+} from "../models/fragments"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`
@@ -35,7 +35,48 @@ const dxIntlPlayersTimelinesDocument = graphql(`
   }
 `)
 
-type HistoryEntry = Pick<Dx_Intl_Scores, "score" | "combo_flag" | "sync_flag">
+const dxIntlPlayerWithTimelineDocument = graphql(`
+  query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
+    beforeRecord: dx_intl_records_with_history(
+      where: {
+        dx_intl_player: { nickname: { _eq: $nickname } }
+        end: { _eq: $time }
+      }
+    ) {
+      ...dxIntlRecordsWithHistoryFields
+    }
+    afterRecord: dx_intl_records_with_history(
+      where: {
+        dx_intl_player: { nickname: { _eq: $nickname } }
+        start: { _eq: $time }
+      }
+    ) {
+      ...dxIntlRecordsWithHistoryFields
+    }
+    beforeScores: dx_intl_scores_with_history(
+      where: {
+        dx_intl_player: { nickname: { _eq: $nickname } }
+        end: { _eq: $time }
+      }
+    ) {
+      ...dxIntlScoresWithHistoryFields
+    }
+    afterScores: dx_intl_scores_with_history(
+      where: {
+        dx_intl_player: { nickname: { _eq: $nickname } }
+        start: { _eq: $time }
+      }
+    ) {
+      ...dxIntlScoresWithHistoryFields
+    }
+  }
+`)
+
+interface HistoryEntry {
+  score: number
+  combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
+  sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+}
 
 // Deal with precision for Postgres...
 const dateStringToHash = (str: string): string => {
@@ -76,7 +117,7 @@ const PlayerHistory: FunctionComponent = () => {
     pause: loading,
   })
   const [timelineResult] = useQuery({
-    query: DxIntlPlayerWithTimelineDocument,
+    query: dxIntlPlayerWithTimelineDocument,
     variables: {
       nickname: params.nickname ?? "",
       time: hashToDateString(params.hash ?? ""),
@@ -103,8 +144,16 @@ const PlayerHistory: FunctionComponent = () => {
   }, [songsResult])
 
   const { beforeMap, afterMap } = useMemo(() => {
+    const beforeScores = getFragmentData(
+      dxIntlScoresWithHistoryFields,
+      timelineResult.data?.beforeScores ?? []
+    )
+    const afterScores = getFragmentData(
+      dxIntlScoresWithHistoryFields,
+      timelineResult.data?.afterScores ?? []
+    )
     const beforeMap: Map<string, HistoryEntry> = new Map(
-      (timelineResult.data?.beforeScores ?? []).map((score) => [
+      beforeScores.map((score) => [
         getNoteHash({
           song_id: score.song_id ?? "",
           deluxe: score.deluxe ?? false,
@@ -118,7 +167,7 @@ const PlayerHistory: FunctionComponent = () => {
       ])
     )
     const afterMap: Map<string, HistoryEntry> = new Map(
-      (timelineResult.data?.afterScores ?? []).map((score) => [
+      afterScores.map((score) => [
         getNoteHash({
           song_id: score.song_id ?? "",
           deluxe: score.deluxe ?? false,
@@ -154,8 +203,8 @@ const PlayerHistory: FunctionComponent = () => {
   }
 
   const recordDiffRows = (
-    before?: DxIntlPlayerWithTimelineQuery["beforeRecord"][0],
-    after?: DxIntlPlayerWithTimelineQuery["afterRecord"][0]
+    before?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
+    after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>
   ): React.ReactNode => (
     <>
       {before?.card_name !== after?.card_name ? (
@@ -266,7 +315,7 @@ const PlayerHistory: FunctionComponent = () => {
   )
 
   const showTimelineResult = (
-    data: DxIntlPlayerWithTimelineQuery
+    data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>
   ): React.ReactNode => (
     <table className={classes.table}>
       <colgroup>
@@ -287,7 +336,13 @@ const PlayerHistory: FunctionComponent = () => {
       </thead>
       <tbody>
         {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
-          recordDiffRows(data.beforeRecord[0], data.afterRecord[0])
+          recordDiffRows(
+            getFragmentData(
+              dxIntlRecordsWithHistoryFields,
+              data.beforeRecord[0]
+            ),
+            getFragmentData(dxIntlRecordsWithHistoryFields, data.afterRecord[0])
+          )
         ) : (
           <></>
         )}
