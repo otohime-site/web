@@ -1,5 +1,5 @@
 import { MdLock, MdPublic } from "react-icons/md"
-import { formatRelative } from "../../common/utils"
+import { formatRelative } from "../../common/utils/datetime"
 import {
   DxIntlPlayersForUserQuery,
   Dx_Intl_Records,

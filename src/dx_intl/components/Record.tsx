@@ -1,5 +1,5 @@
 import { MdLock, MdPublic } from "react-icons/md"
-import { formatRelative } from "../../common/utils"
+import { formatRelative } from "../../common/utils/datetime"
 import { Dx_Intl_Records } from "../../generated/graphql"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
