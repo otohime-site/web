@@ -11,8 +11,7 @@ import { graphql } from "../gql"
 
 const SongsContext = createContext<{
   songs?: ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"]
-  ready?: boolean
-  refresh?: () => void
+  refreshSongs?: () => void
 }>({})
 
 const dxIntlSongsDocument = graphql(`
@@ -40,7 +39,8 @@ export const SongsProvider = ({ children }: PropsWithChildren<unknown>) => {
   const [dxIntlSongsResult, refreshDxIntlSongs] = useQuery({
     query: dxIntlSongsDocument,
   })
-  const refresh = useCallback(() => {
+  const refreshSongs = useCallback(() => {
+    console.log("requesting refresh...")
     refreshDxIntlSongs({ requestPolicy: "network-only" })
   }, [refreshDxIntlSongs])
 
@@ -48,8 +48,7 @@ export const SongsProvider = ({ children }: PropsWithChildren<unknown>) => {
     <SongsContext.Provider
       value={{
         songs: dxIntlSongsResult.data?.dx_intl_songs,
-        ready: !dxIntlSongsResult.fetching && !dxIntlSongsResult.error,
-        refresh,
+        refreshSongs,
       }}
     >
       {children}
