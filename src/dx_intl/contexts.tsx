@@ -1,18 +1,12 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-} from "react"
+import { createContext, PropsWithChildren, useContext } from "react"
 import { useQuery } from "urql"
 import { graphql } from "../gql"
 
-const SongsContext = createContext<{
-  songs?: ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"]
-  refreshSongs?: () => void
-}>({})
+const SongsContext = createContext<
+  ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"] | undefined
+>(undefined)
 
 const dxIntlSongsDocument = graphql(`
   query dxIntlSongsContext {
@@ -36,20 +30,17 @@ const dxIntlSongsDocument = graphql(`
 `)
 
 export const SongsProvider = ({ children }: PropsWithChildren<unknown>) => {
-  const [dxIntlSongsResult, refreshDxIntlSongs] = useQuery({
+  const [dxIntlSongsResult] = useQuery({
     query: dxIntlSongsDocument,
   })
-  const refreshSongs = useCallback(() => {
-    console.log("requesting refresh...")
-    refreshDxIntlSongs({ requestPolicy: "network-only" })
-  }, [refreshDxIntlSongs])
 
   return (
     <SongsContext.Provider
-      value={{
-        songs: dxIntlSongsResult.data?.dx_intl_songs,
-        refreshSongs,
-      }}
+      value={
+        dxIntlSongsResult.error
+          ? undefined
+          : dxIntlSongsResult.data?.dx_intl_songs
+      }
     >
       {children}
     </SongsContext.Provider>
