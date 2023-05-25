@@ -4,13 +4,13 @@ import {
   DxIntlPlayersWithKeywordAnonymousDocument,
   DxIntlPlayersWithKeywordUserDocument,
 } from "../../generated/graphql"
-import { useAuth } from "../contexts"
+import { useUser } from "../contexts"
 
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
 
 const Search = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
   // const navigate = useNavigate()
   const [keyword] = useState("")
   const [keywordAnonResult] = useQuery({
@@ -18,7 +18,7 @@ const Search = () => {
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
     },
-    pause: loading || user != null || keyword.length === 0,
+    pause: user != null || keyword.length === 0,
   })
   const [keywordUserResult] = useQuery({
     query: DxIntlPlayersWithKeywordUserDocument,
@@ -26,7 +26,7 @@ const Search = () => {
       nickname_like: `${escapeForLike(keyword)}%`,
       userId: user?.uid ?? "",
     },
-    pause: loading || user == null || keyword.length === 0,
+    pause: user == null || keyword.length === 0,
   })
 
   const hasError =

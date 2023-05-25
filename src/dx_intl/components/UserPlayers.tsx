@@ -3,12 +3,12 @@ import { MdAdd } from "react-icons/md"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
-import { useAuth } from "../../common/contexts"
+import { useUser } from "../../common/contexts"
 import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
 import PlayerItem from "./PlayerItem"
 
 const UserPlayers: FunctionComponent = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
   const [playersResult] = useQuery({
     query: DxIntlPlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },
@@ -16,7 +16,7 @@ const UserPlayers: FunctionComponent = () => {
   })
   const players = playersResult.data?.dx_intl_players
 
-  if (loading || user == null) {
+  if (user == null) {
     return <></>
   }
   return (

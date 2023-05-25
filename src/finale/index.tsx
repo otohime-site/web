@@ -1,18 +1,15 @@
 import { useQuery } from "urql"
-import { useAuth } from "../common/contexts"
+import { useUser } from "../common/contexts"
 import { FinalePlayersForUserDocument } from "../generated/graphql"
 
 const FinaleIndexComponent = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
   const [playersResult] = useQuery({
     query: FinalePlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
   const players = playersResult.data?.finale_players
-  if (loading) {
-    return <></>
-  }
   if (user == null) {
     return <>Please log in</>
   }

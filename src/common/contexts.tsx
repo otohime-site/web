@@ -17,12 +17,15 @@ import firebaseConfig from "../firebase"
 const firebaseApp = initializeApp(firebaseConfig)
 export const firebaseAuth = getAuth(firebaseApp)
 
-export const AuthContext = createContext<{
-  user: User | null
-  loading: boolean
-}>({ user: null, loading: true })
+export const UserContext = createContext<User | null>(null)
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({
+  children,
+  skeleton,
+}: {
+  children: ReactNode
+  skeleton?: ReactNode
+}) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -36,14 +39,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       unlisten()
     }
   }, [])
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  if (loading) {
+    return <>{skeleton}</>
+  }
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>
 }
 
-export const useAuth = (): [User | null, boolean] => {
-  const { user, loading } = useContext(AuthContext)
-  return [user, loading]
+export const useUser = (): User | null => {
+  return useContext(UserContext)
 }

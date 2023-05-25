@@ -4,7 +4,7 @@ import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import { graphql } from "../../gql"
 import host from "../../host"
-import { useAuth } from "../contexts"
+import { useUser } from "../contexts"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./ui/Alert"
 import { Button } from "./ui/Button"
@@ -40,7 +40,7 @@ const regenerateTokenDocument = graphql(`
 `)
 
 const User: FunctionComponent = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
   const [tokensResult, refetchTokens] = useQuery({ query: tokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(
     regenerateTokenDocument
@@ -67,7 +67,7 @@ const User: FunctionComponent = () => {
     }
   }
   const notSupported = !("DOMParser" in window && "fetch" in window)
-  if (loading || user == null) {
+  if (user == null) {
     return <></>
   }
   if (notSupported) {

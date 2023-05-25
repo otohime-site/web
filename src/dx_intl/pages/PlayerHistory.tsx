@@ -7,7 +7,6 @@ import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
-import { useAuth } from "../../common/contexts"
 import { formatDateTime } from "../../common/utils/datetime"
 import { DxIntlSongsDocument } from "../../generated/graphql"
 import { getFragmentData, graphql } from "../../gql"
@@ -105,7 +104,6 @@ const hashToDateString = (hash: string): string => {
 }
 
 const PlayerHistory: FunctionComponent = () => {
-  const [, loading] = useAuth()
   const params = useParams<"nickname" | "hash">()
   const [songsResult] = useQuery({
     query: DxIntlSongsDocument,
@@ -114,7 +112,6 @@ const PlayerHistory: FunctionComponent = () => {
   const [timelinesResult] = useQuery({
     query: dxIntlPlayersTimelinesDocument,
     variables: { nickname: params.nickname ?? "" },
-    pause: loading,
   })
   const [timelineResult] = useQuery({
     query: dxIntlPlayerWithTimelineDocument,
@@ -122,7 +119,7 @@ const PlayerHistory: FunctionComponent = () => {
       nickname: params.nickname ?? "",
       time: hashToDateString(params.hash ?? ""),
     },
-    pause: loading || params.hash == null || params.hash.length === 0,
+    pause: params.hash == null || params.hash.length === 0,
   })
 
   // Arrange variants

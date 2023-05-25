@@ -6,7 +6,7 @@ import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { TextField } from "../../common/components/ui/TextField"
-import { useAuth } from "../../common/contexts"
+import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
 import { graphql } from "../../gql"
@@ -58,7 +58,7 @@ const deleteDxIntlPlayerDocument = graphql(`
 `)
 
 const PlayerForm = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
   const params = useParams<"nickname">()
   const navigate = useNavigate()
   const [, insertPlayer] = useMutation(insertDxIntlPlayerDocument)
@@ -67,7 +67,7 @@ const PlayerForm = () => {
   const [playerResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
-    pause: loading || (user == null && params.nickname != null),
+    pause: user == null && params.nickname != null,
   })
   const serverErrorsBase = {
     nickname: false,
@@ -141,7 +141,7 @@ const PlayerForm = () => {
     navigate("/")
   }
 
-  if (loading || playerResult.fetching) {
+  if (playerResult.fetching) {
     return <main>Loading...</main>
   }
 

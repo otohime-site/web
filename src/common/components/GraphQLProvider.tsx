@@ -3,10 +3,10 @@ import { authExchange } from "@urql/exchange-auth"
 import { PropsWithChildren, useMemo } from "react"
 import { createClient, Provider as UrqlProvider } from "urql"
 import { apiHost } from "../../host"
-import { useAuth } from "../contexts"
+import { useUser } from "../contexts"
 
 const GraphQLProvider = ({ children }: PropsWithChildren<unknown>) => {
-  const [user] = useAuth()
+  const user = useUser()
   const client = useMemo(
     () =>
       createClient({

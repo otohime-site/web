@@ -4,7 +4,7 @@ import { useMutation } from "urql"
 import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
 import { Button } from "../components/ui/Button"
-import { useAuth } from "../contexts"
+import { useUser } from "../contexts"
 
 const deleteUserDocument = graphql(`
   mutation deleteUser {
@@ -16,7 +16,7 @@ const deleteUserDocument = graphql(`
 
 const Forget: FunctionComponent = () => {
   const navigate = useNavigate()
-  const [user, loading] = useAuth()
+  const user = useUser()
   const [, deleteUser] = useMutation(deleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
 
@@ -31,9 +31,6 @@ const Forget: FunctionComponent = () => {
     } catch {
       alert("發生錯誤，請登出再登入後重試。")
     }
-  }
-  if (loading) {
-    return <></>
   }
 
   if (user == null) {

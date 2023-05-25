@@ -5,7 +5,7 @@ import {
   signOut,
 } from "firebase/auth"
 import { Fragment, FunctionComponent, useCallback } from "react"
-import { firebaseAuth, useAuth } from "../contexts"
+import { firebaseAuth, useUser } from "../contexts"
 
 const provider = new FacebookAuthProvider()
 const isInAppBrowser = (agent: string): boolean =>
@@ -13,7 +13,7 @@ const isInAppBrowser = (agent: string): boolean =>
   agent.search(/Android.*(wv|\.0\.0\.0)/) !== -1
 
 const UserBoxComponent: FunctionComponent = () => {
-  const [user, loading] = useAuth()
+  const user = useUser()
 
   const handleLogin = useCallback(async (): Promise<void> => {
     try {
@@ -35,9 +35,7 @@ const UserBoxComponent: FunctionComponent = () => {
   const handleLogout = async (): Promise<void> => {
     await signOut(firebaseAuth)
   }
-  if (loading) {
-    return <></>
-  } else if (user !== null) {
+  if (user !== null) {
     return (
       <Fragment>
         <a onClick={handleLogout}>登出</a>

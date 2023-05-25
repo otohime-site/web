@@ -2,7 +2,6 @@ import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
-import { useAuth } from "../../common/contexts"
 import {
   DxIntlRecordWithScoresDocument,
   DxIntlSongsDocument,
@@ -18,12 +17,9 @@ export type NoteEntry = Pick<
 const Player = () => {
   const params = useParams<"nickname">()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [user, loading] = useAuth()
   const [recordResult] = useQuery({
     query: DxIntlRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
-    pause: loading,
   })
   const [songsResult] = useQuery({ query: DxIntlSongsDocument })
 
