@@ -1,4 +1,4 @@
-import { cacheExchange, dedupExchange, fetchExchange } from "@urql/core"
+import { cacheExchange, fetchExchange } from "@urql/core"
 import { PropsWithChildren, useMemo } from "react"
 import { createClient, Provider as UrqlProvider } from "urql"
 import { apiHost } from "../../host"
@@ -16,7 +16,7 @@ const GraphQLTokenProvider = ({
             Authorization: `Bearer ${token}`,
           },
         },
-        exchanges: [dedupExchange, cacheExchange, fetchExchange],
+        exchanges: [cacheExchange, fetchExchange],
       }),
     [token]
   )
