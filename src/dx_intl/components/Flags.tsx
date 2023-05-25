@@ -10,7 +10,7 @@ import FSDP from "../images/flags/fsdp.svg"
 import FSP from "../images/flags/fsp.svg"
 import classes from "./Flags.module.scss"
 
-const getComboImage = (flag: Scalars["dx_intl_combo_flag"]): any => {
+const getComboImage = (flag: Scalars["dx_intl_combo_flag"]["output"]): any => {
   switch (flag) {
     case "fc":
       return FC
@@ -23,7 +23,7 @@ const getComboImage = (flag: Scalars["dx_intl_combo_flag"]): any => {
   }
   return Blank
 }
-const getSyncImage = (flag: Scalars["dx_intl_sync_flag"]): any => {
+const getSyncImage = (flag: Scalars["dx_intl_sync_flag"]["output"]): any => {
   switch (flag) {
     case "fs":
       return FS
@@ -40,9 +40,11 @@ const getSyncImage = (flag: Scalars["dx_intl_sync_flag"]): any => {
 export const ComboFlag = ({
   flag,
 }: {
-  flag: Scalars["dx_intl_combo_flag"]
+  flag: Scalars["dx_intl_combo_flag"]["output"]
 }) => <img className={classes.img} src={getComboImage(flag)} />
 
-export const SyncFlag = ({ flag }: { flag: Scalars["dx_intl_sync_flag"] }) => (
-  <img className={classes.img} src={getSyncImage(flag)} />
-)
+export const SyncFlag = ({
+  flag,
+}: {
+  flag: Scalars["dx_intl_sync_flag"]["output"]
+}) => <img className={classes.img} src={getSyncImage(flag)} />

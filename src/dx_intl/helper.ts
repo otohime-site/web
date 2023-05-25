@@ -32,7 +32,7 @@ export type ORDER_BY =
   | "rating"
 
 export type NoteList = Array<{
-  level: Scalars["dx_intl_level"]
+  level: Scalars["dx_intl_level"]["output"]
 }>
 
 type VariantEntryNote = Pick<
