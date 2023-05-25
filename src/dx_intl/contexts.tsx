@@ -1,28 +1,16 @@
-import { createContext, PropsWithChildren, useCallback, useMemo } from "react"
+import { ResultOf } from "@graphql-typed-document-node/core"
+
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+} from "react"
 import { useQuery } from "urql"
 import { graphql } from "../gql"
-import { levels } from "./models/constants"
 
-export interface VariantMapValue {
-  id: string
-  category: number
-  title: string
-  order: number
-  deluxe: boolean
-  version: number
-  active: boolean
-  notesMap: Map<
-    number,
-    {
-      internal_lv?: number | null
-      difficulty: number
-      level: (typeof levels)[number]
-    }
-  >
-}
-
-const VariantMapContext = createContext<{
-  variantMap?: Map<string, VariantMapValue>
+const SongsContext = createContext<{
+  songs?: ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"]
   ready?: boolean
   refresh?: () => void
 }>({})
@@ -48,9 +36,7 @@ const dxIntlSongsDocument = graphql(`
   }
 `)
 
-export const VariantMapProvider = ({
-  children,
-}: PropsWithChildren<unknown>) => {
+export const SongsProvider = ({ children }: PropsWithChildren<unknown>) => {
   const [dxIntlSongsResult, refreshDxIntlSongs] = useQuery({
     query: dxIntlSongsDocument,
   })
@@ -58,38 +44,19 @@ export const VariantMapProvider = ({
     refreshDxIntlSongs({ requestPolicy: "network-only" })
   }, [refreshDxIntlSongs])
 
-  const variantMap = useMemo(
-    () =>
-      new Map(
-        (dxIntlSongsResult.data?.dx_intl_songs ?? []).flatMap((song) => {
-          const { dx_intl_variants, ...restSong } = song
-          return dx_intl_variants.map((variant) => {
-            const { dx_intl_notes, ...restVariant } = variant
-            return [
-              song.id,
-              {
-                ...restSong,
-                ...restVariant,
-                notesMap: new Map(
-                  dx_intl_notes.map((note) => [note.difficulty, note])
-                ),
-              },
-            ]
-          })
-        })
-      ),
-    [dxIntlSongsResult]
-  )
-
   return (
-    <VariantMapContext.Provider
+    <SongsContext.Provider
       value={{
-        variantMap,
+        songs: dxIntlSongsResult.data?.dx_intl_songs,
         ready: !dxIntlSongsResult.fetching && !dxIntlSongsResult.error,
         refresh,
       }}
     >
       {children}
-    </VariantMapContext.Provider>
+    </SongsContext.Provider>
   )
+}
+
+export const useSongs = () => {
+  return useContext(SongsContext)
 }

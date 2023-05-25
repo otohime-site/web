@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react"
 import { Route, Routes } from "react-router-dom"
-import { VariantMapProvider } from "./contexts"
+import { SongsProvider } from "./contexts"
 import Overview from "./pages/Overview"
 import Player from "./pages/Player"
 import PlayerForm from "./pages/PlayerForm"
@@ -8,7 +8,7 @@ import PlayerHistory from "./pages/PlayerHistory"
 import SongStats from "./pages/SongStats"
 
 const DxIntl: FunctionComponent = () => (
-  <VariantMapProvider>
+  <SongsProvider>
     <Routes>
       <Route path="p/new" element={<PlayerForm />} />
       <Route path="p/:nickname/edit" element={<PlayerForm />} />
@@ -20,6 +20,6 @@ const DxIntl: FunctionComponent = () => (
       <Route path="s/:songId/:variant/:difficulty" element={<SongStats />} />
       <Route path="/" element={<Overview />} />
     </Routes>
-  </VariantMapProvider>
+  </SongsProvider>
 )
 export default DxIntl
