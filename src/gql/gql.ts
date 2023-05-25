@@ -23,6 +23,8 @@ const documents = {
     types.RegenerateTokenDocument,
   "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n":
     types.DeleteUserDocument,
+  "\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n":
+    types.DxIntlSongsContextDocument,
   "\n  fragment dxIntlPlayersFields on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n":
     types.DxIntlPlayersFieldsFragmentDoc,
   "\n  fragment dxIntlSongsFields on dx_intl_songs {\n    id\n    category\n    title\n    order\n    dx_intl_variants(order_by: { deluxe: asc }) {\n      deluxe\n      version\n      active\n      dx_intl_notes(order_by: { difficulty: asc }) {\n        internal_lv\n        difficulty\n        level\n      }\n    }\n  }\n":
@@ -97,6 +99,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"
 ): (typeof documents)["\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
