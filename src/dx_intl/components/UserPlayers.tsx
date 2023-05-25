@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react"
 import { MdAdd } from "react-icons/md"
 import { useQuery } from "urql"
-import { useAuth } from "../../auth"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
+import { useAuth } from "../../common/contexts"
 import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
 import PlayerItem from "./PlayerItem"
 

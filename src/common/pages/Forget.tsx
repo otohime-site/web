@@ -1,10 +1,10 @@
 import { FunctionComponent, useState } from "react"
 import { useNavigate } from "react-router"
 import { useMutation } from "urql"
-import { useAuth } from "../../auth"
 import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
 import { Button } from "../components/ui/Button"
+import { useAuth } from "../contexts"
 
 const deleteUserDocument = graphql(`
   mutation deleteUser {

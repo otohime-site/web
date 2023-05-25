@@ -1,5 +1,5 @@
 import { useQuery } from "urql"
-import { useAuth } from "../auth"
+import { useAuth } from "../common/contexts"
 import { FinalePlayersForUserDocument } from "../generated/graphql"
 
 const FinaleIndexComponent = () => {

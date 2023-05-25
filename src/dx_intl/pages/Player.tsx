@@ -1,8 +1,8 @@
 import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { useAuth } from "../../auth"
 import { Alert } from "../../common/components/ui/Alert"
+import { useAuth } from "../../common/contexts"
 import {
   DxIntlRecordWithScoresDocument,
   DxIntlSongsDocument,

@@ -12,7 +12,7 @@ import {
   useEffect,
   useState,
 } from "react"
-import firebaseConfig from "./firebase"
+import firebaseConfig from "../firebase"
 
 const firebaseApp = initializeApp(firebaseConfig)
 export const firebaseAuth = getAuth(firebaseApp)

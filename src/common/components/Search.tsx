@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { useQuery } from "urql"
-import { useAuth } from "../../auth"
 import {
   DxIntlPlayersWithKeywordAnonymousDocument,
   DxIntlPlayersWithKeywordUserDocument,
 } from "../../generated/graphql"
+import { useAuth } from "../contexts"
 
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
