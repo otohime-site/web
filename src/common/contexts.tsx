@@ -1,3 +1,5 @@
+import { cacheExchange, fetchExchange } from "@urql/core"
+import { authExchange } from "@urql/exchange-auth"
 import { initializeApp } from "firebase/app"
 import {
   getAuth,
@@ -7,25 +9,28 @@ import {
 } from "firebase/auth"
 import {
   createContext,
+  PropsWithChildren,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react"
+import { createClient, Provider as UrqlProvider } from "urql"
 import firebaseConfig from "../firebase"
+import { apiHost } from "../host"
 
 const firebaseApp = initializeApp(firebaseConfig)
 export const firebaseAuth = getAuth(firebaseApp)
 
 export const UserContext = createContext<User | null>(null)
 
-export const AuthProvider = ({
+export const AppProvider = ({
   children,
   skeleton,
-}: {
-  children: ReactNode
+}: PropsWithChildren<{
   skeleton?: ReactNode
-}) => {
+}>) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -39,10 +44,49 @@ export const AuthProvider = ({
       unlisten()
     }
   }, [])
+
+  const client = useMemo(
+    () =>
+      createClient({
+        url: `https://${apiHost}/graphql`,
+        exchanges: [
+          cacheExchange,
+          authExchange(async (utils) => {
+            const token = await user?.getIdToken()
+            return {
+              addAuthToOperation(operation) {
+                return token
+                  ? utils.appendHeaders(operation, {
+                      Authorization: `Bearer ${token}`,
+                    })
+                  : operation
+              },
+              didAuthError(error) {
+                return error.graphQLErrors.some(
+                  (e) => e.extensions?.code === "access-denied"
+                )
+              },
+              async refreshAuth() {
+                // getIdToken should do the job
+                return
+              },
+            }
+          }),
+          fetchExchange,
+        ],
+      }),
+    [user]
+  )
+
   if (loading) {
     return <>{skeleton}</>
   }
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>
+
+  return (
+    <UserContext.Provider value={user}>
+      <UrqlProvider value={client}>{children}</UrqlProvider>
+    </UserContext.Provider>
+  )
 }
 
 export const useUser = (): User | null => {
