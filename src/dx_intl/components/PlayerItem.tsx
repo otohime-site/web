@@ -9,7 +9,7 @@ import {
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
-import classes from "./PlayerItem.module.scss"
+import classes from "./PlayerItem.module.css"
 
 const getGradeOrRanks = (
   record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">

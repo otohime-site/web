@@ -8,7 +8,7 @@ import FS from "../images/flags/fs.svg"
 import FSD from "../images/flags/fsd.svg"
 import FSDP from "../images/flags/fsdp.svg"
 import FSP from "../images/flags/fsp.svg"
-import classes from "./Flags.module.scss"
+import classes from "./Flags.module.css"
 
 const getComboImage = (flag: Scalars["dx_intl_combo_flag"]["output"]): any => {
   switch (flag) {
