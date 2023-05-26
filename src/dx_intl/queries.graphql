@@ -77,6 +77,15 @@ query dxIntlSongs {
   }
 }
 
+query dxIntlSongsById($idLike: String!) {
+  dx_intl_songs(
+    order_by: [{ category: asc }, { order: asc }]
+    where: { id: { _like: $idLike } }
+  ) {
+    ...dxIntlSongsFields
+  }
+}
+
 query dxIntlRecordWithScores($nickname: String!) {
   dx_intl_players(where: { nickname: { _eq: $nickname } }) {
     updated_at

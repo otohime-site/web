@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
+import { DxIntlSongsByIdDocument } from "../../generated/graphql"
 import { graphql } from "../../gql"
-import { useSongs } from "../contexts"
 import { NoteList } from "../helper"
 import { difficulties } from "../models/constants"
 
@@ -37,8 +37,11 @@ const SongStats = () => {
   const deluxe = variant != null ? variant === "dx" : null
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
-  const { songs } = useSongs()
-  const song = (songs || []).filter((song) => song.id.startsWith(songId))[0]
+  const [songsResult] = useQuery({
+    query: DxIntlSongsByIdDocument,
+    variables: { idLike: `${songId}%` },
+  })
+  const song = songsResult.data?.dx_intl_songs[0]
   const variantMap = new Map(
     (song?.dx_intl_variants ?? []).map((variant) => [
       variant.deluxe,
@@ -86,60 +89,62 @@ const SongStats = () => {
   )
   return (
     <>
-      {song != null ? (
-        <>
-          <Titled
-            title={(title) =>
-              `${song.title} - maimai DX 曲目成績統計 - ${title}`
-            }
-          />
-          <h4>{song.title}</h4>
-          <div>
-            {variantMap.has(false) ? (
-              <Link to={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
-            ) : (
-              ""
-            )}
-            {variantMap.has(true) ? (
-              <Link to={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
-            ) : (
-              ""
-            )}
-          </div>
-          <div>
-            {notes.map((_, i) => (
-              <Link
-                to={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
-                key={i}
-              >
-                {difficulties[i]}
-              </Link>
-            ))}
-          </div>
-          <QueryResult result={statsResult}>
-            <table>
-              <thead>
-                <tr>
-                  <th>評等</th>
-                  <th>玩家數</th>
-                  <th>累計</th>
-                </tr>
-              </thead>
-              <tbody>
-                {statsAccumulated.map((s) => (
-                  <tr key={s.range}>
-                    <td>{s.range ?? ""}</td>
-                    <td>{s.count ?? "0"}</td>
-                    <td>{s.accumulated}</td>
+      <QueryResult result={songsResult}>
+        {song != null ? (
+          <>
+            <Titled
+              title={(title) =>
+                `${song.title} - maimai DX 曲目成績統計 - ${title}`
+              }
+            />
+            <h4>{song.title}</h4>
+            <div>
+              {variantMap.has(false) ? (
+                <Link to={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
+              ) : (
+                ""
+              )}
+              {variantMap.has(true) ? (
+                <Link to={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
+              ) : (
+                ""
+              )}
+            </div>
+            <div>
+              {notes.map((_, i) => (
+                <Link
+                  to={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
+                  key={i}
+                >
+                  {difficulties[i]}
+                </Link>
+              ))}
+            </div>
+            <QueryResult result={statsResult}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>評等</th>
+                    <th>玩家數</th>
+                    <th>累計</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </QueryResult>
-        </>
-      ) : (
-        ""
-      )}
+                </thead>
+                <tbody>
+                  {statsAccumulated.map((s) => (
+                    <tr key={s.range}>
+                      <td>{s.range ?? ""}</td>
+                      <td>{s.count ?? "0"}</td>
+                      <td>{s.accumulated}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </QueryResult>
+          </>
+        ) : (
+          ""
+        )}
+      </QueryResult>
     </>
   )
 }
