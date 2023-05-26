@@ -37,7 +37,7 @@ const SongStats = () => {
   const deluxe = variant != null ? variant === "dx" : null
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
-  const songs = useSongs()
+  const { songs } = useSongs()
   const song = (songs || []).filter((song) => song.id.startsWith(songId))[0]
   const variantMap = new Map(
     (song?.dx_intl_variants ?? []).map((variant) => [
