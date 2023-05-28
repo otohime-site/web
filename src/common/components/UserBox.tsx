@@ -4,7 +4,7 @@ import {
   signInWithRedirect,
   signOut,
 } from "firebase/auth"
-import { Fragment, FunctionComponent, useCallback } from "react"
+import { Fragment, useCallback } from "react"
 import { firebaseAuth, useUser } from "../contexts"
 
 const provider = new FacebookAuthProvider()
@@ -12,7 +12,7 @@ const isInAppBrowser = (agent: string): boolean =>
   agent.search(/(iPhone|iPad|iPod)(?!.*Safari)/) !== -1 ||
   agent.search(/Android.*(wv|\.0\.0\.0)/) !== -1
 
-const UserBoxComponent: FunctionComponent = () => {
+const UserBoxComponent = () => {
   const user = useUser()
 
   const handleLogin = useCallback(async (): Promise<void> => {

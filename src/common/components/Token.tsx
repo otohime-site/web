@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react"
+import { useState } from "react"
 import { MdLink, MdRefresh } from "react-icons/md"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
@@ -39,7 +39,7 @@ const regenerateTokenDocument = graphql(`
   }
 `)
 
-const User: FunctionComponent = () => {
+const User = () => {
   const user = useUser()
   const [tokensResult, refetchTokens] = useQuery({ query: tokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(

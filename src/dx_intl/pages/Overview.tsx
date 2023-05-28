@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
@@ -12,7 +11,7 @@ const dxIntlNewRatingStatsDocument = graphql(`
   }
 `)
 
-const Overview: FunctionComponent = () => {
+const Overview = () => {
   const [baseRatingResult] = useQuery({ query: dxIntlNewRatingStatsDocument })
   const baseRatingAccumulated = (
     baseRatingResult.data?.dx_intl_new_rating_stats ?? []

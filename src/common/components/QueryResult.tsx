@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import { UseQueryState } from "urql"
 import { Alert } from "./ui/Alert"
 
@@ -10,14 +10,14 @@ interface Props {
   skeletonHeight?: number | string
 }
 
-export const QueryResult: FunctionComponent<PropsWithChildren<Props>> = ({
+export const QueryResult = ({
   result,
   errorMsg,
   skeletonVariant,
   skeletonWidth,
   skeletonHeight,
   children,
-}) => {
+}: PropsWithChildren<Props>) => {
   if (result.fetching) {
     return <div />
   }

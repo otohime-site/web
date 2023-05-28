@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useMutation } from "urql"
 import { graphql } from "../../gql"
@@ -14,7 +14,7 @@ const deleteUserDocument = graphql(`
   }
 `)
 
-const Forget: FunctionComponent = () => {
+const Forget = () => {
   const navigate = useNavigate()
   const user = useUser()
   const [, deleteUser] = useMutation(deleteUserDocument)

@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import { MdAdd } from "react-icons/md"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -7,7 +6,7 @@ import { useUser } from "../../common/contexts"
 import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
 import PlayerItem from "./PlayerItem"
 
-const UserPlayers: FunctionComponent = () => {
+const UserPlayers = () => {
   const user = useUser()
   const [playersResult] = useQuery({
     query: DxIntlPlayersForUserDocument,

@@ -1,4 +1,3 @@
-import { FunctionComponent } from "react"
 import { Route, Routes } from "react-router-dom"
 import Overview from "./pages/Overview"
 import Player from "./pages/Player"
@@ -6,7 +5,7 @@ import PlayerForm from "./pages/PlayerForm"
 import PlayerHistory from "./pages/PlayerHistory"
 import SongStats from "./pages/SongStats"
 
-const DxIntl: FunctionComponent = () => (
+const DxIntl = () => (
   <Routes>
     <Route path="p/new" element={<PlayerForm />} />
     <Route path="p/:nickname/edit" element={<PlayerForm />} />
