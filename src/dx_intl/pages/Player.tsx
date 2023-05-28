@@ -4,10 +4,10 @@ import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import {
   DxIntlRecordWithScoresDocument,
-  DxIntlSongsDocument,
   Dx_Intl_Notes,
 } from "../../generated/graphql"
 import Record from "../components/Record"
+import { dxIntlSongsDocument } from "../models/queries"
 
 export type NoteEntry = Pick<
   Dx_Intl_Notes,
@@ -21,7 +21,7 @@ const Player = () => {
     query: DxIntlRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
   })
-  const [songsResult] = useQuery({ query: DxIntlSongsDocument })
+  const [songsResult] = useQuery({ query: dxIntlSongsDocument })
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>

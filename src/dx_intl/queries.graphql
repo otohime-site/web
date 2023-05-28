@@ -71,12 +71,6 @@ fragment dxIntlSongsFields on dx_intl_songs {
   }
 }
 
-query dxIntlSongs {
-  dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {
-    ...dxIntlSongsFields
-  }
-}
-
 query dxIntlSongsById($idLike: String!) {
   dx_intl_songs(
     order_by: [{ category: asc }, { order: asc }]

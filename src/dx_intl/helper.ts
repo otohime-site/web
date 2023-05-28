@@ -1,7 +1,7 @@
+import { ResultOf } from "@graphql-typed-document-node/core"
 import { saveAs } from "file-saver"
 import {
   DxIntlRecordWithScoresQuery,
-  DxIntlSongsQuery,
   Dx_Intl_Notes,
   Dx_Intl_Scores,
   Dx_Intl_Songs,
@@ -20,6 +20,7 @@ import {
   syncFlags,
   versions,
 } from "./models/constants"
+import { dxIntlSongsDocument } from "./models/queries"
 
 export type GROUP_BY = "category" | "version" | "level" | "rating_ranks"
 export type ORDER_BY =
@@ -138,7 +139,7 @@ export const getRating = (score: number, internalLv: number): number => {
 }
 
 export const prepareSongs = (
-  songs: DxIntlSongsQuery["dx_intl_songs"]
+  songs: ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"]
 ): {
   variantEntries: VariantEntry[]
   internalLvMap: Map<string, InternalLvMapEntry>

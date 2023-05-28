@@ -8483,54 +8483,6 @@ export type DeleteUserMutation = {
   } | null
 }
 
-export type DxIntlSongsContextQueryVariables = Exact<{ [key: string]: never }>
-
-export type DxIntlSongsContextQuery = {
-  __typename?: "query_root"
-  dx_intl_songs: Array<{
-    __typename?: "dx_intl_songs"
-    id: string
-    category: number
-    title: string
-    order: number
-    dx_intl_variants: Array<{
-      __typename?: "dx_intl_variants"
-      deluxe: boolean
-      version: number
-      active: boolean
-      dx_intl_notes: Array<{
-        __typename?: "dx_intl_notes"
-        internal_lv?: number | null
-        difficulty: number
-        level:
-          | "1"
-          | "2"
-          | "3"
-          | "4"
-          | "5"
-          | "6"
-          | "7"
-          | "7+"
-          | "8"
-          | "8+"
-          | "9"
-          | "9+"
-          | "10"
-          | "10+"
-          | "11"
-          | "11+"
-          | "12"
-          | "12+"
-          | "13"
-          | "13+"
-          | "14"
-          | "14+"
-          | "15"
-      }>
-    }>
-  }>
-}
-
 export type DxIntlPlayersFieldsFragment = {
   __typename?: "dx_intl_players"
   id: number
@@ -8547,49 +8499,6 @@ export type DxIntlPlayersFieldsFragment = {
     class_rank?: number | null
   } | null
 } & { " $fragmentName"?: "DxIntlPlayersFieldsFragment" }
-
-export type DxIntlSongsFieldsFragment = {
-  __typename?: "dx_intl_songs"
-  id: string
-  category: number
-  title: string
-  order: number
-  dx_intl_variants: Array<{
-    __typename?: "dx_intl_variants"
-    deluxe: boolean
-    version: number
-    active: boolean
-    dx_intl_notes: Array<{
-      __typename?: "dx_intl_notes"
-      internal_lv?: number | null
-      difficulty: number
-      level:
-        | "1"
-        | "2"
-        | "3"
-        | "4"
-        | "5"
-        | "6"
-        | "7"
-        | "7+"
-        | "8"
-        | "8+"
-        | "9"
-        | "9+"
-        | "10"
-        | "10+"
-        | "11"
-        | "11+"
-        | "12"
-        | "12+"
-        | "13"
-        | "13+"
-        | "14"
-        | "14+"
-        | "15"
-    }>
-  }>
-} & { " $fragmentName"?: "DxIntlSongsFieldsFragment" }
 
 export type DxIntlRecordsFieldsFragment = {
   __typename?: "dx_intl_records"
@@ -8636,6 +8545,54 @@ export type DxIntlScoresWithHistoryFieldsFragment = {
   combo_flag?: "" | "fc" | "fc+" | "ap" | "ap+" | null
   sync_flag?: "" | "fs" | "fs+" | "fdx" | "fdx+" | null
 } & { " $fragmentName"?: "DxIntlScoresWithHistoryFieldsFragment" }
+
+export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never }>
+
+export type DxIntlSongsQuery = {
+  __typename?: "query_root"
+  dx_intl_songs: Array<{
+    __typename?: "dx_intl_songs"
+    id: string
+    category: number
+    title: string
+    order: number
+    dx_intl_variants: Array<{
+      __typename?: "dx_intl_variants"
+      deluxe: boolean
+      version: number
+      active: boolean
+      dx_intl_notes: Array<{
+        __typename?: "dx_intl_notes"
+        internal_lv?: number | null
+        difficulty: number
+        level:
+          | "1"
+          | "2"
+          | "3"
+          | "4"
+          | "5"
+          | "6"
+          | "7"
+          | "7+"
+          | "8"
+          | "8+"
+          | "9"
+          | "9+"
+          | "10"
+          | "10+"
+          | "11"
+          | "11+"
+          | "12"
+          | "12+"
+          | "13"
+          | "13+"
+          | "14"
+          | "14+"
+          | "15"
+      }>
+    }>
+  }>
+}
 
 export type DxIntlNewRatingStatsQueryVariables = Exact<{ [key: string]: never }>
 
@@ -8803,90 +8760,6 @@ export const DxIntlPlayersFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<DxIntlPlayersFieldsFragment, unknown>
-export const DxIntlSongsFieldsFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "dxIntlSongsFields" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "dx_intl_songs" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "category" } },
-          { kind: "Field", name: { kind: "Name", value: "title" } },
-          { kind: "Field", name: { kind: "Name", value: "order" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "dx_intl_variants" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "deluxe" },
-                      value: { kind: "EnumValue", value: "asc" },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "deluxe" } },
-                { kind: "Field", name: { kind: "Name", value: "version" } },
-                { kind: "Field", name: { kind: "Name", value: "active" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "dx_intl_notes" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "difficulty" },
-                            value: { kind: "EnumValue", value: "asc" },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "internal_lv" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "difficulty" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "level" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<DxIntlSongsFieldsFragment, unknown>
 export const DxIntlRecordsFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -9327,13 +9200,13 @@ export const DeleteUserDocument = {
     },
   ],
 } as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>
-export const DxIntlSongsContextDocument = {
+export const DxIntlSongsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "dxIntlSongsContext" },
+      name: { kind: "Name", value: "dxIntlSongs" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -9459,10 +9332,7 @@ export const DxIntlSongsContextDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  DxIntlSongsContextQuery,
-  DxIntlSongsContextQueryVariables
->
+} as unknown as DocumentNode<DxIntlSongsQuery, DxIntlSongsQueryVariables>
 export const DxIntlNewRatingStatsDocument = {
   kind: "Document",
   definitions: [

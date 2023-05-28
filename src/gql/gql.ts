@@ -23,12 +23,8 @@ const documents = {
     types.RegenerateTokenDocument,
   "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n":
     types.DeleteUserDocument,
-  "\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n":
-    types.DxIntlSongsContextDocument,
   "\n  fragment dxIntlPlayersFields on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n":
     types.DxIntlPlayersFieldsFragmentDoc,
-  "\n  fragment dxIntlSongsFields on dx_intl_songs {\n    id\n    category\n    title\n    order\n    dx_intl_variants(order_by: { deluxe: asc }) {\n      deluxe\n      version\n      active\n      dx_intl_notes(order_by: { difficulty: asc }) {\n        internal_lv\n        difficulty\n        level\n      }\n    }\n  }\n":
-    types.DxIntlSongsFieldsFragmentDoc,
   "\n  fragment dxIntlRecordsFields on dx_intl_records {\n    card_name\n    title\n    trophy\n    rating\n    max_rating\n    rating_legacy\n    grade\n    course_rank\n    class_rank\n  }\n":
     types.DxIntlRecordsFieldsFragmentDoc,
   "\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n":
@@ -37,6 +33,8 @@ const documents = {
     types.DxIntlRecordsWithHistoryFieldsFragmentDoc,
   "\n  fragment dxIntlScoresWithHistoryFields on dx_intl_scores_with_history {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n":
     types.DxIntlScoresWithHistoryFieldsFragmentDoc,
+  "\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n":
+    types.DxIntlSongsDocument,
   "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n":
     types.DxIntlNewRatingStatsDocument,
   "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n":
@@ -103,20 +101,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query dxIntlSongsContext {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"]
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
   source: "\n  fragment dxIntlPlayersFields on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n"
 ): (typeof documents)["\n  fragment dxIntlPlayersFields on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n"]
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  fragment dxIntlSongsFields on dx_intl_songs {\n    id\n    category\n    title\n    order\n    dx_intl_variants(order_by: { deluxe: asc }) {\n      deluxe\n      version\n      active\n      dx_intl_notes(order_by: { difficulty: asc }) {\n        internal_lv\n        difficulty\n        level\n      }\n    }\n  }\n"
-): (typeof documents)["\n  fragment dxIntlSongsFields on dx_intl_songs {\n    id\n    category\n    title\n    order\n    dx_intl_variants(order_by: { deluxe: asc }) {\n      deluxe\n      version\n      active\n      dx_intl_notes(order_by: { difficulty: asc }) {\n        internal_lv\n        difficulty\n        level\n      }\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -141,6 +127,12 @@ export function graphql(
 export function graphql(
   source: "\n  fragment dxIntlScoresWithHistoryFields on dx_intl_scores_with_history {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n"
 ): (typeof documents)["\n  fragment dxIntlScoresWithHistoryFields on dx_intl_scores_with_history {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

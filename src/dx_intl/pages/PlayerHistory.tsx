@@ -1,5 +1,5 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
-import { FunctionComponent, useMemo } from "react"
+import { useMemo } from "react"
 import { MdArrowBack, MdNavigateNext } from "react-icons/md"
 import { useParams } from "react-router"
 import { Link } from "react-router-dom"
@@ -8,7 +8,6 @@ import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { formatDateTime } from "../../common/utils/datetime"
-import { DxIntlSongsDocument } from "../../generated/graphql"
 import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
@@ -24,6 +23,7 @@ import {
   dxIntlRecordsWithHistoryFields,
   dxIntlScoresWithHistoryFields,
 } from "../models/fragments"
+import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`
@@ -103,10 +103,10 @@ const hashToDateString = (hash: string): string => {
   return resultStr
 }
 
-const PlayerHistory: FunctionComponent = () => {
+const PlayerHistory = () => {
   const params = useParams<"nickname" | "hash">()
   const [songsResult] = useQuery({
-    query: DxIntlSongsDocument,
+    query: dxIntlSongsDocument,
     pause: params.hash === null,
   })
   const [timelinesResult] = useQuery({

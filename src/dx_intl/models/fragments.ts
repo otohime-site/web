@@ -17,25 +17,6 @@ export const dxIntlPlayersFields = graphql(`
   }
 `)
 
-export const dxIntlSongsFields = graphql(`
-  fragment dxIntlSongsFields on dx_intl_songs {
-    id
-    category
-    title
-    order
-    dx_intl_variants(order_by: { deluxe: asc }) {
-      deluxe
-      version
-      active
-      dx_intl_notes(order_by: { difficulty: asc }) {
-        internal_lv
-        difficulty
-        level
-      }
-    }
-  }
-`)
-
 export const dxIntlRecordsFields = graphql(`
   fragment dxIntlRecordsFields on dx_intl_records {
     card_name
