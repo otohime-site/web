@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint",
     "test": "jest",
-    "codegen": "graphql-codegen --config codegen-preset.ts",
+    "codegen": "graphql-codegen",
     "prepare": "husky install"
   },
   "dependencies": {
