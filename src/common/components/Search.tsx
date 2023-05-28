@@ -1,10 +1,47 @@
 import { useState } from "react"
 import { useQuery } from "urql"
-import {
-  DxIntlPlayersWithKeywordAnonymousDocument,
-  DxIntlPlayersWithKeywordUserDocument,
-} from "../../generated/graphql"
+import { graphql } from "../../gql"
 import { useUser } from "../contexts"
+
+const dxIntlPlayersWithKeywordAnonymousDocument = graphql(`
+  query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
+    other_players: dx_intl_players(
+      where: { nickname: { _ilike: $nickname_like }, dx_intl_record: {} }
+      order_by: { nickname: asc }
+      limit: 10
+    ) {
+      ...dxIntlPlayersFields
+    }
+  }
+`)
+const dxIntlPlayersWithKeywordUserDocument = graphql(`
+  query dxIntlPlayersWithKeywordUser(
+    $userId: String!
+    $nickname_like: String!
+  ) {
+    user_players: dx_intl_players(
+      where: {
+        user_id: { _eq: $userId }
+        nickname: { _ilike: $nickname_like }
+        dx_intl_record: {}
+      }
+      order_by: { nickname: asc }
+    ) {
+      ...dxIntlPlayersFields
+    }
+    other_players: dx_intl_players(
+      where: {
+        user_id: { _neq: $userId }
+        nickname: { _ilike: $nickname_like }
+        dx_intl_record: {}
+      }
+      order_by: { nickname: asc }
+      limit: 10
+    ) {
+      ...dxIntlPlayersFields
+    }
+  }
+`)
 
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
@@ -14,14 +51,14 @@ const Search = () => {
   // const navigate = useNavigate()
   const [keyword] = useState("")
   const [keywordAnonResult] = useQuery({
-    query: DxIntlPlayersWithKeywordAnonymousDocument,
+    query: dxIntlPlayersWithKeywordAnonymousDocument,
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
     },
     pause: user != null || keyword.length === 0,
   })
   const [keywordUserResult] = useQuery({
-    query: DxIntlPlayersWithKeywordUserDocument,
+    query: dxIntlPlayersWithKeywordUserDocument,
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
       userId: user?.uid ?? "",
