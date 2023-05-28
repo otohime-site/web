@@ -1,15 +1,27 @@
 import { useQuery } from "urql"
 import { useUser } from "../common/contexts"
-import { FinalePlayersForUserDocument } from "../generated/graphql"
+import { getFragmentData, graphql } from "../gql"
+import { finalePlayersFields } from "./models/fragments"
+
+const finalePlayersForUserDocument = graphql(`
+  query finalePlayersForUser($userId: String!) {
+    finale_players(where: { user_id: { _eq: $userId } }) {
+      ...finalePlayersFields
+    }
+  }
+`)
 
 const FinaleIndexComponent = () => {
   const user = useUser()
   const [playersResult] = useQuery({
-    query: FinalePlayersForUserDocument,
+    query: finalePlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
-  const players = playersResult.data?.finale_players
+  const players = getFragmentData(
+    finalePlayersFields,
+    playersResult.data?.finale_players
+  )
   if (user == null) {
     return <>Please log in</>
   }

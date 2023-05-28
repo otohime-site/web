@@ -51,6 +51,10 @@ const documents = {
     types.DxIntlPlayerWithTimelineDocument,
   "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n":
     types.DxIntlScoresStatsDocument,
+  "\n  query finalePlayersForUser($userId: String!) {\n    finale_players(where: { user_id: { _eq: $userId } }) {\n      ...finalePlayersFields\n    }\n  }\n":
+    types.FinalePlayersForUserDocument,
+  "\n  fragment finalePlayersFields on finale_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    finale_record {\n      card_name\n      rating\n      max_rating\n      class\n    }\n  }\n":
+    types.FinalePlayersFieldsFragmentDoc,
 }
 
 /**
@@ -181,6 +185,18 @@ export function graphql(
 export function graphql(
   source: "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n"
 ): (typeof documents)["\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query finalePlayersForUser($userId: String!) {\n    finale_players(where: { user_id: { _eq: $userId } }) {\n      ...finalePlayersFields\n    }\n  }\n"
+): (typeof documents)["\n  query finalePlayersForUser($userId: String!) {\n    finale_players(where: { user_id: { _eq: $userId } }) {\n      ...finalePlayersFields\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  fragment finalePlayersFields on finale_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    finale_record {\n      card_name\n      rating\n      max_rating\n      class\n    }\n  }\n"
+): (typeof documents)["\n  fragment finalePlayersFields on finale_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    finale_record {\n      card_name\n      rating\n      max_rating\n      class\n    }\n  }\n"]
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

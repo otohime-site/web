@@ -8723,6 +8723,37 @@ export type DxIntlScoresStatsQuery = {
   }>
 }
 
+export type FinalePlayersForUserQueryVariables = Exact<{
+  userId: Scalars["String"]["input"]
+}>
+
+export type FinalePlayersForUserQuery = {
+  __typename?: "query_root"
+  finale_players: Array<
+    { __typename?: "finale_players" } & {
+      " $fragmentRefs"?: {
+        FinalePlayersFieldsFragment: FinalePlayersFieldsFragment
+      }
+    }
+  >
+}
+
+export type FinalePlayersFieldsFragment = {
+  __typename?: "finale_players"
+  id: number
+  nickname: string
+  private: boolean
+  created_at: string
+  updated_at?: string | null
+  finale_record?: {
+    __typename?: "finale_records"
+    card_name: string
+    rating: number
+    max_rating: number
+    class: string
+  } | null
+} & { " $fragmentName"?: "FinalePlayersFieldsFragment" }
+
 export const DxIntlPlayersFieldsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -8862,6 +8893,42 @@ export const DxIntlScoresWithHistoryFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<DxIntlScoresWithHistoryFieldsFragment, unknown>
+export const FinalePlayersFieldsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finalePlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+                { kind: "Field", name: { kind: "Name", value: "class" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FinalePlayersFieldsFragment, unknown>
 export const DxIntlPlayersDocument = {
   kind: "Document",
   definitions: [
@@ -10286,4 +10353,110 @@ export const DxIntlScoresStatsDocument = {
 } as unknown as DocumentNode<
   DxIntlScoresStatsQuery,
   DxIntlScoresStatsQueryVariables
+>
+export const FinalePlayersForUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "finalePlayersForUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_players" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "user_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "userId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "finalePlayersFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "finalePlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "finale_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "finale_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+                { kind: "Field", name: { kind: "Name", value: "class" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  FinalePlayersForUserQuery,
+  FinalePlayersForUserQueryVariables
 >
