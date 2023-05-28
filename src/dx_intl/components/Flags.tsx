@@ -1,4 +1,3 @@
-import { Scalars } from "../../generated/graphql"
 import AP from "../images/flags/ap.svg"
 import APP from "../images/flags/app.svg"
 import Blank from "../images/flags/blank.svg"
@@ -8,9 +7,10 @@ import FS from "../images/flags/fs.svg"
 import FSD from "../images/flags/fsd.svg"
 import FSDP from "../images/flags/fsdp.svg"
 import FSP from "../images/flags/fsp.svg"
+import { comboFlags, syncFlags } from "../models/constants"
 import classes from "./Flags.module.css"
 
-const getComboImage = (flag: Scalars["dx_intl_combo_flag"]["output"]): any => {
+const getComboImage = (flag: (typeof comboFlags)[number]): any => {
   switch (flag) {
     case "fc":
       return FC
@@ -23,7 +23,7 @@ const getComboImage = (flag: Scalars["dx_intl_combo_flag"]["output"]): any => {
   }
   return Blank
 }
-const getSyncImage = (flag: Scalars["dx_intl_sync_flag"]["output"]): any => {
+const getSyncImage = (flag: (typeof syncFlags)[number]): any => {
   switch (flag) {
     case "fs":
       return FS
@@ -37,14 +37,10 @@ const getSyncImage = (flag: Scalars["dx_intl_sync_flag"]["output"]): any => {
   return Blank
 }
 
-export const ComboFlag = ({
-  flag,
-}: {
-  flag: Scalars["dx_intl_combo_flag"]["output"]
-}) => <img className={classes.img} src={getComboImage(flag)} />
+export const ComboFlag = ({ flag }: { flag: (typeof comboFlags)[number] }) => (
+  <img className={classes.img} src={getComboImage(flag)} />
+)
 
-export const SyncFlag = ({
-  flag,
-}: {
-  flag: Scalars["dx_intl_sync_flag"]["output"]
-}) => <img className={classes.img} src={getSyncImage(flag)} />
+export const SyncFlag = ({ flag }: { flag: (typeof syncFlags)[number] }) => (
+  <img className={classes.img} src={getSyncImage(flag)} />
+)

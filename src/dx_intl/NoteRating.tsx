@@ -2,15 +2,20 @@ import { useMemo } from "react"
 import { MdHelpOutline } from "react-icons/md"
 import { Link } from "react-router-dom"
 import { getRankScoreIndex, getRating } from "./helper"
-import { RANK_SCORES } from "./models/constants"
-import { NoteEntry } from "./pages/Player"
+import { levels, RANK_SCORES } from "./models/constants"
 
 const NoteRating = ({
   note,
   score,
 }: {
   nickname?: string
-  note: NoteEntry
+  note: {
+    song_id: string
+    deluxe: boolean
+    dificultiy: number
+    level: (typeof levels)[number]
+    internal_lv?: number | null
+  }
   score: number
 }) => {
   const internalLv = note.internal_lv

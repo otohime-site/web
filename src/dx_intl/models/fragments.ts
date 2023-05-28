@@ -39,6 +39,7 @@ export const dxIntlScoresFields = graphql(`
     score
     combo_flag
     sync_flag
+    start
   }
 `)
 

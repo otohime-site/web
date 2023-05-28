@@ -11,7 +11,6 @@
     "lint": "eslint",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen-preset.ts",
-    "codegen-old": "graphql-codegen --config codegen.yml",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -46,10 +45,7 @@
     "@graphql-codegen/client-preset": "^4.0.0",
     "@graphql-codegen/client-preset-swc-plugin": "^0.2.0",
     "@graphql-codegen/introspection": "^4.0.0",
-    "@graphql-codegen/typed-document-node": "^5.0.0",
-    "@graphql-codegen/typescript": "^4.0.0",
-    "@graphql-codegen/typescript-operations": "^4.0.0",
-    "@types/file-saver": "^2.0.3",
+    "@types/file-saver": "^2.0.5",
     "@types/node": "^20.2.3",
     "@types/papaparse": "^5.3.1",
     "@types/react": "^18.0.5",

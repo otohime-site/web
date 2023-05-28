@@ -1,6 +1,7 @@
+import { ResultOf } from "@graphql-typed-document-node/core"
 import { MdLock, MdPublic } from "react-icons/md"
 import { formatRelative } from "../../common/utils/datetime"
-import { Dx_Intl_Records } from "../../generated/graphql"
+import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
 import Rating from "./Rating"
@@ -11,18 +12,7 @@ const Record = ({
   isPrivate,
   updatedAt,
 }: {
-  record: Pick<
-    Dx_Intl_Records,
-    | "card_name"
-    | "title"
-    | "trophy"
-    | "rating"
-    | "rating_legacy"
-    | "max_rating"
-    | "grade"
-    | "course_rank"
-    | "class_rank"
-  >
+  record: ResultOf<typeof dxIntlRecordsFields>
   isPrivate: boolean
   updatedAt: string | null | undefined
 }) => (

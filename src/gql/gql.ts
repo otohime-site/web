@@ -33,7 +33,7 @@ const documents = {
     types.DxIntlPlayersFieldsFragmentDoc,
   "\n  fragment dxIntlRecordsFields on dx_intl_records {\n    card_name\n    title\n    trophy\n    rating\n    max_rating\n    rating_legacy\n    grade\n    course_rank\n    class_rank\n  }\n":
     types.DxIntlRecordsFieldsFragmentDoc,
-  "\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n":
+  "\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n    start\n  }\n":
     types.DxIntlScoresFieldsFragmentDoc,
   "\n  fragment dxIntlRecordsWithHistoryFields on dx_intl_records_with_history {\n    card_name\n    title\n    trophy\n    rating\n    max_rating\n    rating_legacy\n    grade\n    course_rank\n    class_rank\n  }\n":
     types.DxIntlRecordsWithHistoryFieldsFragmentDoc,
@@ -43,6 +43,8 @@ const documents = {
     types.DxIntlSongsDocument,
   "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n":
     types.DxIntlNewRatingStatsDocument,
+  "\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n":
+    types.DxIntlRecordWithScoresDocument,
   "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n":
     types.DxIntlPlayersEditableDocument,
   "\n  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {\n    insert_dx_intl_players_one(\n      object: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n":
@@ -141,8 +143,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n"
-): (typeof documents)["\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n"]
+  source: "\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n    start\n  }\n"
+): (typeof documents)["\n  fragment dxIntlScoresFields on dx_intl_scores {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n    start\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -167,6 +169,12 @@ export function graphql(
 export function graphql(
   source: "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"
 ): (typeof documents)["\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

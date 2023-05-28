@@ -2,23 +2,31 @@ import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
-import {
-  DxIntlRecordWithScoresDocument,
-  Dx_Intl_Notes,
-} from "../../generated/graphql"
+import { getFragmentData, graphql } from "../../gql"
 import Record from "../components/Record"
+import { dxIntlRecordsFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 
-export type NoteEntry = Pick<
-  Dx_Intl_Notes,
-  "song_id" | "deluxe" | "difficulty" | "level" | "internal_lv"
->
+const dxIntlRecordWithScoresDocument = graphql(`
+  query dxIntlRecordWithScores($nickname: String!) {
+    dx_intl_players(where: { nickname: { _eq: $nickname } }) {
+      updated_at
+      private
+      dx_intl_record {
+        ...dxIntlRecordsFields
+      }
+      dx_intl_scores {
+        ...dxIntlScoresFields
+      }
+    }
+  }
+`)
 
 const Player = () => {
   const params = useParams<"nickname">()
 
   const [recordResult] = useQuery({
-    query: DxIntlRecordWithScoresDocument,
+    query: dxIntlRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
   })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
@@ -33,7 +41,7 @@ const Player = () => {
     return <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
   }
   const player = recordResult.data.dx_intl_players[0]
-  const record = player.dx_intl_record
+  const record = getFragmentData(dxIntlRecordsFields, player.dx_intl_record)
 
   if (record == null) {
     return (

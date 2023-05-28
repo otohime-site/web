@@ -8574,6 +8574,7 @@ export type DxIntlScoresFieldsFragment = {
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
   sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+  start: string
 } & { " $fragmentName"?: "DxIntlScoresFieldsFragment" }
 
 export type DxIntlRecordsWithHistoryFieldsFragment = {
@@ -8655,6 +8656,33 @@ export type DxIntlNewRatingStatsQuery = {
     __typename?: "dx_intl_new_rating_stats"
     range?: string | null
     count?: number | null
+  }>
+}
+
+export type DxIntlRecordWithScoresQueryVariables = Exact<{
+  nickname: Scalars["String"]["input"]
+}>
+
+export type DxIntlRecordWithScoresQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    updated_at?: string | null
+    private: boolean
+    dx_intl_record?:
+      | ({ __typename?: "dx_intl_records" } & {
+          " $fragmentRefs"?: {
+            DxIntlRecordsFieldsFragment: DxIntlRecordsFieldsFragment
+          }
+        })
+      | null
+    dx_intl_scores: Array<
+      { __typename?: "dx_intl_scores" } & {
+        " $fragmentRefs"?: {
+          DxIntlScoresFieldsFragment: DxIntlScoresFieldsFragment
+        }
+      }
+    >
   }>
 }
 
@@ -8890,6 +8918,7 @@ export const DxIntlScoresFieldsFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "score" } },
           { kind: "Field", name: { kind: "Name", value: "combo_flag" } },
           { kind: "Field", name: { kind: "Name", value: "sync_flag" } },
+          { kind: "Field", name: { kind: "Name", value: "start" } },
         ],
       },
     },
@@ -9961,6 +9990,147 @@ export const DxIntlNewRatingStatsDocument = {
 } as unknown as DocumentNode<
   DxIntlNewRatingStatsQuery,
   DxIntlNewRatingStatsQueryVariables
+>
+export const DxIntlRecordWithScoresDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlRecordWithScores" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nickname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "nickname" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+                { kind: "Field", name: { kind: "Name", value: "private" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dx_intl_record" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "dxIntlRecordsFields" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "dx_intl_scores" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "dxIntlScoresFields" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlRecordsFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_records" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "card_name" } },
+          { kind: "Field", name: { kind: "Name", value: "title" } },
+          { kind: "Field", name: { kind: "Name", value: "trophy" } },
+          { kind: "Field", name: { kind: "Name", value: "rating" } },
+          { kind: "Field", name: { kind: "Name", value: "max_rating" } },
+          { kind: "Field", name: { kind: "Name", value: "rating_legacy" } },
+          { kind: "Field", name: { kind: "Name", value: "grade" } },
+          { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+          { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlScoresFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_scores" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "song_id" } },
+          { kind: "Field", name: { kind: "Name", value: "deluxe" } },
+          { kind: "Field", name: { kind: "Name", value: "difficulty" } },
+          { kind: "Field", name: { kind: "Name", value: "score" } },
+          { kind: "Field", name: { kind: "Name", value: "combo_flag" } },
+          { kind: "Field", name: { kind: "Name", value: "sync_flag" } },
+          { kind: "Field", name: { kind: "Name", value: "start" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlRecordWithScoresQuery,
+  DxIntlRecordWithScoresQueryVariables
 >
 export const DxIntlPlayersEditableDocument = {
   kind: "Document",

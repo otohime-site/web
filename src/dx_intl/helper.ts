@@ -1,14 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import { saveAs } from "file-saver"
 import {
-  DxIntlRecordWithScoresQuery,
-  Dx_Intl_Notes,
-  Dx_Intl_Scores,
-  Dx_Intl_Songs,
-  Dx_Intl_Variants,
-  Scalars,
-} from "../generated/graphql"
-import {
   categories,
   comboFlags,
   difficulties,
@@ -20,6 +12,7 @@ import {
   syncFlags,
   versions,
 } from "./models/constants"
+import { dxIntlScoresFields } from "./models/fragments"
 import { dxIntlSongsDocument } from "./models/queries"
 
 export type GROUP_BY = "category" | "version" | "level" | "rating_ranks"
@@ -33,32 +26,33 @@ export type ORDER_BY =
   | "rating"
 
 export type NoteList = Array<{
-  level: Scalars["dx_intl_level"]["output"]
+  level: (typeof levels)[number]
 }>
 
-type VariantEntryNote = Pick<
-  Dx_Intl_Notes,
-  "difficulty" | "level" | "internal_lv"
-> & {
+interface VariantEntryNote {
+  difficulty: number
+  level: (typeof levels)[number]
+  internal_lv?: number | null
   hash: string
 }
 
-// Use to flatten the song list
-export type VariantEntry = { song_id: string } & Pick<
-  Dx_Intl_Songs,
-  "category" | "title" | "order"
-> &
-  Pick<Dx_Intl_Variants, "deluxe" | "version" | "active"> & {
-    notes: VariantEntryNote[]
-  }
-
-export type ScoreEntry =
-  DxIntlRecordWithScoresQuery["dx_intl_players"][0]["dx_intl_scores"][0]
+export interface VariantEntry {
+  song_id: string
+  category: number
+  title: string
+  order: number
+  deluxe: boolean
+  version: number
+  active: boolean
+  notes: VariantEntryNote[]
+}
 
 export interface InternalLvMapEntry {
   new: boolean
   internalLv: number
 }
+
+type ScoreEntry = ResultOf<typeof dxIntlScoresFields>
 
 export const getNoteHash = (instance: {
   // As we cannot restrict null in history tables
@@ -98,7 +92,7 @@ export const SCORE_STATS = ["A", "S", "S+", "SS", "SS+", "SSS", "SSS+"] as const
 type ScoreStat = (typeof SCORE_STATS)[number]
 
 export const arrangeComboStats = (
-  scores: Array<Pick<Dx_Intl_Scores, "combo_flag"> | undefined>
+  scores: Array<{ combo_flag: (typeof comboFlags)[number] } | undefined>
 ): Map<ComboStat, number> =>
   scores.reduce((prev, row) => {
     const comboFlag = row?.combo_flag ?? ""
@@ -115,7 +109,7 @@ export const COMBO_STATS = ["fc", "fc+", "ap", "ap+"] as const
 type ComboStat = (typeof COMBO_STATS)[number]
 
 export const arrangeSyncStats = (
-  scores: Array<Pick<Dx_Intl_Scores, "sync_flag"> | undefined>
+  scores: Array<{ sync_flag: (typeof syncFlags)[number] } | undefined>
 ): Map<SyncStat, number> =>
   scores.reduce((prev, row) => {
     const syncFlag = row?.sync_flag ?? ""
