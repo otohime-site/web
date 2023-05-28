@@ -23,6 +23,8 @@ const documents = {
     types.RegenerateTokenDocument,
   "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n":
     types.DeleteUserDocument,
+  "\n  query dxIntlPlayersForUser($userId: String!) {\n    dx_intl_players(where: { user_id: { _eq: $userId } }) {\n      ...dxIntlPlayersFields\n    }\n  }\n":
+    types.DxIntlPlayersForUserDocument,
   "\n  fragment dxIntlPlayersFields on dx_intl_players {\n    id\n    nickname\n    private\n    created_at\n    updated_at\n    dx_intl_record {\n      card_name\n      rating\n      grade\n      course_rank\n      class_rank\n    }\n  }\n":
     types.DxIntlPlayersFieldsFragmentDoc,
   "\n  fragment dxIntlRecordsFields on dx_intl_records {\n    card_name\n    title\n    trophy\n    rating\n    max_rating\n    rating_legacy\n    grade\n    course_rank\n    class_rank\n  }\n":
@@ -101,6 +103,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"
 ): (typeof documents)["\n  mutation deleteUser {\n    delete_users(where: {}) {\n      affected_rows\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query dxIntlPlayersForUser($userId: String!) {\n    dx_intl_players(where: { user_id: { _eq: $userId } }) {\n      ...dxIntlPlayersFields\n    }\n  }\n"
+): (typeof documents)["\n  query dxIntlPlayersForUser($userId: String!) {\n    dx_intl_players(where: { user_id: { _eq: $userId } }) {\n      ...dxIntlPlayersFields\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

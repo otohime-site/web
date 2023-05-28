@@ -13,13 +13,6 @@ fragment dxIntlPlayersFields on dx_intl_players {
   }
 }
 
-
-query dxIntlPlayersForUser($userId: String!) {
-  dx_intl_players(where: { user_id: { _eq: $userId } }) {
-    ...dxIntlPlayersFields
-  }
-}
-
 query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
   other_players: dx_intl_players(
     where: { nickname: { _ilike: $nickname_like }, dx_intl_record: {} }

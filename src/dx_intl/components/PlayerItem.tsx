@@ -1,19 +1,19 @@
+import { ResultOf } from "@graphql-typed-document-node/core"
 import { MdLock, MdPublic } from "react-icons/md"
 import { formatRelative } from "../../common/utils/datetime"
-import {
-  DxIntlPlayersForUserQuery,
-  Dx_Intl_Records,
-} from "../../generated/graphql"
 import {
   classRankNames,
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
+import { dxIntlPlayersFields } from "../models/fragments"
 import classes from "./PlayerItem.module.css"
 
-const getGradeOrRanks = (
-  record: Pick<Dx_Intl_Records, "grade" | "course_rank" | "class_rank">
-): string => {
+const getGradeOrRanks = (record: {
+  grade?: number | null
+  course_rank?: number | null
+  class_rank?: number | null
+}): string => {
   if (record.grade != null) {
     return gradeNames[record.grade] ?? ""
   }
@@ -27,7 +27,7 @@ const getGradeOrRanks = (
 }
 
 const formatUpdatedAt = (
-  player: DxIntlPlayersForUserQuery["dx_intl_players"][0]
+  player: ResultOf<typeof dxIntlPlayersFields>
 ): string =>
   player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
@@ -35,7 +35,7 @@ const PlayerItem = ({
   player,
   forAutoComplete,
 }: {
-  player: DxIntlPlayersForUserQuery["dx_intl_players"][0]
+  player: ResultOf<typeof dxIntlPlayersFields>
   selected?: boolean
   forAutoComplete?: boolean
   onSelect?: (id: number) => void

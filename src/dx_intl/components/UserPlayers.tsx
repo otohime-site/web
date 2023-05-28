@@ -3,17 +3,29 @@ import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
-import { DxIntlPlayersForUserDocument } from "../../generated/graphql"
+import { getFragmentData, graphql } from "../../gql"
+import { dxIntlPlayersFields } from "../models/fragments"
 import PlayerItem from "./PlayerItem"
+
+const dxIntlPlayersForUserDocument = graphql(`
+  query dxIntlPlayersForUser($userId: String!) {
+    dx_intl_players(where: { user_id: { _eq: $userId } }) {
+      ...dxIntlPlayersFields
+    }
+  }
+`)
 
 const UserPlayers = () => {
   const user = useUser()
   const [playersResult] = useQuery({
-    query: DxIntlPlayersForUserDocument,
+    query: dxIntlPlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
-  const players = playersResult.data?.dx_intl_players
+  const players = getFragmentData(
+    dxIntlPlayersFields,
+    playersResult.data?.dx_intl_players
+  )
 
   if (user == null) {
     return <></>

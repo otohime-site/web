@@ -8483,6 +8483,21 @@ export type DeleteUserMutation = {
   } | null
 }
 
+export type DxIntlPlayersForUserQueryVariables = Exact<{
+  userId: Scalars["String"]["input"]
+}>
+
+export type DxIntlPlayersForUserQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<
+    { __typename?: "dx_intl_players" } & {
+      " $fragmentRefs"?: {
+        DxIntlPlayersFieldsFragment: DxIntlPlayersFieldsFragment
+      }
+    }
+  >
+}
+
 export type DxIntlPlayersFieldsFragment = {
   __typename?: "dx_intl_players"
   id: number
@@ -9267,6 +9282,113 @@ export const DeleteUserDocument = {
     },
   ],
 } as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>
+export const DxIntlPlayersForUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayersForUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "user_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "userId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "dxIntlPlayersFields" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "dxIntlPlayersFields" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "dx_intl_players" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "nickname" } },
+          { kind: "Field", name: { kind: "Name", value: "private" } },
+          { kind: "Field", name: { kind: "Name", value: "created_at" } },
+          { kind: "Field", name: { kind: "Name", value: "updated_at" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_record" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "card_name" } },
+                { kind: "Field", name: { kind: "Name", value: "rating" } },
+                { kind: "Field", name: { kind: "Name", value: "grade" } },
+                { kind: "Field", name: { kind: "Name", value: "course_rank" } },
+                { kind: "Field", name: { kind: "Name", value: "class_rank" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlPlayersForUserQuery,
+  DxIntlPlayersForUserQueryVariables
+>
 export const DxIntlSongsDocument = {
   kind: "Document",
   definitions: [
