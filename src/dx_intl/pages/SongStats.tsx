@@ -3,10 +3,10 @@ import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
-import { DxIntlSongsByIdDocument } from "../../generated/graphql"
 import { graphql } from "../../gql"
 import { NoteList } from "../helper"
 import { difficulties } from "../models/constants"
+import { dxIntlSongsDocument } from "../models/queries"
 
 //  font-family: "M PLUS 1p";
 //  font-weight: 700;
@@ -38,10 +38,11 @@ const SongStats = () => {
   const difficulty =
     params.difficulty != null ? parseInt(params.difficulty, 10) : null
   const [songsResult] = useQuery({
-    query: DxIntlSongsByIdDocument,
-    variables: { idLike: `${songId}%` },
+    query: dxIntlSongsDocument,
   })
-  const song = songsResult.data?.dx_intl_songs[0]
+  const song = (songsResult.data?.dx_intl_songs || []).filter((song) =>
+    song.id.startsWith(songId)
+  )[0]
   const variantMap = new Map(
     (song?.dx_intl_variants ?? []).map((variant) => [
       variant.deluxe,
