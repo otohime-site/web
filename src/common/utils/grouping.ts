@@ -1,5 +1,4 @@
 // Watch https://github.com/tc39/proposal-array-grouping later
-
 export const groupByKey = <T, K extends keyof T>(
   arr: T[],
   key: K
