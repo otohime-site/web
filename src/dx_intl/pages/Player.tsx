@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
@@ -8,6 +9,7 @@ import { ScoreCell } from "../components/ScoreCell"
 import { getNoteHash, getRating } from "../helper"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
+import { flatSongsResult } from "../models/utils"
 
 const dxIntlRecordWithScoresDocument = graphql(`
   query dxIntlRecordWithScores($nickname: String!) {
@@ -32,6 +34,41 @@ const Player = () => {
     variables: { nickname: params.nickname ?? "" },
   })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const flattedEntries = useMemo(
+    () => flatSongsResult(songsResult.data),
+    [songsResult]
+  )
+
+  const scoreTable = useMemo(() => {
+    if (!recordResult.data) {
+      return []
+    }
+    const maxVersion = Math.max(...flattedEntries.map((entry) => entry.version))
+    const scores =
+      getFragmentData(
+        dxIntlScoresFields,
+        recordResult.data.dx_intl_players[0].dx_intl_scores
+      ) ?? []
+    const scoresMap = new Map(
+      scores.map((score) => [getNoteHash(score), score])
+    )
+    return flattedEntries.map((entry) => {
+      const score = scoresMap.get(entry.hash)
+      return {
+        ...entry,
+        score: score?.score,
+        combo_flag: score?.combo_flag ?? "",
+        sync_flag: score?.sync_flag ?? "",
+        updated_at: score?.start,
+        new: entry.version == maxVersion,
+        rating:
+          score?.score && entry.internal_lv
+            ? getRating(score.score, entry.internal_lv)
+            : undefined,
+        rating_target: false,
+      }
+    })
+  }, [flattedEntries, recordResult])
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -43,49 +80,9 @@ const Player = () => {
     return <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
   }
 
-  performance.mark("start")
-  const songs = songsResult.data?.dx_intl_songs ?? []
-  const flatted = songs.flatMap((song) =>
-    song.dx_intl_variants.flatMap((variant) =>
-      variant.dx_intl_notes.map((note) => ({
-        song_id: song.id,
-        category: song.category,
-        title: song.title,
-        order: song.order,
-        deluxe: variant.deluxe,
-        version: variant.version,
-        active: variant.active,
-        difficulty: note.difficulty,
-        level: note.level,
-        internal_lv: note.internal_lv,
-      }))
-    )
-  )
-  const maxVersion = Math.max(...flatted.map((row) => row.version))
   const player = recordResult.data.dx_intl_players[0]
   const record = getFragmentData(dxIntlRecordsFields, player.dx_intl_record)
-  const scores =
-    getFragmentData(dxIntlScoresFields, player.dx_intl_scores) ?? []
-  const scoresMap = new Map(scores.map((score) => [getNoteHash(score), score]))
 
-  const scoreTable = flatted.map((row) => {
-    const hash = getNoteHash(row)
-    const score = scoresMap.get(hash)
-    return {
-      ...row,
-      hash,
-      score: score?.score,
-      combo_flag: score?.combo_flag,
-      sync_flag: score?.sync_flag,
-      updated_at: score?.start,
-      new: row.version == maxVersion,
-      rating:
-        score?.score && row.internal_lv
-          ? getRating(score.score, row.internal_lv)
-          : undefined,
-      rating_target: false,
-    }
-  })
   const ratingTargets = new Set([
     ...scoreTable
       .filter((s) => s.new)
@@ -101,9 +98,7 @@ const Player = () => {
   scoreTable.forEach((s) => {
     s.rating_target = ratingTargets.has(s.hash)
   })
-  performance.mark("end")
   console.log(scoreTable)
-  console.log(performance.measure("qq", "start", "end"))
 
   if (record == null) {
     return (
@@ -125,17 +120,17 @@ const Player = () => {
           />
         </div>
       </div>
-      <table>
+      <table style={{ fontFamily: '"M PLUS 1p"', fontWeight: 400 }}>
         <thead>
           <tr>
-            <td>Title</td>
-            <td>DX</td>
-            <td>Score</td>
+            <th>Title</th>
+            <th>DX</th>
+            <th>Score</th>
           </tr>
         </thead>
         <tbody>
           {scoreTable
-            .filter((s) => s.difficulty === 2)
+            .filter((s) => !!s)
             .map((s) => (
               <tr key={s.hash}>
                 <td>{s.title}</td>

@@ -1,4 +1,9 @@
-import { comboFlags, levels, syncFlags } from "../models/constants"
+import {
+  comboFlags,
+  difficulties,
+  levels,
+  syncFlags,
+} from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
 
 export const ScoreCell = ({
@@ -13,7 +18,7 @@ export const ScoreCell = ({
   }
 }) => (
   <>
-    {difficulty}
+    {difficulties[difficulty].substring(0, 3).toUpperCase()}
     {level}
     {score}
     <ComboFlag flag={combo_flag} /> <SyncFlag flag={sync_flag} />

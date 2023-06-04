@@ -11,7 +11,7 @@ import { formatDateTime } from "../../common/utils/datetime"
 import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
-import { getNoteHash, prepareSongs, VariantEntry } from "../helper"
+import { getNoteHash } from "../helper"
 import {
   classRankNames,
   difficulties,
@@ -24,6 +24,7 @@ import {
   dxIntlScoresWithHistoryFields,
 } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
+import { flatSongsResult } from "../models/utils"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`
@@ -122,23 +123,10 @@ const PlayerHistory = () => {
     pause: params.hash == null || params.hash.length === 0,
   })
 
-  // Arrange variants
-  const entries = useMemo<VariantEntry[]>(() => {
-    if (songsResult.error != null || songsResult.data == null) {
-      return []
-    }
-    const { variantEntries } = prepareSongs(songsResult.data.dx_intl_songs)
-    return variantEntries.reduce<VariantEntry[]>((prev, entry) => {
-      const { notes, ...restEntry } = entry
-      return [
-        ...prev,
-        ...notes.map((note) => ({
-          ...restEntry,
-          notes: [note],
-        })),
-      ]
-    }, [])
-  }, [songsResult])
+  const flattedEntries = useMemo(
+    () => flatSongsResult(songsResult.data),
+    [songsResult]
+  )
 
   const { beforeMap, afterMap } = useMemo(() => {
     const beforeScores = getFragmentData(
@@ -343,27 +331,25 @@ const PlayerHistory = () => {
         ) : (
           <></>
         )}
-        {entries
-          .filter((entry) => {
-            const hash = entry.notes[0].hash
-            return beforeMap.has(hash) || afterMap.has(hash)
-          })
+        {flattedEntries
+          .filter(
+            (entry) => beforeMap.has(entry.hash) || afterMap.has(entry.hash)
+          )
           .map((entry) => {
-            const note = entry.notes[0]
-            const before = beforeMap.get(note.hash)
-            const after = afterMap.get(note.hash)
+            const before = beforeMap.get(entry.hash)
+            const after = afterMap.get(entry.hash)
             return (
-              <tr key={note.hash}>
+              <tr key={entry.hash}>
                 <th>{entry.title}</th>
                 <td>
                   <Variant deluxe={entry.deluxe} />
                 </td>
                 <td
                   className={`${classes["diff"]} ${
-                    classes[difficultyClasses[note.difficulty]]
+                    classes[difficultyClasses[entry.difficulty]]
                   }`}
                 >
-                  {difficulties[note.difficulty].slice(0, 3)} {note.level}
+                  {difficulties[entry.difficulty].slice(0, 3)} {entry.level}
                 </td>
                 <td>
                   {before != null ? (

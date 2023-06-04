@@ -13,7 +13,6 @@ import {
   versions,
 } from "./models/constants"
 import { dxIntlScoresFields } from "./models/fragments"
-import { dxIntlSongsDocument } from "./models/queries"
 
 export type GROUP_BY = "category" | "version" | "level" | "rating_ranks"
 export type ORDER_BY =
@@ -130,73 +129,6 @@ export const getRating = (score: number, internalLv: number): number => {
   return rankScore != null
     ? Math.floor(rankScore[2] * Math.min(100.5, score) * internalLv)
     : 0
-}
-
-export const prepareSongs = (
-  songs: ResultOf<typeof dxIntlSongsDocument>["dx_intl_songs"]
-): {
-  variantEntries: VariantEntry[]
-  internalLvMap: Map<string, InternalLvMapEntry>
-} => {
-  let maxVersion = 0
-  const internalLvList: Array<{
-    hash: string
-    version: number
-    internalLv: number
-  }> = []
-  const variantEntriesRaw = songs.reduce<VariantEntry[]>(
-    (accr, song) => [
-      // We aggregate the result entry and caculate rating first.
-      ...accr,
-      ...song.dx_intl_variants.map((variant) => {
-        // Calculate max version by backend data
-        // to prevent version update errors.
-        maxVersion = Math.max(variant.version, maxVersion)
-        return {
-          song_id: song.id,
-          category: song.category,
-          title: song.title,
-          order: song.order,
-          deluxe: variant.deluxe,
-          active: variant.active,
-          version: variant.version,
-          notes: variant.dx_intl_notes.map((note) => {
-            const hash = getNoteHash({
-              song_id: song.id,
-              deluxe: variant.deluxe,
-              difficulty: note.difficulty,
-            })
-            if (variant.active && note.internal_lv != null) {
-              internalLvList.push({
-                hash,
-                version: variant.version,
-                internalLv: note.internal_lv,
-              })
-            }
-            return {
-              hash,
-              difficulty: note.difficulty,
-              level: note.level,
-              internal_lv: note.internal_lv,
-            }
-          }),
-        }
-      }),
-    ],
-    []
-  )
-  // Sort by active or not
-  const variantEntries = [
-    ...variantEntriesRaw.filter((e) => !e.active),
-    ...variantEntriesRaw.filter((e) => e.active),
-  ]
-  const internalLvMap = new Map(
-    internalLvList.map((ilEntry) => [
-      ilEntry.hash,
-      { new: ilEntry.version === maxVersion, internalLv: ilEntry.internalLv },
-    ])
-  )
-  return { variantEntries, internalLvMap }
 }
 
 export const getRatingAndRanks = (params: {
