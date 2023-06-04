@@ -7,15 +7,15 @@ export const ScoreCell = ({
   data: {
     difficulty: number
     level: (typeof levels)[number]
-    score: number
+    score?: number
     combo_flag: (typeof comboFlags)[number]
     sync_flag: (typeof syncFlags)[number]
   }
-}) => {
-  ;<>
+}) => (
+  <>
     {difficulty}
     {level}
     {score}
     <ComboFlag flag={combo_flag} /> <SyncFlag flag={sync_flag} />
   </>
-}
+)
