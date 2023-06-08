@@ -14,6 +14,7 @@ import {
   ScoreTableEntry,
   ScoreTableGroups,
 } from "../models/aggregation"
+import { versions } from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 
@@ -44,10 +45,15 @@ const Player = () => {
     () => flatSongsResult(songsResult.data),
     [songsResult]
   )
+  // Used to get rating in reliable way during major version updates
+  const maxVersion = useMemo(
+    () => Math.max(...flattedEntries.map((entry) => entry.version)),
+    [flattedEntries]
+  )
 
-  const scoreTable: ScoreTableEntry[] = useMemo(() => {
+  const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
-      return []
+      return { scoreTable: [], noteInconsistency: false }
     }
     const maxVersion = Math.max(...flattedEntries.map((entry) => entry.version))
     const scores =
@@ -58,8 +64,9 @@ const Player = () => {
     const scoresMap = new Map(
       scores.map((score) => [getNoteHash(score), score])
     )
-    return flattedEntries.map((entry) => {
+    const scoreTable = flattedEntries.map<ScoreTableEntry>((entry) => {
       const score = scoresMap.get(entry.hash)
+      scoresMap.delete(entry.hash)
       return {
         ...entry,
         score: score?.score,
@@ -73,6 +80,8 @@ const Player = () => {
             : undefined,
       }
     })
+    // It may be inconsistent if songs are added but song list not updated
+    return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
 
   const scoreTableGroups: ScoreTableGroups = useMemo(
@@ -114,6 +123,13 @@ const Player = () => {
           />
         </div>
       </div>
+      {maxVersion > versions.length - 1 || noteInconsistency ? (
+        <Alert severity="error">
+          成績單目前有同步狀況，請試圖重新整理頁面。
+        </Alert>
+      ) : (
+        <></>
+      )}
       <table style={{ fontFamily: '"M PLUS 1p"', fontWeight: 400 }}>
         <thead>
           <tr>
@@ -123,7 +139,7 @@ const Player = () => {
           </tr>
         </thead>
         <tbody>
-          {scoreTable
+          {(scoreTableGroups.get("level")?.get("13+") || [])
             .filter((s) => !!s)
             .map((s) => (
               <tr key={s.hash}>
