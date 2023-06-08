@@ -12,6 +12,7 @@ import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
 import { getNoteHash } from "../helper"
+import { flatSongsResult } from "../models/aggregation"
 import {
   classRankNames,
   difficulties,
@@ -24,7 +25,6 @@ import {
   dxIntlScoresWithHistoryFields,
 } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
-import { flatSongsResult } from "../models/utils"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`

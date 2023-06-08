@@ -24,3 +24,33 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
       }))
     )
   )
+
+export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
+  score?: number
+  combo_flag: string
+  sync_flag: string
+  updated_at?: string
+  current_version: boolean
+  rating?: number
+}
+
+export const groupBy = [
+  "category",
+  "version",
+  "level",
+  "current_version",
+] as const
+
+export type ScoreTableGroups = Map<
+  (typeof groupBy)[number],
+  Map<ScoreTableEntry[(typeof groupBy)[number]], ScoreTableEntry[]>
+>
+
+export type ORDER_BY =
+  | "default"
+  | "level"
+  | "internalLv"
+  | "score"
+  | "combo"
+  | "sync"
+  | "rating"
