@@ -5,6 +5,7 @@ import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { groupByKey } from "../../common/utils/grouping"
 import { getFragmentData, graphql } from "../../gql"
+import { PlayerPortfolio } from "../components/PlayerPortfolio"
 import Record from "../components/Record"
 import { ScoreCell } from "../components/ScoreCell"
 import { getNoteHash, getRating } from "../helper"
@@ -70,8 +71,8 @@ const Player = () => {
       return {
         ...entry,
         score: score?.score,
-        combo_flag: score?.combo_flag ?? "",
-        sync_flag: score?.sync_flag ?? "",
+        combo_flag: score?.combo_flag,
+        sync_flag: score?.sync_flag,
         updated_at: score?.start,
         current_version: entry.version == maxVersion,
         rating:
@@ -123,6 +124,7 @@ const Player = () => {
           />
         </div>
       </div>
+      <PlayerPortfolio scoreTableGroups={scoreTableGroups} />
       {maxVersion > versions.length - 1 || noteInconsistency ? (
         <Alert severity="error">
           成績單目前有同步狀況，請試圖重新整理頁面。

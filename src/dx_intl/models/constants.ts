@@ -218,3 +218,31 @@ export const classRankNames = [
   "SSS1",
   "LEGEND",
 ]
+
+export const versionTitles = [
+  "", // As the maimai and maimai PLUS will collect together
+  "真",
+  "超",
+  "檄",
+  "橙",
+  "暁",
+  "桃",
+  "櫻",
+  "紫",
+  "菫",
+  "白",
+  "雪",
+  "輝",
+  "熊",
+  "華",
+  "爽",
+  "煌",
+  "宙",
+  "星",
+  // "祭",
+]
+
+export const versionTitleExcludes = [
+  "c6257734b2ef0d743c5a8f46582afaee46bc80d8ed2ec662105a500f313e322d", // 前前前世
+  "47e7d0eb19afd8ccec7d013f1a6aed13d428d34983fc7c717145e347a57c258c", // ジングルベル
+]

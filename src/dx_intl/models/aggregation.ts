@@ -1,5 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import { getNoteHash } from "../helper"
+import { comboFlags, syncFlags } from "./constants"
 import { dxIntlSongsDocument } from "./queries"
 
 export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
@@ -27,8 +28,8 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
 
 export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   score?: number
-  combo_flag: string
-  sync_flag: string
+  combo_flag?: (typeof comboFlags)[number]
+  sync_flag?: (typeof syncFlags)[number]
   updated_at?: string
   current_version: boolean
   rating?: number
