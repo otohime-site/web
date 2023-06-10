@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { MdHelpOutline } from "react-icons/md"
 import { Link } from "react-router-dom"
 import { getRankScoreIndex, getRating } from "./helper"
-import { levels, RANK_SCORES } from "./models/constants"
+import { RANK_SCORES, levels } from "./models/constants"
 
 const NoteRating = ({
   note,

@@ -8,7 +8,8 @@
 @import "@radix-ui/colors/indigo.css";
 @import "@radix-ui/colors/plum.css";
 
-$colors: "indigo", "red", "blue", "green", "yellow", "mauve", "violet", "indigo", "plum";
+$colors: "indigo", "red", "blue", "green", "yellow", "mauve", "violet", "indigo",
+  "plum";
 
 @each $c in $colors {
   .#{$c} {

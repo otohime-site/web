@@ -2,21 +2,21 @@ import { cacheExchange, fetchExchange } from "@urql/core"
 import { authExchange } from "@urql/exchange-auth"
 import { initializeApp } from "firebase/app"
 import {
+  User,
   getAuth,
   getRedirectResult,
   onAuthStateChanged,
-  User,
 } from "firebase/auth"
 import {
-  createContext,
   PropsWithChildren,
   ReactNode,
+  createContext,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react"
-import { createClient, Provider as UrqlProvider } from "urql"
+import { Provider as UrqlProvider, createClient } from "urql"
 import firebaseConfig from "../firebase"
 import { apiHost } from "../host"
 

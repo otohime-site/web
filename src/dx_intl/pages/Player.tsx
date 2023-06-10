@@ -11,10 +11,10 @@ import Record from "../components/Record"
 import { ScoreCell } from "../components/ScoreCell"
 import { getNoteHash, getRating } from "../helper"
 import {
-  flatSongsResult,
-  groupBy,
   ScoreTableEntry,
   ScoreTableGroups,
+  flatSongsResult,
+  groupBy,
 } from "../models/aggregation"
 import { versions } from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
