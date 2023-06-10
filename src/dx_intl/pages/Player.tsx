@@ -1,3 +1,4 @@
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useParams } from "react-router"
 import { Titled } from "react-titled"
@@ -89,6 +90,11 @@ const Player = () => {
     () => new Map(groupBy.map((key) => [key, groupByKey(scoreTable, key)])),
     [scoreTable]
   )
+  const tanstackTable = useReactTable({
+    data: [],
+    columns: [],
+    getCoreRowModel: getCoreRowModel(),
+  })
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
