@@ -1,4 +1,3 @@
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useParams } from "react-router"
 import { Titled } from "react-titled"
@@ -7,8 +6,8 @@ import { Alert } from "../../common/components/ui/Alert"
 import { groupByKey } from "../../common/utils/grouping"
 import { getFragmentData, graphql } from "../../gql"
 import { PlayerPortfolio } from "../components/PlayerPortfolio"
+import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
-import { ScoreCell } from "../components/ScoreCell"
 import { getNoteHash, getRating } from "../helper"
 import {
   ScoreTableEntry,
@@ -90,11 +89,6 @@ const Player = () => {
     () => new Map(groupBy.map((key) => [key, groupByKey(scoreTable, key)])),
     [scoreTable]
   )
-  const tanstackTable = useReactTable({
-    data: [],
-    columns: [],
-    getCoreRowModel: getCoreRowModel(),
-  })
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -138,28 +132,7 @@ const Player = () => {
       ) : (
         <></>
       )}
-      <table style={{ fontFamily: '"M PLUS 1p"', fontWeight: 400 }}>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>DX</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(scoreTableGroups.get("level")?.get("13+") || [])
-            .filter((s) => !!s)
-            .map((s) => (
-              <tr key={s.hash}>
-                <td>{s.title}</td>
-                <td>{s.deluxe}</td>
-                <td>
-                  <ScoreCell data={s} />
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <PlayerScoreTable scoreTable={scoreTable} />
     </>
   )
 }
