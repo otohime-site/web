@@ -10,7 +10,7 @@ const container = document.getElementById("root")
 createRoot(container!).render(
   <BrowserRouter>
     <Titled title="Otohime">
-      <AppProvider>
+      <AppProvider skeleton={<>Loading...</>}>
         <IconContext.Provider value={{ className: "react-icons" }}>
           <App />
         </IconContext.Provider>
