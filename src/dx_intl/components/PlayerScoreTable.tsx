@@ -20,8 +20,8 @@ export const PlayerScoreTable = ({
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [grouping, setGrouping] = useState<string[]>(["version", "difficulty"])
-  const [sorting, setSorting] = useState<any>([{ id: "level", desc: false }])
+  const [grouping, setGrouping] = useState<string[]>(["category"])
+  const [sorting, setSorting] = useState<any>([])
   const table = useReactTable({
     data: scoreTable,
     state: {
@@ -32,7 +32,7 @@ export const PlayerScoreTable = ({
       columnHelper.accessor("category", {
         header: "分類",
         cell: (info) => categories[info.getValue()],
-        aggregationFn: "uniqueCount",
+        aggregationFn: () => "",
       }),
       columnHelper.accessor("title", {
         header: "曲名",
@@ -92,9 +92,15 @@ export const PlayerScoreTable = ({
     <table>
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
+          <tr key={headerGroup.id} style={{ background: "#AAAAAA" }}>
             {headerGroup.headers.map((header) => (
               <th key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 {header.column.getCanGroup() ? (
                   <button onClick={header.column.getToggleGroupingHandler()}>
                     G
@@ -102,12 +108,17 @@ export const PlayerScoreTable = ({
                 ) : (
                   <></>
                 )}
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                {header.column.getCanSort() ? (
+                  <button onClick={header.column.getToggleSortingHandler()}>
+                    {header.column.getIsSorted() == "asc"
+                      ? "↑"
+                      : header.column.getIsSorted() == "desc"
+                      ? "↓"
+                      : "S"}
+                  </button>
+                ) : (
+                  <></>
+                )}
               </th>
             ))}
           </tr>
