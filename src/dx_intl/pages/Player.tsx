@@ -15,7 +15,7 @@ import {
   flatSongsResult,
   groupBy,
 } from "../models/aggregation"
-import { versions } from "../models/constants"
+import { comboFlags, syncFlags, versions } from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 
@@ -70,9 +70,9 @@ const Player = () => {
       scoresMap.delete(entry.hash)
       return {
         ...entry,
-        score: score?.score,
-        combo_flag: score?.combo_flag,
-        sync_flag: score?.sync_flag,
+        score: score?.score ?? 0,
+        combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
+        sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
         current_version: entry.version == maxVersion,
         rating:

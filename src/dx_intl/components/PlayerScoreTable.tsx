@@ -8,8 +8,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useState } from "react"
+import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
-import { categories, difficulties, levels, versions } from "../models/constants"
+import {
+  RANK_SCORES,
+  categories,
+  comboFlags,
+  difficulties,
+  levels,
+  syncFlags,
+  versions,
+} from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
 import Variant from "./Variant"
 
@@ -37,6 +46,7 @@ export const PlayerScoreTable = ({
       columnHelper.accessor("title", {
         header: "曲名",
         cell: (info) => info.getValue(),
+        aggregationFn: "count",
         enableGrouping: false,
       }),
       columnHelper.accessor("deluxe", {
@@ -66,18 +76,25 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("score", {
         header: "成績",
-        cell: (info) => info.getValue(),
-        aggregationFn: "mean",
+        cell: (info) => info.getValue()?.toFixed(4) ?? "",
+        aggregationFn: "min",
+        aggregatedCell: (info) => {
+          const rankScore = RANK_SCORES[getRankScoreIndex(info.getValue())]
+          return rankScore && rankScore[1].includes("S") ? rankScore[1] : ""
+        },
+        enableGrouping: false,
       }),
       columnHelper.accessor("combo_flag", {
         header: "Combo",
-        cell: (info) => <ComboFlag flag={info.getValue()} />,
-        aggregationFn: () => "",
+        cell: (info) => <ComboFlag flag={comboFlags[info.getValue()]} />,
+        aggregationFn: "min",
+        aggregatedCell: (info) => comboFlags[info.getValue()],
       }),
       columnHelper.accessor("sync_flag", {
         header: "Sync",
-        cell: (info) => <SyncFlag flag={info.getValue()} />,
-        aggregationFn: () => "",
+        cell: (info) => <SyncFlag flag={syncFlags[info.getValue()]} />,
+        aggregationFn: "min",
+        aggregatedCell: (info) => syncFlags[info.getValue()],
       }),
     ],
     onGroupingChange: setGrouping,
@@ -103,7 +120,7 @@ export const PlayerScoreTable = ({
                     )}
                 {header.column.getCanGroup() ? (
                   <button onClick={header.column.getToggleGroupingHandler()}>
-                    G
+                    {header.column.getIsGrouped() ? "G" : "g"}
                   </button>
                 ) : (
                   <></>
@@ -146,7 +163,7 @@ export const PlayerScoreTable = ({
                       <button onClick={row.getToggleExpandedHandler()}>
                         {row.getIsExpanded() ? "﹀" : "＞"}
                       </button>{" "}
-                      {content} ({row.subRows.length})
+                      {content}
                     </>
                   )
                   break
