@@ -38,16 +38,16 @@ export const PlayerScoreTable = ({
       sorting,
     },
     columns: [
+      columnHelper.accessor("title", {
+        header: "曲名",
+        cell: (info) => info.getValue(),
+        aggregationFn: () => "",
+        enableGrouping: false,
+      }),
       columnHelper.accessor("category", {
         header: "分類",
         cell: (info) => categories[info.getValue()],
         aggregationFn: () => "",
-      }),
-      columnHelper.accessor("title", {
-        header: "曲名",
-        cell: (info) => info.getValue(),
-        aggregationFn: "count",
-        enableGrouping: false,
       }),
       columnHelper.accessor("deluxe", {
         header: "DX",
@@ -104,7 +104,6 @@ export const PlayerScoreTable = ({
     getGroupedRowModel: getGroupedRowModel(),
     getSortedRowModel: getSortedRowModel(),
   })
-  console.log(grouping)
   return (
     <table>
       <thead>
@@ -142,52 +141,76 @@ export const PlayerScoreTable = ({
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => {
-              const state = cell.getIsGrouped()
-                ? "grouped"
-                : cell.getIsAggregated()
-                ? "aggregated"
-                : cell.getIsPlaceholder()
-                ? "placeholder"
-                : "normal"
-              let content = flexRender(
-                cell.column.columnDef.cell,
-                cell.getContext()
-              )
-              switch (state) {
-                case "grouped":
-                  content = (
-                    <>
-                      <button onClick={row.getToggleExpandedHandler()}>
-                        {row.getIsExpanded() ? "﹀" : "＞"}
-                      </button>{" "}
-                      {content}
-                    </>
+        {table.getRowModel().rows.map((row) => {
+          const visibleCells = row.getVisibleCells()
+          if (row.getIsGrouped()) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore as the library does not expose grouped row
+            const leafCount = row.leafRows.length
+
+            // To make the table more compact, we will apply colspan to grouped cell
+            // , expand to the `title` column, which needs a dedicated logic.
+            // The Tanstack table will arranged it like:
+            // [placeholder][group][placeholder][aggregated][aggregated]...
+
+            // First, find the index of the last aggregated cell,
+            // as all grouped/placeholder are placed in the left,
+            // it will also be the length of all visible grouping cells.
+            const firstAggIndex = visibleCells.findIndex(
+              (cell) => !cell.column.getIsGrouped()
+            )
+
+            // Then draw and handle colspans.
+            let groupCellDone = false
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell, index) => {
+                  if (cell.getIsGrouped()) {
+                    groupCellDone = true
+                    return (
+                      <td key={cell.id} colSpan={firstAggIndex - index + 1}>
+                        <button onClick={row.getToggleExpandedHandler()}>
+                          {row.getIsExpanded() ? "﹀" : "＞"}
+                        </button>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                        {` (${leafCount})`}
+                      </td>
+                    )
+                  } else if (cell.getIsPlaceholder()) {
+                    return !groupCellDone ? <td key={cell.id}></td> : <></>
+                  } else if (index === firstAggIndex) {
+                    return <></>
+                  }
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.aggregatedCell ??
+                          cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
                   )
-                  break
-                case "aggregated":
-                  content = flexRender(
-                    cell.column.columnDef.aggregatedCell ??
-                      cell.column.columnDef.cell,
-                    cell.getContext()
-                  )
-                  break
-                case "placeholder":
-                  content = ""
-              }
-              return (
-                <td
-                  key={cell.id}
-                  className={state != "normal" ? state : undefined}
-                >
-                  {content}
+                })}
+              </tr>
+            )
+          }
+          return (
+            <tr key={row.id}>
+              {visibleCells.map((cell) => (
+                <td key={cell.id}>
+                  {!cell.getIsPlaceholder() ? (
+                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                  ) : (
+                    <></>
+                  )}
                 </td>
-              )
-            })}
-          </tr>
-        ))}
+              ))}
+            </tr>
+          )
+        })}
       </tbody>
       <tfoot>
         {table.getFooterGroups().map((footerGroup) => (
