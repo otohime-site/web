@@ -28,6 +28,7 @@ const defaultVisibility = {
   category: false,
   version: false,
   current_version: false,
+  level: false,
 }
 
 export const PlayerScoreTable = ({
@@ -78,7 +79,8 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("difficulty", {
         header: "難易度",
-        cell: (info) => difficulties[info.getValue()],
+        cell: (info) =>
+          difficulties[info.getValue()].substring(0, 3).toUpperCase(),
         aggregationFn: () => "",
       }),
       columnHelper.accessor("level", {
@@ -89,7 +91,7 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("internal_lv", {
         header: "係數",
-        cell: (info) => info.getValue(),
+        cell: (info) => info.getValue() ?? info.row.getValue("level"),
       }),
       columnHelper.accessor("score", {
         header: "成績",
@@ -102,19 +104,19 @@ export const PlayerScoreTable = ({
         enableGrouping: false,
       }),
       columnHelper.accessor("combo_flag", {
-        header: "Combo",
+        header: "C",
         cell: (info) => comboFlags[info.getValue()],
         aggregationFn: "min",
         aggregatedCell: (info) => comboFlags[info.getValue()],
       }),
       columnHelper.accessor("sync_flag", {
-        header: "Sync",
+        header: "S",
         cell: (info) => syncFlags[info.getValue()],
         aggregationFn: "min",
         aggregatedCell: (info) => syncFlags[info.getValue()],
       }),
       columnHelper.accessor("rating", {
-        header: "Rating",
+        header: "R",
         cell: (info) => (info.getValue() ? info.getValue() : ""),
         aggregationFn: () => "",
       }),
@@ -153,14 +155,16 @@ export const PlayerScoreTable = ({
           <span>樂曲等級</span>
         </RadioCard>
       </RadioCardRoot>
-      <table style={{ width: "100%" }}>
+      <table
+        style={{ width: "100%", fontSize: "1rem", fontFamily: "'M PLUS 1p'" }}
+      >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  style={header.column.getIsGrouped() ? { width: "32px" } : {}}
+                  style={header.column.getIsGrouped() ? { width: "12px" } : {}}
                 >
                   {header.isPlaceholder ||
                   header.column.getIsGrouped() ? null : (
@@ -168,19 +172,6 @@ export const PlayerScoreTable = ({
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
-                      )}
-                      {header.column.getCanSort() ? (
-                        <button
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          {header.column.getIsSorted() == "asc"
-                            ? "↑"
-                            : header.column.getIsSorted() == "desc"
-                            ? "↓"
-                            : "S"}
-                        </button>
-                      ) : (
-                        <></>
                       )}
                     </>
                   )}
@@ -219,7 +210,7 @@ export const PlayerScoreTable = ({
                       return (
                         <td key={cell.id} colSpan={firstAggIndex - index + 1}>
                           <button onClick={row.getToggleExpandedHandler()}>
-                            {row.getIsExpanded() ? "﹀" : "＞"}
+                            {row.getIsExpanded() ? "|" : ">"}
                           </button>
                           {flexRender(
                             cell.column.columnDef.cell,
