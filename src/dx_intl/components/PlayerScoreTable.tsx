@@ -146,6 +146,9 @@ export const PlayerScoreTable = ({
         <RadioCard value="version">
           <span>版本</span>
         </RadioCard>
+        <RadioCard value="difficulty">
+          <span>難易度</span>
+        </RadioCard>
         <RadioCard value="level">
           <span>樂曲等級</span>
         </RadioCard>
