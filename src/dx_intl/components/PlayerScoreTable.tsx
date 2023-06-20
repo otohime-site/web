@@ -29,7 +29,7 @@ export const PlayerScoreTable = ({
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [grouping, setGrouping] = useState<string[]>(["category"])
+  const [grouping, setGrouping] = useState<string[]>(["category", "difficulty"])
   const [sorting, setSorting] = useState<any>([])
   const table = useReactTable({
     data: scoreTable,
@@ -110,30 +110,25 @@ export const PlayerScoreTable = ({
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} style={{ background: "#AAAAAA" }}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
+              <th key={header.id} style={{ minWidth: "32px" }}>
+                {header.isPlaceholder || header.column.getIsGrouped() ? null : (
+                  <>
+                    {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                {header.column.getCanGroup() ? (
-                  <button onClick={header.column.getToggleGroupingHandler()}>
-                    {header.column.getIsGrouped() ? "G" : "g"}
-                  </button>
-                ) : (
-                  <></>
-                )}
-                {header.column.getCanSort() ? (
-                  <button onClick={header.column.getToggleSortingHandler()}>
-                    {header.column.getIsSorted() == "asc"
-                      ? "↑"
-                      : header.column.getIsSorted() == "desc"
-                      ? "↓"
-                      : "S"}
-                  </button>
-                ) : (
-                  <></>
+                    {header.column.getCanSort() ? (
+                      <button onClick={header.column.getToggleSortingHandler()}>
+                        {header.column.getIsSorted() == "asc"
+                          ? "↑"
+                          : header.column.getIsSorted() == "desc"
+                          ? "↓"
+                          : "S"}
+                      </button>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 )}
               </th>
             ))}
@@ -144,9 +139,9 @@ export const PlayerScoreTable = ({
         {table.getRowModel().rows.map((row) => {
           const visibleCells = row.getVisibleCells()
           if (row.getIsGrouped()) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore as the library does not expose grouped row
-            const leafCount = row.leafRows.length
+            // As the library does not expose grouped row
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const leafCount = (row as any).leafRows.length
 
             // To make the table more compact, we will apply colspan to grouped cell
             // , expand to the `title` column, which needs a dedicated logic.
