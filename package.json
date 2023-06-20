@@ -20,6 +20,7 @@
     "@radix-ui/react-dialog": "^1.0.0",
     "@radix-ui/react-form": "^0.0.3",
     "@radix-ui/react-radio-group": "^1.1.2",
+    "@radix-ui/react-toggle-group": "^1.0.4",
     "@tanstack/react-table": "^8.9.2",
     "@types/babel__core": "^7.1.19",
     "@urql/exchange-auth": "^2.1.0",
