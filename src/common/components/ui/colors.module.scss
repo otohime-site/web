@@ -14,7 +14,7 @@ $colors: "indigo", "red", "blue", "green", "yellow", "mauve", "violet", "indigo"
 @each $c in $colors {
   .#{$c} {
     @for $i from 1 through 12 {
-      --scale#{$i}: var(--#{$c}#{$i});
+      --scale-#{$i}: var(--#{$c}-#{$i});
     }
   }
 }
