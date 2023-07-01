@@ -2,6 +2,8 @@ import { ScoreTableGroups } from "../models/aggregation"
 import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
+  comboFlags,
+  syncFlags,
   versionTitleExcludes,
   versionTitles,
 } from "../models/constants"
@@ -42,7 +44,7 @@ export const PlayerPortfolio = ({
     }
     if (
       versionTable.every(
-        (entry) => entry.combo_flag == "ap" || entry.combo_flag == "ap+"
+        (entry) => entry.combo_flag >= comboFlags.indexOf("ap")
       )
     ) {
       versionTitleResults.ap.push(ver)
@@ -51,9 +53,7 @@ export const PlayerPortfolio = ({
       versionTitleResults.sss.push(ver)
     }
     if (
-      versionTable.every(
-        (entry) => entry.sync_flag == "fdx" || entry.sync_flag == "fdx+"
-      )
+      versionTable.every((entry) => entry.sync_flag >= syncFlags.indexOf("fdx"))
     ) {
       versionTitleResults.fdx.push(ver)
     }
