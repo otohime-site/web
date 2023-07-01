@@ -12,7 +12,7 @@
   border-radius: 16px;
   margin: 4px 0;
   padding: 16px;
-  border: 1px solid var(--mauve7);
+  border: 1px solid var(--mauve-7);
   background: transparent;
   user-select: unset;
   font-size: 1em;
@@ -20,15 +20,15 @@
 }
 
 .radio-card:hover {
-  border-color: var(--mauve8);
+  border-color: var(--mauve-8);
 }
 
 .radio-card[data-state="checked"] {
-  border-color: var(--violet8);
+  border-color: var(--violet-8);
 }
 
 .radio-card[data-state="checked"]:hover {
-  border-color: var(--violet9);
+  border-color: var(--violet-9);
 }
 
 .radio-card .radio-card-button {
@@ -41,7 +41,7 @@
   justify-content: center;
   width: 1.2em;
   height: 1.2em;
-  border: 0.15em solid var(--mauve7);
+  border: 0.15em solid var(--mauve-7);
   border-radius: 50%;
   margin: 0;
   margin-right: 24px;
@@ -49,14 +49,14 @@
 }
 
 .radio-card[data-state="checked"] .radio-card-button {
-  border-color: var(--violet9);
+  border-color: var(--violet-9);
 }
 
 .radio-card-indicator {
   width: 0.6em;
   height: 0.6em;
   border-radius: 50%;
-  background: var(--violet9);
+  background: var(--violet-9);
 }
 
 .radio-card > :last-child {

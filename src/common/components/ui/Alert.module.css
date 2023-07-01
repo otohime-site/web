@@ -2,14 +2,14 @@
   padding: 8px;
 }
 .alert[data-severity="info"] {
-  background: var(--indigo3);
-  color: var(--indigo12);
+  background: var(--indigo-3);
+  color: va(--indigo-12);
 }
 .alert[data-severity="error"] {
-  background: var(--red3);
-  color: var(--red12);
+  background: var(--red-3);
+  color: var(--red-12);
 }
 .alert[data-severity="warning"] {
-  background: var(--yellow3);
-  color: var(--yellow12);
+  background: var(--yellow-3);
+  color: var(--yellow-12);
 }

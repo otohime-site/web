@@ -7,28 +7,28 @@
   padding: 4px 8px;
   margin: 4px;
   font-weight: bold;
-  background: var(--scale2);
-  color: var(--scale11);
-  border: 1px solid var(--scale7);
+  background: var(--scale-2);
+  color: var(--scale-11);
+  border: 1px solid var(--scale-7);
 }
 
 .button:global(.hover),
 .button:global(.focus) {
-  background: var(--scale3);
-  border-color: var(--scale8);
+  background: var(--scale-3);
+  border-color: var(--scale-8);
 }
 
 .button:global(.focus) {
-  box-shadow: inset 0 0 0 2px var(--scale8);
+  box-shadow: inset 0 0 0 2px var(--scale-8);
 }
 
 .button:global(.active) {
-  background: var(--scale4);
+  background: var(--scale-4);
 }
 
 .button:disabled {
-  background: var(--mauve2);
-  border-color: var(--mauve6);
-  color: var(--mauve8);
+  background: var(--mauve-2);
+  border-color: var(--mauve-6);
+  color: var(--mauve-8);
   cursor: default;
 }

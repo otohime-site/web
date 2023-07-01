@@ -1,5 +1,5 @@
 .text-field {
-  border: 1px solid var(--mauve7);
+  border: 1px solid var(--mauve-7);
   border-radius: 8px;
   font-size: 1em;
   padding: 0.5em;
@@ -7,13 +7,13 @@
 }
 
 .text-field:global(.focus) {
-  border-color: var(--mauve8);
+  border-color: var(--mauve-8);
 }
 
 .text-field[data-invalid="true"] {
-  border-color: var(--red7);
+  border-color: var(--red-7);
 }
 
 .text-field:global(.focus)[data-invalid="true"] {
-  border-color: var(--red8);
+  border-color: var(--red-8);
 }
