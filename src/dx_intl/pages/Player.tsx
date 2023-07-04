@@ -8,11 +8,13 @@ import { getFragmentData, graphql } from "../../gql"
 import { PlayerPortfolio } from "../components/PlayerPortfolio"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
-import { getNoteHash, getRating } from "../helper"
 import {
+  ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
   ScoreTableGroups,
   flatSongsResult,
+  getNoteHash,
+  getRating,
   groupBy,
 } from "../models/aggregation"
 import { comboFlags, syncFlags, versions } from "../models/constants"
@@ -77,7 +79,10 @@ const Player = () => {
         current_version: entry.version == maxVersion,
         rating:
           score?.score && entry.internal_lv
-            ? getRating(score.score, entry.internal_lv)
+            ? getRating(
+                score.score,
+                entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
+              )
             : undefined,
       }
     })
@@ -102,7 +107,6 @@ const Player = () => {
 
   const player = recordResult.data.dx_intl_players[0]
   const record = getFragmentData(dxIntlRecordsFields, player.dx_intl_record)
-  console.log(scoreTableGroups)
 
   if (record == null) {
     return (

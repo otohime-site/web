@@ -1,5 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import { saveAs } from "file-saver"
+import { getNoteHash } from "./models/aggregation"
 import {
   categories,
   comboFlags,
@@ -52,16 +53,6 @@ export interface InternalLvMapEntry {
 }
 
 type ScoreEntry = ResultOf<typeof dxIntlScoresFields>
-
-export const getNoteHash = (instance: {
-  // As we cannot restrict null in history tables
-  song_id: string
-  deluxe: boolean
-  difficulty: number
-}): string =>
-  `${instance.song_id}_${instance.deluxe ? "t" : "f"}_${
-    instance.difficulty ?? "-1"
-  }`
 
 // Get current index of SCORE_RANKS that matches the score
 export const getRankScoreIndex = (score: number): number =>

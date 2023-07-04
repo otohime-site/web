@@ -11,8 +11,7 @@ import { formatDateTime } from "../../common/utils/datetime"
 import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
-import { getNoteHash } from "../helper"
-import { flatSongsResult } from "../models/aggregation"
+import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
   classRankNames,
   difficulties,
