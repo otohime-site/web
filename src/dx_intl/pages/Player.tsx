@@ -3,19 +3,15 @@ import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
-import { groupByKey } from "../../common/utils/grouping"
 import { getFragmentData, graphql } from "../../gql"
-import { PlayerPortfolio } from "../components/PlayerPortfolio"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
-  ScoreTableGroups,
   flatSongsResult,
   getNoteHash,
   getRating,
-  groupBy,
 } from "../models/aggregation"
 import { comboFlags, syncFlags, versions } from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
@@ -77,23 +73,17 @@ const Player = () => {
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
         current_version: entry.version == maxVersion,
-        rating:
-          score?.score && entry.internal_lv
-            ? getRating(
-                score.score,
-                entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
-              )
-            : undefined,
+        rating: score?.score
+          ? getRating(
+              score.score,
+              entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
+            )
+          : undefined,
       }
     })
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
-
-  const scoreTableGroups: ScoreTableGroups = useMemo(
-    () => new Map(groupBy.map((key) => [key, groupByKey(scoreTable, key)])),
-    [scoreTable]
-  )
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -128,7 +118,6 @@ const Player = () => {
           />
         </div>
       </div>
-      <PlayerPortfolio scoreTableGroups={scoreTableGroups} />
       {maxVersion > versions.length - 1 || noteInconsistency ? (
         <Alert severity="error">
           成績單目前有同步狀況，請試圖重新整理頁面。

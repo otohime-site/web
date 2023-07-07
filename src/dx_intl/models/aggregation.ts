@@ -1,5 +1,13 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
-import { RANK_SCORES, levels } from "./constants"
+import { groupByKey } from "../../common/utils/grouping"
+import {
+  RANK_SCORES,
+  comboFlags,
+  levels,
+  syncFlags,
+  versionTitleExcludes,
+  versionTitles,
+} from "./constants"
 import { dxIntlSongsDocument } from "./queries"
 
 export const getNoteHash = (instance: {
@@ -71,7 +79,6 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
       }))
     )
   )
-
 export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   score: number
   combo_flag: number
@@ -81,23 +88,58 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   rating?: number
 }
 
-export const groupBy = [
+export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
+  const results: Record<"fc" | "sss" | "ap" | "fdx", number[]> = {
+    fc: [],
+    sss: [],
+    ap: [],
+    fdx: [],
+  }
+  const versionGroups = groupByKey(scoreTable, "version")
+  for (let ver = 1; ver < versionTitles.length; ver++) {
+    const versionTable =
+      [
+        ...(ver == 1 ? versionGroups?.get(0) ?? [] : []),
+        ...(versionGroups?.get(ver) ?? []),
+      ].filter(
+        (entry) =>
+          entry.difficulty <= 3 && !versionTitleExcludes.includes(entry.song_id)
+      ) ?? []
+    if (versionTable.every((entry) => !!entry.combo_flag)) {
+      results.fc.push(ver)
+    }
+    if (
+      versionTable.every(
+        (entry) => entry.combo_flag >= comboFlags.indexOf("ap")
+      )
+    ) {
+      results.ap.push(ver)
+    }
+    if (versionTable.every((entry) => (entry.score ?? 0) >= 100) && ver != 1) {
+      results.sss.push(ver)
+    }
+    if (
+      versionTable.every((entry) => entry.sync_flag >= syncFlags.indexOf("fdx"))
+    ) {
+      results.fdx.push(ver)
+    }
+    return results
+  }
+}
+
+export const tableGroupBy = [
   "category",
   "version",
   "level",
   "current_version",
 ] as const
 
-export type ScoreTableGroups = Map<
-  (typeof groupBy)[number],
-  Map<ScoreTableEntry[(typeof groupBy)[number]], ScoreTableEntry[]>
->
-
-export type ORDER_BY =
-  | "default"
-  | "level"
-  | "internalLv"
-  | "score"
-  | "combo"
-  | "sync"
-  | "rating"
+export const tableOrderBy = [
+  "default",
+  "level",
+  "internalLv",
+  "score",
+  "combo",
+  "sync",
+  "rating",
+] as const
