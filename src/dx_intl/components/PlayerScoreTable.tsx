@@ -139,21 +139,11 @@ export const PlayerScoreTable = ({
         }}
         style={{ display: "flex", flexDirection: "row" }}
       >
-        <RadioCard value="current_version">
-          <span>Rating 組成</span>
-        </RadioCard>
-        <RadioCard value="category">
-          <span>分類</span>
-        </RadioCard>
-        <RadioCard value="version">
-          <span>版本</span>
-        </RadioCard>
-        <RadioCard value="difficulty">
-          <span>難易度</span>
-        </RadioCard>
-        <RadioCard value="level">
-          <span>樂曲等級</span>
-        </RadioCard>
+        <RadioCard value="current_version">Rating 組成</RadioCard>
+        <RadioCard value="category">分類</RadioCard>
+        <RadioCard value="version">版本</RadioCard>
+        <RadioCard value="difficulty">難易度</RadioCard>
+        <RadioCard value="level">樂曲等級</RadioCard>
       </RadioCardRoot>
       <table
         style={{ width: "100%", fontSize: "1rem", fontFamily: "'M PLUS 1p'" }}
