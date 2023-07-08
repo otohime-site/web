@@ -13,7 +13,13 @@ import {
   getNoteHash,
   getRating,
 } from "../models/aggregation"
-import { comboFlags, syncFlags, versions } from "../models/constants"
+import {
+  RATING_NEW_COUNT,
+  RATING_OLD_COUNT,
+  comboFlags,
+  syncFlags,
+  versions,
+} from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 
@@ -78,9 +84,31 @@ const Player = () => {
               score.score,
               entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
             )
-          : undefined,
+          : 0,
       }
     })
+    const oldRanks = new Map(
+      scoreTable
+        .filter((entry) => !entry.current_version)
+        .sort((a, b) => b.rating - a.rating)
+        .map((entry, index) => [entry.hash, index + 1])
+    )
+    const newRanks = new Map(
+      scoreTable
+        .filter((entry) => entry.current_version)
+        .sort((a, b) => b.rating - a.rating)
+        .map((entry, index) => [entry.hash, index + 1])
+    )
+    scoreTable.forEach((entry) => {
+      entry.old_rank = oldRanks.get(entry.hash)
+      entry.new_rank = newRanks.get(entry.hash)
+      entry.rating_listed =
+        (entry.current_version &&
+          (entry.new_rank ?? Infinity) > RATING_NEW_COUNT * 2) ||
+        (!entry.current_version &&
+          (entry.old_rank ?? Infinity) > RATING_OLD_COUNT * 2)
+    })
+    console.log(scoreTable)
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])

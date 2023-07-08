@@ -85,7 +85,12 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   sync_flag: number
   updated_at?: string
   current_version: boolean
-  rating?: number
+  rating: number
+  // Record the ranking for the rating in old/new songs
+  old_rank?: number
+  new_rank?: number
+  // Whether to display in the rating target tabs
+  rating_listed: boolean
 }
 
 export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {

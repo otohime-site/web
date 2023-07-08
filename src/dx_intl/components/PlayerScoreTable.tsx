@@ -5,6 +5,8 @@ import {
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
+  getFacetedRowModel,
+  getFilteredRowModel,
   getGroupedRowModel,
   getSortedRowModel,
   useReactTable,
@@ -43,12 +45,17 @@ export const PlayerScoreTable = ({
     current_version: true,
   })
 
+  const [columnFilters, setColumnFilters] = useState<any>([
+    { id: "rating_listed", value: "y" },
+  ])
+
   const table = useReactTable({
     data: scoreTable,
     state: {
       grouping,
       sorting,
       columnVisibility,
+      columnFilters,
     },
     columns: [
       columnHelper.accessor("title", {
@@ -120,13 +127,24 @@ export const PlayerScoreTable = ({
         cell: (info) => (info.getValue() ? info.getValue() : ""),
         aggregationFn: () => "",
       }),
+      columnHelper.accessor("rating_listed", {
+        header: "RL",
+        cell: (info) => info.getValue(),
+        filterFn: (row, columnId, filterValue, addMeta) => {
+          return filterValue == "y" && row.getValue(columnId)
+        },
+        aggregationFn: () => "",
+      }),
     ],
+    enableColumnFilters: true,
     onGroupingChange: setGrouping,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
   })
   return (
     <div>
