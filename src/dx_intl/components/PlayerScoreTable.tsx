@@ -1,11 +1,14 @@
 import {
+  ColumnFilter,
   SortingState,
   VisibilityState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
+  getFacetedMinMaxValues,
   getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getGroupedRowModel,
   getSortedRowModel,
@@ -45,7 +48,7 @@ export const PlayerScoreTable = ({
     current_version: true,
   })
 
-  const [columnFilters, setColumnFilters] = useState<any>([
+  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
     { id: "rating_listed", value: "y" },
   ])
 
@@ -130,10 +133,10 @@ export const PlayerScoreTable = ({
       columnHelper.accessor("rating_listed", {
         header: "RL",
         cell: (info) => info.getValue(),
-        filterFn: (row, columnId, filterValue, addMeta) => {
-          return filterValue == "y" && row.getValue(columnId)
-        },
+        filterFn: (row, columnId, filterValue, addMeta) =>
+          filterValue == "y" && row.getValue(columnId),
         aggregationFn: () => "",
+        enableColumnFilter: true,
       }),
     ],
     enableColumnFilters: true,
@@ -145,6 +148,8 @@ export const PlayerScoreTable = ({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
   })
   return (
     <div>
