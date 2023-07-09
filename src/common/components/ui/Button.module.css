@@ -1,6 +1,7 @@
 .button {
   all: unset;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   box-sizing: border-box;
   border-radius: 8px;
   cursor: pointer;

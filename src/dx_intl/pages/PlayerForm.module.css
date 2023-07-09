@@ -1,4 +1,6 @@
 .radio-card-private dt {
+  display: inline-flex;
+  align-items: center;
   color: var(--mauve-11);
   font-weight: bold;
 }

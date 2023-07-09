@@ -52,6 +52,7 @@ const NoteRating = ({
               to="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
               target="_blank"
               title="顯示相關說明"
+              style={{ display: "inline-flex", alignItems: "center" }}
             >
               <IconCircleOutline />
             </Link>
