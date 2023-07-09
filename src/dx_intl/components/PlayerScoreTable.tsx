@@ -14,7 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -34,6 +34,7 @@ const defaultVisibility = {
   version: false,
   current_version: false,
   level: false,
+  rating_listed: false,
 }
 
 export const PlayerScoreTable = ({
@@ -50,9 +51,13 @@ export const PlayerScoreTable = ({
     current_version: true,
   })
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
-    { id: "rating_listed", value: true },
-  ])
+  const columnFilters: ColumnFilter[] = useMemo(
+    () =>
+      grouping[0] == "current_version"
+        ? [{ id: "rating_listed", value: true }]
+        : [],
+    [grouping]
+  )
 
   const table = useReactTable({
     data: scoreTable,
@@ -157,7 +162,7 @@ export const PlayerScoreTable = ({
         onValueChange={(val) => {
           setGrouping([val])
           setColumnVisibility({ ...defaultVisibility, [val]: true })
-          setSorting([{ id: val, desc: false }])
+          setSorting([{ id: val, desc: grouping[0] !== "current_version" }])
         }}
         style={{ display: "flex", flexDirection: "row" }}
       >
