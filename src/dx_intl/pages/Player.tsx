@@ -103,10 +103,8 @@ const Player = () => {
       entry.old_rank = oldRanks.get(entry.hash)
       entry.new_rank = newRanks.get(entry.hash)
       entry.rating_listed =
-        (entry.current_version &&
-          (entry.new_rank ?? Infinity) > RATING_NEW_COUNT * 2) ||
-        (!entry.current_version &&
-          (entry.old_rank ?? Infinity) > RATING_OLD_COUNT * 2)
+        (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
+        (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2
     })
     console.log(scoreTable)
     // It may be inconsistent if songs are added but song list not updated

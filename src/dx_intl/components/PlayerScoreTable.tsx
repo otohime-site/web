@@ -42,14 +42,16 @@ export const PlayerScoreTable = ({
   scoreTable: ScoreTableEntry[]
 }) => {
   const [grouping, setGrouping] = useState<string[]>(["current_version"])
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "rating", desc: true },
+  ])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     ...defaultVisibility,
     current_version: true,
   })
 
   const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([
-    { id: "rating_listed", value: "y" },
+    { id: "rating_listed", value: true },
   ])
 
   const table = useReactTable({
@@ -133,10 +135,7 @@ export const PlayerScoreTable = ({
       columnHelper.accessor("rating_listed", {
         header: "RL",
         cell: (info) => info.getValue(),
-        filterFn: (row, columnId, filterValue, addMeta) =>
-          filterValue == "y" && row.getValue(columnId),
         aggregationFn: () => "",
-        enableColumnFilter: true,
       }),
     ],
     enableColumnFilters: true,
