@@ -1,5 +1,8 @@
 import * as Form from "@radix-ui/react-form"
-import { MdArrowBack, MdLock, MdPublic } from "react-icons/md"
+import IconArrowBack from "~icons/mdi/arrow-back"
+import IconLock from "~icons/mdi/lock"
+import IconPublic from "~icons/mdi/public"
+
 import { useNavigate, useParams } from "react-router"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
@@ -157,11 +160,11 @@ const PlayerForm = () => {
       <div>
         {params.nickname != null ? (
           <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
-            <MdArrowBack />
+            <IconArrowBack />
           </LinkButton>
         ) : (
           <LinkButton to="/" color="violet">
-            <MdArrowBack />
+            <IconArrowBack />
           </LinkButton>
         )}
         <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
@@ -201,7 +204,7 @@ const PlayerForm = () => {
           <RadioCard className={classes["radio-card-private"]} value="public">
             <div>
               <dt>
-                <MdPublic /> 公開
+                <IconPublic /> 公開
               </dt>
               <dd>
                 <ul>
@@ -214,7 +217,7 @@ const PlayerForm = () => {
           <RadioCard className={classes["radio-card-private"]} value="private">
             <div>
               <dt>
-                <MdLock />
+                <IconLock />
                 私人
               </dt>
               <dd>

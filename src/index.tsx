@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client"
-import { IconContext } from "react-icons"
 import { BrowserRouter } from "react-router-dom"
 import { Titled } from "react-titled"
 import App from "./App"
@@ -11,9 +10,7 @@ createRoot(container!).render(
   <BrowserRouter>
     <Titled title="Otohime">
       <AppProvider skeleton={<>Loading...</>}>
-        <IconContext.Provider value={{ className: "react-icons" }}>
-          <App />
-        </IconContext.Provider>
+        <App />
       </AppProvider>
     </Titled>
   </BrowserRouter>

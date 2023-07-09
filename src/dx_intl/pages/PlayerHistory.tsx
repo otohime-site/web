@@ -1,10 +1,11 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import { useMemo } from "react"
-import { MdArrowBack, MdNavigateNext } from "react-icons/md"
 import { useParams } from "react-router"
 import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
+import IconArrowBack from "~icons/mdi/arrow-back"
+import IconNavigateNext from "~icons/mdi/navigate-next"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { formatDateTime } from "../../common/utils/datetime"
@@ -196,7 +197,7 @@ const PlayerHistory = () => {
           <td colSpan={3}>Name</td>
           <td>{before?.card_name ?? ""}</td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>{after?.card_name ?? ""}</td>
         </tr>
@@ -208,7 +209,7 @@ const PlayerHistory = () => {
           <td colSpan={3}>Title</td>
           <td>{before?.title ?? ""}</td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>{after?.title ?? ""}</td>
         </tr>
@@ -220,7 +221,7 @@ const PlayerHistory = () => {
           <td colSpan={3}>Rating</td>
           <td>{before?.rating ?? ""}</td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>{after?.rating ?? ""}</td>
         </tr>
@@ -234,7 +235,7 @@ const PlayerHistory = () => {
             {(before?.max_rating ?? 0) >= 0 ? before?.max_rating ?? "" : ""}
           </td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>
             {(after?.max_rating ?? 0) >= 0 ? after?.max_rating ?? "" : ""}
@@ -248,7 +249,7 @@ const PlayerHistory = () => {
           <td colSpan={3}>Grade</td>
           <td>{gradeNames[before?.grade ?? 0] ?? ""}</td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>{gradeNames[after?.grade ?? 0] ?? ""}</td>
         </tr>
@@ -264,7 +265,7 @@ const PlayerHistory = () => {
               : ""}
           </td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>
             {after?.course_rank != null
@@ -284,7 +285,7 @@ const PlayerHistory = () => {
               : ""}
           </td>
           <td>
-            <MdNavigateNext />
+            <IconNavigateNext />
           </td>
           <td>
             {after?.class_rank != null
@@ -366,7 +367,7 @@ const PlayerHistory = () => {
                   )}
                 </td>
                 <td>
-                  <MdNavigateNext />
+                  <IconNavigateNext />
                 </td>
                 <td>
                   {after != null ? (
@@ -393,7 +394,7 @@ const PlayerHistory = () => {
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
       <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
-        <MdArrowBack /> 回成績單
+        <IconArrowBack /> 回成績單
       </LinkButton>
       <div>
         {outerTimelines.timelines.map((time) => (

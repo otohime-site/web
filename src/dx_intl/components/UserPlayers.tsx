@@ -1,5 +1,5 @@
-import { MdAdd } from "react-icons/md"
 import { useQuery } from "urql"
+import IconAdd from "~icons/mdi/add"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
@@ -44,7 +44,7 @@ const UserPlayers = () => {
         "目前沒有成績單。請新增一個！"
       )}
       <LinkButton to="/dxi/p/new" color="violet">
-        <MdAdd />
+        <IconAdd />
         新增成績單
       </LinkButton>
     </QueryResult>

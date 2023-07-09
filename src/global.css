@@ -63,11 +63,6 @@ h5 {
   margin: 0.5rem 0;
 }
 
-.react-icons {
-  font-size: 1.2em;
-  vertical-align: text-top;
-}
-
 /* Fixing https://github.com/mui-org/material-ui/issues/26251 */
 .MuiButton-label {
   transition: color 0.01s;

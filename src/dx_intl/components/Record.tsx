@@ -1,5 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
-import { MdLock, MdPublic } from "react-icons/md"
+import IconLock from "~icons/mdi/lock"
+import IconPublic from "~icons/mdi/public"
 import { formatRelative } from "../../common/utils/datetime"
 import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
@@ -22,7 +23,7 @@ const Record = ({
       <div className={classes["inner-col"]}>
         {updatedAt != null ? formatRelative(new Date(updatedAt)) : ""}
         更新
-        {isPrivate ? <MdLock /> : <MdPublic />}
+        {isPrivate ? <IconLock /> : <IconPublic />}
       </div>
     </div>
     <div className={classes["info-row"]}>

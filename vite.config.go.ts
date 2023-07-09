@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react-swc"
 import { resolve } from "path"
 import { visualizer } from "rollup-plugin-visualizer"
+import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"
 
 export default defineConfig({
@@ -14,6 +15,7 @@ export default defineConfig({
         ],
       ],
     }),
+    icons({ compiler: "jsx", jsx: "react" }),
     visualizer({ filename: "stats-go.html" }),
   ],
   build: {

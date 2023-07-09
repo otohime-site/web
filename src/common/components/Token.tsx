@@ -1,7 +1,8 @@
 import { useState } from "react"
-import { MdLink, MdRefresh } from "react-icons/md"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
+import IconLink from "~icons/mdi/link"
+import IconRefresh from "~icons/mdi/refresh"
 import { graphql } from "../../gql"
 import host from "../../host"
 import { useUser } from "../contexts"
@@ -125,7 +126,7 @@ const User = () => {
               href={bookmarkletContent(token)}
               onClick={async (e) => await copyBookmarklet(e, token)}
             >
-              <MdLink />
+              <IconLink />
               更新 Otohime 成績
             </a>
             <Button
@@ -133,7 +134,7 @@ const User = () => {
               disabled={regenerateTokenResult.fetching}
               onClick={generateToken}
             >
-              <MdRefresh /> 重新產生
+              <IconRefresh /> 重新產生
             </Button>
           </div>
         )}

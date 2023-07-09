@@ -1,6 +1,7 @@
 import basicSsl from "@vitejs/plugin-basic-ssl"
 import react from "@vitejs/plugin-react-swc"
 import { visualizer } from "rollup-plugin-visualizer"
+import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"
 
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
         ],
       ],
     }),
+    icons({ compiler: "jsx", jsx: "react" }),
     basicSsl(),
     visualizer(),
   ],

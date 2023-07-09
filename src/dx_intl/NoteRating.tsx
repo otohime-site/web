@@ -1,6 +1,6 @@
 import { useMemo } from "react"
-import { MdHelpOutline } from "react-icons/md"
 import { Link } from "react-router-dom"
+import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import { getRankScoreIndex, getRating } from "./helper"
 import { RANK_SCORES, levels } from "./models/constants"
 
@@ -53,7 +53,7 @@ const NoteRating = ({
               target="_blank"
               title="顯示相關說明"
             >
-              <MdHelpOutline />
+              <IconCircleOutline />
             </Link>
           </td>
         </tr>

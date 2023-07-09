@@ -1,5 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
-import { MdLock, MdPublic } from "react-icons/md"
+import IconLock from "~icons/mdi/lock"
+import IconPublic from "~icons/mdi/public"
 import { formatRelative } from "../../common/utils/datetime"
 import {
   classRankNames,
@@ -74,7 +75,7 @@ const PlayerItem = ({
           )}
         </p>
       </div>
-      {player.private ? <MdLock /> : <MdPublic />}
+      {player.private ? <IconLock /> : <IconPublic />}
     </div>
   )
 }
