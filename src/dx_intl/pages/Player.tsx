@@ -64,7 +64,7 @@ const Player = () => {
     const scores =
       getFragmentData(
         dxIntlScoresFields,
-        recordResult.data.dx_intl_players[0].dx_intl_scores
+        recordResult.data.dx_intl_players[0]?.dx_intl_scores ?? []
       ) ?? []
     const scoresMap = new Map(
       scores.map((score) => [getNoteHash(score), score])
