@@ -85,6 +85,7 @@ const Player = () => {
               entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
             )
           : 0,
+        rating_listed: false,
       }
     })
     const oldRanks = new Map(
