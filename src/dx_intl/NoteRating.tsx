@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import { Link } from "react-router-dom"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import { getRankScoreIndex, getRating } from "./helper"
 import { RANK_SCORES, levels } from "./models/constants"
@@ -48,14 +47,15 @@ const NoteRating = ({
           <td>{internalLv.toFixed(1)}</td>
           <td>
             {rating} / {maxRating}
-            <Link
-              to="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
+            <a
+              href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
               target="_blank"
+              rel="noreferrer"
               title="顯示相關說明"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <IconCircleOutline />
-            </Link>
+            </a>
           </td>
         </tr>
         {targets.length === 0 ? (

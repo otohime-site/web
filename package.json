@@ -35,11 +35,10 @@
     "react-chartjs-2": "^5.0.1",
     "react-dom": "^18.0.0",
     "react-interactive": "^1.1.2",
-    "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0",
     "react-titled": "^2.0.0",
     "unplugin-icons": "^0.16.3",
-    "urql": "^4.0.0"
+    "urql": "^4.0.0",
+    "wouter": "^2.11.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^4.0.0",

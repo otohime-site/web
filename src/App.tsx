@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react"
-import { Route, Routes } from "react-router-dom"
+import { Route, Router } from "wouter"
+import { NestedRoutes } from "./common/components/NestedRoutes"
 import "./global.css"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
@@ -11,12 +12,16 @@ const App = () => {
   return (
     <div>
       <Suspense fallback={<></>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/forget" element={<Forget />} />
-          <Route path="/dxi/*" element={<DxIntl />} />
-          <Route path="/fin/*" element={<Finale />} />
-        </Routes>
+        <Router>
+          <Route path="/" component={Home} />
+          <Route path="/forget" component={Forget} />
+          <NestedRoutes base="/dxi">
+            <DxIntl />
+          </NestedRoutes>
+          <NestedRoutes base="/fin">
+            <Finale />
+          </NestedRoutes>
+        </Router>
       </Suspense>
     </div>
   )

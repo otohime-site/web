@@ -35,7 +35,7 @@ const UserPlayers = () => {
       {players != null && players.length > 0 ? (
         <div style={{ display: "flex", flexDirection: "column" }}>
           {players.map((p) => (
-            <LinkButton color="mauve" key={p.id} to={`/dxi/p/${p.nickname}`}>
+            <LinkButton color="mauve" key={p.id} href={`~/dxi/p/${p.nickname}`}>
               <PlayerItem player={p} />
             </LinkButton>
           ))}
@@ -43,7 +43,7 @@ const UserPlayers = () => {
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
-      <LinkButton to="/dxi/p/new" color="violet">
+      <LinkButton href="~/dxi/p/new" color="violet">
         <IconAdd />
         新增成績單
       </LinkButton>

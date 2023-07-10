@@ -1,9 +1,8 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import { useMemo } from "react"
-import { useParams } from "react-router"
-import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
+import { Link, Params } from "wouter"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 import { Alert } from "../../common/components/ui/Alert"
@@ -104,8 +103,7 @@ const hashToDateString = (hash: string): string => {
   return resultStr
 }
 
-const PlayerHistory = () => {
-  const params = useParams<"nickname" | "hash">()
+const PlayerHistory = ({ params }: { params: Params }) => {
   const [songsResult] = useQuery({
     query: dxIntlSongsDocument,
     pause: params.hash === null,
@@ -393,13 +391,15 @@ const PlayerHistory = () => {
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
+      <LinkButton href={`~/dxi/p/${params.nickname}`} color="violet">
         <IconArrowBack /> 回成績單
       </LinkButton>
       <div>
         {outerTimelines.timelines.map((time) => (
           <Link
-            to={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
+            href={`~/dxi/p/${params.nickname}/history/${dateStringToHash(
+              time
+            )}`}
             key={time}
           >
             {formatDateTime(new Date(time))}

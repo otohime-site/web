@@ -3,7 +3,6 @@ import IconArrowBack from "~icons/mdi/arrow-back"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
-import { useNavigate, useParams } from "react-router"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
@@ -12,6 +11,8 @@ import { TextField } from "../../common/components/ui/TextField"
 import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
+import { Params } from "wouter"
+import { useNavigate } from "../../common/utils/router"
 import { graphql } from "../../gql"
 import classes from "./PlayerForm.module.css"
 
@@ -60,9 +61,8 @@ const deleteDxIntlPlayerDocument = graphql(`
   }
 `)
 
-const PlayerForm = () => {
+const PlayerForm = ({ params }: { params: Params }) => {
   const user = useUser()
-  const params = useParams<"nickname">()
   const navigate = useNavigate()
   const [, insertPlayer] = useMutation(insertDxIntlPlayerDocument)
   const [, updatePlayer] = useMutation(updateDxIntlPlayerDocument)
@@ -100,7 +100,7 @@ const PlayerForm = () => {
         })
         return
       }
-      navigate("/")
+      navigate("~/")
       return
     }
     const playerId = playerResult.data?.dx_intl_players[0]?.id
@@ -120,7 +120,7 @@ const PlayerForm = () => {
       })
       return
     }
-    navigate(`/dxi/p/${data.nickname}`)
+    navigate(`~/dxi/p/${data.nickname}`)
   }
 
   const handleDeletePlayer = async (): Promise<void> => {
@@ -141,7 +141,7 @@ const PlayerForm = () => {
       throw new Error("No Player ID!")
     }
     await deletePlayer({ pk: playerId })
-    navigate("/")
+    navigate("~/")
   }
 
   if (playerResult.fetching) {
@@ -159,11 +159,11 @@ const PlayerForm = () => {
     <main>
       <div>
         {params.nickname != null ? (
-          <LinkButton to={`/dxi/p/${params.nickname}`} color="violet">
+          <LinkButton href={`~/dxi/p/${params.nickname}`} color="violet">
             <IconArrowBack />
           </LinkButton>
         ) : (
-          <LinkButton to="/" color="violet">
+          <LinkButton href="~/" color="violet">
             <IconArrowBack />
           </LinkButton>
         )}

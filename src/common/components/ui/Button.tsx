@@ -6,7 +6,7 @@ import {
   PropsWithChildren,
 } from "react"
 import { Interactive } from "react-interactive"
-import { Link } from "react-router-dom"
+import { Link } from "wouter"
 import classes from "./Button.module.css"
 import colorClasses from "./colors.module.scss"
 
@@ -47,13 +47,12 @@ export const LinkButton = forwardRef<
   ElementRef<typeof Link>,
   ComponentPropsWithoutRef<typeof Link> & { color: (typeof colors)[number] }
 >(({ color, className, children, ...props }, forwardedRef) => (
-  <Interactive
-    as={Link}
-    {...props}
-    className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
-    ref={forwardedRef}
-  >
-    {children}
+  <Interactive as={Link} {...props} ref={forwardedRef}>
+    <a
+      className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
+    >
+      {children}
+    </a>
   </Interactive>
 ))
 

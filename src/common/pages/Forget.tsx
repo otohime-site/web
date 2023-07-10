@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { useNavigate } from "react-router"
 import { useMutation } from "urql"
 import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
 import { Button } from "../components/ui/Button"
 import { useUser } from "../contexts"
+import { useNavigate } from "../utils/router"
 
 const deleteUserDocument = graphql(`
   mutation deleteUser {
@@ -27,7 +27,7 @@ const Forget = () => {
     try {
       await deleteUser({})
       await user?.delete()
-      navigate("/")
+      navigate("~/")
     } catch {
       alert("發生錯誤，請登出再登入後重試。")
     }

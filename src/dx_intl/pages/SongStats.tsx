@@ -1,7 +1,6 @@
-import { useParams } from "react-router"
-import { Link } from "react-router-dom"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
+import { Link, Params } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
 import { NoteList } from "../helper"
@@ -30,8 +29,7 @@ const dxIntlScoresStatsDocument = graphql(`
   }
 `)
 
-const SongStats = () => {
-  const params = useParams<"songId" | "variant" | "difficulty">()
+const SongStats = ({ params }: { params: Params }) => {
   const { variant } = params
   const songId = params.songId ?? ""
   const deluxe = variant != null ? variant === "dx" : null
@@ -101,12 +99,12 @@ const SongStats = () => {
             <h4>{song.title}</h4>
             <div>
               {variantMap.has(false) ? (
-                <Link to={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
+                <Link href={`~/dxi/s/${params.songId}/std/`}>STANDARD</Link>
               ) : (
                 ""
               )}
               {variantMap.has(true) ? (
-                <Link to={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
+                <Link href={`~/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
               ) : (
                 ""
               )}
@@ -114,7 +112,7 @@ const SongStats = () => {
             <div>
               {notes.map((_, i) => (
                 <Link
-                  to={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
+                  href={`~/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
                   key={i}
                 >
                   {difficulties[i]}

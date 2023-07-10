@@ -1,7 +1,7 @@
 import { useMemo } from "react"
-import { useParams } from "react-router"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
+import { Params } from "wouter"
 import { Alert } from "../../common/components/ui/Alert"
 import { getFragmentData, graphql } from "../../gql"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
@@ -38,9 +38,7 @@ const dxIntlRecordWithScoresDocument = graphql(`
   }
 `)
 
-const Player = () => {
-  const params = useParams<"nickname">()
-
+const Player = ({ params }: { params: Params }) => {
   const [recordResult] = useQuery({
     query: dxIntlRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
