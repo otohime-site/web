@@ -68,49 +68,58 @@ const getScoreStatKey = (score: number): ScoreStat[] => {
 }
 
 export const arrangeScoreStats = (
-  scores: Array<{ score: number } | undefined>
+  scores: Array<{ score: number } | undefined>,
 ): Map<ScoreStat, number> =>
-  scores.reduce((prev, curr) => {
-    const ranks: ScoreStat[] = curr != null ? getScoreStatKey(curr.score) : []
-    ranks.forEach((rank) => {
-      prev.set(rank, (prev.get(rank) ?? 0) + 1)
-    })
-    return prev
-  }, new Map(SCORE_STATS.map((rank) => [rank, 0])))
+  scores.reduce(
+    (prev, curr) => {
+      const ranks: ScoreStat[] = curr != null ? getScoreStatKey(curr.score) : []
+      ranks.forEach((rank) => {
+        prev.set(rank, (prev.get(rank) ?? 0) + 1)
+      })
+      return prev
+    },
+    new Map(SCORE_STATS.map((rank) => [rank, 0])),
+  )
 
 export const SCORE_STATS = ["A", "S", "S+", "SS", "SS+", "SSS", "SSS+"] as const
 type ScoreStat = (typeof SCORE_STATS)[number]
 
 export const arrangeComboStats = (
-  scores: Array<{ combo_flag: (typeof comboFlags)[number] } | undefined>
+  scores: Array<{ combo_flag: (typeof comboFlags)[number] } | undefined>,
 ): Map<ComboStat, number> =>
-  scores.reduce((prev, row) => {
-    const comboFlag = row?.combo_flag ?? ""
-    if (comboFlag !== "") {
-      const combos = COMBO_STATS.slice(0, COMBO_STATS.indexOf(comboFlag) + 1)
-      combos.forEach((combo) => {
-        prev.set(combo, (prev.get(combo) ?? 0) + 1)
-      })
-    }
-    return prev
-  }, new Map(COMBO_STATS.map((combo) => [combo, 0])))
+  scores.reduce(
+    (prev, row) => {
+      const comboFlag = row?.combo_flag ?? ""
+      if (comboFlag !== "") {
+        const combos = COMBO_STATS.slice(0, COMBO_STATS.indexOf(comboFlag) + 1)
+        combos.forEach((combo) => {
+          prev.set(combo, (prev.get(combo) ?? 0) + 1)
+        })
+      }
+      return prev
+    },
+    new Map(COMBO_STATS.map((combo) => [combo, 0])),
+  )
 
 export const COMBO_STATS = ["fc", "fc+", "ap", "ap+"] as const
 type ComboStat = (typeof COMBO_STATS)[number]
 
 export const arrangeSyncStats = (
-  scores: Array<{ sync_flag: (typeof syncFlags)[number] } | undefined>
+  scores: Array<{ sync_flag: (typeof syncFlags)[number] } | undefined>,
 ): Map<SyncStat, number> =>
-  scores.reduce((prev, row) => {
-    const syncFlag = row?.sync_flag ?? ""
-    if (syncFlag !== "") {
-      const syncs = SYNC_STATS.slice(0, SYNC_STATS.indexOf(syncFlag) + 1)
-      syncs.forEach((sync) => {
-        prev.set(sync, (prev.get(sync) ?? 0) + 1)
-      })
-    }
-    return prev
-  }, new Map(SYNC_STATS.map((sync) => [sync, 0])))
+  scores.reduce(
+    (prev, row) => {
+      const syncFlag = row?.sync_flag ?? ""
+      if (syncFlag !== "") {
+        const syncs = SYNC_STATS.slice(0, SYNC_STATS.indexOf(syncFlag) + 1)
+        syncs.forEach((sync) => {
+          prev.set(sync, (prev.get(sync) ?? 0) + 1)
+        })
+      }
+      return prev
+    },
+    new Map(SYNC_STATS.map((sync) => [sync, 0])),
+  )
 
 export const SYNC_STATS = ["fs", "fs+", "fdx", "fdx+"] as const
 type SyncStat = (typeof SYNC_STATS)[number]
@@ -160,13 +169,13 @@ export const getRatingAndRanks = (params: {
       newRatings
         .sort((a, b) => b[1] - a[1])
         .slice(0, RATING_NEW_COUNT * 2)
-        .map((rt, index) => [rt[0], index + 1])
+        .map((rt, index) => [rt[0], index + 1]),
     ),
     oldRanks: new Map(
       oldRatings
         .sort((a, b) => b[1] - a[1])
         .slice(0, RATING_OLD_COUNT * 2)
-        .map((rt, index) => [rt[0], index + 1])
+        .map((rt, index) => [rt[0], index + 1]),
     ),
   }
 }
@@ -270,12 +279,12 @@ export const arrangeSortedRows = (params: {
                 break
               case "combo":
                 sortRank = comboFlags.indexOf(
-                  scoreMap.get(note.hash)?.combo_flag ?? ""
+                  scoreMap.get(note.hash)?.combo_flag ?? "",
                 )
                 break
               case "sync":
                 sortRank = syncFlags.indexOf(
-                  scoreMap.get(note.hash)?.sync_flag ?? ""
+                  scoreMap.get(note.hash)?.sync_flag ?? "",
                 )
                 break
               default:
@@ -284,7 +293,7 @@ export const arrangeSortedRows = (params: {
             return { ...row, sortRank }
           })
           .sort((a, b) =>
-            orderByDesc ? b.sortRank - a.sortRank : a.sortRank - b.sortRank
+            orderByDesc ? b.sortRank - a.sortRank : a.sortRank - b.sortRank,
           )
           .map((row) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -296,7 +305,7 @@ export const arrangeSortedRows = (params: {
   }
   const columnScores = rows
     .map((row) =>
-      row.notes[index] != null ? scoreMap.get(row.notes[index].hash) : null
+      row.notes[index] != null ? scoreMap.get(row.notes[index].hash) : null,
     )
     .filter((row): row is ScoreEntry => row != null)
   return {
@@ -368,6 +377,6 @@ export const downloadCSV = async (params: {
     new Blob([String.fromCharCode(0xfeff), csvText], {
       type: "text/csv; charset=utf-8",
     }),
-    filename
+    filename,
   )
 }

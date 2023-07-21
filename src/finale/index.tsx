@@ -20,7 +20,7 @@ const FinaleIndexComponent = () => {
   })
   const players = getFragmentData(
     finalePlayersFields,
-    playersResult.data?.finale_players
+    playersResult.data?.finale_players,
   )
   if (user == null) {
     return <>Please log in</>

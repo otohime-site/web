@@ -63,7 +63,7 @@ export const AppProvider = ({
               },
               didAuthError(error) {
                 return error.graphQLErrors.some(
-                  (e) => e.extensions?.code === "access-denied"
+                  (e) => e.extensions?.code === "access-denied",
                 )
               },
               async refreshAuth() {
@@ -75,7 +75,7 @@ export const AppProvider = ({
           fetchExchange,
         ],
       }),
-    [user]
+    [user],
   )
 
   if (loading) {

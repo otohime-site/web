@@ -28,7 +28,7 @@ const getGradeOrRanks = (record: {
 }
 
 const formatUpdatedAt = (
-  player: ResultOf<typeof dxIntlPlayersFields>
+  player: ResultOf<typeof dxIntlPlayersFields>,
 ): string =>
   player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 

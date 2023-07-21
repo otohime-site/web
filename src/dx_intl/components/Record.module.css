@@ -151,11 +151,19 @@
       #ff6e53 87.6%,
       #ff6e53 100%
     );
-  background-position: left top, left bottom, left bottom, 0;
+  background-position:
+    left top,
+    left bottom,
+    left bottom,
+    0;
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   background-origin: content-box, content-box, border-box, border-box;
   background-clip: content-box, content-box, border-box, border-box;
-  background-size: auto 50%, auto 50%, auto 0.2em, 19em auto;
+  background-size:
+    auto 50%,
+    auto 50%,
+    auto 0.2em,
+    19em auto;
   border-color: transparent;
   border-bottom-width: 0.3em;
   margin-bottom: 0.3em;

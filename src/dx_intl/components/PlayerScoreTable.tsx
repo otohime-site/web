@@ -56,7 +56,7 @@ export const PlayerScoreTable = ({
       grouping[0] == "current_version"
         ? [{ id: "rating_listed", value: true }]
         : [],
-    [grouping]
+    [grouping],
   )
 
   const table = useReactTable({
@@ -188,7 +188,7 @@ export const PlayerScoreTable = ({
                     <>
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                     </>
                   )}
@@ -214,7 +214,7 @@ export const PlayerScoreTable = ({
               // as all grouped/placeholder are placed in the left,
               // it will also be the length of all visible grouping cells.
               const firstAggIndex = visibleCells.findIndex(
-                (cell) => !cell.column.getIsGrouped()
+                (cell) => !cell.column.getIsGrouped(),
               )
 
               // Then draw and handle colspans.
@@ -231,7 +231,7 @@ export const PlayerScoreTable = ({
                           </button>
                           {flexRender(
                             cell.column.columnDef.cell,
-                            cell.getContext()
+                            cell.getContext(),
                           )}
                           {` (${leafCount})`}
                         </td>
@@ -246,7 +246,7 @@ export const PlayerScoreTable = ({
                         {flexRender(
                           cell.column.columnDef.aggregatedCell ??
                             cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </td>
                     )
@@ -278,7 +278,7 @@ export const PlayerScoreTable = ({
                     ? null
                     : flexRender(
                         header.column.columnDef.footer,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </th>
               ))}

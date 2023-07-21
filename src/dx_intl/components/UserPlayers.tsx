@@ -24,7 +24,7 @@ const UserPlayers = () => {
   })
   const players = getFragmentData(
     dxIntlPlayersFields,
-    playersResult.data?.dx_intl_players
+    playersResult.data?.dx_intl_players,
   )
 
   if (user == null) {

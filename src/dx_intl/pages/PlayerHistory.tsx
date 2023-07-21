@@ -81,10 +81,10 @@ interface HistoryEntry {
 const dateStringToHash = (str: string): string => {
   const decimalPart = parseInt(
     (str.match(/\.([0-9]+)/) ?? ["0"])[1].padEnd(6, "0"),
-    10
+    10,
   )
   const withoutDecimalPartTime = new Date(
-    str.replace(/\.([0-9]+)/, "")
+    str.replace(/\.([0-9]+)/, ""),
   ).getTime()
   const resultTime = withoutDecimalPartTime * 1000 + decimalPart
   return resultTime.toString(36)
@@ -98,7 +98,7 @@ const hashToDateString = (hash: string): string => {
   const intermediateStr = new Date(withoutDecimalPartTime).toISOString()
   const resultStr = intermediateStr.replace(
     /\.[0-9]+Z/,
-    `.${decimalPart.toString(10).padStart(6, "0")}+00:00`
+    `.${decimalPart.toString(10).padStart(6, "0")}+00:00`,
   )
   return resultStr
 }
@@ -123,17 +123,17 @@ const PlayerHistory = ({ params }: { params: Params }) => {
 
   const flattedEntries = useMemo(
     () => flatSongsResult(songsResult.data),
-    [songsResult]
+    [songsResult],
   )
 
   const { beforeMap, afterMap } = useMemo(() => {
     const beforeScores = getFragmentData(
       dxIntlScoresWithHistoryFields,
-      timelineResult.data?.beforeScores ?? []
+      timelineResult.data?.beforeScores ?? [],
     )
     const afterScores = getFragmentData(
       dxIntlScoresWithHistoryFields,
-      timelineResult.data?.afterScores ?? []
+      timelineResult.data?.afterScores ?? [],
     )
     const beforeMap: Map<string, HistoryEntry> = new Map(
       beforeScores.map((score) => [
@@ -147,7 +147,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
           combo_flag: score.combo_flag ?? "",
           sync_flag: score.sync_flag ?? "",
         },
-      ])
+      ]),
     )
     const afterMap: Map<string, HistoryEntry> = new Map(
       afterScores.map((score) => [
@@ -161,7 +161,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
           combo_flag: score.combo_flag ?? "",
           sync_flag: score.sync_flag ?? "",
         },
-      ])
+      ]),
     )
 
     return {
@@ -187,7 +187,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
 
   const recordDiffRows = (
     before?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
-    after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>
+    after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
   ): React.ReactNode => (
     <>
       {before?.card_name !== after?.card_name ? (
@@ -298,7 +298,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   )
 
   const showTimelineResult = (
-    data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>
+    data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>,
   ): React.ReactNode => (
     <table className={classes.table}>
       <colgroup>
@@ -322,16 +322,19 @@ const PlayerHistory = ({ params }: { params: Params }) => {
           recordDiffRows(
             getFragmentData(
               dxIntlRecordsWithHistoryFields,
-              data.beforeRecord[0]
+              data.beforeRecord[0],
             ),
-            getFragmentData(dxIntlRecordsWithHistoryFields, data.afterRecord[0])
+            getFragmentData(
+              dxIntlRecordsWithHistoryFields,
+              data.afterRecord[0],
+            ),
           )
         ) : (
           <></>
         )}
         {flattedEntries
           .filter(
-            (entry) => beforeMap.has(entry.hash) || afterMap.has(entry.hash)
+            (entry) => beforeMap.has(entry.hash) || afterMap.has(entry.hash),
           )
           .map((entry) => {
             const before = beforeMap.get(entry.hash)
@@ -398,7 +401,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
         {outerTimelines.timelines.map((time) => (
           <Link
             href={`~/dxi/p/${params.nickname}/history/${dateStringToHash(
-              time
+              time,
             )}`}
             key={time}
           >

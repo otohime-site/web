@@ -39,7 +39,7 @@ const SongStats = ({ params }: { params: Params }) => {
     query: dxIntlSongsDocument,
   })
   const song = (songsResult.data?.dx_intl_songs || []).filter((song) =>
-    song.id.startsWith(songId)
+    song.id.startsWith(songId),
   )[0]
   const variantMap = new Map(
     (song?.dx_intl_variants ?? []).map((variant) => [
@@ -54,7 +54,7 @@ const SongStats = ({ params }: { params: Params }) => {
           return accr
         }, []),
       },
-    ])
+    ]),
   )
   const notes = variantMap.get(params.variant === "dx")?.notes ?? []
   const [statsResult] = useQuery({
@@ -84,7 +84,7 @@ const SongStats = ({ params }: { params: Params }) => {
           (accr[accr.length - 1]?.accumulated ?? 0) + (curr.count ?? 0),
       },
     ],
-    []
+    [],
   )
   return (
     <>

@@ -31,7 +31,7 @@ const Overview = () => {
           (accr[accr.length - 1]?.accumulated ?? 0) + (curr.count ?? 0),
       },
     ],
-    []
+    [],
   )
 
   return (

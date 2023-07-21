@@ -18,7 +18,7 @@ const GraphQLTokenProvider = ({
         },
         exchanges: [cacheExchange, fetchExchange],
       }),
-    [token]
+    [token],
   )
 
   return <UrqlProvider value={client}>{children}</UrqlProvider>

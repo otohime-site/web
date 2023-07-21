@@ -46,12 +46,12 @@ const Player = ({ params }: { params: Params }) => {
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
   const flattedEntries = useMemo(
     () => flatSongsResult(songsResult.data),
-    [songsResult]
+    [songsResult],
   )
   // Used to get rating in reliable way during major version updates
   const maxVersion = useMemo(
     () => Math.max(...flattedEntries.map((entry) => entry.version)),
-    [flattedEntries]
+    [flattedEntries],
   )
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
@@ -62,10 +62,10 @@ const Player = ({ params }: { params: Params }) => {
     const scores =
       getFragmentData(
         dxIntlScoresFields,
-        recordResult.data.dx_intl_players[0]?.dx_intl_scores ?? []
+        recordResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
       ) ?? []
     const scoresMap = new Map(
-      scores.map((score) => [getNoteHash(score), score])
+      scores.map((score) => [getNoteHash(score), score]),
     )
     const scoreTable = flattedEntries.map<ScoreTableEntry>((entry) => {
       const score = scoresMap.get(entry.hash)
@@ -80,7 +80,7 @@ const Player = ({ params }: { params: Params }) => {
         rating: score?.score
           ? getRating(
               score.score,
-              entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level]
+              entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
             )
           : 0,
         rating_listed: false,
@@ -90,13 +90,13 @@ const Player = ({ params }: { params: Params }) => {
       scoreTable
         .filter((entry) => !entry.current_version)
         .sort((a, b) => b.rating - a.rating)
-        .map((entry, index) => [entry.hash, index + 1])
+        .map((entry, index) => [entry.hash, index + 1]),
     )
     const newRanks = new Map(
       scoreTable
         .filter((entry) => entry.current_version)
         .sort((a, b) => b.rating - a.rating)
-        .map((entry, index) => [entry.hash, index + 1])
+        .map((entry, index) => [entry.hash, index + 1]),
     )
     scoreTable.forEach((entry) => {
       entry.old_rank = oldRanks.get(entry.hash)

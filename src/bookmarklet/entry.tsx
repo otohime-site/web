@@ -20,6 +20,6 @@ if (document.getElementById("otohime-root") != null) {
   createRoot(container).render(
     <GraphQLTokenProvider token={token}>
       <DxIntl />
-    </GraphQLTokenProvider>
+    </GraphQLTokenProvider>,
   )
 }

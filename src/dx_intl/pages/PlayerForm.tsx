@@ -79,7 +79,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
   const [serverErrors, setServerErrors] = useState({ ...serverErrorsBase })
 
   const onSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
+    event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     event.preventDefault()
     event.stopPropagation()

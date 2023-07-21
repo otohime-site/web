@@ -10,5 +10,5 @@ createRoot(container!).render(
     <AppProvider skeleton={<>Loading...</>}>
       <App />
     </AppProvider>
-  </Titled>
+  </Titled>,
 )

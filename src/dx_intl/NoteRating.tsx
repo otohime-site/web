@@ -31,7 +31,7 @@ const NoteRating = ({
             ([minScore, rankName]) => [
               rankName,
               getRating(minScore, internalLv) - rating,
-            ]
+            ],
           )
         : []
 

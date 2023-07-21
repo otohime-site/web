@@ -28,7 +28,7 @@ export const formatRelative = (input: Date): string => {
     (Object.keys(relativeUnits) as Array<keyof typeof relativeUnits>).find(
       (u) => {
         return absDelta > relativeUnits[u]
-      }
+      },
     ) ?? "second"
   const val =
     delta > 0

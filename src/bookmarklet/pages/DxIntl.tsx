@@ -76,7 +76,7 @@ const parsedPlayer = (() => {
 const sha256Sum = async (text: string): Promise<string> => {
   const hashBuffer = await crypto.subtle.digest(
     "SHA-256",
-    new TextEncoder().encode(text)
+    new TextEncoder().encode(text),
   )
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -86,12 +86,12 @@ const sha256Sum = async (text: string): Promise<string> => {
 const Book = () => {
   const [open, setOpen] = useState(true)
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
-    undefined
+    undefined,
   )
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
   const players = getFragmentData(
     dxIntlPlayersFields,
-    dxIntlPlayersResult.data?.dx_intl_players ?? []
+    dxIntlPlayersResult.data?.dx_intl_players ?? [],
   )
   const client = useClient()
   const [fetchState, setFetchState] = useState<
@@ -114,7 +114,7 @@ const Book = () => {
       async (prevPromise, _, difficulty) => {
         const prev = await prevPromise
         const resp = await window.parent.fetch(
-          `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`
+          `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`,
         )
         if (!resp.ok) {
           throw new Error("Network Error!")
@@ -124,7 +124,7 @@ const Book = () => {
         setFetchProgress(difficulty + 1)
         return [...prev, ...result]
       },
-      Promise.resolve([])
+      Promise.resolve([]),
     )
     const scores = await Promise.all(
       entries.map(async (entry) => {
@@ -133,7 +133,7 @@ const Book = () => {
           song_id: await sha256Sum(`${category}_${title}`),
           ...entryWithoutSong,
         }
-      })
+      }),
     )
 
     const mutation = await client

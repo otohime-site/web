@@ -76,8 +76,8 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
         difficulty: note.difficulty,
         level: note.level,
         internal_lv: note.internal_lv,
-      }))
-    )
+      })),
+    ),
   )
 export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   score: number
@@ -108,14 +108,15 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
         ...(versionGroups?.get(ver) ?? []),
       ].filter(
         (entry) =>
-          entry.difficulty <= 3 && !versionTitleExcludes.includes(entry.song_id)
+          entry.difficulty <= 3 &&
+          !versionTitleExcludes.includes(entry.song_id),
       ) ?? []
     if (versionTable.every((entry) => !!entry.combo_flag)) {
       results.fc.push(ver)
     }
     if (
       versionTable.every(
-        (entry) => entry.combo_flag >= comboFlags.indexOf("ap")
+        (entry) => entry.combo_flag >= comboFlags.indexOf("ap"),
       )
     ) {
       results.ap.push(ver)

@@ -15,7 +15,7 @@ javascript:
 var s = document.createElement("script");
 s.src = "https://${host}/go.js"; document.body.appendChild(s);
 document.body.setAttribute('data-otohime-token', ${JSON.stringify(
-  token.replace(/-/g, "")
+  token.replace(/-/g, ""),
 )});
 void(0);
 `
@@ -44,7 +44,7 @@ const User = () => {
   const user = useUser()
   const [tokensResult, refetchTokens] = useQuery({ query: tokensDocument })
   const [regenerateTokenResult, regenerateToken] = useMutation(
-    regenerateTokenDocument
+    regenerateTokenDocument,
   )
   const [bookDialogOpen, setBookDialogOpen] = useState(false)
   const handleClose = (): void => setBookDialogOpen(false)
@@ -57,7 +57,7 @@ const User = () => {
   }
   const copyBookmarklet = async (
     e: React.MouseEvent,
-    token: string
+    token: string,
   ): Promise<void> => {
     e.preventDefault()
     try {
