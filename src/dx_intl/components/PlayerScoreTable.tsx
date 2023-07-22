@@ -62,6 +62,7 @@ const tableGroupConfigs: TableGroupConfigs = {
   ],
   sortable: [
     "title",
+    "deluxe",
     "difficulty",
     "level",
     "internal_lv",
@@ -77,10 +78,11 @@ export const PlayerScoreTable = ({
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [{ grouping, sorting }, dispatchTableState] = useTableState({
-    tableKey: "dx-intl",
-    tableGroupConfigs,
-  })
+  const [{ orderBy, orderByDesc, grouping, sorting }, dispatchTableState] =
+    useTableState({
+      tableKey: "dx-intl",
+      tableGroupConfigs,
+    })
 
   const columnVisibility = useMemo(
     () => ({ ...defaultVisibility, [grouping[0]]: true }),
@@ -215,6 +217,19 @@ export const PlayerScoreTable = ({
                 <th
                   key={header.id}
                   style={header.column.getIsGrouped() ? { width: "12px" } : {}}
+                  onClick={() => {
+                    if (orderBy == header.id) {
+                      dispatchTableState({
+                        type: "setOrderByDesc",
+                        payload: !orderByDesc,
+                      })
+                    } else if (tableGroupConfigs.sortable.includes(header.id)) {
+                      dispatchTableState({
+                        type: "setOrderBy",
+                        payload: header.id,
+                      })
+                    }
+                  }}
                 >
                   {header.isPlaceholder ||
                   header.column.getIsGrouped() ? null : (
@@ -225,6 +240,7 @@ export const PlayerScoreTable = ({
                       )}
                     </>
                   )}
+                  {orderBy == header.id ? (orderByDesc ? "↓" : "↑") : ""}
                 </th>
               ))}
             </tr>

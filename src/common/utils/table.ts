@@ -115,11 +115,13 @@ export const useTableState = ({ tableGroupConfigs }: TableStateInput) => {
           payload !== state["secondaryGroup"] &&
           sortable.includes(payload)
         ) {
-          newState.secondaryGroup = payload
+          newState.orderBy = payload
         }
         break
       case "setOrderByDesc":
-        newState.orderByDesc = payload
+        if (!(newState.primaryGroup in locked)) {
+          newState.orderByDesc = payload
+        }
       // pass
     }
     return { ...newState, ...getTanstackState(newState, locked) }
