@@ -98,7 +98,7 @@ export const useTableState = ({ tableGroupConfigs }: TableStateInput) => {
           newState.primaryGroup = payload
           newState.secondaryGroup = groups[payload] ?? ""
         }
-        break
+        return { ...newState, ...getTanstackState(newState, locked) }
       case "setSecondaryGroup":
         if (
           !(newState.primaryGroup in locked) &&
@@ -107,7 +107,7 @@ export const useTableState = ({ tableGroupConfigs }: TableStateInput) => {
         ) {
           newState.secondaryGroup = payload
         }
-        break
+        return { ...newState, ...getTanstackState(newState, locked) }
       case "setOrderBy":
         if (
           !(newState.primaryGroup in locked) &&
@@ -117,14 +117,19 @@ export const useTableState = ({ tableGroupConfigs }: TableStateInput) => {
         ) {
           newState.orderBy = payload
         }
-        break
+        return {
+          ...newState,
+          sorting: getTanstackState(newState, locked).sorting,
+        }
       case "setOrderByDesc":
         if (!(newState.primaryGroup in locked)) {
           newState.orderByDesc = payload
         }
-      // pass
+        return {
+          ...newState,
+          sorting: getTanstackState(newState, locked).sorting,
+        }
     }
-    return { ...newState, ...getTanstackState(newState, locked) }
   }
 
   const initState = reducer(
