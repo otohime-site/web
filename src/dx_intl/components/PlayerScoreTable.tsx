@@ -1,7 +1,7 @@
 import {
   ColumnFilter,
+  GroupingState,
   SortingState,
-  VisibilityState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -14,7 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -27,6 +27,7 @@ import {
   syncFlags,
   versions,
 } from "../models/constants"
+import { useTableState } from "../../common/utils/table"
 
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
@@ -37,20 +38,49 @@ const defaultVisibility = {
   rating_listed: false,
 }
 
+const tableGroupConfigs: Record<
+  string,
+  { grouping: GroupingState; sorting: SortingState; lockSorting?: boolean }
+> = {
+  current_version: {
+    grouping: [],
+    sorting: [
+      { id: "current_version", desc: true },
+      { id: "rating", desc: true },
+    ],
+    lockSorting: true,
+  },
+  version: {
+    grouping: ["difficulty"],
+    sorting: [{ id: "version", desc: false }],
+  },
+  level: {
+    grouping: ["internal_lv"],
+    sorting: [
+      { id: "level", desc: false },
+      { id: "internal_lv", desc: false },
+    ],
+  },
+  category: {
+    grouping: ["difficulty"],
+    sorting: [],
+  },
+}
+
 export const PlayerScoreTable = ({
   scoreTable,
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [grouping, setGrouping] = useState<string[]>(["current_version"])
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: "rating", desc: true },
-  ])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    ...defaultVisibility,
-    current_version: true,
+  const [{ grouping, sorting }, dispatchTableState] = useTableState({
+    tableKey: "dx-intl",
+    tableGroupConfigs,
   })
 
+  const columnVisibility = useMemo(
+    () => ({ ...defaultVisibility, [grouping[0]]: true }),
+    [grouping],
+  )
   const columnFilters: ColumnFilter[] = useMemo(
     () =>
       grouping[0] == "current_version"
@@ -144,8 +174,6 @@ export const PlayerScoreTable = ({
       }),
     ],
     enableColumnFilters: true,
-    onGroupingChange: setGrouping,
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
@@ -159,17 +187,14 @@ export const PlayerScoreTable = ({
     <div>
       <RadioCardRoot
         value={grouping[0]}
-        onValueChange={(val) => {
-          setGrouping([val])
-          setColumnVisibility({ ...defaultVisibility, [val]: true })
-          setSorting([{ id: val, desc: grouping[0] !== "current_version" }])
+        onValueChange={(payload) => {
+          dispatchTableState({ type: "setTopGrouping", payload })
         }}
         style={{ display: "flex", flexDirection: "row" }}
       >
         <RadioCard value="current_version">Rating 組成</RadioCard>
         <RadioCard value="category">分類</RadioCard>
         <RadioCard value="version">版本</RadioCard>
-        <RadioCard value="difficulty">難易度</RadioCard>
         <RadioCard value="level">樂曲等級</RadioCard>
       </RadioCardRoot>
       <table

@@ -132,20 +132,3 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
     return results
   }
 }
-
-export const tableGroupBy = [
-  "category",
-  "version",
-  "level",
-  "current_version",
-] as const
-
-export const tableOrderBy = [
-  "default",
-  "level",
-  "internalLv",
-  "score",
-  "combo",
-  "sync",
-  "rating",
-] as const
