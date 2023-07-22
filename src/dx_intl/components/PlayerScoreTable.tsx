@@ -1,7 +1,5 @@
 import {
   ColumnFilter,
-  GroupingState,
-  SortingState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -14,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { Fragment, useMemo } from "react"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -27,7 +25,7 @@ import {
   syncFlags,
   versions,
 } from "../models/constants"
-import { useTableState } from "../../common/utils/table"
+import { TableGroupConfigs, useTableState } from "../../common/utils/table"
 
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
@@ -38,33 +36,40 @@ const defaultVisibility = {
   rating_listed: false,
 }
 
-const tableGroupConfigs: Record<
-  string,
-  { grouping: GroupingState; sorting: SortingState; lockSorting?: boolean }
-> = {
-  current_version: {
-    grouping: [],
-    sorting: [
-      { id: "current_version", desc: true },
-      { id: "rating", desc: true },
-    ],
-    lockSorting: true,
+const tableGroupConfigs: TableGroupConfigs = {
+  groups: {
+    current_version: null,
+    version: "difficulty",
+    category: "difficulty",
+    level: "internal_lv",
   },
-  version: {
-    grouping: ["difficulty"],
-    sorting: [{ id: "version", desc: false }],
+  locked: {
+    current_version: {
+      grouping: [],
+      sorting: [{ id: "rating", desc: true }],
+    },
   },
-  level: {
-    grouping: ["internal_lv"],
-    sorting: [
-      { id: "level", desc: false },
-      { id: "internal_lv", desc: false },
-    ],
-  },
-  category: {
-    grouping: ["difficulty"],
-    sorting: [],
-  },
+  orderBy: "title",
+  orderByDesc: false,
+  groupable: [
+    "version",
+    "category",
+    "difficulty",
+    "level",
+    "internal_lv",
+    "combo_flag",
+    "sync_flag",
+  ],
+  sortable: [
+    "title",
+    "difficulty",
+    "level",
+    "internal_lv",
+    "score",
+    "combo_flag",
+    "sync_flag",
+    "rating",
+  ],
 }
 
 export const PlayerScoreTable = ({
@@ -102,6 +107,9 @@ export const PlayerScoreTable = ({
         header: "曲名",
         cell: (info) => info.getValue(),
         aggregationFn: () => "",
+        sortingFn: (a, b) => {
+          return a.index - b.index
+        },
         enableGrouping: false,
       }),
       columnHelper.accessor("category", {
@@ -188,7 +196,7 @@ export const PlayerScoreTable = ({
       <RadioCardRoot
         value={grouping[0]}
         onValueChange={(payload) => {
-          dispatchTableState({ type: "setTopGrouping", payload })
+          dispatchTableState({ type: "setPrimaryGroup", payload })
         }}
         style={{ display: "flex", flexDirection: "row" }}
       >
@@ -264,7 +272,7 @@ export const PlayerScoreTable = ({
                     } else if (cell.getIsPlaceholder()) {
                       return !groupCellDone ? <td key={cell.id}></td> : <></>
                     } else if (index === firstAggIndex) {
-                      return <></>
+                      return <Fragment key={cell.id}></Fragment>
                     }
                     return (
                       <td key={cell.id}>
