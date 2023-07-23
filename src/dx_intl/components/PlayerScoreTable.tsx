@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Fragment, useMemo } from "react"
+import { useMemo } from "react"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -286,9 +286,9 @@ export const PlayerScoreTable = ({
                         </td>
                       )
                     } else if (cell.getIsPlaceholder()) {
-                      return !groupCellDone ? <td key={cell.id}></td> : <></>
+                      return !groupCellDone ? <td key={cell.id}></td> : null
                     } else if (index === firstAggIndex) {
-                      return <Fragment key={cell.id}></Fragment>
+                      return null
                     }
                     return (
                       <td key={cell.id}>
