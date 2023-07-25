@@ -84,6 +84,7 @@ const Player = ({ params }: { params: Params }) => {
             )
           : 0,
         rating_listed: false,
+        rating_used: false,
       }
     })
     const oldRanks = new Map(
@@ -104,6 +105,9 @@ const Player = ({ params }: { params: Params }) => {
       entry.rating_listed =
         (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
         (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2
+      entry.rating_used =
+        (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT ||
+        (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT
     })
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }

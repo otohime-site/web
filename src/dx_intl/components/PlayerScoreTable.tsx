@@ -366,7 +366,10 @@ export const PlayerScoreTable = ({
               )
             }
             return (
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className={row.original.rating_used ? classes.used : ""}
+              >
                 {visibleCells.map((cell) =>
                   !cell.getIsPlaceholder() ? (
                     <td
