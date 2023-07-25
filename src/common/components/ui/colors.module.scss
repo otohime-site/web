@@ -7,9 +7,10 @@
 @import "@radix-ui/colors/violet.css";
 @import "@radix-ui/colors/indigo.css";
 @import "@radix-ui/colors/plum.css";
+@import "@radix-ui/colors/lime.css";
 
 $colors: "indigo", "red", "blue", "green", "yellow", "mauve", "violet", "indigo",
-  "plum";
+  "plum", "lime";
 
 @each $c in $colors {
   .#{$c} {

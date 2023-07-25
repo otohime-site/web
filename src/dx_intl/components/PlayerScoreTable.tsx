@@ -1,4 +1,6 @@
 import {
+  Cell,
+  Column,
   ColumnFilter,
   createColumnHelper,
   flexRender,
@@ -13,7 +15,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
+import ArrowDownIcon from "~icons/mdi/arrow-down"
+import ArrowUpIcon from "~icons/mdi/arrow-up"
+import ChevronRightIcon from "~icons/mdi/chevron-right"
+import ChevronUpIcon from "~icons/mdi/chevron-up"
 import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
+import { TableGroupConfigs, useTableState } from "../../common/utils/table"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
 import {
@@ -21,15 +28,17 @@ import {
   categories,
   comboFlags,
   difficulties,
+  levelCompareKey,
   levels,
   syncFlags,
   versions,
 } from "../models/constants"
-import { TableGroupConfigs, useTableState } from "../../common/utils/table"
+import classes from "./PlayerScoreTable.module.css"
 
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
   category: false,
+  difficulty: false,
   version: false,
   current_version: false,
   level: false,
@@ -73,6 +82,24 @@ const tableGroupConfigs: TableGroupConfigs = {
   ],
 }
 
+const getColumnClassName = (column: Column<ScoreTableEntry, unknown>) => {
+  return `col-${column.id.replace(/_/g, "-")}`
+}
+
+const getCellClassName = (cell: Cell<ScoreTableEntry, unknown>) => {
+  switch (cell.column.id) {
+    case "deluxe":
+      return cell.getValue() ? "dx" : "std"
+    case "difficulty":
+    case "internal_lv":
+      return `difficulty-${cell.row.getValue("difficulty")}`
+    case "combo_flag":
+      return (comboFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
+    case "sync_flag":
+      return (syncFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
+  }
+}
+
 export const PlayerScoreTable = ({
   scoreTable,
 }: {
@@ -85,7 +112,11 @@ export const PlayerScoreTable = ({
     })
 
   const columnVisibility = useMemo(
-    () => ({ ...defaultVisibility, [grouping[0]]: true }),
+    () =>
+      grouping.reduce(
+        (prev, next) => ({ ...prev, [next]: true }),
+        defaultVisibility,
+      ),
     [grouping],
   )
   const columnFilters: ColumnFilter[] = useMemo(
@@ -121,7 +152,7 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("deluxe", {
         header: "DX",
-        cell: (info) => (info.getValue() ? "DX" : "STD"),
+        cell: (info) => <span>{info.getValue() ? "DX" : "STD"}</span>,
         aggregationFn: () => "",
       }),
       columnHelper.accessor("version", {
@@ -130,14 +161,13 @@ export const PlayerScoreTable = ({
         aggregationFn: () => "",
       }),
       columnHelper.accessor("current_version", {
-        header: "新/舊曲",
+        header: "新舊",
         cell: (info) => (info.getValue() ? "新曲" : "舊曲"),
         aggregationFn: () => "",
       }),
       columnHelper.accessor("difficulty", {
-        header: "難易度",
-        cell: (info) =>
-          difficulties[info.getValue()].substring(0, 3).toUpperCase(),
+        header: "難度",
+        cell: (info) => difficulties[info.getValue()].toUpperCase(),
         aggregationFn: () => "",
       }),
       columnHelper.accessor("level", {
@@ -149,10 +179,14 @@ export const PlayerScoreTable = ({
       columnHelper.accessor("internal_lv", {
         header: "係數",
         cell: (info) => info.getValue() ?? info.row.getValue("level"),
+        sortingFn: (a, b) =>
+          (a.original.internal_lv ?? levelCompareKey[a.original.level]) -
+          (b.original.internal_lv ?? levelCompareKey[b.original.level]),
       }),
       columnHelper.accessor("score", {
         header: "成績",
-        cell: (info) => (info.getValue() ? info.getValue().toFixed(4) : ""),
+        cell: (info) =>
+          info.getValue() ? info.getValue().toFixed(4) + "%" : "",
         aggregationFn: "min",
         aggregatedCell: (info) => {
           const rankScore = RANK_SCORES[getRankScoreIndex(info.getValue())]
@@ -162,15 +196,15 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("combo_flag", {
         header: "C",
-        cell: (info) => comboFlags[info.getValue()],
+        cell: (info) => <span>{comboFlags[info.getValue()]}</span>,
         aggregationFn: "min",
-        aggregatedCell: (info) => comboFlags[info.getValue()],
+        aggregatedCell: (info) => <span>{comboFlags[info.getValue()]}</span>,
       }),
       columnHelper.accessor("sync_flag", {
         header: "S",
-        cell: (info) => syncFlags[info.getValue()],
+        cell: (info) => <span>{syncFlags[info.getValue()]}</span>,
         aggregationFn: "min",
-        aggregatedCell: (info) => syncFlags[info.getValue()],
+        aggregatedCell: (info) => <span>{syncFlags[info.getValue()]}</span>,
       }),
       columnHelper.accessor("rating", {
         header: "R",
@@ -207,42 +241,53 @@ export const PlayerScoreTable = ({
         <RadioCard value="version">版本</RadioCard>
         <RadioCard value="level">樂曲等級</RadioCard>
       </RadioCardRoot>
-      <table
-        style={{ width: "100%", fontSize: "1rem", fontFamily: "'M PLUS 1p'" }}
-      >
+      <table className={classes.table}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  style={header.column.getIsGrouped() ? { width: "12px" } : {}}
-                  onClick={() => {
-                    if (orderBy == header.id) {
-                      dispatchTableState({
-                        type: "setOrderByDesc",
-                        payload: !orderByDesc,
-                      })
-                    } else if (tableGroupConfigs.sortable.includes(header.id)) {
-                      dispatchTableState({
-                        type: "setOrderBy",
-                        payload: header.id,
-                      })
+              {headerGroup.headers.map((header) => {
+                const isGrouped = header.column.getIsGrouped()
+                const isSorted = header.column.getIsSorted()
+                return (
+                  <th
+                    key={header.id}
+                    className={
+                      getColumnClassName(header.column) +
+                      `${isSorted ? " sorted" : ""}` +
+                      `${isGrouped ? " grouped" : ""}`
                     }
-                  }}
-                >
-                  {header.isPlaceholder ||
-                  header.column.getIsGrouped() ? null : (
-                    <>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                    </>
-                  )}
-                  {orderBy == header.id ? (orderByDesc ? "↓" : "↑") : ""}
-                </th>
-              ))}
+                    onClick={() => {
+                      if (orderBy === header.column.id) {
+                        dispatchTableState({
+                          type: "setOrderByDesc",
+                          payload: !orderByDesc,
+                        })
+                      } else if (
+                        tableGroupConfigs.sortable.includes(header.id)
+                      ) {
+                        dispatchTableState({
+                          type: "setOrderBy",
+                          payload: header.id,
+                        })
+                      }
+                    }}
+                  >
+                    {header.isPlaceholder || isGrouped ? null : (
+                      <>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {isSorted == "asc" ? (
+                          <ArrowUpIcon />
+                        ) : isSorted == "desc" ? (
+                          <ArrowDownIcon />
+                        ) : null}
+                      </>
+                    )}
+                  </th>
+                )
+              })}
             </tr>
           ))}
         </thead>
@@ -274,10 +319,16 @@ export const PlayerScoreTable = ({
                     if (cell.getIsGrouped()) {
                       groupCellDone = true
                       return (
-                        <td key={cell.id} colSpan={firstAggIndex - index + 1}>
-                          <button onClick={row.getToggleExpandedHandler()}>
-                            {row.getIsExpanded() ? "|" : ">"}
-                          </button>
+                        <td
+                          onClick={row.getToggleExpandedHandler()}
+                          key={cell.id}
+                          colSpan={firstAggIndex - index + 1}
+                        >
+                          {row.getIsExpanded() ? (
+                            <ChevronUpIcon />
+                          ) : (
+                            <ChevronRightIcon />
+                          )}
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext(),
@@ -291,7 +342,10 @@ export const PlayerScoreTable = ({
                       return null
                     }
                     return (
-                      <td key={cell.id}>
+                      <td
+                        key={cell.id}
+                        className={getColumnClassName(cell.column)}
+                      >
                         {flexRender(
                           cell.column.columnDef.aggregatedCell ??
                             cell.column.columnDef.cell,
@@ -306,7 +360,12 @@ export const PlayerScoreTable = ({
             return (
               <tr key={row.id}>
                 {visibleCells.map((cell) => (
-                  <td key={cell.id}>
+                  <td
+                    key={cell.id}
+                    className={`${getColumnClassName(
+                      cell.column,
+                    )} ${getCellClassName(cell)}`}
+                  >
                     {!cell.getIsPlaceholder() ? (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
                     ) : (

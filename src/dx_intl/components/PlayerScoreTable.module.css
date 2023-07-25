@@ -1,0 +1,98 @@
+.table {
+  width: 100%;
+  font-size: 0.94rem;
+}
+
+.table thead th {
+  font-size: 0.75rem;
+  position: sticky;
+  top: 0;
+}
+.table thead th svg {
+  vertical-align: middle;
+}
+
+.table thead th:global(.grouped) {
+  width: 1.6rem;
+  font-size: 1rem;
+}
+
+.table tbody tr td {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--mauve-6);
+}
+
+.table td:global(.col-title) {
+  font-family: "M PLUS 1p";
+}
+
+.table td:global(.col-deluxe),
+.table td:global(.col-internal-lv) {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  width: 2.5em;
+  text-align: center;
+}
+
+.table td:global(.col-deluxe),
+.table td:global(.col-combo-flag),
+.table td:global(.col-sync-flag) {
+  text-align: center;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  width: 1.7rem;
+}
+.table td:global(.col-score) {
+  text-align: center;
+  width: 5.6rem;
+}
+.table td span {
+  display: inline-block;
+  padding: 0.1rem;
+  border-radius: 0.3rem;
+}
+.table td:global(.std) span {
+  color: var(--indigo-8);
+}
+.table td:global(.dx) span {
+  color: var(--red-8);
+}
+
+.table td:global(.col-difficulty),
+.table td:global(.col-internal-lv) {
+  font-weight: 500;
+}
+
+.table td:global(.difficulty-0) {
+  color: var(--green-8);
+}
+.table td:global(.difficulty-1) {
+  color: var(--yellow-8);
+}
+.table td:global(.difficulty-2) {
+  color: var(--red-8);
+}
+.table td:global(.difficulty-3) {
+  color: var(--violet-8);
+}
+.table td:global(.difficulty-4) {
+  color: var(--indigo-8);
+}
+
+.table td:global(.fc),
+td:global(.fc-plus) span {
+  color: var(--lime-8);
+}
+.table td:global(.ap),
+td:global(.ap-plus) span {
+  color: var(--yellow-8);
+}
+.table td:global(.fs),
+td:global(.fs-plus) span {
+  color: var(--blue-8);
+}
+.table td:global(.fdx),
+td:global(.fdx-plus) span {
+  color: var(--yellow-8);
+}

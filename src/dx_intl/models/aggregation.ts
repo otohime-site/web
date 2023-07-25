@@ -49,7 +49,32 @@ export const ESTIMATED_INTERNAL_LV: Record<(typeof levels)[number], number> = {
   "14+": 14.8,
   "15": 15, // While it should not happen
 }
-
+export const levelCompareKey: Record<(typeof levels)[number], number> = {
+  "1": 1.0,
+  "2": 2.0,
+  "3": 3.0,
+  "4": 4.0,
+  "5": 5.0,
+  "6": 6.0,
+  "7": 7.0,
+  "7+": 7.7,
+  "8": 8.0,
+  "8+": 8.7,
+  "9": 9.0,
+  "9+": 9.7,
+  "10": 10.0,
+  "10+": 10.7,
+  "11": 11.0,
+  "11+": 11.7,
+  // Make sure non internal lv appears first
+  "12": 12.0 - 0.01,
+  "12+": 12.7 - 0.01,
+  "13": 13.0 - 0.01,
+  "13+": 13.7 - 0.01,
+  "14": 14.0 - 0.01,
+  "14+": 14.7 - 0.01,
+  "15": 15.0 - 0.01,
+}
 export const getRating = (score: number, internalLv: number): number => {
   const rankScore = RANK_SCORES[getRankScoreIndex(score)]
   return rankScore != null
