@@ -105,7 +105,6 @@ const Player = ({ params }: { params: Params }) => {
         (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
         (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2
     })
-    console.log(scoreTable)
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])

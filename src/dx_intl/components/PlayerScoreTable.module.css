@@ -1,20 +1,32 @@
 .table {
   width: 100%;
-  font-size: 0.94rem;
+  font-size: 0.88rem;
+  font-family: "M PLUS 1p";
+  border-collapse: collapse;
 }
 
 .table thead th {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 400;
   position: sticky;
   top: 0;
+  background: var(--mauve-3);
+  border-bottom: 1px solid var(--mauve-6);
 }
-.table thead th svg {
+.table svg {
   vertical-align: middle;
 }
 
-.table thead th:global(.grouped) {
-  width: 1.6rem;
-  font-size: 1rem;
+.table thead th svg {
+  width: 1em;
+  height: 1em;
+}
+.table.locked thead th svg {
+  color: var(--mauve-6);
+}
+
+.table tr.grouped td {
+  background: var(--mauve-1);
 }
 
 .table tbody tr td {
@@ -22,77 +34,98 @@
   border-bottom: 1px solid var(--mauve-6);
 }
 
-.table td:global(.col-title) {
-  font-family: "M PLUS 1p";
+.table th:global(.col-deluxe) {
+  width: 2.8em;
 }
 
-.table td:global(.col-deluxe),
-.table td:global(.col-internal-lv) {
-  font-size: 0.8rem;
+.table td:global(.col-deluxe) {
+  font-size: 0.7rem;
   text-transform: uppercase;
-  width: 2.5em;
   text-align: center;
+  font-weight: 700;
+}
+.table th:global(.col-internal-lv) {
+  width: 3.2em;
 }
 
-.table td:global(.col-deluxe),
+.table td:global(.col-internal-lv) {
+  font-weight: 700;
+  font-size: 0.7rem;
+  width: 3em;
+  text-align: right;
+}
+
 .table td:global(.col-combo-flag),
 .table td:global(.col-sync-flag) {
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   font-weight: 900;
-  width: 1.7rem;
+  width: 1.6rem;
 }
 .table td:global(.col-score) {
   text-align: center;
-  width: 5.6rem;
+  width: 6.2rem;
 }
+.table td:global(.col-rating) {
+  font-size: 0.8rem;
+  text-align: right;
+  width: 2rem;
+}
+
 .table td span {
   display: inline-block;
   padding: 0.1rem;
   border-radius: 0.3rem;
 }
-.table td:global(.std) span {
+.table td:global(.std) {
   color: var(--indigo-8);
 }
-.table td:global(.dx) span {
+.table td:global(.dx) {
   color: var(--red-8);
 }
 
-.table td:global(.col-difficulty),
 .table td:global(.col-internal-lv) {
-  font-weight: 500;
+  font-weight: 400;
+}
+.table td:global(.col-internal-lv):global(.plus) {
+  padding-right: 0.165em;
+}
+.table td:global(.col-internal-lv):global(.non-plus) {
+  padding-right: 0.9em;
 }
 
 .table td:global(.difficulty-0) {
-  color: var(--green-8);
+  color: var(--green-10);
 }
 .table td:global(.difficulty-1) {
-  color: var(--yellow-8);
+  color: var(--yellow-10);
 }
 .table td:global(.difficulty-2) {
-  color: var(--red-8);
+  color: var(--red-10);
 }
 .table td:global(.difficulty-3) {
-  color: var(--violet-8);
+  color: var(--violet-10);
 }
 .table td:global(.difficulty-4) {
-  color: var(--indigo-8);
+  color: var(--plum-6);
+  -webkit-text-stroke: 0.04rem var(--plum-11);
+  paint-order: stroke fill;
 }
 
 .table td:global(.fc),
-td:global(.fc-plus) span {
+.table td:global(.fc-plus) {
   color: var(--lime-8);
 }
 .table td:global(.ap),
-td:global(.ap-plus) span {
+.table td:global(.ap-plus) {
   color: var(--yellow-8);
 }
 .table td:global(.fs),
-td:global(.fs-plus) span {
+.table td:global(.fs-plus) {
   color: var(--blue-8);
 }
 .table td:global(.fdx),
-td:global(.fdx-plus) span {
+.table td:global(.fdx-plus) {
   color: var(--yellow-8);
 }

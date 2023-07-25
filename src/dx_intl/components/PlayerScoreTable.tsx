@@ -90,13 +90,19 @@ const getCellClassName = (cell: Cell<ScoreTableEntry, unknown>) => {
   switch (cell.column.id) {
     case "deluxe":
       return cell.getValue() ? "dx" : "std"
-    case "difficulty":
     case "internal_lv":
-      return `difficulty-${cell.row.getValue("difficulty")}`
+      return `difficulty-${cell.row.getValue("difficulty")} ${
+        cell.row.original.internal_lv
+          ? ""
+          : cell.row.original.level.includes("+")
+          ? "plus"
+          : "non-plus"
+      }`
     case "combo_flag":
       return (comboFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
     case "sync_flag":
       return (syncFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
+      return ""
   }
 }
 
@@ -105,11 +111,13 @@ export const PlayerScoreTable = ({
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [{ orderBy, orderByDesc, grouping, sorting }, dispatchTableState] =
-    useTableState({
-      tableKey: "dx-intl",
-      tableGroupConfigs,
-    })
+  const [
+    { primaryGroup, orderBy, orderByDesc, grouping, sorting },
+    dispatchTableState,
+  ] = useTableState({
+    tableKey: "dx-intl",
+    tableGroupConfigs,
+  })
 
   const columnVisibility = useMemo(
     () =>
@@ -152,7 +160,7 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("deluxe", {
         header: "DX",
-        cell: (info) => <span>{info.getValue() ? "DX" : "STD"}</span>,
+        cell: (info) => (info.getValue() ? "DX" : "STD"),
         aggregationFn: () => "",
       }),
       columnHelper.accessor("version", {
@@ -178,7 +186,10 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("internal_lv", {
         header: "係數",
-        cell: (info) => info.getValue() ?? info.row.getValue("level"),
+        cell: (info) =>
+          info.getValue()
+            ? info.getValue().toFixed(1)
+            : info.row.getValue("level"),
         sortingFn: (a, b) =>
           (a.original.internal_lv ?? levelCompareKey[a.original.level]) -
           (b.original.internal_lv ?? levelCompareKey[b.original.level]),
@@ -196,15 +207,15 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("combo_flag", {
         header: "C",
-        cell: (info) => <span>{comboFlags[info.getValue()]}</span>,
+        cell: (info) => comboFlags[info.getValue()],
         aggregationFn: "min",
-        aggregatedCell: (info) => <span>{comboFlags[info.getValue()]}</span>,
+        aggregatedCell: (info) => comboFlags[info.getValue()],
       }),
       columnHelper.accessor("sync_flag", {
         header: "S",
-        cell: (info) => <span>{syncFlags[info.getValue()]}</span>,
+        cell: (info) => syncFlags[info.getValue()],
         aggregationFn: "min",
-        aggregatedCell: (info) => <span>{syncFlags[info.getValue()]}</span>,
+        aggregatedCell: (info) => syncFlags[info.getValue()],
       }),
       columnHelper.accessor("rating", {
         header: "R",
@@ -241,20 +252,25 @@ export const PlayerScoreTable = ({
         <RadioCard value="version">版本</RadioCard>
         <RadioCard value="level">樂曲等級</RadioCard>
       </RadioCardRoot>
-      <table className={classes.table}>
+      <table
+        className={`${classes.table} ${
+          primaryGroup in tableGroupConfigs.locked ? ` ${classes.locked}` : ""
+        }`}
+      >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                const isGrouped = header.column.getIsGrouped()
                 const isSorted = header.column.getIsSorted()
+                if (header.column.getIsGrouped() || header.isPlaceholder) {
+                  return null
+                }
                 return (
                   <th
                     key={header.id}
                     className={
                       getColumnClassName(header.column) +
-                      `${isSorted ? " sorted" : ""}` +
-                      `${isGrouped ? " grouped" : ""}`
+                      `${isSorted ? " sorted" : ""}`
                     }
                     onClick={() => {
                       if (orderBy === header.column.id) {
@@ -272,18 +288,16 @@ export const PlayerScoreTable = ({
                       }
                     }}
                   >
-                    {header.isPlaceholder || isGrouped ? null : (
-                      <>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        {isSorted == "asc" ? (
-                          <ArrowUpIcon />
-                        ) : isSorted == "desc" ? (
-                          <ArrowDownIcon />
-                        ) : null}
-                      </>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                    {isSorted == false ? (
+                      <svg />
+                    ) : isSorted == "asc" ? (
+                      <ArrowUpIcon />
+                    ) : (
+                      <ArrowDownIcon />
                     )}
                   </th>
                 )
@@ -300,29 +314,17 @@ export const PlayerScoreTable = ({
               const leafCount = (row as any).leafRows.length
 
               // To make the table more compact, we will apply colspan to grouped cell
-              // , expand to the `title` column, which needs a dedicated logic.
-              // The Tanstack table will arranged it like:
-              // [placeholder][group][placeholder][aggregated][aggregated]...
-
-              // First, find the index of the last aggregated cell,
-              // as all grouped/placeholder are placed in the left,
-              // it will also be the length of all visible grouping cells.
-              const firstAggIndex = visibleCells.findIndex(
-                (cell) => !cell.column.getIsGrouped(),
-              )
-
-              // Then draw and handle colspans.
-              let groupCellDone = false
+              // which needs a dedicated logic.
               return (
-                <tr key={row.id}>
+                <tr key={row.id} className={classes.grouped}>
                   {row.getVisibleCells().map((cell, index) => {
                     if (cell.getIsGrouped()) {
-                      groupCellDone = true
                       return (
                         <td
                           onClick={row.getToggleExpandedHandler()}
                           key={cell.id}
-                          colSpan={firstAggIndex - index + 1}
+                          colSpan={3}
+                          style={{ paddingLeft: `${index * 1}rem` }}
                         >
                           {row.getIsExpanded() ? (
                             <ChevronUpIcon />
@@ -337,14 +339,20 @@ export const PlayerScoreTable = ({
                         </td>
                       )
                     } else if (cell.getIsPlaceholder()) {
-                      return !groupCellDone ? <td key={cell.id}></td> : null
-                    } else if (index === firstAggIndex) {
+                      return null
+                    } else if (
+                      ["title", "deluxe", "internal_lv"].includes(
+                        cell.column.id,
+                      )
+                    ) {
                       return null
                     }
                     return (
                       <td
-                        key={cell.id}
-                        className={getColumnClassName(cell.column)}
+                        key={getColumnClassName(cell.column)}
+                        className={`${getColumnClassName(
+                          cell.column,
+                        )} ${getCellClassName(cell)}`}
                       >
                         {flexRender(
                           cell.column.columnDef.aggregatedCell ??
@@ -359,20 +367,21 @@ export const PlayerScoreTable = ({
             }
             return (
               <tr key={row.id}>
-                {visibleCells.map((cell) => (
-                  <td
-                    key={cell.id}
-                    className={`${getColumnClassName(
-                      cell.column,
-                    )} ${getCellClassName(cell)}`}
-                  >
-                    {!cell.getIsPlaceholder() ? (
-                      flexRender(cell.column.columnDef.cell, cell.getContext())
-                    ) : (
-                      <></>
-                    )}
-                  </td>
-                ))}
+                {visibleCells.map((cell) =>
+                  !cell.getIsPlaceholder() ? (
+                    <td
+                      key={cell.id}
+                      className={`${getColumnClassName(
+                        cell.column,
+                      )} ${getCellClassName(cell)}`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ) : null,
+                )}
               </tr>
             )
           })}
