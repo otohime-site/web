@@ -5,11 +5,15 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [react()],
   build: {
-    lib: {
-      entry: resolve(__dirname, "src/go.tsx"),
-      formats: ["iife"],
-      name: "go",
-      fileName: () => "go.js",
+    // Using library mode will result in large bundle
+    // https://stackoverflow.com/questions/73713323/
+    rollupOptions: {
+      input: resolve(__dirname, "src/go.tsx"),
+      output: {
+        format: "iife",
+        dir: resolve(__dirname, "dist"),
+        entryFileNames: "go.js",
+      },
     },
   },
 })
