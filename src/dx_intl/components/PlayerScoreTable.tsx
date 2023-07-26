@@ -38,7 +38,6 @@ import classes from "./PlayerScoreTable.module.css"
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
   category: false,
-  difficulty: false,
   version: false,
   current_version: false,
   level: false,
@@ -90,7 +89,9 @@ const getCellClassName = (cell: Cell<ScoreTableEntry, unknown>) => {
   switch (cell.column.id) {
     case "deluxe":
       return cell.getValue() ? "dx" : "std"
+    case "difficulty":
     case "internal_lv":
+      if (cell.getIsAggregated()) return ""
       return `difficulty-${cell.row.getValue("difficulty")} ${
         cell.row.original.internal_lv
           ? ""
@@ -102,8 +103,8 @@ const getCellClassName = (cell: Cell<ScoreTableEntry, unknown>) => {
       return (comboFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
     case "sync_flag":
       return (syncFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
-      return ""
   }
+  return ""
 }
 
 export const PlayerScoreTable = ({
@@ -175,7 +176,10 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("difficulty", {
         header: "難度",
-        cell: (info) => difficulties[info.getValue()].toUpperCase(),
+        cell: (info) =>
+          info.cell.getIsGrouped()
+            ? difficulties[info.getValue()].toUpperCase()
+            : difficulties[info.getValue()].toUpperCase().substring(0, 3),
         aggregationFn: () => "",
       }),
       columnHelper.accessor("level", {
@@ -313,6 +317,9 @@ export const PlayerScoreTable = ({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const leafCount = (row as any).leafRows.length
 
+              const spanTo = row
+                .getVisibleCells()
+                .findIndex((cell) => cell.column.id === "score")
               // To make the table more compact, we will apply colspan to grouped cell
               // which needs a dedicated logic.
               return (
@@ -323,7 +330,7 @@ export const PlayerScoreTable = ({
                         <td
                           onClick={row.getToggleExpandedHandler()}
                           key={cell.id}
-                          colSpan={3}
+                          colSpan={spanTo - 2}
                           style={{ paddingLeft: `${index * 1}rem` }}
                         >
                           {row.getIsExpanded() ? (

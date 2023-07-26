@@ -1,12 +1,12 @@
 .table {
   width: 100%;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-family: "M PLUS 1p";
   border-collapse: collapse;
 }
 
 .table thead th {
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   font-weight: 400;
   position: sticky;
   top: 0;
@@ -44,14 +44,16 @@
   text-align: center;
   font-weight: 700;
 }
+.table th:global(.col-difficulty),
 .table th:global(.col-internal-lv) {
-  width: 3.2em;
+  width: 3.1em;
 }
 
+.table td:global(.col-difficulty),
 .table td:global(.col-internal-lv) {
   font-weight: 700;
   font-size: 0.7rem;
-  width: 3em;
+  width: 3.1em;
   text-align: right;
 }
 
