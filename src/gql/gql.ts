@@ -39,14 +39,14 @@ const documents = {
     types.DxIntlRecordsWithHistoryFieldsFragmentDoc,
   "\n  fragment dxIntlScoresWithHistoryFields on dx_intl_scores_with_history {\n    song_id\n    deluxe\n    difficulty\n    score\n    combo_flag\n    sync_flag\n  }\n":
     types.DxIntlScoresWithHistoryFieldsFragmentDoc,
+  "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n":
+    types.DxIntlPlayersEditableDocument,
   "\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n":
     types.DxIntlSongsDocument,
   "\n  query dxIntlNewRatingStats {\n    dx_intl_new_rating_stats {\n      range\n      count\n    }\n  }\n":
     types.DxIntlNewRatingStatsDocument,
   "\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n":
     types.DxIntlRecordWithScoresDocument,
-  "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n":
-    types.DxIntlPlayersEditableDocument,
   "\n  mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {\n    insert_dx_intl_players_one(\n      object: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n":
     types.InsertDxIntlPlayerDocument,
   "\n  mutation updateDxIntlPlayer(\n    $pk: Int!\n    $nickname: String!\n    $private: Boolean!\n  ) {\n    update_dx_intl_players_by_pk(\n      pk_columns: { id: $pk }\n      _set: { nickname: $nickname, private: $private }\n    ) {\n      id\n    }\n  }\n":
@@ -161,6 +161,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n",
+): (typeof documents)["\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n"]
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n",
 ): (typeof documents)["\n  query dxIntlSongs {\n    dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {\n      id\n      category\n      title\n      order\n      dx_intl_variants(order_by: { deluxe: asc }) {\n        deluxe\n        version\n        active\n        dx_intl_notes(order_by: { difficulty: asc }) {\n          internal_lv\n          difficulty\n          level\n        }\n      }\n    }\n  }\n"]
 /**
@@ -175,12 +181,6 @@ export function graphql(
 export function graphql(
   source: "\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n",
 ): (typeof documents)["\n  query dxIntlRecordWithScores($nickname: String!) {\n    dx_intl_players(where: { nickname: { _eq: $nickname } }) {\n      updated_at\n      private\n      dx_intl_record {\n        ...dxIntlRecordsFields\n      }\n      dx_intl_scores {\n        ...dxIntlScoresFields\n      }\n    }\n  }\n"]
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: "\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n",
-): (typeof documents)["\n  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {\n    dx_intl_players(\n      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }\n    ) {\n      id\n      nickname\n      private\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

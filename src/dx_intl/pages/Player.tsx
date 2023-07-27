@@ -3,6 +3,8 @@ import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import { Alert } from "../../common/components/ui/Alert"
+import { LinkButton } from "../../common/components/ui/Button"
+import { useUser } from "../../common/contexts"
 import { getFragmentData, graphql } from "../../gql"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
@@ -21,7 +23,10 @@ import {
   versions,
 } from "../models/constants"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
-import { dxIntlSongsDocument } from "../models/queries"
+import {
+  dxIntlPlayersEditableDocument,
+  dxIntlSongsDocument,
+} from "../models/queries"
 
 const dxIntlRecordWithScoresDocument = graphql(`
   query dxIntlRecordWithScores($nickname: String!) {
@@ -39,6 +44,12 @@ const dxIntlRecordWithScoresDocument = graphql(`
 `)
 
 const Player = ({ params }: { params: Params }) => {
+  const user = useUser()
+  const [editableResult] = useQuery({
+    query: dxIntlPlayersEditableDocument,
+    variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
+    pause: user == null,
+  })
   const [recordResult] = useQuery({
     query: dxIntlRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
@@ -145,6 +156,15 @@ const Player = ({ params }: { params: Params }) => {
             updatedAt={player.updated_at}
           />
         </div>
+        {editableResult.error == null &&
+        (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+          <LinkButton href={`~/dxi/p/${params.nickname}/edit`} color="violet">
+            編輯
+          </LinkButton>
+        ) : null}
+        <LinkButton href={`~/dxi/p/${params.nickname}/history`} color="violet">
+          歷史紀錄
+        </LinkButton>
       </div>
       {maxVersion > versions.length - 1 || noteInconsistency ? (
         <Alert severity="error">

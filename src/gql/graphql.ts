@@ -8626,6 +8626,21 @@ export type DxIntlScoresWithHistoryFieldsFragment = {
   sync_flag?: "" | "fs" | "fs+" | "fdx" | "fdx+" | null
 } & { " $fragmentName"?: "DxIntlScoresWithHistoryFieldsFragment" }
 
+export type DxIntlPlayersEditableQueryVariables = Exact<{
+  userId: Scalars["String"]["input"]
+  nickname: Scalars["String"]["input"]
+}>
+
+export type DxIntlPlayersEditableQuery = {
+  __typename?: "query_root"
+  dx_intl_players: Array<{
+    __typename?: "dx_intl_players"
+    id: number
+    nickname: string
+    private: boolean
+  }>
+}
+
 export type DxIntlSongsQueryVariables = Exact<{ [key: string]: never }>
 
 export type DxIntlSongsQuery = {
@@ -8709,21 +8724,6 @@ export type DxIntlRecordWithScoresQuery = {
         }
       }
     >
-  }>
-}
-
-export type DxIntlPlayersEditableQueryVariables = Exact<{
-  userId: Scalars["String"]["input"]
-  nickname: Scalars["String"]["input"]
-}>
-
-export type DxIntlPlayersEditableQuery = {
-  __typename?: "query_root"
-  dx_intl_players: Array<{
-    __typename?: "dx_intl_players"
-    id: number
-    nickname: string
-    private: boolean
   }>
 }
 
@@ -9855,6 +9855,111 @@ export const DxIntlPlayersForUserDocument = {
   DxIntlPlayersForUserQuery,
   DxIntlPlayersForUserQueryVariables
 >
+export const DxIntlPlayersEditableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "dxIntlPlayersEditable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "nickname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "dx_intl_players" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "user_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "userId" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "nickname" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "nickname" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "nickname" } },
+                { kind: "Field", name: { kind: "Name", value: "private" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DxIntlPlayersEditableQuery,
+  DxIntlPlayersEditableQueryVariables
+>
 export const DxIntlSongsDocument = {
   kind: "Document",
   definitions: [
@@ -10157,111 +10262,6 @@ export const DxIntlRecordWithScoresDocument = {
 } as unknown as DocumentNode<
   DxIntlRecordWithScoresQuery,
   DxIntlRecordWithScoresQueryVariables
->
-export const DxIntlPlayersEditableDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "dxIntlPlayersEditable" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "userId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "nickname" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "dx_intl_players" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "user_id" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "userId" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "nickname" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "nickname" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "nickname" } },
-                { kind: "Field", name: { kind: "Name", value: "private" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DxIntlPlayersEditableQuery,
-  DxIntlPlayersEditableQueryVariables
 >
 export const InsertDxIntlPlayerDocument = {
   kind: "Document",

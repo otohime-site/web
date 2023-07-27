@@ -14,19 +14,8 @@ import { useState } from "react"
 import { Params } from "wouter"
 import { useNavigate } from "../../common/utils/router"
 import { graphql } from "../../gql"
+import { dxIntlPlayersEditableDocument } from "../models/queries"
 import classes from "./PlayerForm.module.css"
-
-const dxIntlPlayersEditableDocument = graphql(`
-  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {
-    dx_intl_players(
-      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }
-    ) {
-      id
-      nickname
-      private
-    }
-  }
-`)
 
 const insertDxIntlPlayerDocument = graphql(`
   mutation insertDxIntlPlayer($nickname: String!, $private: Boolean!) {

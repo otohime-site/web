@@ -1,5 +1,17 @@
 import { graphql } from "../../gql"
 
+export const dxIntlPlayersEditableDocument = graphql(`
+  query dxIntlPlayersEditable($userId: String!, $nickname: String!) {
+    dx_intl_players(
+      where: { user_id: { _eq: $userId }, nickname: { _eq: $nickname } }
+    ) {
+      id
+      nickname
+      private
+    }
+  }
+`)
+
 export const dxIntlSongsDocument = graphql(`
   query dxIntlSongs {
     dx_intl_songs(order_by: [{ category: asc }, { order: asc }]) {
