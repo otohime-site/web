@@ -11,7 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "../../common/components/ui/Dialog"
-import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
+import { Radio, RadioRoot } from "../../common/components/ui/Radio"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { getFragmentData, graphql } from "../../gql"
@@ -128,6 +128,7 @@ const Book = () => {
     )
     const scores = await Promise.all(
       entries.map(async (entry) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { category, title, level, ...entryWithoutSong } = entry
         return {
           song_id: await sha256Sum(`${category}_${title}`),
@@ -254,18 +255,19 @@ const Book = () => {
             ) : (
               <div>
                 <div>請選擇要更新的成績單：</div>
-                <RadioCardRoot
+                <RadioRoot
+                  variant="card"
                   value={selectedPlayerId?.toString()}
                   onValueChange={(val) =>
                     setSelectedPlayerId(parseInt(val, 10))
                   }
                 >
                   {players.map((player) => (
-                    <RadioCard key={player.id} value={player.id.toString()}>
+                    <Radio key={player.id} value={player.id.toString()}>
                       <PlayerItem player={player} />
-                    </RadioCard>
+                    </Radio>
                   ))}
-                </RadioCardRoot>
+                </RadioRoot>
               </div>
             )}
           </QueryResult>

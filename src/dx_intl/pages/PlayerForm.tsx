@@ -6,7 +6,7 @@ import IconPublic from "~icons/mdi/public"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
-import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
+import { Radio, RadioRoot } from "../../common/components/ui/Radio"
 import { TextField } from "../../common/components/ui/TextField"
 import { useUser } from "../../common/contexts"
 
@@ -193,7 +193,8 @@ const PlayerForm = ({ params }: { params: Params }) => {
           )}
         </Form.Field>
         隱私設定
-        <RadioCardRoot
+        <RadioRoot
+          variant="card"
           name="private"
           defaultValue={
             playerResult.data?.dx_intl_players[0]?.private
@@ -201,7 +202,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
               : "public"
           }
         >
-          <RadioCard className={classes["radio-card-private"]} value="public">
+          <Radio className={classes["radio-card-private"]} value="public">
             <div>
               <dt>
                 <IconPublic /> 公開
@@ -213,8 +214,8 @@ const PlayerForm = ({ params }: { params: Params }) => {
                 </ul>
               </dd>
             </div>
-          </RadioCard>
-          <RadioCard className={classes["radio-card-private"]} value="private">
+          </Radio>
+          <Radio className={classes["radio-card-private"]} value="private">
             <div>
               <dt>
                 <IconLock />
@@ -227,8 +228,8 @@ const PlayerForm = ({ params }: { params: Params }) => {
                 </ul>
               </dd>
             </div>
-          </RadioCard>
-        </RadioCardRoot>
+          </Radio>
+        </RadioRoot>
         <div className={classes.notes}>
           <p>
             Otohime 會記錄的東西如下，也建議您詳閱我們的

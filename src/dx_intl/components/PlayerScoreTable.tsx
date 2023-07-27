@@ -19,7 +19,7 @@ import ArrowDownIcon from "~icons/mdi/arrow-down"
 import ArrowUpIcon from "~icons/mdi/arrow-up"
 import ChevronRightIcon from "~icons/mdi/chevron-right"
 import ChevronUpIcon from "~icons/mdi/chevron-up"
-import { RadioCard, RadioCardRoot } from "../../common/components/ui/RadioCard"
+import { Radio, RadioRoot } from "../../common/components/ui/Radio"
 import { TableGroupConfigs, useTableState } from "../../common/utils/table"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -244,18 +244,18 @@ export const PlayerScoreTable = ({
   })
   return (
     <div>
-      <RadioCardRoot
+      <RadioRoot
         value={grouping[0]}
         onValueChange={(payload) => {
           dispatchTableState({ type: "setPrimaryGroup", payload })
         }}
         style={{ display: "flex", flexDirection: "row" }}
       >
-        <RadioCard value="current_version">Rating 組成</RadioCard>
-        <RadioCard value="category">分類</RadioCard>
-        <RadioCard value="version">版本</RadioCard>
-        <RadioCard value="level">樂曲等級</RadioCard>
-      </RadioCardRoot>
+        <Radio value="current_version">Rating 組成</Radio>
+        <Radio value="category">分類</Radio>
+        <Radio value="version">版本</Radio>
+        <Radio value="level">樂曲等級</Radio>
+      </RadioRoot>
       <table
         className={`${classes.table} ${
           primaryGroup in tableGroupConfigs.locked ? ` ${classes.locked}` : ""
@@ -348,7 +348,7 @@ export const PlayerScoreTable = ({
                     } else if (cell.getIsPlaceholder()) {
                       return null
                     } else if (
-                      ["title", "deluxe", "internal_lv"].includes(
+                      ["title", "deluxe", "internal_lv", "difficulty"].includes(
                         cell.column.id,
                       )
                     ) {

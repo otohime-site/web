@@ -1,17 +1,24 @@
 .radio-card-root {
-  display: flex;
   flex-direction: column;
 }
 
-.radio-card {
+.radio {
   all: unset;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-radius: 16px;
-  margin: 4px 0;
+  margin: 0.4rem 0.8rem 0.4rem 0;
+  background: transparent;
+  user-select: unset;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.radio-card-root .radio {
+  margin-right: 0;
   padding: 16px;
+  border-radius: 16px;
   border: 1px solid var(--mauve-7);
   background: transparent;
   user-select: unset;
@@ -19,19 +26,19 @@
   cursor: pointer;
 }
 
-.radio-card:hover {
+.radio:hover {
   border-color: var(--mauve-8);
 }
 
-.radio-card[data-state="checked"] {
+.radio[data-state="checked"] {
   border-color: var(--violet-8);
 }
 
-.radio-card[data-state="checked"]:hover {
+.radio[data-state="checked"]:hover {
   border-color: var(--violet-9);
 }
 
-.radio-card .radio-card-button {
+.radio .radio-button {
   all: unset;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -44,21 +51,25 @@
   border: 0.15em solid var(--mauve-7);
   border-radius: 50%;
   margin: 0;
-  margin-right: 24px;
+  margin-right: 0.4rem;
   padding: 0;
 }
 
-.radio-card[data-state="checked"] .radio-card-button {
+.radio-card-root .radio-button {
+  margin-right: 2rem;
+}
+
+.radio[data-state="checked"] .radio-button {
   border-color: var(--violet-9);
 }
 
-.radio-card-indicator {
+.radio-indicator {
   width: 0.6em;
   height: 0.6em;
   border-radius: 50%;
   background: var(--violet-9);
 }
 
-.radio-card > :last-child {
+.radio > :last-child {
   flex: 1;
 }

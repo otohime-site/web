@@ -1,12 +1,12 @@
 .table {
   width: 100%;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-family: "M PLUS 1p";
   border-collapse: collapse;
 }
 
 .table thead th {
-  font-size: 0.77rem;
+  font-size: 0.9rem;
   font-weight: 400;
   position: sticky;
   top: 0;
@@ -18,8 +18,8 @@
 }
 
 .table thead th svg {
-  width: 1em;
-  height: 1em;
+  width: 0.8em;
+  height: 0.8em;
 }
 .table.locked thead th svg {
   color: var(--mauve-6);
