@@ -22,12 +22,11 @@ export type Incremental<T> =
     }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string | number; output: string }
+  ID: { input: string; output: string }
   String: { input: string; output: string }
   Boolean: { input: boolean; output: boolean }
   Int: { input: number; output: number }
   Float: { input: number; output: number }
-  _timestamptz: { input: string[]; output: string[] }
   bigint: { input: number; output: number }
   dx_intl_combo_flag: {
     input: "" | "fc" | "fc+" | "ap" | "ap+"
@@ -205,19 +204,6 @@ export type String_Comparison_Exp = {
   _regex?: InputMaybe<Scalars["String"]["input"]>
   /** does the column match the given SQL regular expression */
   _similar?: InputMaybe<Scalars["String"]["input"]>
-}
-
-/** Boolean expression to compare columns of type "_timestamptz". All fields are combined with logical 'AND'. */
-export type _Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _gt?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _gte?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _in?: InputMaybe<Array<Scalars["_timestamptz"]["input"]>>
-  _is_null?: InputMaybe<Scalars["Boolean"]["input"]>
-  _lt?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _lte?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _neq?: InputMaybe<Scalars["_timestamptz"]["input"]>
-  _nin?: InputMaybe<Array<Scalars["_timestamptz"]["input"]>>
 }
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -544,7 +530,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
 
 /** unique or primary key constraints on table "dx_intl_notes" */
 export enum Dx_Intl_Notes_Constraint {
-  /** unique or primary key constraint on columns "deluxe", "song_id", "difficulty" */
+  /** unique or primary key constraint on columns "deluxe", "difficulty", "song_id" */
   DxIntlNotesPkey1 = "dx_intl_notes_pkey1",
 }
 
@@ -763,6 +749,7 @@ export type Dx_Intl_Notes_Updates = {
   _inc?: InputMaybe<Dx_Intl_Notes_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Notes_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Notes_Bool_Exp
 }
 
@@ -983,6 +970,7 @@ export type Dx_Intl_Players_Max_Fields = {
   created_at?: Maybe<Scalars["timestamptz"]["output"]>
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  updated_at?: Maybe<Scalars["timestamptz"]["output"]>
   user_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -1000,6 +988,7 @@ export type Dx_Intl_Players_Min_Fields = {
   created_at?: Maybe<Scalars["timestamptz"]["output"]>
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  updated_at?: Maybe<Scalars["timestamptz"]["output"]>
   user_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -1156,7 +1145,7 @@ export type Dx_Intl_Players_Timelines = {
   nickname?: Maybe<Scalars["String"]["output"]>
   /** An object relationship */
   player?: Maybe<Dx_Intl_Players>
-  timelines?: Maybe<Scalars["_timestamptz"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** aggregated selection of "dx_intl_players_timelines" */
@@ -1202,7 +1191,7 @@ export type Dx_Intl_Players_Timelines_Bool_Exp = {
   id?: InputMaybe<Int_Comparison_Exp>
   nickname?: InputMaybe<String_Comparison_Exp>
   player?: InputMaybe<Dx_Intl_Players_Bool_Exp>
-  timelines?: InputMaybe<_Timestamptz_Comparison_Exp>
+  timelines?: InputMaybe<Timestamptz_Array_Comparison_Exp>
 }
 
 /** input type for inserting data into table "dx_intl_players_timelines" */
@@ -1210,7 +1199,7 @@ export type Dx_Intl_Players_Timelines_Insert_Input = {
   id?: InputMaybe<Scalars["Int"]["input"]>
   nickname?: InputMaybe<Scalars["String"]["input"]>
   player?: InputMaybe<Dx_Intl_Players_Obj_Rel_Insert_Input>
-  timelines?: InputMaybe<Scalars["_timestamptz"]["input"]>
+  timelines?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
 }
 
 /** aggregate max on columns */
@@ -1218,6 +1207,7 @@ export type Dx_Intl_Players_Timelines_Max_Fields = {
   __typename?: "dx_intl_players_timelines_max_fields"
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** aggregate min on columns */
@@ -1225,6 +1215,7 @@ export type Dx_Intl_Players_Timelines_Min_Fields = {
   __typename?: "dx_intl_players_timelines_min_fields"
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** input type for inserting object relation for remote table "dx_intl_players_timelines" */
@@ -1280,7 +1271,7 @@ export type Dx_Intl_Players_Timelines_Stream_Cursor_Input = {
 export type Dx_Intl_Players_Timelines_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars["Int"]["input"]>
   nickname?: InputMaybe<Scalars["String"]["input"]>
-  timelines?: InputMaybe<Scalars["_timestamptz"]["input"]>
+  timelines?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
 }
 
 /** aggregate sum on columns */
@@ -1326,6 +1317,7 @@ export type Dx_Intl_Players_Updates = {
   _inc?: InputMaybe<Dx_Intl_Players_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Players_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Players_Bool_Exp
 }
 
@@ -1716,6 +1708,7 @@ export type Dx_Intl_Records_Updates = {
   _inc?: InputMaybe<Dx_Intl_Records_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Records_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Records_Bool_Exp
 }
 
@@ -2165,7 +2158,7 @@ export type Dx_Intl_Scores_Bool_Exp = {
 export enum Dx_Intl_Scores_Constraint {
   /** unique or primary key constraint on columns "id" */
   DxIntlScoresPkey1 = "dx_intl_scores_pkey1",
-  /** unique or primary key constraint on columns "deluxe", "song_id", "difficulty", "player_id" */
+  /** unique or primary key constraint on columns "deluxe", "difficulty", "player_id", "song_id" */
   DxIntlScoresPlayerIdSongIdDeluxeDifficultyKey = "dx_intl_scores_player_id_song_id_deluxe_difficulty_key",
 }
 
@@ -2618,6 +2611,7 @@ export type Dx_Intl_Scores_Updates = {
   _inc?: InputMaybe<Dx_Intl_Scores_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Scores_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Scores_Bool_Exp
 }
 
@@ -3140,6 +3134,7 @@ export type Dx_Intl_Songs_Updates = {
   _inc?: InputMaybe<Dx_Intl_Songs_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Songs_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Songs_Bool_Exp
 }
 
@@ -3525,6 +3520,7 @@ export type Dx_Intl_Variants_Updates = {
   _inc?: InputMaybe<Dx_Intl_Variants_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Dx_Intl_Variants_Set_Input>
+  /** filter the rows which have to be updated */
   where: Dx_Intl_Variants_Bool_Exp
 }
 
@@ -3709,7 +3705,7 @@ export type Finale_Notes_Bool_Exp = {
 
 /** unique or primary key constraints on table "finale_notes" */
 export enum Finale_Notes_Constraint {
-  /** unique or primary key constraint on columns "song_id", "difficulty" */
+  /** unique or primary key constraint on columns "difficulty", "song_id" */
   FinaleNotesPkey = "finale_notes_pkey",
 }
 
@@ -3895,6 +3891,7 @@ export type Finale_Notes_Updates = {
   _inc?: InputMaybe<Finale_Notes_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Finale_Notes_Set_Input>
+  /** filter the rows which have to be updated */
   where: Finale_Notes_Bool_Exp
 }
 
@@ -4112,6 +4109,8 @@ export type Finale_Players_Max_Fields = {
   created_at?: Maybe<Scalars["timestamptz"]["output"]>
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  /** A computed field, executes function "finale_players_updated_at" */
+  updated_at?: Maybe<Scalars["timestamptz"]["output"]>
   user_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -4129,6 +4128,8 @@ export type Finale_Players_Min_Fields = {
   created_at?: Maybe<Scalars["timestamptz"]["output"]>
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  /** A computed field, executes function "finale_players_updated_at" */
+  updated_at?: Maybe<Scalars["timestamptz"]["output"]>
   user_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -4284,7 +4285,7 @@ export type Finale_Players_Timelines = {
   nickname?: Maybe<Scalars["String"]["output"]>
   /** An object relationship */
   player?: Maybe<Finale_Players>
-  timelines?: Maybe<Scalars["_timestamptz"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** aggregated selection of "finale_players_timelines" */
@@ -4330,7 +4331,7 @@ export type Finale_Players_Timelines_Bool_Exp = {
   id?: InputMaybe<Int_Comparison_Exp>
   nickname?: InputMaybe<String_Comparison_Exp>
   player?: InputMaybe<Finale_Players_Bool_Exp>
-  timelines?: InputMaybe<_Timestamptz_Comparison_Exp>
+  timelines?: InputMaybe<Timestamptz_Array_Comparison_Exp>
 }
 
 /** aggregate max on columns */
@@ -4338,6 +4339,7 @@ export type Finale_Players_Timelines_Max_Fields = {
   __typename?: "finale_players_timelines_max_fields"
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** aggregate min on columns */
@@ -4345,6 +4347,7 @@ export type Finale_Players_Timelines_Min_Fields = {
   __typename?: "finale_players_timelines_min_fields"
   id?: Maybe<Scalars["Int"]["output"]>
   nickname?: Maybe<Scalars["String"]["output"]>
+  timelines?: Maybe<Array<Scalars["timestamptz"]["output"]>>
 }
 
 /** Ordering options when selecting data from "finale_players_timelines". */
@@ -4395,7 +4398,7 @@ export type Finale_Players_Timelines_Stream_Cursor_Input = {
 export type Finale_Players_Timelines_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars["Int"]["input"]>
   nickname?: InputMaybe<Scalars["String"]["input"]>
-  timelines?: InputMaybe<Scalars["_timestamptz"]["input"]>
+  timelines?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
 }
 
 /** aggregate sum on columns */
@@ -4441,6 +4444,7 @@ export type Finale_Players_Updates = {
   _inc?: InputMaybe<Finale_Players_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Finale_Players_Set_Input>
+  /** filter the rows which have to be updated */
   where: Finale_Players_Bool_Exp
 }
 
@@ -4767,6 +4771,7 @@ export type Finale_Records_Updates = {
   _inc?: InputMaybe<Finale_Records_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Finale_Records_Set_Input>
+  /** filter the rows which have to be updated */
   where: Finale_Records_Bool_Exp
 }
 
@@ -5141,7 +5146,7 @@ export type Finale_Scores_Bool_Exp = {
 export enum Finale_Scores_Constraint {
   /** unique or primary key constraint on columns "id" */
   FinaleScoresPkey = "finale_scores_pkey",
-  /** unique or primary key constraint on columns "song_id", "difficulty", "player_id" */
+  /** unique or primary key constraint on columns "difficulty", "player_id", "song_id" */
   FinaleScoresPlayerIdSongIdDifficultyKey = "finale_scores_player_id_song_id_difficulty_key",
 }
 
@@ -5439,6 +5444,7 @@ export type Finale_Scores_Updates = {
   _inc?: InputMaybe<Finale_Scores_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Finale_Scores_Set_Input>
+  /** filter the rows which have to be updated */
   where: Finale_Scores_Bool_Exp
 }
 
@@ -6045,6 +6051,7 @@ export type Finale_Songs_Updates = {
   _inc?: InputMaybe<Finale_Songs_Inc_Input>
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Finale_Songs_Set_Input>
+  /** filter the rows which have to be updated */
   where: Finale_Songs_Bool_Exp
 }
 
@@ -8049,6 +8056,23 @@ export type Subscription_RootUsers_StreamArgs = {
 }
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type Timestamptz_Array_Comparison_Exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _eq?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _gt?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _gte?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _in?: InputMaybe<Array<Array<Scalars["timestamptz"]["input"]>>>
+  _is_null?: InputMaybe<Scalars["Boolean"]["input"]>
+  _lt?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _lte?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _neq?: InputMaybe<Array<Scalars["timestamptz"]["input"]>>
+  _nin?: InputMaybe<Array<Array<Scalars["timestamptz"]["input"]>>>
+}
+
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars["timestamptz"]["input"]>
   _gt?: InputMaybe<Scalars["timestamptz"]["input"]>
@@ -8216,6 +8240,7 @@ export enum Tokens_Update_Column {
 export type Tokens_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Tokens_Set_Input>
+  /** filter the rows which have to be updated */
   where: Tokens_Bool_Exp
 }
 
@@ -8412,6 +8437,7 @@ export enum Users_Update_Column {
 export type Users_Updates = {
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Users_Set_Input>
+  /** filter the rows which have to be updated */
   where: Users_Bool_Exp
 }
 
@@ -8748,7 +8774,7 @@ export type DxIntlPlayersTimelinesQuery = {
   __typename?: "query_root"
   dx_intl_players_timelines: Array<{
     __typename?: "dx_intl_players_timelines"
-    timelines?: string[] | null
+    timelines?: Array<string> | null
   }>
 }
 

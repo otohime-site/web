@@ -41,8 +41,8 @@
     "wouter": "^2.11.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^4.0.0",
-    "@graphql-codegen/client-preset": "^4.0.0",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@graphql-codegen/client-preset-swc-plugin": "^0.2.0",
     "@graphql-codegen/introspection": "^4.0.0",
     "@iconify-json/mdi": "^1.1.52",
