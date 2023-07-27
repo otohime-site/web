@@ -317,20 +317,27 @@ export const PlayerScoreTable = ({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const leafCount = (row as any).leafRows.length
 
-              const spanTo = row
-                .getVisibleCells()
-                .findIndex((cell) => cell.column.id === "score")
+              const visibleCells = row.getVisibleCells()
+              const spanTo = visibleCells.findIndex(
+                (cell) => cell.column.id === "score",
+              )
+              const placeholders = visibleCells.filter((cell) =>
+                cell.getIsPlaceholder(),
+              ).length
               // To make the table more compact, we will apply colspan to grouped cell
               // which needs a dedicated logic.
               return (
                 <tr key={row.id} className={classes.grouped}>
-                  {row.getVisibleCells().map((cell, index) => {
+                  {visibleCells.map((cell, index) => {
+                    console.log(cell)
+                    console.log(cell.getIsGrouped())
+                    console.log(cell.getIsPlaceholder())
                     if (cell.getIsGrouped()) {
                       return (
                         <td
                           onClick={row.getToggleExpandedHandler()}
                           key={cell.id}
-                          colSpan={spanTo - 2}
+                          colSpan={spanTo - placeholders - 1}
                           style={{ paddingLeft: `${index * 1}rem` }}
                         >
                           {row.getIsExpanded() ? (
