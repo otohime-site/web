@@ -9,6 +9,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "skipLibCheck": true,
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "types": ["unplugin-icons/types/react"]
   },
