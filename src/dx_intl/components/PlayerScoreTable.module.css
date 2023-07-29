@@ -1,17 +1,31 @@
 .table {
   width: 100%;
-  font-size: 0.95rem;
-  font-family: "M PLUS 1p";
+  font-size: 0.97rem;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .table thead th {
-  font-size: 0.9rem;
-  font-weight: 400;
   position: sticky;
   top: 0;
+  width: 2em;
+  font-size: 0.9rem;
+  font-weight: 400;
   background: var(--mauve-3);
+  color: var(--mauve-12);
   border-bottom: 1px solid var(--mauve-6);
+}
+.table thead th:global(.col-title) {
+  width: 100%;
+}
+.table thead th:global(.col-score) {
+  width: 6rem;
+}
+.table thead th:global(.col-deluxe) {
+  width: 2.1rem;
+}
+.table thead th:global(.col-internal-lv) {
+  width: 2.7rem;
 }
 .table svg {
   vertical-align: middle;
@@ -25,17 +39,19 @@
   color: var(--mauve-6);
 }
 
+.table tbody {
+  font-family: "M PLUS 1p";
+}
+
 .table tr.grouped td {
+  cursor: pointer;
   background: var(--mauve-1);
 }
 
 .table tbody tr td {
   padding: 0.2rem 0;
   border-bottom: 1px solid var(--mauve-6);
-}
-
-.table th:global(.col-deluxe) {
-  width: 2.8em;
+  word-break: break-all;
 }
 
 .table td:global(.col-deluxe) {
@@ -44,35 +60,27 @@
   text-align: center;
   font-weight: 700;
 }
-.table th:global(.col-difficulty),
-.table th:global(.col-internal-lv) {
-  width: 3.1em;
-}
 
 .table td:global(.col-difficulty),
 .table td:global(.col-internal-lv) {
   font-weight: 700;
-  font-size: 0.7rem;
-  width: 3.1em;
-  text-align: right;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 .table td:global(.col-combo-flag),
 .table td:global(.col-sync-flag) {
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   font-weight: 900;
-  width: 1.6rem;
 }
 .table td:global(.col-score) {
   text-align: center;
-  width: 6.2rem;
 }
 .table td:global(.col-rating) {
   font-size: 0.8rem;
   text-align: right;
-  width: 2rem;
 }
 
 .table td span {

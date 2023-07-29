@@ -38,6 +38,7 @@ import classes from "./PlayerScoreTable.module.css"
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
   category: false,
+  difficulty: false,
   version: false,
   current_version: false,
   level: false,
