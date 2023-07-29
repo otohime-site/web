@@ -123,9 +123,19 @@
   paint-order: stroke fill;
 }
 
-.table td:global(.fc),
+.table td:global(.fc) {
+  background-image: url(../images/flags/fc.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 1.2rem 1.2rem;
+  color: transparent;
+}
 .table td:global(.fc-plus) {
-  color: var(--lime-8);
+  background-image: url(../images/flags/fc.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 1.2rem 1.2rem;
+  color: transparent;
 }
 .table td:global(.ap),
 .table td:global(.ap-plus) {
