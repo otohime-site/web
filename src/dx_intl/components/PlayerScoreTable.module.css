@@ -8,7 +8,7 @@
 .table thead th {
   position: sticky;
   top: 0;
-  width: 2em;
+  width: 1.6rem;
   font-size: 0.9rem;
   font-weight: 400;
   background: var(--mauve-3);
@@ -88,12 +88,6 @@
   padding: 0.1rem;
   border-radius: 0.3rem;
 }
-.table td:global(.std) {
-  color: var(--indigo-8);
-}
-.table td:global(.dx) {
-  color: var(--red-8);
-}
 
 .table td:global(.col-internal-lv) {
   font-weight: 400;
@@ -123,33 +117,6 @@
   paint-order: stroke fill;
 }
 
-.table td:global(.fc) {
-  background-image: url(../images/flags/fc.svg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 1.2rem 1.2rem;
-  color: transparent;
-}
-.table td:global(.fc-plus) {
-  background-image: url(../images/flags/fc.svg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 1.2rem 1.2rem;
-  color: transparent;
-}
-.table td:global(.ap),
-.table td:global(.ap-plus) {
-  color: var(--yellow-8);
-}
-.table td:global(.fs),
-.table td:global(.fs-plus) {
-  color: var(--blue-8);
-}
-.table td:global(.fdx),
-.table td:global(.fdx-plus) {
-  color: var(--yellow-8);
-}
-
 .table tr.used td {
-  background: var(--yellow-2);
+  background: var(--red-2);
 }

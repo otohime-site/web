@@ -33,7 +33,9 @@ import {
   syncFlags,
   versions,
 } from "../models/constants"
+import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
+import Variant from "./Variant"
 
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
@@ -162,7 +164,7 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("deluxe", {
         header: "DX",
-        cell: (info) => (info.getValue() ? "DX" : "STD"),
+        cell: (info) => <Variant deluxe={info.getValue()} />,
         aggregationFn: () => "",
       }),
       columnHelper.accessor("version", {
@@ -212,15 +214,19 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("combo_flag", {
         header: "C",
-        cell: (info) => comboFlags[info.getValue()],
+        cell: (info) => <ComboFlag flag={comboFlags[info.getValue()]} />,
         aggregationFn: "min",
-        aggregatedCell: (info) => comboFlags[info.getValue()],
+        aggregatedCell: (info) => (
+          <ComboFlag flag={comboFlags[info.getValue()]} />
+        ),
       }),
       columnHelper.accessor("sync_flag", {
         header: "S",
-        cell: (info) => syncFlags[info.getValue()],
+        cell: (info) => <SyncFlag flag={syncFlags[info.getValue()]} />,
         aggregationFn: "min",
-        aggregatedCell: (info) => syncFlags[info.getValue()],
+        aggregatedCell: (info) => (
+          <SyncFlag flag={syncFlags[info.getValue()]} />
+        ),
       }),
       columnHelper.accessor("rating", {
         header: "R",
@@ -339,7 +345,7 @@ export const PlayerScoreTable = ({
                           onClick={row.getToggleExpandedHandler()}
                           key={cell.id}
                           colSpan={spanTo - placeholders - 1}
-                          style={{ paddingLeft: `${index * 1}rem` }}
+                          style={{ paddingLeft: `${index * 1}em` }}
                         >
                           {row.getIsExpanded() ? (
                             <ChevronUpIcon />
@@ -380,6 +386,9 @@ export const PlayerScoreTable = ({
                 </tr>
               )
             }
+            const groups = visibleCells.filter((c) =>
+              c.column.getIsGrouped(),
+            ).length
             return (
               <tr
                 key={row.id}
@@ -392,6 +401,11 @@ export const PlayerScoreTable = ({
                       className={`${getColumnClassName(
                         cell.column,
                       )} ${getCellClassName(cell)}`}
+                      style={
+                        cell.column.id === "title"
+                          ? { paddingLeft: `${groups}em` }
+                          : {}
+                      }
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
