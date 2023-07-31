@@ -114,11 +114,13 @@ const Player = ({ params }: { params: Params }) => {
       entry.old_rank = oldRanks.get(entry.hash)
       entry.new_rank = newRanks.get(entry.hash)
       entry.rating_listed =
-        (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
-        (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2
+        entry.rating > 0 &&
+        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
+          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2)
       entry.rating_used =
-        (entry.new_rank ?? Infinity) <= RATING_NEW_COUNT ||
-        (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT
+        entry.rating > 0 &&
+        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT ||
+          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT)
     })
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
