@@ -2,9 +2,12 @@ import { useMemo } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
+import IconLock from "~icons/mdi/lock"
+import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
+import { formatRelative } from "../../common/utils/datetime"
 import { getFragmentData, graphql } from "../../gql"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
@@ -150,32 +153,34 @@ const Player = ({ params }: { params: Params }) => {
       <Titled
         title={(title) => `${record.card_name} - maimai DX 成績單 - ${title}`}
       />
-      <div>
-        <div>
-          <Record
-            record={record}
-            isPrivate={player.private}
-            updatedAt={player.updated_at}
-          />
-        </div>
-        {editableResult.error == null &&
-        (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-          <LinkButton href={`~/dxi/p/${params.nickname}/edit`} color="violet">
-            編輯
-          </LinkButton>
-        ) : null}
-        <LinkButton href={`~/dxi/p/${params.nickname}/history`} color="violet">
-          歷史紀錄
-        </LinkButton>
-      </div>
       {maxVersion > versions.length - 1 || noteInconsistency ? (
         <Alert severity="error">
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
-      ) : (
-        <></>
-      )}
-      <PlayerScoreTable scoreTable={scoreTable} />
+      ) : null}
+      <div style={{ display: "grid", gridTemplateColumns: "30rem 1fr" }}>
+        <div>
+          <Record record={record} />
+          {player.updated_at != null
+            ? formatRelative(new Date(player.updated_at))
+            : ""}
+          更新
+          {player.private ? <IconLock /> : <IconPublic />}
+          {editableResult.error == null &&
+          (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+            <LinkButton href={`~/dxi/p/${params.nickname}/edit`} color="violet">
+              編輯
+            </LinkButton>
+          ) : null}
+          <LinkButton
+            href={`~/dxi/p/${params.nickname}/history`}
+            color="violet"
+          >
+            歷史紀錄
+          </LinkButton>
+        </div>
+        <PlayerScoreTable scoreTable={scoreTable} />
+      </div>
     </>
   )
 }

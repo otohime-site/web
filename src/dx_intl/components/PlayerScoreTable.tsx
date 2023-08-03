@@ -62,15 +62,7 @@ const tableGroupConfigs: TableGroupConfigs = {
   },
   orderBy: "title",
   orderByDesc: false,
-  groupable: [
-    "version",
-    "category",
-    "difficulty",
-    "level",
-    "internal_lv",
-    "combo_flag",
-    "sync_flag",
-  ],
+  groupable: ["difficulty", "internal_lv", "level", "version", "category"],
   sortable: [
     "title",
     "deluxe",
@@ -82,6 +74,15 @@ const tableGroupConfigs: TableGroupConfigs = {
     "sync_flag",
     "rating",
   ],
+}
+
+const groupColumnNames: Record<string, string> = {
+  current_version: "Rating 組成",
+  version: "版本",
+  category: "分類",
+  difficulty: "難度",
+  level: "等級",
+  internal_lv: "定數",
 }
 
 const getColumnClassName = (column: Column<ScoreTableEntry, unknown>) => {
@@ -116,7 +117,7 @@ export const PlayerScoreTable = ({
   scoreTable: ScoreTableEntry[]
 }) => {
   const [
-    { primaryGroup, orderBy, orderByDesc, grouping, sorting },
+    { primaryGroup, secondaryGroup, orderBy, orderByDesc, grouping, sorting },
     dispatchTableState,
   ] = useTableState({
     tableKey: "dx-intl",
@@ -187,7 +188,10 @@ export const PlayerScoreTable = ({
       }),
       columnHelper.accessor("level", {
         header: "等級",
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          info.cell.getIsGrouped()
+            ? `Level ${info.getValue()}`
+            : info.getValue(),
         sortingFn: (a, b, cid) =>
           levels.indexOf(a.getValue(cid)) - levels.indexOf(b.getValue(cid)),
       }),
@@ -196,6 +200,8 @@ export const PlayerScoreTable = ({
         cell: (info) =>
           info.getValue()
             ? info.getValue().toFixed(1)
+            : info.cell.getIsGrouped()
+            ? `(定數不明)`
             : info.row.getValue("level"),
         sortingFn: (a, b) =>
           (a.original.internal_lv ?? levelCompareKey[a.original.level]) -
@@ -252,17 +258,39 @@ export const PlayerScoreTable = ({
   return (
     <div>
       <RadioRoot
-        value={grouping[0]}
+        value={primaryGroup}
         onValueChange={(payload) => {
           dispatchTableState({ type: "setPrimaryGroup", payload })
         }}
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{ height: "1.7rem" }}
       >
-        <Radio value="current_version">Rating 組成</Radio>
-        <Radio value="category">分類</Radio>
-        <Radio value="version">版本</Radio>
-        <Radio value="level">樂曲等級</Radio>
+        分組：
+        {Object.keys(tableGroupConfigs.groups).map((g) => (
+          <Radio key={g} value={g}>
+            {groupColumnNames[g]}
+          </Radio>
+        ))}
       </RadioRoot>
+      {!(primaryGroup in tableGroupConfigs.locked) ? (
+        <RadioRoot
+          value={secondaryGroup}
+          onValueChange={(payload) => {
+            dispatchTableState({ type: "setSecondaryGroup", payload })
+          }}
+          style={{ height: "1.7rem" }}
+        >
+          次要分組：
+          {tableGroupConfigs.groupable
+            .filter((g) => g !== primaryGroup)
+            .map((g) => (
+              <Radio key={g} value={g}>
+                {groupColumnNames[g]}
+              </Radio>
+            ))}
+        </RadioRoot>
+      ) : (
+        <div style={{ height: "1.7rem" }} />
+      )}
       <table
         className={`${classes.table} ${
           primaryGroup in tableGroupConfigs.locked ? ` ${classes.locked}` : ""

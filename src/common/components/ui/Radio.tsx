@@ -15,6 +15,7 @@ export const RadioRoot = forwardRef<
   <RadioGroupPrimitive.Root
     {...props}
     className={clsx(
+      classes["radio-root"],
       variant === "card" && classes["radio-card-root"],
       className,
     )}
