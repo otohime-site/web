@@ -158,7 +158,7 @@ const Player = ({ params }: { params: Params }) => {
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
       ) : null}
-      <div style={{ display: "grid", gridTemplateColumns: "30rem 1fr" }}>
+      <div>
         <div>
           <Record record={record} />
           {player.updated_at != null
