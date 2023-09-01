@@ -51,6 +51,6 @@ Licensed under MIT license, see LICENSE.md.
 
 Artworks in `public/favicon.ico`, `src/logo`, `src/dx_intl/images/course_ranks` and `src/dx_intl/images/class_ranks`, `src/dx_intl/images/ratings` are released separately:
 
-(C) 2021-2022 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+(C) 2021-2023 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 Logos are generated with [RealFaviconGenerator.net](https://realfavicongenerator.net/).
