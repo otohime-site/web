@@ -189,22 +189,21 @@ const Book = () => {
     }
   }
 
-  if (parsedPlayer === undefined) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <Alert severity="error">
-            無法擷取玩家資料，請重試一次。如果問題持續請聯絡 Otohime 開發團隊。
-          </Alert>
-        </DialogContent>
-      </Dialog>
-    )
+  if (netPlayerResult.fetching) {
+    return <></>
   }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={classes.dialog}>
         <DialogTitle>更新成績</DialogTitle>
-        {fetchState === "fetching" ? (
+        {netPlayerResult.error ? (
+          <div>
+            <Alert severity="error">
+              無法讀取 DXNET 上的成績。請試圖重新整理 DXNET
+              網頁，如果仍有問題請聯絡我們。
+            </Alert>
+          </div>
+        ) : fetchState === "fetching" ? (
           <div>
             <p>
               {fetchProgress < DIFFICULTIES.length
