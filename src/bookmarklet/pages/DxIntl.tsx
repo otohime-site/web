@@ -16,6 +16,7 @@ import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { getFragmentData, graphql } from "../../gql"
 import host from "../../host"
+import classes from "./DxIntl.module.scss"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
@@ -201,7 +202,7 @@ const Book = () => {
   }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className={classes.dialog}>
         <DialogTitle>更新成績</DialogTitle>
         {fetchState === "fetching" ? (
           <div>
