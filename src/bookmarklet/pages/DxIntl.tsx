@@ -1,6 +1,6 @@
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useClient, useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { Alert } from "../../common/components/ui/Alert"
@@ -64,13 +64,13 @@ const insertDxIntlRecordWithScoresDocument = graphql(`
   }
 `)
 
-const parsedPlayer = (() => {
-  try {
-    return parsePlayer(window.parent.document)
-  } catch {
-    return undefined
+const fetchNetPlayer = async () => {
+  const resp = await window.parent.fetch(`/maimai-mobile/home/`)
+  if (!resp.ok) {
+    throw new Error("Network Error!")
   }
-})()
+  return parsePlayer(await resp.text())
+}
 
 // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#converting_a_digest_to_a_hex_string
 const sha256Sum = async (text: string): Promise<string> => {
@@ -94,6 +94,22 @@ const Book = () => {
     dxIntlPlayersResult.data?.dx_intl_players ?? [],
   )
   const client = useClient()
+
+  const [netPlayerResult, setNetPlayerResult] = useState<{
+    data?: ReturnType<typeof parsePlayer>
+    fetching: boolean
+    error: boolean
+  }>({ fetching: true, error: false })
+  useEffect(() => {
+    fetchNetPlayer()
+      .then((data) =>
+        setNetPlayerResult({ data, fetching: false, error: false }),
+      )
+      .catch(() => setNetPlayerResult({ fetching: false, error: true }))
+  }, [])
+
+  const parsedPlayer = netPlayerResult.data
+
   const [fetchState, setFetchState] = useState<
     "idle" | "fetching" | "error" | "done"
   >("idle")
@@ -172,20 +188,6 @@ const Book = () => {
     }
   }
 
-  if (window.parent.document.location.pathname !== "/maimai-mobile/home/") {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent>
-          <Alert severity="info">
-            您必須先回到官方成績單首頁。按一下「OK」帶你去！
-          </Alert>
-          <DialogClose asChild>
-            <Button color="violet">OK</Button>
-          </DialogClose>
-        </DialogContent>
-      </Dialog>
-    )
-  }
   if (parsedPlayer === undefined) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
