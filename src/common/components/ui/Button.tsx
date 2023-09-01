@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import {
   ButtonHTMLAttributes,
   ComponentPropsWithoutRef,
@@ -34,7 +35,7 @@ export const Button = forwardRef<
   <Interactive
     as="button"
     {...props}
-    className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
+    className={clsx(classes.button, colorClasses[color], className)}
     ref={forwardedRef}
   >
     {children}
@@ -48,9 +49,7 @@ export const LinkButton = forwardRef<
   ComponentPropsWithoutRef<typeof Link> & { color: (typeof colors)[number] }
 >(({ color, className, children, ...props }, forwardedRef) => (
   <Interactive as={Link} {...props} ref={forwardedRef}>
-    <a
-      className={`${classes.button} ${colorClasses[color]} ${className ?? ""}`}
-    >
+    <a className={clsx(classes.button, colorClasses[color], className)}>
       {children}
     </a>
   </Interactive>

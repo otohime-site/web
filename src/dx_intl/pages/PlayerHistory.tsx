@@ -1,4 +1,5 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
+import clsx from "clsx"
 import { useMemo } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
@@ -346,9 +347,10 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                   <Variant deluxe={entry.deluxe} />
                 </td>
                 <td
-                  className={`${classes["diff"]} ${
-                    classes[difficultyClasses[entry.difficulty]]
-                  }`}
+                  className={clsx(
+                    classes["diff"],
+                    classes[difficultyClasses[entry.difficulty]],
+                  )}
                 >
                   {difficulties[entry.difficulty].slice(0, 3)} {entry.level}
                 </td>

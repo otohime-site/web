@@ -1,4 +1,5 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
+import clsx from "clsx"
 import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
@@ -28,7 +29,7 @@ const Record = ({
       )}
     </div>
     <div
-      className={`${classes.title} ${classes[record.trophy]}`}
+      className={clsx(classes.title, classes[record.trophy])}
       title={record.title}
     >
       {record.title}

@@ -14,6 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import clsx from "clsx"
 import { useMemo } from "react"
 import ArrowDownIcon from "~icons/mdi/arrow-down"
 import ArrowUpIcon from "~icons/mdi/arrow-up"
@@ -292,9 +293,9 @@ export const PlayerScoreTable = ({
         <div style={{ height: "1.7rem" }} />
       )}
       <table
-        className={`${classes.table} ${
-          primaryGroup in tableGroupConfigs.locked ? ` ${classes.locked}` : ""
-        }`}
+        className={clsx(classes.table, {
+          [classes.locked]: primaryGroup in tableGroupConfigs.locked,
+        })}
       >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -399,9 +400,10 @@ export const PlayerScoreTable = ({
                     return (
                       <td
                         key={getColumnClassName(cell.column)}
-                        className={`${getColumnClassName(
-                          cell.column,
-                        )} ${getCellClassName(cell)}`}
+                        className={clsx(
+                          getColumnClassName(cell.column),
+                          getCellClassName(cell),
+                        )}
                       >
                         {flexRender(
                           cell.column.columnDef.aggregatedCell ??
@@ -426,9 +428,10 @@ export const PlayerScoreTable = ({
                   !cell.getIsPlaceholder() ? (
                     <td
                       key={cell.id}
-                      className={`${getColumnClassName(
-                        cell.column,
-                      )} ${getCellClassName(cell)}`}
+                      className={clsx(
+                        getColumnClassName(cell.column),
+                        getCellClassName(cell),
+                      )}
                       style={
                         cell.column.id === "title"
                           ? { paddingLeft: `${groups}em` }
