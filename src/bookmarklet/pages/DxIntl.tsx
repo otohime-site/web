@@ -192,6 +192,9 @@ const Book = () => {
   if (netPlayerResult.fetching) {
     return <></>
   }
+  const playerCardNameIndex = players.findIndex(
+    (player) => player.dx_intl_record?.card_name == parsedPlayer?.card_name,
+  )
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={classes.dialog}>
@@ -260,6 +263,11 @@ const Book = () => {
                 <RadioRoot
                   variant="card"
                   value={selectedPlayerId?.toString()}
+                  defaultValue={
+                    playerCardNameIndex >= 0
+                      ? playerCardNameIndex.toString()
+                      : undefined
+                  }
                   onValueChange={(val) =>
                     setSelectedPlayerId(parseInt(val, 10))
                   }
