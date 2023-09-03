@@ -283,7 +283,6 @@ const Book = () => {
                   onValueChange={(val) =>
                     setSelectedPlayerId(parseInt(val, 10))
                   }
-                  className={classes["radio-root"]}
                 >
                   {players.map((player) => (
                     <Radio key={player.id} value={player.id.toString()}>
