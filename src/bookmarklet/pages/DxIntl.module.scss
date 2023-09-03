@@ -1,5 +1,6 @@
 .dialog {
-  width: 450px;
+  min-width: 450px;
+  width: 60%;
   height: 400px;
   z-index: 100;
   display: flex;

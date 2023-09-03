@@ -5,16 +5,11 @@
   justify-content: space-between;
   align-items: center;
 }
-
-.player-item p:first-child {
-  font-weight: bold;
-}
-
 .player-item svg {
   font-size: 1.2em;
 }
 
 .player-item p:last-child {
-  font-size: 0.72em;
+  font-size: 0.85em;
   color: var(--mauve-11);
 }
