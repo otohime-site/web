@@ -37,7 +37,7 @@
     "react-dom": "^18.0.0",
     "react-interactive": "^1.1.2",
     "react-titled": "^2.0.0",
-    "unplugin-icons": "^0.16.3",
+    "unplugin-icons": "^0.17.0",
     "urql": "^4.0.0",
     "wouter": "^2.11.0"
   },
