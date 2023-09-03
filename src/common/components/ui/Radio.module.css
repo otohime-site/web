@@ -65,7 +65,7 @@
 }
 
 .radio-card-root .radio-button {
-  margin-right: 2rem;
+  margin-right: 1rem;
 }
 
 .radio[data-state="checked"] .radio-button {

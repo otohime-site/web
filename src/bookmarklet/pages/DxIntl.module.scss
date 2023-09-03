@@ -1,5 +1,13 @@
 .dialog {
-  width: 450px;
-  min-height: 350px;
+  width: 550px;
+  height: 400px;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dialog > div:first-of-type {
+  flex: 1 1 auto;
+  overflow-y: auto;
 }

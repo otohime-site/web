@@ -86,15 +86,18 @@ const sha256Sum = async (text: string): Promise<string> => {
 
 const Book = () => {
   const [open, setOpen] = useState(true)
+  const [pageState, setPageState] = useState<
+    "loading" | "ready" | "fetching" | "error" | "done"
+  >("loading")
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
     undefined,
   )
+  const client = useClient()
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
   const players = getFragmentData(
     dxIntlPlayersFields,
     dxIntlPlayersResult.data?.dx_intl_players ?? [],
   )
-  const client = useClient()
 
   const [netPlayerResult, setNetPlayerResult] = useState<{
     data?: ReturnType<typeof parsePlayer>
@@ -109,11 +112,32 @@ const Book = () => {
       .catch(() => setNetPlayerResult({ fetching: false, error: true }))
   }, [])
 
-  const parsedPlayer = netPlayerResult.data
+  useEffect(() => {
+    if (
+      pageState !== "loading" ||
+      netPlayerResult.fetching ||
+      dxIntlPlayersResult.fetching
+    ) {
+      return
+    }
+    if (netPlayerResult.error || dxIntlPlayersResult.error) {
+      setPageState("error")
+      return
+    }
+    const cardNameIndex = getFragmentData(
+      dxIntlPlayersFields,
+      dxIntlPlayersResult.data?.dx_intl_players ?? [],
+    ).findIndex(
+      (player) =>
+        player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
+    )
+    if (cardNameIndex >= -1) {
+      setSelectedPlayerId(cardNameIndex)
+    }
+    setPageState("ready")
+  }, [netPlayerResult, dxIntlPlayersResult, pageState])
 
-  const [fetchState, setFetchState] = useState<
-    "idle" | "fetching" | "error" | "done"
-  >("idle")
+  const parsedPlayer = netPlayerResult.data
   const [fetchProgress, setFetchProgress] = useState(0)
   const handleFetch = async (): Promise<void> => {
     const player = players.find((p) => p.id === selectedPlayerId)
@@ -126,7 +150,7 @@ const Book = () => {
     ) {
       return
     }
-    setFetchState("fetching")
+    setPageState("fetching")
     const entries = await DIFFICULTIES.reduce<Promise<ScoresParseEntry[]>>(
       async (prevPromise, _, difficulty) => {
         const prev = await prevPromise
@@ -170,7 +194,7 @@ const Book = () => {
     if (mutation.error != null) {
       throw new Error("Mutation error")
     }
-    setFetchState("done")
+    setPageState("done")
   }
 
   const handleFetchWithCatch = async (): Promise<void> => {
@@ -178,7 +202,7 @@ const Book = () => {
       await handleFetch()
     } catch (e) {
       console.error(e)
-      setFetchState("error")
+      setPageState("error")
     }
   }
 
@@ -192,21 +216,14 @@ const Book = () => {
   if (netPlayerResult.fetching) {
     return <></>
   }
-  const playerCardNameIndex = players.findIndex(
-    (player) => player.dx_intl_record?.card_name == parsedPlayer?.card_name,
-  )
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={classes.dialog}>
-        <DialogTitle>更新成績</DialogTitle>
-        {netPlayerResult.error ? (
-          <div>
-            <Alert severity="error">
-              無法讀取 DXNET 上的成績。請試圖重新整理 DXNET
-              網頁，如果仍有問題請聯絡我們。
-            </Alert>
-          </div>
-        ) : fetchState === "fetching" ? (
+        <DialogTitle>更新 Otohime 成績單</DialogTitle>
+        {pageState === "loading" ? (
+          <div></div>
+        ) : pageState === "fetching" ? (
           <div>
             <p>
               {fetchProgress < DIFFICULTIES.length
@@ -220,7 +237,7 @@ const Book = () => {
               max={DIFFICULTIES.length + 1}
             />
           </div>
-        ) : fetchState === "done" ? (
+        ) : pageState === "done" ? (
           <div>
             <p>上傳完成！</p>
             <p>您現在可以在 Otohime 網站上檢視你的成績單了。</p>
@@ -235,7 +252,7 @@ const Book = () => {
               檢視成績單
             </a>
           </div>
-        ) : fetchState === "error" ? (
+        ) : pageState === "error" ? (
           <div>
             <Alert severity="error">
               成績擷取或上傳發生錯誤。請稍後再重試一次。
@@ -263,14 +280,10 @@ const Book = () => {
                 <RadioRoot
                   variant="card"
                   value={selectedPlayerId?.toString()}
-                  defaultValue={
-                    playerCardNameIndex >= 0
-                      ? playerCardNameIndex.toString()
-                      : undefined
-                  }
                   onValueChange={(val) =>
                     setSelectedPlayerId(parseInt(val, 10))
                   }
+                  className={classes["radio-root"]}
                 >
                   {players.map((player) => (
                     <Radio key={player.id} value={player.id.toString()}>
@@ -285,13 +298,13 @@ const Book = () => {
         <div>
           <Button
             color="violet"
-            disabled={fetchState !== "idle" || selectedPlayerId === undefined}
+            disabled={pageState !== "ready" || selectedPlayerId === undefined}
             onClick={handleFetchWithCatch}
           >
             上傳成績
           </Button>
           <DialogClose asChild>
-            <Button color="violet" disabled={fetchState === "fetching"}>
+            <Button color="violet" disabled={pageState === "fetching"}>
               關閉
             </Button>
           </DialogClose>
