@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import clsx from "clsx"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import ArrowDownIcon from "~icons/mdi/arrow-down"
 import ArrowUpIcon from "~icons/mdi/arrow-up"
 import ChevronRightIcon from "~icons/mdi/chevron-right"
@@ -49,21 +49,13 @@ const defaultVisibility = {
 }
 
 const tableGroupConfigs: TableGroupConfigs = {
-  groups: {
-    current_version: null,
-    version: "difficulty",
-    category: "difficulty",
-    level: "internal_lv",
-  },
   locked: {
     current_version: {
-      grouping: [],
       sorting: [{ id: "rating", desc: true }],
     },
   },
-  orderBy: "title",
-  orderByDesc: false,
-  groupable: ["difficulty", "internal_lv", "level", "version", "category"],
+  defaultSorting: [{ id: "title", desc: false }],
+  groupable: ["current_version", "version", "category", "level"],
   sortable: [
     "title",
     "deluxe",
@@ -75,15 +67,14 @@ const tableGroupConfigs: TableGroupConfigs = {
     "sync_flag",
     "rating",
   ],
+  groupingDesc: ["current_version"],
 }
 
 const groupColumnNames: Record<string, string> = {
   current_version: "Rating 組成",
   version: "版本",
   category: "分類",
-  difficulty: "難度",
   level: "等級",
-  internal_lv: "定數",
 }
 
 const getColumnClassName = (column: Column<ScoreTableEntry, unknown>) => {
@@ -117,13 +108,11 @@ export const PlayerScoreTable = ({
 }: {
   scoreTable: ScoreTableEntry[]
 }) => {
-  const [
-    { primaryGroup, secondaryGroup, orderBy, orderByDesc, grouping, sorting },
-    dispatchTableState,
-  ] = useTableState({
+  const [{ grouping, sorting }, dispatchTableState] = useTableState({
     tableKey: "dx-intl",
     tableGroupConfigs,
   })
+  const [difficulty, setDifficulty] = useState<number>(2)
 
   const columnVisibility = useMemo(
     () =>
@@ -137,8 +126,10 @@ export const PlayerScoreTable = ({
     () =>
       grouping[0] == "current_version"
         ? [{ id: "rating_listed", value: true }]
-        : [],
-    [grouping],
+        : grouping[0] == "level"
+        ? []
+        : [{ id: "difficulty", value: difficulty }],
+    [grouping, difficulty],
   )
 
   const table = useReactTable({
@@ -186,6 +177,7 @@ export const PlayerScoreTable = ({
             ? difficulties[info.getValue()].toUpperCase()
             : difficulties[info.getValue()].toUpperCase().substring(0, 3),
         aggregationFn: () => "",
+        filterFn: "equals",
       }),
       columnHelper.accessor("level", {
         header: "等級",
@@ -259,42 +251,38 @@ export const PlayerScoreTable = ({
   return (
     <div>
       <RadioRoot
-        value={primaryGroup}
+        value={grouping[0]}
         onValueChange={(payload) => {
-          dispatchTableState({ type: "setPrimaryGroup", payload })
+          dispatchTableState({ type: "setGroup", payload })
         }}
         style={{ height: "1.7rem" }}
       >
         分組：
-        {Object.keys(tableGroupConfigs.groups).map((g) => (
+        {tableGroupConfigs.groupable.map((g) => (
           <Radio key={g} value={g}>
             {groupColumnNames[g]}
           </Radio>
         ))}
       </RadioRoot>
-      {!(primaryGroup in tableGroupConfigs.locked) ? (
+      {!(grouping[0] in tableGroupConfigs.locked) && grouping[0] !== "level" ? (
         <RadioRoot
-          value={secondaryGroup}
-          onValueChange={(payload) => {
-            dispatchTableState({ type: "setSecondaryGroup", payload })
-          }}
+          value={difficulty.toString()}
+          onValueChange={(v) => setDifficulty(parseInt(v, 10))}
           style={{ height: "1.7rem" }}
         >
-          次要分組：
-          {tableGroupConfigs.groupable
-            .filter((g) => g !== primaryGroup)
-            .map((g) => (
-              <Radio key={g} value={g}>
-                {groupColumnNames[g]}
-              </Radio>
-            ))}
+          難易度：
+          {difficulties.map((d, i) => (
+            <Radio key={i} value={i.toString()}>
+              {d}
+            </Radio>
+          ))}
         </RadioRoot>
       ) : (
         <div style={{ height: "1.7rem" }} />
       )}
       <table
         className={clsx(classes.table, {
-          [classes.locked]: primaryGroup in tableGroupConfigs.locked,
+          [classes.locked]: grouping[0] in tableGroupConfigs.locked,
         })}
       >
         <thead>
@@ -313,10 +301,10 @@ export const PlayerScoreTable = ({
                       `${isSorted ? " sorted" : ""}`
                     }
                     onClick={() => {
-                      if (orderBy === header.column.id) {
+                      if (sorting[1].id === header.column.id) {
                         dispatchTableState({
                           type: "setOrderByDesc",
-                          payload: !orderByDesc,
+                          payload: !sorting[1].desc,
                         })
                       } else if (
                         tableGroupConfigs.sortable.includes(header.id)
