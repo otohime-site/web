@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react"
 import { Route, Router } from "wouter"
+import classes from "./App.module.css"
 import { NestedRoutes } from "./common/components/NestedRoutes"
 import "./global.css"
 
@@ -10,7 +11,7 @@ const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
   return (
-    <div>
+    <div className={classes.app}>
       <Suspense fallback={<></>}>
         <Router>
           <Route path="/" component={Home} />
