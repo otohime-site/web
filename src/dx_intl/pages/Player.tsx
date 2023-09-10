@@ -30,6 +30,7 @@ import {
   dxIntlPlayersEditableDocument,
   dxIntlSongsDocument,
 } from "../models/queries"
+import classes from "./Player.module.css"
 
 const dxIntlRecordWithScoresDocument = graphql(`
   query dxIntlRecordWithScores($nickname: String!) {
@@ -179,7 +180,10 @@ const Player = ({ params }: { params: Params }) => {
             歷史紀錄
           </LinkButton>
         </div>
-        <PlayerScoreTable scoreTable={scoreTable} />
+        <div className={classes["player-container"]}>
+          <div>This is the sidebar to be filled.</div>
+          <PlayerScoreTable scoreTable={scoreTable} />
+        </div>
       </div>
     </>
   )

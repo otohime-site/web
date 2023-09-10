@@ -1,0 +1,6 @@
+@media (min-width: 961px) {
+  .player-container {
+    display: grid;
+    grid-template-columns: 22rem 1fr;
+  }
+}
