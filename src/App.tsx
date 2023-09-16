@@ -1,8 +1,10 @@
 import { lazy, Suspense } from "react"
-import { Route, Router } from "wouter"
+import { Link, Route, Router } from "wouter"
 import classes from "./App.module.css"
 import { NestedRoutes } from "./common/components/NestedRoutes"
+import UserBox from "./common/components/UserBox"
 import "./global.css"
+import Logo from "./logo/favicon.svg"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
 const Forget = lazy(async () => await import("./common/pages/Forget"))
@@ -12,6 +14,26 @@ const Finale = lazy(async () => await import("./finale/index"))
 const App = () => {
   return (
     <div className={classes.app}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Link href="~/">
+          <img
+            src={Logo}
+            style={{
+              height: "1.2em",
+              verticalAlign: "middle",
+              marginRight: "0.2em",
+            }}
+          />
+          Otohime
+        </Link>
+        <UserBox />
+      </div>
       <Suspense fallback={<></>}>
         <Router>
           <Route path="/" component={Home} />

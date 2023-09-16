@@ -6,6 +6,7 @@ import {
 } from "firebase/auth"
 import { Fragment, useCallback } from "react"
 import { firebaseAuth, useUser } from "../contexts"
+import { Button } from "./ui/Button"
 
 const provider = new FacebookAuthProvider()
 const isInAppBrowser = (agent: string): boolean =>
@@ -22,6 +23,7 @@ const UserBoxComponent = () => {
       } else {
         await signInWithPopup(firebaseAuth, provider)
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e.code === "auth/popup-blocked") {
         // TODO: rework
@@ -38,15 +40,17 @@ const UserBoxComponent = () => {
   if (user !== null) {
     return (
       <Fragment>
-        <a onClick={handleLogout}>登出</a>
+        <Button color="violet" onClick={handleLogout}>
+          登出
+        </Button>
       </Fragment>
     )
   }
   return (
     <Fragment>
-      <a color="inherit" onClick={handleLogin}>
+      <Button color="violet" onClick={handleLogin}>
         登入
-      </a>
+      </Button>
     </Fragment>
   )
 }
