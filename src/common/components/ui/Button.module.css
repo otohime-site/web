@@ -13,17 +13,17 @@
   border: 1px solid var(--scale-7);
 }
 
-.button:global(.hover),
-.button:global(.focus) {
+.button:hover,
+.button:focus {
   background: var(--scale-3);
   border-color: var(--scale-8);
 }
 
-.button:global(.focus) {
+.button:focus {
   box-shadow: inset 0 0 0 2px var(--scale-8);
 }
 
-.button:global(.active) {
+.button:active {
   background: var(--scale-4);
 }
 
