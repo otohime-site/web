@@ -20,7 +20,10 @@ import ArrowDownIcon from "~icons/mdi/arrow-down"
 import ArrowUpIcon from "~icons/mdi/arrow-up"
 import ChevronRightIcon from "~icons/mdi/chevron-right"
 import ChevronUpIcon from "~icons/mdi/chevron-up"
-import { Radio, RadioRoot } from "../../common/components/ui/Radio"
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "../../common/components/ui/ToggleGroup"
 import { TableGroupConfigs, useTableState } from "../../common/utils/table"
 import { getRankScoreIndex } from "../helper"
 import { ScoreTableEntry } from "../models/aggregation"
@@ -37,6 +40,8 @@ import {
 import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
+
+const toggleColors = ["green", "yellow", "red", "violet", "plum"] as const
 
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
@@ -250,35 +255,41 @@ export const PlayerScoreTable = ({
   })
   return (
     <div>
-      <RadioRoot
+      <ToggleGroup
+        type="single"
         value={grouping[0]}
         onValueChange={(payload) => {
-          dispatchTableState({ type: "setGroup", payload })
+          if (payload) dispatchTableState({ type: "setGroup", payload })
         }}
-        style={{ height: "1.7rem" }}
+        style={{ height: "2.5rem" }}
       >
-        分組：
         {tableGroupConfigs.groupable.map((g) => (
-          <Radio key={g} value={g}>
+          <ToggleGroupItem key={g} value={g}>
             {groupColumnNames[g]}
-          </Radio>
+          </ToggleGroupItem>
         ))}
-      </RadioRoot>
+      </ToggleGroup>
       {!(grouping[0] in tableGroupConfigs.locked) && grouping[0] !== "level" ? (
-        <RadioRoot
+        <ToggleGroup
+          type="single"
           value={difficulty.toString()}
-          onValueChange={(v) => setDifficulty(parseInt(v, 10))}
-          style={{ height: "1.7rem" }}
+          onValueChange={(v) => {
+            if (v) setDifficulty(parseInt(v, 10))
+          }}
+          style={{ height: "2.5rem" }}
         >
-          難易度：
           {difficulties.map((d, i) => (
-            <Radio key={i} value={i.toString()}>
+            <ToggleGroupItem
+              key={i}
+              value={i.toString()}
+              color={toggleColors[i]}
+            >
               {d}
-            </Radio>
+            </ToggleGroupItem>
           ))}
-        </RadioRoot>
+        </ToggleGroup>
       ) : (
-        <div style={{ height: "1.7rem" }} />
+        <div style={{ height: "2.5rem" }} />
       )}
       <table
         className={clsx(classes.table, {

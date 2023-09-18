@@ -3,19 +3,7 @@ import { ButtonHTMLAttributes, forwardRef, PropsWithChildren } from "react"
 import { Link, LinkProps } from "wouter"
 import classes from "./Button.module.css"
 import colorClasses from "./colors.module.scss"
-
-const colors = [
-  "indigo",
-  "red",
-  "blue",
-  "green",
-  "yellow",
-  "mauve",
-  "violet",
-  "indigo",
-  "plum",
-  "mauve",
-] as const
+import { colors } from "./constants"
 
 export const Button = forwardRef<
   HTMLButtonElement,

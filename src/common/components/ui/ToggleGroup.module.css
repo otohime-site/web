@@ -1,0 +1,23 @@
+.toggle-group-item[data-state="on"] {
+  background: var(--scale-5);
+}
+.toggle-group-item {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-weight: bold;
+  background: white;
+  color: var(--scale-11);
+  border: 1px solid var(--scale-7);
+}
+.toggle-group-item:first-child {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+.toggle-group-item:last-child {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}

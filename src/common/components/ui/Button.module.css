@@ -3,10 +3,10 @@
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  padding: 4px 8px;
-  margin: 4px;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem;
   font-weight: bold;
   background: var(--scale-2);
   color: var(--scale-11);
