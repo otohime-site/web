@@ -11,7 +11,7 @@
   font-weight: bold;
   background: white;
   color: var(--scale-11);
-  border: 1px solid var(--scale-7);
+  border: 1px solid var(--scale-8);
 }
 .toggle-group-item:first-child {
   border-top-left-radius: 0.5rem;
