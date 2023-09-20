@@ -13,40 +13,28 @@ const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
   return (
-    <div className={classes.app}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <Link href="~/">
-          <img
-            src={Logo}
-            style={{
-              height: "1.2em",
-              verticalAlign: "middle",
-              marginRight: "0.2em",
-            }}
-          />
-          Otohime
+    <>
+      <div className={classes.top}>
+        <Link href="~/" className={classes.title}>
+          <img src={Logo} /> <p>Otohime</p>
         </Link>
         <UserBox />
       </div>
-      <Suspense fallback={<></>}>
-        <Router>
-          <Route path="/" component={Home} />
-          <Route path="/forget" component={Forget} />
-          <NestedRoutes base="/dxi">
-            <DxIntl />
-          </NestedRoutes>
-          <NestedRoutes base="/fin">
-            <Finale />
-          </NestedRoutes>
-        </Router>
-      </Suspense>
-    </div>
+      <div className={classes.container}>
+        <Suspense fallback={<></>}>
+          <Router>
+            <Route path="/" component={Home} />
+            <Route path="/forget" component={Forget} />
+            <NestedRoutes base="/dxi">
+              <DxIntl />
+            </NestedRoutes>
+            <NestedRoutes base="/fin">
+              <Finale />
+            </NestedRoutes>
+          </Router>
+        </Suspense>
+      </div>
+    </>
   )
 }
 

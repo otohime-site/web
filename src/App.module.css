@@ -1,4 +1,28 @@
-.app {
+.top {
+  background: var(--violet-3);
+  padding: 0.25em 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: var(--violet-10);
+  font-family: "McLaren", cursive;
+  display: inline-flex;
+  align-items: center;
+}
+.title img {
+  height: 1.2em;
+  vertical-align: middle;
+  margin-right: 0.2em;
+}
+
+.container {
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 0.5rem;
 }
