@@ -6,7 +6,6 @@ import {
 } from "firebase/auth"
 import { Fragment, useCallback } from "react"
 import { firebaseAuth, useUser } from "../contexts"
-import { Button } from "./ui/Button"
 
 const provider = new FacebookAuthProvider()
 const isInAppBrowser = (agent: string): boolean =>
@@ -40,17 +39,17 @@ const UserBoxComponent = () => {
   if (user !== null) {
     return (
       <Fragment>
-        <Button color="violet" onClick={handleLogout}>
+        <a href="#" onClick={handleLogout}>
           登出
-        </Button>
+        </a>
       </Fragment>
     )
   }
   return (
     <Fragment>
-      <Button color="violet" onClick={handleLogin}>
+      <a href="#" onClick={handleLogin}>
         登入
-      </Button>
+      </a>
     </Fragment>
   )
 }

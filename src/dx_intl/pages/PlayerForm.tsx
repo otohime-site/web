@@ -228,7 +228,6 @@ const PlayerForm = ({ params }: { params: Params }) => {
             。
           </p>
           <ul>
-            <li>雜湊後的 Friend ID（不公開，僅用於自動對應多卡成績）</li>
             <li>卡名、Rating、稱號、段位與對戰階級</li>
             <li>每個譜面的分數、Combo Flag、Sync Flag</li>
           </ul>

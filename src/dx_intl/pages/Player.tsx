@@ -160,28 +160,30 @@ const Player = ({ params }: { params: Params }) => {
         </Alert>
       ) : null}
       <div>
-        <div>
-          <Record record={record} />
-          {player.updated_at != null
-            ? formatRelative(new Date(player.updated_at))
-            : ""}
-          更新
-          {player.private ? <IconLock /> : <IconPublic />}
-          {editableResult.error == null &&
-          (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-            <LinkButton href={`~/dxi/p/${params.nickname}/edit`} color="violet">
-              編輯
-            </LinkButton>
-          ) : null}
-          <LinkButton
-            href={`~/dxi/p/${params.nickname}/history`}
-            color="violet"
-          >
-            歷史紀錄
-          </LinkButton>
-        </div>
         <div className={classes["player-container"]}>
-          <div>This is the sidebar to be filled.</div>
+          <div>
+            <Record record={record} />
+            {player.updated_at != null
+              ? formatRelative(new Date(player.updated_at))
+              : ""}
+            更新
+            {player.private ? <IconLock /> : <IconPublic />}
+            {editableResult.error == null &&
+            (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+              <LinkButton
+                href={`~/dxi/p/${params.nickname}/edit`}
+                color="violet"
+              >
+                編輯
+              </LinkButton>
+            ) : null}
+            <LinkButton
+              href={`~/dxi/p/${params.nickname}/history`}
+              color="violet"
+            >
+              歷史紀錄
+            </LinkButton>
+          </div>
           <PlayerScoreTable scoreTable={scoreTable} />
         </div>
       </div>

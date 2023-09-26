@@ -3,7 +3,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 22em;
+  width: 20em;
 }
 
 .inner-col {
@@ -19,13 +19,13 @@
   background: white;
   border: 0.1em solid #cccccc;
   border-radius: 0.2em;
-  font-size: 133%;
+  font-size: 120%;
   font-weight: 800;
   font-family: "M PLUS Rounded 1c";
 }
 
 .title {
-  width: 22em;
+  width: 20em;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;

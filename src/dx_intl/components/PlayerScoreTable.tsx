@@ -261,10 +261,15 @@ export const PlayerScoreTable = ({
         onValueChange={(payload) => {
           if (payload) dispatchTableState({ type: "setGroup", payload })
         }}
-        style={{ height: "2.5rem" }}
+        style={{
+          height: "2.5rem",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         {tableGroupConfigs.groupable.map((g) => (
-          <ToggleGroupItem key={g} value={g}>
+          <ToggleGroupItem key={g} value={g} style={{ flex: "1" }}>
             {groupColumnNames[g]}
           </ToggleGroupItem>
         ))}
@@ -276,10 +281,16 @@ export const PlayerScoreTable = ({
           onValueChange={(v) => {
             if (v) setDifficulty(parseInt(v, 10))
           }}
-          style={{ height: "2.5rem" }}
+          style={{
+            height: "2.5rem",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
         >
           {difficulties.map((d, i) => (
             <ToggleGroupItem
+              style={{ flex: "1", textTransform: "uppercase" }}
               key={i}
               value={i.toString()}
               color={toggleColors[i]}
