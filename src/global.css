@@ -5,8 +5,8 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
 
 html {
-  /* 14px @ 320px - 18px @ 1800px */
-  font-size: clamp(0.87rem, 0.27vw + 0.82rem, 1.13rem);
+  /* 14px @ 400px - 18px @ 1280px */
+  font-size: clamp(0.88rem, 0.45vw + 0.76rem, 1.13rem);
 }
 
 *,
