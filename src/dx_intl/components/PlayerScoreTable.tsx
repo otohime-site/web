@@ -76,7 +76,7 @@ const tableGroupConfigs: TableGroupConfigs = {
 }
 
 const groupColumnNames: Record<string, string> = {
-  current_version: "Rating 組成",
+  current_version: "Rating",
   version: "版本",
   category: "分類",
   level: "等級",
@@ -263,9 +263,10 @@ export const PlayerScoreTable = ({
         }}
         style={{
           height: "2.5rem",
-          width: "100%",
+          maxWidth: "30rem",
           display: "flex",
           alignItems: "center",
+          padding: "0.5rem",
         }}
       >
         {tableGroupConfigs.groupable.map((g) => (
@@ -282,10 +283,11 @@ export const PlayerScoreTable = ({
             if (v) setDifficulty(parseInt(v, 10))
           }}
           style={{
-            height: "2.5rem",
-            width: "100%",
+            maxWidth: "30rem",
             display: "flex",
             alignItems: "center",
+            padding: "0.5rem",
+            fontSize: "85%",
           }}
         >
           {difficulties.map((d, i) => (
