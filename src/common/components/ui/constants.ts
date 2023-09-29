@@ -9,4 +9,5 @@ export const colors = [
   "indigo",
   "plum",
   "mauve",
+  "crimson",
 ] as const

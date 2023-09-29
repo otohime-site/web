@@ -1,5 +1,6 @@
 .toggle-group-item[data-state="on"] {
-  background: var(--scale-5);
+  border-bottom: 0.125rem solid var(--mauve-12);
+  color: var(--mauve-12);
 }
 .toggle-group-item {
   all: unset;
@@ -7,17 +8,8 @@
   align-items: center;
   box-sizing: border-box;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 0.5rem;
   font-weight: bold;
-  background: white;
-  color: var(--scale-11);
-  border: 1px solid var(--scale-8);
-}
-.toggle-group-item:first-child {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-}
-.toggle-group-item:last-child {
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
+  color: var(--mauve-10);
+  border-bottom: 0.125rem solid transparent;
 }

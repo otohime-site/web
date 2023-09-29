@@ -41,8 +41,6 @@ import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
-const toggleColors = ["green", "yellow", "red", "violet", "plum"] as const
-
 const columnHelper = createColumnHelper<ScoreTableEntry>()
 const defaultVisibility = {
   category: false,
@@ -76,7 +74,7 @@ const tableGroupConfigs: TableGroupConfigs = {
 }
 
 const groupColumnNames: Record<string, string> = {
-  current_version: "Rating",
+  current_version: "Rating 組成",
   version: "版本",
   category: "分類",
   level: "等級",
@@ -93,13 +91,16 @@ const getCellClassName = (cell: Cell<ScoreTableEntry, unknown>) => {
     case "difficulty":
     case "internal_lv":
       if (cell.getIsAggregated()) return ""
-      return `difficulty-${cell.row.getValue("difficulty")} ${
+      return clsx(
+        classes[
+          `difficulty-${cell.row.getValue("difficulty") as 0 | 1 | 2 | 3 | 4}`
+        ],
         cell.row.original.internal_lv
           ? ""
           : cell.row.original.level.includes("+")
           ? "plus"
-          : "non-plus"
-      }`
+          : "non-plus",
+      )
     case "combo_flag":
       return (comboFlags[cell.getValue() as number] ?? "").replace("+", "-plus")
     case "sync_flag":
@@ -263,14 +264,17 @@ export const PlayerScoreTable = ({
         }}
         style={{
           height: "2.5rem",
-          maxWidth: "30rem",
           display: "flex",
           alignItems: "center",
-          padding: "0.5rem",
         }}
       >
-        {tableGroupConfigs.groupable.map((g) => (
-          <ToggleGroupItem key={g} value={g} style={{ flex: "1" }}>
+        {tableGroupConfigs.groupable.map((g, i) => (
+          <ToggleGroupItem
+            key={g}
+            value={g}
+            style={{ flex: i == 0 ? "3" : "2" }}
+            color={i == 0 ? "crimson" : "violet"}
+          >
             {groupColumnNames[g]}
           </ToggleGroupItem>
         ))}
@@ -283,26 +287,25 @@ export const PlayerScoreTable = ({
             if (v) setDifficulty(parseInt(v, 10))
           }}
           style={{
-            maxWidth: "30rem",
+            height: "3rem",
             display: "flex",
             alignItems: "center",
-            padding: "0.5rem",
             fontSize: "85%",
           }}
         >
           {difficulties.map((d, i) => (
             <ToggleGroupItem
-              style={{ flex: "1", textTransform: "uppercase" }}
+              style={{ textTransform: "uppercase", flex: 1 }}
               key={i}
               value={i.toString()}
-              color={toggleColors[i]}
+              className={classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]}
             >
               {d}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
       ) : (
-        <div style={{ height: "2.5rem" }} />
+        <div style={{ height: "3rem" }} />
       )}
       <table
         className={clsx(classes.table, {
@@ -377,9 +380,6 @@ export const PlayerScoreTable = ({
               return (
                 <tr key={row.id} className={classes.grouped}>
                   {visibleCells.map((cell, index) => {
-                    console.log(cell)
-                    console.log(cell.getIsGrouped())
-                    console.log(cell.getIsPlaceholder())
                     if (cell.getIsGrouped()) {
                       return (
                         <td

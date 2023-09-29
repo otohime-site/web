@@ -99,19 +99,19 @@
   padding-right: 0.9em;
 }
 
-.table td:global(.difficulty-0) {
+.difficulty-0 {
   color: var(--green-10);
 }
-.table td:global(.difficulty-1) {
-  color: var(--yellow-10);
+.difficulty-1 {
+  color: var(--amber-10);
 }
-.table td:global(.difficulty-2) {
+.difficulty-2 {
   color: var(--red-10);
 }
-.table td:global(.difficulty-3) {
+.difficulty-3 {
   color: var(--violet-10);
 }
-.table td:global(.difficulty-4) {
+.difficulty-4 {
   color: var(--plum-6);
   -webkit-text-stroke: 0.04rem var(--plum-11);
   paint-order: stroke fill;
@@ -119,4 +119,39 @@
 
 .table tr.used td {
   background: var(--red-2);
+}
+
+.toggle-difficulty-0 {
+  color: var(--green-8);
+}
+.toggle-difficulty-0[data-state="on"] {
+  color: var(--green-10);
+  border-color: var(--green-10);
+}
+.toggle-difficulty-1 {
+  color: var(--amber-8);
+}
+.toggle-difficulty-1[data-state="on"] {
+  color: var(--amber-10);
+  border-color: var(--amber-10);
+}
+.toggle-difficulty-2 {
+  color: var(--red-8);
+}
+.toggle-difficulty-2[data-state="on"] {
+  color: var(--red-10);
+  border-color: var(--red-10);
+}
+.toggle-difficulty-3 {
+  color: var(--violet-8);
+}
+.toggle-difficulty-3[data-state="on"] {
+  color: var(--violet-10);
+  border-color: var(--violet-10);
+}
+.toggle-difficulty-4 {
+  color: var(--plum-8);
+}
+.toggle-difficulty-4[data-state="on"] {
+  border-color: var(--plum-10);
 }
