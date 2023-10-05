@@ -124,15 +124,15 @@ const Book = () => {
       setPageState("error")
       return
     }
-    const cardNameIndex = getFragmentData(
+    const firstMatchPlayer = getFragmentData(
       dxIntlPlayersFields,
       dxIntlPlayersResult.data?.dx_intl_players ?? [],
-    ).findIndex(
+    ).find(
       (player) =>
         player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
     )
-    if (cardNameIndex >= -1) {
-      setSelectedPlayerId(cardNameIndex)
+    if (firstMatchPlayer != null) {
+      setSelectedPlayerId(firstMatchPlayer.id)
     }
     setPageState("ready")
   }, [netPlayerResult, dxIntlPlayersResult, pageState])
