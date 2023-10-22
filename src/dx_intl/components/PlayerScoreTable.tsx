@@ -379,7 +379,13 @@ export const PlayerScoreTable = ({
               // To make the table more compact, we will apply colspan to grouped cell
               // which needs a dedicated logic.
               return (
-                <tr key={row.id} className={classes.grouped}>
+                <tr
+                  key={row.id}
+                  className={clsx(
+                    classes.grouped,
+                    row.getIsExpanded() ? classes.expanded : null,
+                  )}
+                >
                   {visibleCells.map((cell, index) => {
                     if (cell.getIsGrouped()) {
                       return (

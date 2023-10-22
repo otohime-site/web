@@ -42,10 +42,12 @@
 }
 
 .table tr.grouped td {
+  cursor: pointer;
+  background: var(--mauve-2);
+}
+.table tr.grouped.expanded td {
   position: sticky;
   top: 48px;
-  cursor: pointer;
-  background: var(--mauve-1);
 }
 
 .table tbody tr td {
