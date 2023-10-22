@@ -3,4 +3,9 @@
     display: grid;
     grid-template-columns: 22rem 1fr;
   }
+  .player-container > div:first-of-type {
+    align-self: start;
+    position: sticky;
+    top: 96px;
+  }
 }
