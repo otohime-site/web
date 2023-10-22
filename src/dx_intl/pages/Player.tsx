@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -6,8 +6,13 @@ import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "../../common/components/ui/ToggleGroup"
 import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
+import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
@@ -22,6 +27,7 @@ import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   comboFlags,
+  levels,
   syncFlags,
   versions,
 } from "../models/constants"
@@ -46,6 +52,12 @@ const dxIntlRecordWithScoresDocument = graphql(`
     }
   }
 `)
+const groupKeyOptions = {
+  current_version: "Rating 組成",
+  version: "版本",
+  category: "分類",
+  level: "等級",
+} as const
 
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
@@ -69,6 +81,10 @@ const Player = ({ params }: { params: Params }) => {
     [flattedEntries],
   )
 
+  const [grouping, setGrouping] = useState<
+    "current_version" | "category" | "version" | "level"
+  >("current_version")
+
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
       return { scoreTable: [], noteInconsistency: false }
@@ -82,10 +98,11 @@ const Player = ({ params }: { params: Params }) => {
     const scoresMap = new Map(
       scores.map((score) => [getNoteHash(score), score]),
     )
-    const scoreTable = flattedEntries.map<ScoreTableEntry>((entry) => {
+    const scoreTable = flattedEntries.map<ScoreTableEntry>((entry, index) => {
       const score = scoresMap.get(entry.hash)
       scoresMap.delete(entry.hash)
       return {
+        index,
         ...entry,
         score: score?.score ?? 0,
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
@@ -129,6 +146,16 @@ const Player = ({ params }: { params: Params }) => {
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
+
+  const tempTable = useTable({
+    data: scoreTable,
+    grouping,
+    ordering: [{ key: "index", desc: false }],
+    sortingFns: {
+      level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
+    },
+  })
+  console.log(tempTable)
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -184,7 +211,33 @@ const Player = ({ params }: { params: Params }) => {
               歷史紀錄
             </LinkButton>
           </div>
-          <PlayerScoreTable scoreTable={scoreTable} />
+          <div>
+            <ToggleGroup
+              type="single"
+              value={grouping}
+              onValueChange={(payload) => {
+                if (payload)
+                  setGrouping(payload as keyof typeof groupKeyOptions)
+              }}
+              style={{
+                height: "2.5rem",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {Object.entries(groupKeyOptions).map(([k, v], i) => (
+                <ToggleGroupItem
+                  key={k}
+                  value={k}
+                  style={{ flex: i == 0 ? "3" : "2" }}
+                  color={i == 0 ? "crimson" : "violet"}
+                >
+                  {v}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <PlayerScoreTable scoreTable={scoreTable} />
+          </div>
         </div>
       </div>
     </>

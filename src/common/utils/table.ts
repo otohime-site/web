@@ -1,5 +1,6 @@
 import { GroupingState, SortingState } from "@tanstack/react-table"
 import { useReducer } from "react"
+import { groupByKey } from "./grouping"
 
 export interface TableState {
   grouping: GroupingState
@@ -109,4 +110,37 @@ export const useTableState = ({ tableGroupConfigs }: TableStateInput) => {
     { type: "setGroup", payload: grouping },
   )
   return useReducer(reducer, initState)
+}
+
+// A simple Table hook inspired by Tanstack table.
+// Grouping, sorting can be applied here.
+// Some share settings between score tables will be added here.
+export const useTable = <T>({
+  data,
+  grouping,
+  ordering,
+  sortingFns,
+}: {
+  data: T[]
+  grouping: keyof T
+  ordering: Array<{ key: keyof T; desc: boolean }>
+  sortingFns?: { [k in keyof T]?: (a: T, b: T) => number }
+}) => {
+  const sortedData = [...data]
+  const orderingWithGroup = [
+    ...ordering,
+    ...(!ordering.find((o) => o.key == grouping)
+      ? [{ key: grouping, desc: false }]
+      : []),
+  ]
+  orderingWithGroup.map(({ key, desc }) => {
+    const fn = (a: T, b: T) => {
+      const custom = sortingFns?.[key]
+      const compare = custom ? custom(a, b) : a[key] > b[key] ? 1 : -1
+      return desc ? compare * -1 : compare
+    }
+    sortedData.sort(fn)
+  })
+  const groupedData = groupByKey(sortedData, grouping)
+  return { groupedData }
 }
