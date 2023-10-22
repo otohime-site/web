@@ -6,8 +6,6 @@
 }
 
 .table thead th {
-  position: sticky;
-  top: 0;
   width: 1.6rem;
   font-size: 0.9rem;
   font-weight: 400;
@@ -44,6 +42,8 @@
 }
 
 .table tr.grouped td {
+  position: sticky;
+  top: 48px;
   cursor: pointer;
   background: var(--mauve-1);
 }

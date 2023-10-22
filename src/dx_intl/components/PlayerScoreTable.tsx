@@ -254,6 +254,7 @@ export const PlayerScoreTable = ({
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
   })
+  console.log(table.getRowModel().rows)
   return (
     <div>
       <ToggleGroup
