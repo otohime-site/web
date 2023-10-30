@@ -14,7 +14,7 @@ import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
-import { PlayerScoreTable } from "../components/PlayerScoreTable"
+import { PlayerScoreTable } from "../components/PlayerScorePlainTable"
 import Record from "../components/Record"
 import {
   ESTIMATED_INTERNAL_LV,
@@ -27,6 +27,7 @@ import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   comboFlags,
+  difficulties,
   levels,
   syncFlags,
   versions,
@@ -54,8 +55,8 @@ const dxIntlRecordWithScoresDocument = graphql(`
 `)
 const groupKeyOptions = {
   current_version: "Rating 組成",
-  version: "版本",
   category: "分類",
+  version: "版本",
   level: "等級",
 } as const
 
@@ -84,6 +85,7 @@ const Player = ({ params }: { params: Params }) => {
   const [grouping, setGrouping] = useState<
     "current_version" | "category" | "version" | "level"
   >("current_version")
+  const [difficulty, setDifficulty] = useState<number>(2)
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
@@ -151,8 +153,19 @@ const Player = ({ params }: { params: Params }) => {
     data: scoreTable,
     grouping,
     ordering: [{ key: "index", desc: false }],
+    difficulty,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
+    },
+    filterFn: (entry, options) => {
+      switch (options.grouping) {
+        case "current_version":
+          return entry.rating_listed
+        case "level":
+          return true
+        default:
+          return entry.difficulty === options.difficulty
+      }
     },
   })
   console.log(tempTable)
@@ -236,7 +249,37 @@ const Player = ({ params }: { params: Params }) => {
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
-            <PlayerScoreTable scoreTable={scoreTable} />
+            {grouping === "category" || grouping === "version" ? (
+              <ToggleGroup
+                type="single"
+                value={difficulty.toString()}
+                onValueChange={(v) => {
+                  if (v) setDifficulty(parseInt(v, 10))
+                }}
+                style={{
+                  height: "3rem",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "85%",
+                }}
+              >
+                {difficulties.map((d, i) => (
+                  <ToggleGroupItem
+                    style={{ textTransform: "uppercase", flex: 1 }}
+                    key={i}
+                    value={i.toString()}
+                    className={
+                      classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                    }
+                  >
+                    {d}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            ) : (
+              <></>
+            )}
+            <PlayerScoreTable groupedData={tempTable.groupedData} />
           </div>
         </div>
       </div>
