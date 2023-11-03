@@ -152,7 +152,10 @@ const Player = ({ params }: { params: Params }) => {
   const tempTable = useTable({
     data: scoreTable,
     grouping,
-    ordering: [{ key: "index", desc: false }],
+    ordering:
+      grouping === "current_version"
+        ? [{ key: "rating", desc: true }]
+        : [{ key: "index", desc: false }],
     difficulty,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
@@ -279,7 +282,10 @@ const Player = ({ params }: { params: Params }) => {
             ) : (
               <></>
             )}
-            <PlayerScoreTable groupedData={tempTable.groupedData} />
+            <PlayerScoreTable
+              grouping={grouping}
+              groupedData={tempTable.groupedData}
+            />
           </div>
         </div>
       </div>
