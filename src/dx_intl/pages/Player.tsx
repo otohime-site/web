@@ -106,14 +106,14 @@ const Player = ({ params }: { params: Params }) => {
       return {
         index,
         ...entry,
-        score: score?.score ?? 0,
+        score: score?.score,
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
         current_version: entry.version == maxVersion,
         rating: score?.score
           ? getRating(
-              score.score,
+              score.score ?? 0,
               entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
             )
           : 0,

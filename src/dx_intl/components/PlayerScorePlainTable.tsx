@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import {
   categories,
@@ -7,6 +8,7 @@ import {
 } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
+import Variant from "./Variant"
 
 const getGroupTitle = (
   grouping: string,
@@ -48,18 +50,31 @@ export const PlayerScoreTable = ({
         {[...groupedData.entries()].map(([group, table]) => {
           return (
             <tbody key={group?.toString()}>
-              <tr>
-                <th>
-                  {getGroupTitle(grouping, group)} ({table.length})
-                </th>
-              </tr>
               {table.map((entry) => (
                 <tr key={getNoteHash(entry)}>
-                  <td>{entry.title}</td>
-                  <td>{entry.deluxe}</td>
-                  <td>{entry.internal_lv ?? entry.level}</td>
-                  <td>{entry.score}</td>
-                  <td>
+                  <td className="col-title">{entry.title}</td>
+                  <td className="col-deluxe">
+                    <Variant deluxe={entry.deluxe} />
+                  </td>
+                  <td
+                    className={clsx(
+                      "col-difficulty",
+                      classes[
+                        `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
+                      ],
+                      entry.internal_lv
+                        ? ""
+                        : entry.level.includes("+")
+                        ? "plus"
+                        : "non-plus",
+                    )}
+                  >
+                    {entry.internal_lv ?? entry.level}
+                  </td>
+                  <td className="col-score">
+                    {entry.score ? entry.score.toFixed(4) + "%" : ""}
+                  </td>
+                  <td className="col-flags">
                     <ComboFlag flag={comboFlags[entry.combo_flag]} />
                     <SyncFlag flag={syncFlags[entry.sync_flag]} />
                   </td>

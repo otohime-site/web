@@ -106,7 +106,7 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
   )
 export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   index: number
-  score: number
+  score?: number
   combo_flag: number
   sync_flag: number
   updated_at?: string
