@@ -6,8 +6,7 @@ export const colors = [
   "yellow",
   "mauve",
   "violet",
-  "indigo",
   "plum",
-  "mauve",
-  "crimson",
+  "lime",
+  "amber",
 ] as const
