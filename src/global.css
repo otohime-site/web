@@ -4,68 +4,42 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@900&display=swap&text=0123456789");
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
 
-html {
-  /* 14px @ 400px - 18px @ 1280px */
-  font-size: clamp(0.88rem, 0.45vw + 0.76rem, 1.13rem);
+@import "open-props/normalize";
+@import "open-props/buttons";
+
+:where(html) {
+  background-color: transparent;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+.react-aria-ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: var(--visual-viewport-height);
+  background: rgba(0 0 0 / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &[data-entering] {
+    animation: var(--animation-fade-in);
+  }
+  &[data-existing] {
+    animation: var(--animation-fade-out);
+  }
 }
 
-body {
-  font-size: 1rem;
-  font-family: "Roboto", sans-serif;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
+.react-aria-Modal {
+  background: white;
 }
 
-a {
-  color: var(--violet-11);
-}
+.react-aria-ListBoxItem {
+  outline: none;
+  margin: var(--size-2);
+  padding: var(--size-2);
 
-p,
-ul,
-li,
-dt,
-dd,
-div {
-  margin: 0;
-  padding: 0;
-}
-
-ul {
-  padding-left: 1.2em;
-}
-
-h1 {
-  font-size: 1.75rem;
-}
-
-h2 {
-  font-size: 1.52rem;
-  margin: 0.5rem 0;
-}
-
-h3 {
-  font-size: 1.32rem;
-  margin: 0.5rem 0;
-}
-
-h4 {
-  font-size: 1.15rem;
-  margin: 0.5rem 0;
-}
-
-h5 {
-  font-size: 1rem;
-  margin: 0.5rem 0;
-}
-
-/* Fixing https://github.com/mui-org/material-ui/issues/26251 */
-.MuiButton-label {
-  transition: color 0.01s;
+  &[data-selected] {
+    background-color: var(--surface-2);
+  }
 }

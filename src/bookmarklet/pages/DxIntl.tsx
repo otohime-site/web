@@ -1,17 +1,17 @@
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
 import { useEffect, useState } from "react"
+import {
+  Button,
+  Dialog,
+  ListBox,
+  ListBoxItem,
+  Modal,
+  Selection,
+} from "react-aria-components"
 import { useClient, useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { Alert } from "../../common/components/ui/Alert"
-import { Button } from "../../common/components/ui/Button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from "../../common/components/ui/Dialog"
-import { Radio, RadioRoot } from "../../common/components/ui/Radio"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { getFragmentData, graphql } from "../../gql"
@@ -85,12 +85,12 @@ const sha256Sum = async (text: string): Promise<string> => {
 }
 
 const Book = () => {
-  const [open, setOpen] = useState(true)
+  const [isOpen, setOpen] = useState(true)
   const [pageState, setPageState] = useState<
     "loading" | "ready" | "fetching" | "error" | "done"
   >("loading")
-  const [selectedPlayerId, setSelectedPlayerId] = useState<number | undefined>(
-    undefined,
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState<Selection>(
+    new Set(),
   )
   const client = useClient()
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
@@ -132,13 +132,18 @@ const Book = () => {
         player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
     )
     if (firstMatchPlayer != null) {
-      setSelectedPlayerId(firstMatchPlayer.id)
+      setSelectedPlayerIds(new Set([firstMatchPlayer.id]))
     }
     setPageState("ready")
   }, [netPlayerResult, dxIntlPlayersResult, pageState])
 
+  console.log(selectedPlayerIds)
   const parsedPlayer = netPlayerResult.data
   const [fetchProgress, setFetchProgress] = useState(0)
+  const selectedPlayerId =
+    selectedPlayerIds !== "all"
+      ? selectedPlayerIds.values().next().value
+      : undefined
   const handleFetch = async (): Promise<void> => {
     const player = players.find((p) => p.id === selectedPlayerId)
     if (player == null) {
@@ -218,9 +223,9 @@ const Book = () => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={classes.dialog}>
-        <DialogTitle>更新 Otohime 成績單</DialogTitle>
+    <Modal isDismissable isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Dialog className={classes.dialog}>
+        <h3>更新 Otohime 成績單</h3>
         {pageState === "loading" ? (
           <div></div>
         ) : pageState === "fetching" ? (
@@ -277,39 +282,37 @@ const Book = () => {
             ) : (
               <div>
                 <div>請選擇要更新的成績單：</div>
-                <RadioRoot
-                  variant="card"
-                  value={selectedPlayerId?.toString()}
-                  onValueChange={(val) =>
-                    setSelectedPlayerId(parseInt(val, 10))
-                  }
+                <ListBox
+                  selectionMode="single"
+                  selectedKeys={selectedPlayerIds}
+                  onSelectionChange={setSelectedPlayerIds}
                 >
                   {players.map((player) => (
-                    <Radio key={player.id} value={player.id.toString()}>
+                    <ListBoxItem key={player.id} id={player.id}>
                       <PlayerItem player={player} />
-                    </Radio>
+                    </ListBoxItem>
                   ))}
-                </RadioRoot>
+                </ListBox>
               </div>
             )}
           </QueryResult>
         )}
         <div>
           <Button
-            color="violet"
-            disabled={pageState !== "ready" || selectedPlayerId === undefined}
-            onClick={handleFetchWithCatch}
+            isDisabled={pageState !== "ready" || selectedPlayerId === undefined}
+            onPress={handleFetchWithCatch}
           >
             上傳成績
           </Button>
-          <DialogClose asChild>
-            <Button color="violet" disabled={pageState === "fetching"}>
-              關閉
-            </Button>
-          </DialogClose>
+          <Button
+            isDisabled={pageState === "fetching"}
+            onPress={() => setOpen(false)}
+          >
+            關閉
+          </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </Dialog>
+    </Modal>
   )
 }
 export default Book
