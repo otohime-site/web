@@ -24,6 +24,7 @@ const HEAD_PROD = `
     document.body.getAttribute("data-otohime-token") ?? ""
   ).replace(/[^0-9a-z]/g, "")
   const frame = document.createElement("iframe")
+  frame.style.zIndex = "100"
   frame.style.position = "fixed"
   frame.style.top = "0"
   frame.style.left = "0"
