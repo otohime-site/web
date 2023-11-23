@@ -3,6 +3,7 @@ import { Link, Route, Router } from "wouter"
 import classes from "./App.module.css"
 import { NestedRoutes } from "./common/components/NestedRoutes"
 import UserBox from "./common/components/UserBox"
+import "./fonts.css"
 import "./global.css"
 import Logo from "./logo/favicon.svg"
 

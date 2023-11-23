@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client"
+import "../fonts.css"
 import "../global.css"
 import GraphQLTokenProvider from "./components/GraphQLTokenProvider"
 import classes from "./entry.module.css"
