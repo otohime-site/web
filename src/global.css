@@ -28,6 +28,11 @@
   background: white;
 }
 
+.react-aria-Modal :where(h2) {
+  font-size: var(--font-size-3);
+  margin-bottom: var(--size-2);
+}
+
 .react-aria-ListBoxItem {
   outline: none;
   margin: var(--size-2);

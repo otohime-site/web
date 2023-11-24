@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import {
   Button,
   Dialog,
+  Heading,
   ListBox,
   ListBoxItem,
   Modal,
@@ -225,7 +226,7 @@ const Book = () => {
   return (
     <Modal isDismissable isOpen={isOpen} onOpenChange={onOpenChange}>
       <Dialog className={classes.dialog}>
-        <h3>更新 Otohime 成績單</h3>
+        <Heading slot="title">更新 Otohime 成績單</Heading>
         {pageState === "loading" ? (
           <div></div>
         ) : pageState === "fetching" ? (

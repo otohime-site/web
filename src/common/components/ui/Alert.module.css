@@ -1,15 +1,21 @@
 .alert {
-  padding: 8px;
+  padding: var(--size-2);
+  border-width: var(--border-size-1);
+  border-radius: var(--radius-2);
 }
+
 .alert[data-severity="info"] {
-  background: var(--indigo-3);
-  color: va(--indigo-12);
+  border-color: var(--blue-3);
+  background: var(--blue-1);
+  color: var(--blue-11);
 }
 .alert[data-severity="error"] {
-  background: var(--red-3);
-  color: var(--red-12);
+  border-color: var(--red-3);
+  background: var(--red-1);
+  color: var(--red-11);
 }
 .alert[data-severity="warning"] {
-  background: var(--yellow-3);
-  color: var(--yellow-12);
+  border-color: var(--yellow-3);
+  background: var(--yellow-1);
+  color: var(--yellow-11);
 }
