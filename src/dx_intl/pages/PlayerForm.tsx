@@ -1,13 +1,18 @@
-import * as Form from "@radix-ui/react-form"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
+import {
+  FieldError,
+  Form,
+  Input,
+  Label,
+  TextField,
+} from "react-aria-components"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
 import { Radio, RadioRoot } from "../../common/components/ui/Radio"
-import { TextField } from "../../common/components/ui/TextField"
 import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
@@ -61,11 +66,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: user == null && params.nickname != null,
   })
-  const serverErrorsBase = {
-    nickname: false,
-    others: false,
-  }
-  const [serverErrors, setServerErrors] = useState({ ...serverErrorsBase })
+  const [serverErrors, setServerErrors] = useState<{ nickname?: string }>({})
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -81,12 +82,11 @@ const PlayerForm = ({ params }: { params: Params }) => {
     if (params.nickname == null) {
       const result = await insertPlayer(data)
       if (result.error != null) {
-        setServerErrors({
-          ...serverErrorsBase,
-          ...(result.error.message.includes("Unique")
-            ? { nickname: true }
-            : { others: true }),
-        })
+        setServerErrors(
+          result.error.message.includes("Unique")
+            ? { nickname: "暱稱已被使用。" }
+            : { nickname: "發生不明錯誤，請重試。" },
+        )
         return
       }
       navigate("~/")
@@ -101,12 +101,11 @@ const PlayerForm = ({ params }: { params: Params }) => {
       ...data,
     })
     if (result.error != null) {
-      setServerErrors({
-        ...serverErrorsBase,
-        ...(result.error.message.includes("Unique")
-          ? { nickname: true }
-          : { others: true }),
-      })
+      setServerErrors(
+        result.error.message.includes("Unique")
+          ? { nickname: "暱稱已被使用。" }
+          : { nickname: "發生不明錯誤，請重試。" },
+      )
       return
     }
     navigate(`~/dxi/p/${data.nickname}`)
@@ -158,29 +157,17 @@ const PlayerForm = ({ params }: { params: Params }) => {
         )}
         <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
       </div>
-      <Form.Root
-        onSubmit={onSubmit}
-        onClearServerErrors={() => setServerErrors({ ...serverErrorsBase })}
-      >
-        <Form.Field
+      <Form onSubmit={onSubmit} validationErrors={serverErrors}>
+        <TextField
           name="nickname"
-          serverInvalid={serverErrors.nickname || serverErrors.others}
+          pattern="^[0-9a-z\-_]{2,20}$"
+          isRequired
+          defaultValue={params.nickname ?? ""}
         >
-          <Form.Label>暱稱（作為網址的一部分）</Form.Label>
-          <Form.Control asChild>
-            <TextField
-              pattern="^[0-9a-z\-_]{2,20}$"
-              required
-              defaultValue={params.nickname ?? ""}
-            />
-          </Form.Control>
-          <Form.Message match="valueMissing">請輸入暱稱。</Form.Message>
-          <Form.Message match="patternMismatch">暱稱格式不正確。</Form.Message>
-          {serverErrors.nickname && <Form.Message>暱稱已被使用。</Form.Message>}
-          {serverErrors.others && (
-            <Form.Message>發生不明錯誤，請重試。</Form.Message>
-          )}
-        </Form.Field>
+          <Label>暱稱（作為網址的一部分）</Label>
+          <Input />
+          <FieldError />
+        </TextField>
         隱私設定
         <RadioRoot
           variant="card"
@@ -246,7 +233,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
             </Button>
           </div>
         )}
-      </Form.Root>
+      </Form>
     </main>
   )
 }
