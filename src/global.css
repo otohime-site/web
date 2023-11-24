@@ -33,12 +33,33 @@
   margin-bottom: var(--size-2);
 }
 
+.react-aria-ListBox {
+  border-radius: var(--radius-2);
+  border: var(--border-size-1) solid var(--stone-7);
+}
+
 .react-aria-ListBoxItem {
   outline: none;
   margin: var(--size-2);
   padding: var(--size-2);
+  border-radius: var(--radius-2);
+  color: var(--stone-12);
 
   &[data-selected] {
-    background-color: var(--surface-2);
+    background-color: var(--violet-1);
+  }
+}
+
+/* Reset Open Props nornamlize styles */
+.react-aria-ListBoxItem :where(a) {
+  color: inherit;
+  text-decoration: inherit;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+
+  &:where([href]):where(:visited) {
+    text-decoration: inherit;
   }
 }

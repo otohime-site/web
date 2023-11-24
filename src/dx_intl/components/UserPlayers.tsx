@@ -1,4 +1,6 @@
+import { Link, ListBox, ListBoxItem } from "react-aria-components"
 import { useQuery } from "urql"
+import { navigate } from "wouter/use-location"
 import IconAdd from "~icons/mdi/add"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -33,13 +35,25 @@ const UserPlayers = () => {
   return (
     <QueryResult result={playersResult}>
       {players != null && players.length > 0 ? (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {players.map((p) => (
-            <LinkButton color="mauve" key={p.id} href={`~/dxi/p/${p.nickname}`}>
-              <PlayerItem player={p} />
-            </LinkButton>
+        <ListBox
+          selectionMode="single"
+          onSelectionChange={(keys) => {
+            if (keys !== "all") {
+              const nickname = keys.values().next().value
+              if (nickname) {
+                navigate(`/dxi/p/${nickname}`)
+              }
+            }
+          }}
+        >
+          {players.map((player) => (
+            <ListBoxItem key={player.id} id={player.nickname}>
+              <Link href={`/dxi/p/${player.nickname}`}>
+                <PlayerItem player={player} />
+              </Link>
+            </ListBoxItem>
           ))}
-        </div>
+        </ListBox>
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
@@ -50,5 +64,4 @@ const UserPlayers = () => {
     </QueryResult>
   )
 }
-
 export default UserPlayers

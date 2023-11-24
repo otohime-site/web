@@ -2,14 +2,14 @@
   flex: 1;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 }
 .player-item svg {
   font-size: 1.2em;
+  margin-left: var(--size-2);
+  margin-right: var(--size-3);
 }
 
 .player-item p:last-child {
   font-size: 0.85em;
-  color: var(--mauve-11);
 }

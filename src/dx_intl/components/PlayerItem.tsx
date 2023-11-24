@@ -43,6 +43,7 @@ const PlayerItem = ({
 }) => {
   return (
     <div className={classes["player-item"]}>
+      {player.private ? <IconLock /> : <IconPublic />}
       <div>
         <p>{player.nickname}</p>
         <p>
@@ -75,7 +76,6 @@ const PlayerItem = ({
           )}
         </p>
       </div>
-      {player.private ? <IconLock /> : <IconPublic />}
     </div>
   )
 }
