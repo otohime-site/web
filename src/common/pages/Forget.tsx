@@ -1,8 +1,8 @@
 import { useState } from "react"
+import { Button } from "react-aria-components"
 import { useMutation } from "urql"
 import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
-import { Button } from "../components/ui/Button"
 import { useUser } from "../contexts"
 import { useNavigate } from "../utils/router"
 

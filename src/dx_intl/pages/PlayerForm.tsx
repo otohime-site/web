@@ -3,6 +3,7 @@ import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
 import {
+  Button,
   FieldError,
   Form,
   Input,
@@ -13,7 +14,7 @@ import {
 } from "react-aria-components"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
-import { Button, LinkButton } from "../../common/components/ui/Button"
+import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
@@ -220,17 +221,11 @@ const PlayerForm = ({ params }: { params: Params }) => {
           </ul>
         </div>
         {params.nickname == null ? (
-          <Button color="violet" type="submit">
-            新增
-          </Button>
+          <Button type="submit">新增</Button>
         ) : (
           <div>
-            <Button color="violet" type="submit">
-              編輯
-            </Button>
-            <Button color="red" onClick={handleDeletePlayer}>
-              刪除成績單
-            </Button>
+            <Button type="submit">編輯</Button>
+            <Button onPress={handleDeletePlayer}>刪除成績單</Button>
           </div>
         )}
       </Form>
