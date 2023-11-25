@@ -1,20 +1,3 @@
-.radio-card-private dt {
-  display: inline-flex;
-  align-items: center;
-  color: var(--mauve-11);
-  font-weight: bold;
-}
-
-.radio-card-private[data-state="checked"] dt {
-  color: var(--violet-11);
-  font-weight: bold;
-}
-
-.radio-card-private dd {
-  font-size: 0.9em;
-  color: var(--mauve-11);
-}
-
 .notes {
   font-size: 0.9em;
   color: var(--mauve-12);

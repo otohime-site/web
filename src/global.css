@@ -71,3 +71,42 @@
     text-decoration: inherit;
   }
 }
+
+.react-aria-RadioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+}
+
+.react-aria-Radio {
+  display: flex;
+  align-items: center;
+  gap: var(--size-1);
+  color: var(--stone-12);
+
+  &:before {
+    content: "";
+    display: black;
+    width: 1.286rem;
+    height: 1.286rem;
+    border: 0.143rem solid var(--stone-8);
+    border-radius: var(--radius-round);
+    transition: all 200ms;
+  }
+
+  &[data-pressed]:before {
+    border-color: var(--violet-8);
+  }
+
+  &[data-selected] {
+    &:before {
+      border-color: var(--violet-9);
+      border-width: 0.429rem;
+    }
+  }
+  &[data-focus-visible]:before {
+    box-shadow:
+      0 0 0 2px var(--violet-3),
+      0 0 0 4px var(--violet-8);
+  }
+}

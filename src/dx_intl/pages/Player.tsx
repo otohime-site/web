@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { Radio, RadioGroup } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -6,10 +7,6 @@ import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "../../common/components/ui/ToggleGroup"
 import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
@@ -228,46 +225,41 @@ const Player = ({ params }: { params: Params }) => {
             </LinkButton>
           </div>
           <div>
-            <ToggleGroup
-              type="single"
+            <RadioGroup
               value={grouping}
-              onValueChange={(payload) => {
+              onChange={(payload) => {
                 if (payload)
                   setGrouping(payload as keyof typeof groupKeyOptions)
               }}
               style={{
                 height: "2.5rem",
                 display: "flex",
+                flexDirection: "row",
                 alignItems: "center",
               }}
             >
               {Object.entries(groupKeyOptions).map(([k, v], i) => (
-                <ToggleGroupItem
-                  key={k}
-                  value={k}
-                  style={{ flex: i == 0 ? "3" : "2" }}
-                  color={i == 0 ? "crimson" : "violet"}
-                >
+                <Radio key={k} value={k} style={{ flex: i == 0 ? "3" : "2" }}>
                   {v}
-                </ToggleGroupItem>
+                </Radio>
               ))}
-            </ToggleGroup>
+            </RadioGroup>
             {grouping === "category" || grouping === "version" ? (
-              <ToggleGroup
-                type="single"
+              <RadioGroup
                 value={difficulty.toString()}
-                onValueChange={(v) => {
+                onChange={(v) => {
                   if (v) setDifficulty(parseInt(v, 10))
                 }}
                 style={{
                   height: "3rem",
                   display: "flex",
+                  flexDirection: "row",
                   alignItems: "center",
                   fontSize: "85%",
                 }}
               >
                 {difficulties.map((d, i) => (
-                  <ToggleGroupItem
+                  <Radio
                     style={{ textTransform: "uppercase", flex: 1 }}
                     key={i}
                     value={i.toString()}
@@ -276,12 +268,13 @@ const Player = ({ params }: { params: Params }) => {
                     }
                   >
                     {d}
-                  </ToggleGroupItem>
+                  </Radio>
                 ))}
-              </ToggleGroup>
+              </RadioGroup>
             ) : (
               <></>
             )}
+
             <PlayerScoreTable
               grouping={grouping}
               groupedData={tempTable.groupedData}

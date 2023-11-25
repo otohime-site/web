@@ -7,12 +7,13 @@ import {
   Form,
   Input,
   Label,
+  Radio,
+  RadioGroup,
   TextField,
 } from "react-aria-components"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { Button, LinkButton } from "../../common/components/ui/Button"
-import { Radio, RadioRoot } from "../../common/components/ui/Radio"
 import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
@@ -169,8 +170,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
           <FieldError />
         </TextField>
         隱私設定
-        <RadioRoot
-          variant="card"
+        <RadioGroup
           name="private"
           defaultValue={
             playerResult.data?.dx_intl_players[0]?.private
@@ -178,7 +178,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
               : "public"
           }
         >
-          <Radio className={classes["radio-card-private"]} value="public">
+          <Radio value="public">
             <div>
               <dt>
                 <IconPublic /> 公開
@@ -191,7 +191,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
               </dd>
             </div>
           </Radio>
-          <Radio className={classes["radio-card-private"]} value="private">
+          <Radio value="private">
             <div>
               <dt>
                 <IconLock />
@@ -205,7 +205,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
               </dd>
             </div>
           </Radio>
-        </RadioRoot>
+        </RadioGroup>
         <div className={classes.notes}>
           <p>
             Otohime 會記錄的東西如下，也建議您詳閱我們的
