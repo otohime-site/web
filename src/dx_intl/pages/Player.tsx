@@ -210,17 +210,11 @@ const Player = ({ params }: { params: Params }) => {
             {player.private ? <IconLock /> : <IconPublic />}
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-              <LinkButton
-                href={`~/dxi/p/${params.nickname}/edit`}
-                color="violet"
-              >
+              <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
                 編輯
               </LinkButton>
             ) : null}
-            <LinkButton
-              href={`~/dxi/p/${params.nickname}/history`}
-              color="violet"
-            >
+            <LinkButton href={`/dxi/p/${params.nickname}/history`}>
               歷史紀錄
             </LinkButton>
           </div>

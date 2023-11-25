@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Button } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import IconLink from "~icons/mdi/link"
@@ -8,7 +9,6 @@ import host from "../../host"
 import { useUser } from "../contexts"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./ui/Alert"
-import { Button } from "./ui/Button"
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -48,8 +48,7 @@ const User = () => {
   )
   const [bookDialogOpen, setBookDialogOpen] = useState(false)
   const handleClose = (): void => setBookDialogOpen(false)
-  const generateToken = async (e: React.MouseEvent): Promise<void> => {
-    e.preventDefault()
+  const generateToken = async (): Promise<void> => {
     if (confirm("您舊的 Bookmarklet 連結將會失效。確定要重新產生權杖？")) {
       await regenerateToken({})
       refetchTokens({ requestPolicy: "network-only" })
@@ -101,9 +100,7 @@ const User = () => {
               成績」即可。 但如果你使用 Android 的
               Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
             </p>
-            <Button color="indigo" onClick={handleClose}>
-              關閉
-            </Button>
+            <Button onPress={handleClose}>關閉</Button>
           </div>
         </div>
       )}
@@ -114,15 +111,15 @@ const User = () => {
       >
         {token.length === 0 ? (
           <Button
-            color="violet"
-            disabled={regenerateTokenResult.fetching}
-            onClick={generateToken}
+            isDisabled={regenerateTokenResult.fetching}
+            onPress={generateToken}
           >
             產生權杖
           </Button>
         ) : (
           <div>
             <a
+              className="btn"
               href={bookmarkletContent(token)}
               onClick={async (e) => await copyBookmarklet(e, token)}
             >
@@ -130,9 +127,8 @@ const User = () => {
               更新 Otohime 成績
             </a>
             <Button
-              color="violet"
-              disabled={regenerateTokenResult.fetching}
-              onClick={generateToken}
+              isDisabled={regenerateTokenResult.fetching}
+              onPress={generateToken}
             >
               <IconRefresh /> 重新產生
             </Button>

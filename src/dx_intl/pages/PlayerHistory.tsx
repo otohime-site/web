@@ -396,7 +396,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <LinkButton href={`~/dxi/p/${params.nickname}`} color="violet">
+      <LinkButton href={`/dxi/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>
       <div>

@@ -148,11 +148,11 @@ const PlayerForm = ({ params }: { params: Params }) => {
     <main>
       <div>
         {params.nickname != null ? (
-          <LinkButton href={`~/dxi/p/${params.nickname}`} color="violet">
+          <LinkButton href={`/dxi/p/${params.nickname}`}>
             <IconArrowBack />
           </LinkButton>
         ) : (
-          <LinkButton href="~/" color="violet">
+          <LinkButton href="/">
             <IconArrowBack />
           </LinkButton>
         )}
