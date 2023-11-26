@@ -27,15 +27,19 @@ export const useTable = <T extends TableEntry>({
   const groupedData = useMemo(() => {
     const sortedData = [...data]
     const orderingWithGroup = [
-      ...ordering,
       ...(!ordering.find((o) => o.key == grouping)
         ? [{ key: grouping, desc: false }]
         : []),
+      ...ordering,
     ]
     orderingWithGroup.map(({ key, desc }) => {
       const fn = (a: T, b: T) => {
         const custom = sortingFns?.[key]
-        const compare = custom ? custom(a, b) : a[key] > b[key] ? 1 : -1
+        const compare = custom
+          ? custom(a, b)
+          : (a[key] ?? 0) > (b[key] ?? 0)
+            ? 1
+            : -1
         return desc ? compare * -1 : compare
       }
       sortedData.sort(fn)
