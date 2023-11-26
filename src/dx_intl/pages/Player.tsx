@@ -1,5 +1,15 @@
 import { useMemo, useState } from "react"
-import { Radio, RadioGroup } from "react-aria-components"
+import {
+  Button,
+  Label,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectValue,
+} from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -82,6 +92,15 @@ const Player = ({ params }: { params: Params }) => {
   const [grouping, setGrouping] = useState<
     "current_version" | "category" | "version" | "level"
   >("current_version")
+  const [ordering, setOrdering] = useState<
+    | "index"
+    | "level"
+    | "internal_lv"
+    | "score"
+    | "rating"
+    | "combo_flag"
+    | "sync_flag"
+  >("index")
   const [difficulty, setDifficulty] = useState<number>(2)
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
@@ -152,7 +171,7 @@ const Player = ({ params }: { params: Params }) => {
     ordering:
       grouping === "current_version"
         ? [{ key: "rating", desc: true }]
-        : [{ key: "index", desc: false }],
+        : [{ key: ordering, desc: false }],
     difficulty,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
@@ -217,6 +236,38 @@ const Player = ({ params }: { params: Params }) => {
             <LinkButton href={`/dxi/p/${params.nickname}/history`}>
               歷史紀錄
             </LinkButton>
+            <Select
+              selectedKey={ordering}
+              onSelectionChange={(selected) =>
+                setOrdering(
+                  selected as
+                    | "index"
+                    | "level"
+                    | "internal_lv"
+                    | "score"
+                    | "rating"
+                    | "combo_flag"
+                    | "sync_flag",
+                )
+              }
+            >
+              <Label>排序</Label>
+              <Button>
+                <SelectValue />
+                <span aria-hidden="true">↓</span>
+              </Button>
+              <Popover>
+                <ListBox>
+                  <ListBoxItem id="index">預設</ListBoxItem>
+                  <ListBoxItem id="level">樂曲等級</ListBoxItem>
+                  <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
+                  <ListBoxItem id="score">成績</ListBoxItem>
+                  <ListBoxItem id="rating">Rating 分數</ListBoxItem>
+                  <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
+                  <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                </ListBox>
+              </Popover>
+            </Select>
           </div>
           <div>
             <RadioGroup
