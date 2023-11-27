@@ -1,7 +1,7 @@
 @import "open-props/normalize";
 @import "open-props/buttons";
 
-:where(html) {
+html {
   background-color: transparent;
 }
 
@@ -59,15 +59,12 @@
 }
 
 /* Reset Open Props nornamlize styles */
-.react-aria-ListBoxItem a {
+a.react-aria-ListBoxItem {
+  display: block;
   color: inherit;
   text-decoration: inherit;
-  margin-block: 0;
-  margin-inline: 0;
-  padding-block: 0;
-  padding-inline: 0;
 
-  &[href]:visited {
+  &[href]:visited .react-aria-ListBoxItem {
     text-decoration: inherit;
   }
 }
@@ -108,5 +105,30 @@
     box-shadow:
       0 0 0 2px var(--violet-3),
       0 0 0 4px var(--violet-8);
+  }
+}
+
+.react-aria-Popover {
+  min-width: var(--trigger-width);
+  .react-aria-ListBox {
+    display: block;
+    background: white;
+    width: unset;
+    max-height: inherit;
+    min-height: unset;
+    overflow: auto;
+    box-shadow: var(--shadow-3);
+  }
+}
+
+.react-aria-Button[data-focused] {
+  outline: none;
+}
+
+.react-aria-Select {
+  .react-aria-Button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }

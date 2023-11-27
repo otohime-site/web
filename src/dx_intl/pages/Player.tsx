@@ -13,6 +13,7 @@ import {
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
+import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
@@ -35,6 +36,7 @@ import {
   RATING_OLD_COUNT,
   comboFlags,
   difficulties,
+  levelCompareKey,
   levels,
   syncFlags,
   versions,
@@ -175,6 +177,9 @@ const Player = ({ params }: { params: Params }) => {
     difficulty,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
+      internal_lv: (a, b) =>
+        (a.internal_lv ?? levelCompareKey[a.level]) -
+        (b.internal_lv ?? levelCompareKey[b.level]),
     },
     filterFn: (entry, options) => {
       switch (options.grouping) {
@@ -252,9 +257,11 @@ const Player = ({ params }: { params: Params }) => {
               }
             >
               <Label>排序</Label>
-              <Button>
+              <Button style={{ width: "10em" }}>
                 <SelectValue />
-                <span aria-hidden="true">↓</span>
+                <span aria-hidden="true">
+                  <IconArrowDropDown />
+                </span>
               </Button>
               <Popover>
                 <ListBox>

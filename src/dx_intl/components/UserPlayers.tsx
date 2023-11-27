@@ -1,4 +1,4 @@
-import { Link, ListBox, ListBoxItem } from "react-aria-components"
+import { ListBox, ListBoxItem } from "react-aria-components"
 import { useQuery } from "urql"
 import { navigate } from "wouter/use-location"
 import IconAdd from "~icons/mdi/add"
@@ -47,10 +47,12 @@ const UserPlayers = () => {
           }}
         >
           {players.map((player) => (
-            <ListBoxItem key={player.id} id={player.nickname}>
-              <Link href={`/dxi/p/${player.nickname}`}>
-                <PlayerItem player={player} />
-              </Link>
+            <ListBoxItem
+              href={`/dxi/p/${player.nickname}`}
+              key={player.id}
+              id={player.nickname}
+            >
+              <PlayerItem player={player} />
             </ListBoxItem>
           ))}
         </ListBox>
