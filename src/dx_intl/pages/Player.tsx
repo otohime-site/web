@@ -25,7 +25,7 @@ import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
-import { PlayerScoreTable } from "../components/PlayerScorePlainTable"
+import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
   ESTIMATED_INTERNAL_LV,

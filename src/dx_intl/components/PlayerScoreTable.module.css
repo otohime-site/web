@@ -28,6 +28,9 @@
 }
 .table td:global(.col-flags) {
   width: 4rem;
+  & img {
+    display: inline-block;
+  }
 }
 .table svg {
   vertical-align: middle;

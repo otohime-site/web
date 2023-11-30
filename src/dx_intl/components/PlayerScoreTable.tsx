@@ -65,8 +65,8 @@ export const PlayerScoreTable = ({
                       entry.internal_lv
                         ? ""
                         : entry.level.includes("+")
-                        ? "plus"
-                        : "non-plus",
+                          ? "plus"
+                          : "non-plus",
                     )}
                   >
                     {entry.internal_lv ?? entry.level}
