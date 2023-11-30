@@ -9,11 +9,14 @@ import {
   RadioGroup,
   Select,
   SelectValue,
+  ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
+import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
+import IconArrowUp from "~icons/mdi/arrow-up"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
@@ -103,6 +106,7 @@ const Player = ({ params }: { params: Params }) => {
     | "combo_flag"
     | "sync_flag"
   >("index")
+  const [orderingDesc, setOrderingDesc] = useState(false)
   const [difficulty, setDifficulty] = useState<number>(2)
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
@@ -173,7 +177,7 @@ const Player = ({ params }: { params: Params }) => {
     ordering:
       grouping === "current_version"
         ? [{ key: "rating", desc: true }]
-        : [{ key: ordering, desc: false }],
+        : [{ key: ordering, desc: orderingDesc }],
     difficulty,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
@@ -275,6 +279,11 @@ const Player = ({ params }: { params: Params }) => {
                 </ListBox>
               </Popover>
             </Select>
+            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
+              {({ isSelected }) =>
+                isSelected ? <IconArrowDown /> : <IconArrowUp />
+              }
+            </ToggleButton>
           </div>
           <div>
             <RadioGroup

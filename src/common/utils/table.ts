@@ -27,10 +27,10 @@ export const useTable = <T extends TableEntry>({
   const groupedData = useMemo(() => {
     const sortedData = [...data]
     const orderingWithGroup = [
+      ...ordering,
       ...(!ordering.find((o) => o.key == grouping)
         ? [{ key: grouping, desc: false }]
         : []),
-      ...ordering,
     ]
     orderingWithGroup.map(({ key, desc }) => {
       const fn = (a: T, b: T) => {
