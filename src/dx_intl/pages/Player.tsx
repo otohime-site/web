@@ -171,7 +171,7 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
 
-  const tempTable = useTable({
+  const table = useTable({
     data: scoreTable,
     grouping,
     ordering:
@@ -196,7 +196,6 @@ const Player = ({ params }: { params: Params }) => {
       }
     },
   })
-  console.log(tempTable)
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -338,7 +337,7 @@ const Player = ({ params }: { params: Params }) => {
 
             <PlayerScoreTable
               grouping={grouping}
-              groupedData={tempTable.groupedData}
+              groupedData={table.groupedData}
             />
           </div>
         </div>
