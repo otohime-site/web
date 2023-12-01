@@ -64,31 +64,32 @@
   border-radius: 0.3rem;
 }
 
-.table td:global(.col-internal-lv) {
+.table td:global(.col-difficulty) {
+  text-align: right;
   font-weight: 400;
 }
-.table td:global(.col-internal-lv):global(.plus) {
+.table td:global(.col-difficulty):global(.plus) {
   padding-right: 0.165em;
 }
-.table td:global(.col-internal-lv):global(.non-plus) {
+.table td:global(.col-difficulty):global(.non-plus) {
   padding-right: 0.9em;
 }
 
 .difficulty-0 {
-  color: var(--green-10);
+  color: var(--green-8);
 }
 .difficulty-1 {
-  color: var(--amber-10);
+  color: var(--yellow-8);
 }
 .difficulty-2 {
-  color: var(--red-10);
+  color: var(--red-8);
 }
 .difficulty-3 {
-  color: var(--violet-10);
+  color: var(--violet-8);
 }
 .difficulty-4 {
-  color: var(--plum-6);
-  -webkit-text-stroke: 0.04rem var(--plum-11);
+  color: var(--purple-2);
+  -webkit-text-stroke: 0.07rem var(--purple-6);
   paint-order: stroke fill;
 }
 
