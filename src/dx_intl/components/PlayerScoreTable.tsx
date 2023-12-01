@@ -47,9 +47,19 @@ export const PlayerScoreTable = ({
         ))}
       </div>
       <table className={classes.table}>
+        <colgroup>
+          <col className="col-title" />
+          <col className="col-deluxe" />
+          <col className="col-difficulty" />
+          <col className="col-score" />
+          <col className="col-flags" />
+        </colgroup>
         {[...groupedData.entries()].map(([group, table]) => {
           return (
             <tbody key={group?.toString()}>
+              <th scope="rowgroup" colSpan={5}>
+                {getGroupTitle(grouping, group)} ({table.length})
+              </th>
               {table.map((entry) => (
                 <tr key={getNoteHash(entry)}>
                   <td className="col-title">{entry.title}</td>
