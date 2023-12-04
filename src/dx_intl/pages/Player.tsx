@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react"
+import format from "date-fns/format"
+import saveAs from "file-saver"
+import { useCallback, useMemo, useState } from "react"
 import {
   Button,
   Label,
@@ -17,6 +19,7 @@ import { Params } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
+import IconFileDownload from "~icons/mdi/file-download"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
@@ -37,6 +40,7 @@ import {
 import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
+  categories,
   comboFlags,
   difficulties,
   levelCompareKey,
@@ -196,6 +200,40 @@ const Player = ({ params }: { params: Params }) => {
       }
     },
   })
+  const downloadCSV = useCallback(async (): Promise<void> => {
+    const papa = await import("papaparse")
+    const updatedAt = recordResult.data?.dx_intl_players[0]?.updated_at
+    const updatedAtStr =
+      updatedAt != null ? format(new Date(updatedAt), "yyyy-MM-dd") : ""
+    const filename = `${params.nickname} - ${updatedAtStr}.csv`
+    const data = scoreTable.map((entry) => ({
+      category: entry.category,
+      category_repr: categories[entry.category] ?? "",
+      order: entry.order,
+      title: entry.title,
+      deluxe: entry.deluxe ? "DX" : "STD",
+      active: entry.active ? "Y" : "N",
+      version: entry.version,
+      version_repr: versions[entry.version] ?? "",
+      difficulty: entry.difficulty,
+      difficulty_repr: difficulties[entry.difficulty] ?? "",
+      level: entry.level,
+      internal_lv:
+        entry.internal_lv != null ? entry.internal_lv.toFixed(1) : "",
+      score: entry.score != null ? entry.score.toFixed(4) : "",
+      combo_flag: comboFlags[entry.combo_flag],
+      sync_flag: syncFlags[entry.sync_flag],
+      rating: entry.rating.toString(),
+    }))
+    const csvText = papa.unparse(data)
+    // Append BOM to ensure Excel can read it
+    saveAs(
+      new Blob([String.fromCharCode(0xfeff), csvText], {
+        type: "text/csv; charset=utf-8",
+      }),
+      filename,
+    )
+  }, [params, scoreTable, recordResult])
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -283,6 +321,9 @@ const Player = ({ params }: { params: Params }) => {
                 isSelected ? <IconArrowDown /> : <IconArrowUp />
               }
             </ToggleButton>
+            <Button onPress={downloadCSV}>
+              <IconFileDownload /> 以 CSV 下載成績單
+            </Button>
           </div>
           <div>
             <RadioGroup
