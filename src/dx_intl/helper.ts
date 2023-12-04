@@ -1,41 +1,4 @@
-import { comboFlags, levels, RANK_SCORES, syncFlags } from "./models/constants"
-
-export type GROUP_BY = "category" | "version" | "level" | "rating_ranks"
-export type ORDER_BY =
-  | "default"
-  | "level"
-  | "internalLv"
-  | "score"
-  | "combo"
-  | "sync"
-  | "rating"
-
-export type NoteList = Array<{
-  level: (typeof levels)[number]
-}>
-
-interface VariantEntryNote {
-  difficulty: number
-  level: (typeof levels)[number]
-  internal_lv?: number | null
-  hash: string
-}
-
-export interface VariantEntry {
-  song_id: string
-  category: number
-  title: string
-  order: number
-  deluxe: boolean
-  version: number
-  active: boolean
-  notes: VariantEntryNote[]
-}
-
-export interface InternalLvMapEntry {
-  new: boolean
-  internalLv: number
-}
+import { comboFlags, RANK_SCORES, syncFlags } from "./models/constants"
 
 // Get current index of SCORE_RANKS that matches the score
 export const getRankScoreIndex = (score: number): number =>
