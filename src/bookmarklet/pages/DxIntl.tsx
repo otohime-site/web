@@ -138,7 +138,6 @@ const Book = () => {
     setPageState("ready")
   }, [netPlayerResult, dxIntlPlayersResult, pageState])
 
-  console.log(selectedPlayerIds)
   const parsedPlayer = netPlayerResult.data
   const [fetchProgress, setFetchProgress] = useState(0)
   const selectedPlayerId =
@@ -307,7 +306,7 @@ const Book = () => {
           </Button>
           <Button
             isDisabled={pageState === "fetching"}
-            onPress={() => setOpen(false)}
+            onPress={() => onOpenChange(false)}
           >
             關閉
           </Button>
