@@ -132,3 +132,40 @@ a.react-aria-ListBoxItem {
     justify-content: space-between;
   }
 }
+
+.react-aria-Switch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--stone-12);
+
+  .indicator {
+    width: 2rem;
+    height: 1.2rem;
+    border: var(--border-size-2) solid var(--stone-3);
+    background: var(--stone-4);
+    border-radius: 1.2rem;
+    transition: all 200ms;
+
+    &:before {
+      content: "";
+      display: block;
+      margin: 0.1rem;
+      width: 0.8rem;
+      height: 0.8rem;
+      background-color: var(--stone-1);
+      border-radius: 0.4rem;
+      transition: all 200ms;
+    }
+  }
+  &[data-pressed] .indicator,
+  &[data-selected] .indicator {
+    border-color: var(--violet-6);
+    background: var(--violet-8);
+
+    &:before {
+      background-color: var(--violet-1);
+      transform: translateX(100%);
+    }
+  }
+}

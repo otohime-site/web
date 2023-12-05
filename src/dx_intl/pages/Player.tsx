@@ -11,6 +11,7 @@ import {
   RadioGroup,
   Select,
   SelectValue,
+  Switch,
   ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
@@ -112,6 +113,7 @@ const Player = ({ params }: { params: Params }) => {
   >("index")
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [difficulty, setDifficulty] = useState<number>(2)
+  const [includeInactive, setIncludeInactive] = useState(false)
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
@@ -149,13 +151,13 @@ const Player = ({ params }: { params: Params }) => {
     })
     const oldRanks = new Map(
       scoreTable
-        .filter((entry) => !entry.current_version)
+        .filter((entry) => !entry.current_version && entry.active)
         .sort((a, b) => b.rating - a.rating)
         .map((entry, index) => [entry.hash, index + 1]),
     )
     const newRanks = new Map(
       scoreTable
-        .filter((entry) => entry.current_version)
+        .filter((entry) => entry.current_version && entry.active)
         .sort((a, b) => b.rating - a.rating)
         .map((entry, index) => [entry.hash, index + 1]),
     )
@@ -183,6 +185,7 @@ const Player = ({ params }: { params: Params }) => {
         ? [{ key: "rating", desc: true }]
         : [{ key: ordering, desc: orderingDesc }],
     difficulty,
+    includeInactive,
     sortingFns: {
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
       internal_lv: (a, b) =>
@@ -324,6 +327,9 @@ const Player = ({ params }: { params: Params }) => {
             <Button onPress={downloadCSV}>
               <IconFileDownload /> 以 CSV 下載成績單
             </Button>
+            <Switch onChange={setIncludeInactive}>
+              <div className="indicator" /> 顯示刪除曲
+            </Switch>
           </div>
           <div>
             <RadioGroup

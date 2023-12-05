@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { groupByKey } from "./grouping"
 interface TableEntry {
+  active: boolean
   difficulty: number
 }
 // A simple Table hook inspired by Tanstack table.
@@ -11,6 +12,7 @@ export const useTable = <T extends TableEntry>({
   grouping,
   ordering,
   difficulty,
+  includeInactive,
   sortingFns,
   filterFn,
 }: {
@@ -18,6 +20,7 @@ export const useTable = <T extends TableEntry>({
   grouping: keyof T
   ordering: Array<{ key: keyof T; desc: boolean }>
   difficulty: number
+  includeInactive: boolean
   sortingFns?: { [k in keyof T]?: (a: T, b: T) => number }
   filterFn: (
     entry: T,
@@ -25,7 +28,9 @@ export const useTable = <T extends TableEntry>({
   ) => boolean
 }) => {
   const groupedData = useMemo(() => {
-    const sortedData = [...data]
+    const sortedData = [
+      ...(includeInactive ? data : data.filter((e) => e.active)),
+    ]
     const orderingWithGroup = [
       ...ordering,
       ...(!ordering.find((o) => o.key == grouping)
