@@ -136,25 +136,25 @@ a.react-aria-ListBoxItem {
 .react-aria-Switch {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.6em;
   color: var(--stone-12);
 
   .indicator {
-    width: 2rem;
-    height: 1.2rem;
+    width: 2em;
+    height: 1.2em;
     border: var(--border-size-2) solid var(--stone-3);
     background: var(--stone-4);
-    border-radius: 1.2rem;
+    border-radius: 1.2em;
     transition: all 200ms;
 
     &:before {
       content: "";
       display: block;
-      margin: 0.1rem;
-      width: 0.8rem;
-      height: 0.8rem;
+      margin: 0.1em;
+      width: 0.8em;
+      height: 0.8em;
       background-color: var(--stone-1);
-      border-radius: 0.4rem;
+      border-radius: 0.4em;
       transition: all 200ms;
     }
   }
