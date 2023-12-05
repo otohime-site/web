@@ -82,7 +82,9 @@ export const PlayerScoreTable = ({
                           : "non-plus",
                     )}
                   >
-                    {entry.internal_lv ?? entry.level}
+                    {entry.internal_lv
+                      ? entry.internal_lv.toFixed(1)
+                      : entry.level}
                   </td>
                   <td className="col-score">
                     {entry.score ? entry.score.toFixed(4) + "%" : ""}
