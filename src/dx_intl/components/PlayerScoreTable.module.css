@@ -96,3 +96,10 @@
 .table tr.used td {
   background: var(--red-2);
 }
+
+.table tr:global(.inactive) {
+  color: var(--stone-6);
+  :global(.col-title) {
+    text-decoration: line-through;
+  }
+}

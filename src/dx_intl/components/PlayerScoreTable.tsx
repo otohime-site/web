@@ -61,7 +61,10 @@ export const PlayerScoreTable = ({
                 {getGroupTitle(grouping, group)} ({table.length})
               </th>
               {table.map((entry) => (
-                <tr key={getNoteHash(entry)}>
+                <tr
+                  key={getNoteHash(entry)}
+                  className={entry.active ? "" : "inactive"}
+                >
                   <td className="col-title">{entry.title}</td>
                   <td className="col-deluxe">
                     <Variant deluxe={entry.deluxe} />

@@ -53,6 +53,14 @@ export const useTable = <T extends TableEntry>({
       filterFn(entry, { grouping, difficulty }),
     )
     return groupByKey(ungroupedData, grouping)
-  }, [data, grouping, ordering, difficulty, sortingFns, filterFn])
+  }, [
+    data,
+    grouping,
+    ordering,
+    difficulty,
+    includeInactive,
+    sortingFns,
+    filterFn,
+  ])
   return { groupedData }
 }
