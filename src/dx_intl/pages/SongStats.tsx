@@ -3,8 +3,7 @@ import { useQuery } from "urql"
 import { Link, Params } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
-import { NoteList } from "../helper"
-import { difficulties } from "../models/constants"
+import { difficulties, levels } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 
 //  font-family: "M PLUS 1p";
@@ -47,7 +46,11 @@ const SongStats = ({ params }: { params: Params }) => {
       {
         version: variant.version,
         active: variant.active,
-        notes: variant.dx_intl_notes.reduce<NoteList>((accr, note) => {
+        notes: variant.dx_intl_notes.reduce<
+          Array<{
+            level: (typeof levels)[number]
+          }>
+        >((accr, note) => {
           accr[note.difficulty] = {
             level: note.level,
           }
