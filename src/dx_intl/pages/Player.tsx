@@ -37,6 +37,7 @@ import {
   flatSongsResult,
   getNoteHash,
   getRating,
+  getScoreStats,
 } from "../models/aggregation"
 import {
   RATING_NEW_COUNT,
@@ -176,6 +177,8 @@ const Player = ({ params }: { params: Params }) => {
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
+
+  console.log(getScoreStats(scoreTable))
 
   const table = useTable({
     data: scoreTable,

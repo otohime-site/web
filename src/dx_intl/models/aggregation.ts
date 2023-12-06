@@ -121,6 +121,26 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   rating_used: boolean
 }
 
+export const getScoreStats = (
+  scores: ScoreTableEntry[],
+): {
+  scoreStats: number[]
+  comboStats: number[]
+  syncStats: number[]
+} => {
+  const scoreStats = RANK_SCORES.map(
+    (v, i) =>
+      scores.filter((s) => s.score && getRankScoreIndex(s.score) >= i).length,
+  )
+  const comboStats = comboFlags.map(
+    (_, i) => scores.filter((s) => s.combo_flag >= i).length,
+  )
+  const syncStats = syncFlags.map(
+    (_, i) => scores.filter((s) => s.sync_flag >= i).length,
+  )
+  return { scoreStats, comboStats, syncStats }
+}
+
 export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
   const results: Record<"fc" | "sss" | "ap" | "fdx", number[]> = {
     fc: [],

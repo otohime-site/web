@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
-import { getRankScoreIndex } from "./helper"
-import { getRating } from "./models/aggregation"
+import { getRankScoreIndex, getRating } from "./models/aggregation"
 import { RANK_SCORES, levels } from "./models/constants"
 
 const NoteRating = ({
