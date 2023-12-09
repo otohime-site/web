@@ -149,6 +149,11 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
     fdx: [],
   }
   const versionGroups = groupByKey(scoreTable, "version")
+  const sssIndex = RANK_SCORES.findIndex((s) => s[1] == "SSS")
+  const fcIndex = comboFlags.indexOf("fc")
+  const apIndex = comboFlags.indexOf("ap")
+  const fdxIndex = syncFlags.indexOf("fdx")
+
   for (let ver = 1; ver < versionTitles.length; ver++) {
     const versionTable =
       [
@@ -156,27 +161,24 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
         ...(versionGroups?.get(ver) ?? []),
       ].filter(
         (entry) =>
+          entry.active &&
           entry.difficulty <= 3 &&
           !versionTitleExcludes.includes(entry.song_id),
       ) ?? []
-    if (versionTable.every((entry) => !!entry.combo_flag)) {
-      results.fc.push(ver)
-    }
-    if (
-      versionTable.every(
-        (entry) => entry.combo_flag >= comboFlags.indexOf("ap"),
-      )
-    ) {
-      results.ap.push(ver)
-    }
-    if (versionTable.every((entry) => (entry.score ?? 0) >= 100) && ver != 1) {
+    const { scoreStats, comboStats, syncStats } = getScoreStats(versionTable)
+    const count = versionTable.length
+    if (count == scoreStats[sssIndex] && ver != 1) {
       results.sss.push(ver)
     }
-    if (
-      versionTable.every((entry) => entry.sync_flag >= syncFlags.indexOf("fdx"))
-    ) {
+    if (count == comboStats[fcIndex]) {
+      results.fc.push(ver)
+    }
+    if (count == comboStats[apIndex]) {
+      results.ap.push(ver)
+    }
+    if (count == syncStats[fdxIndex]) {
       results.fdx.push(ver)
     }
-    return results
   }
+  return results
 }
