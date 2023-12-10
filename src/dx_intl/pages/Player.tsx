@@ -40,6 +40,7 @@ import {
   getScoreStats,
 } from "../models/aggregation"
 import {
+  RANK_SCORES,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   categories,
@@ -178,8 +179,6 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult])
 
-  console.log(getScoreStats(scoreTable))
-
   const table = useTable({
     data: scoreTable,
     grouping,
@@ -240,6 +239,8 @@ const Player = ({ params }: { params: Params }) => {
       filename,
     )
   }, [params, scoreTable, recordResult])
+
+  const scoreStats = getScoreStats(scoreTable)
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -333,6 +334,21 @@ const Player = ({ params }: { params: Params }) => {
             <Switch onChange={setIncludeInactive}>
               <div className="indicator" /> 顯示刪除曲
             </Switch>
+            <ul>
+              {scoreStats.scoreStats.map((count, i) => (
+                <li key={i}>{`${RANK_SCORES[i][1]}: ${count}`}</li>
+              ))}
+            </ul>
+            <ul>
+              {scoreStats.comboStats.map((count, i) => (
+                <li key={i}>{`${comboFlags[i]}: ${count}`}</li>
+              ))}
+            </ul>
+            <ul>
+              {scoreStats.syncStats.map((count, i) => (
+                <li key={i}>{`${syncFlags[i]}: ${count}`}</li>
+              ))}
+            </ul>
           </div>
           <div>
             <RadioGroup
