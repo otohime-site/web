@@ -5,8 +5,26 @@ html {
   background-color: transparent;
 }
 
-a.btn:hover {
-  text-decoration: none;
+.btn,
+button,
+input:is([type="button"], [type="submit"], [type="reset"]) {
+  --_bg: white;
+  border: var(--border-size-1) solid var(--violet-3);
+  --_text: var(--violet-10);
+  box-shadow: 0 1px 0 var(--violet-2);
+  --_ink-shadow: none;
+
+  &:where(:not(:active):hover) {
+    --_bg: var(--violet-0);
+    --_highlight-size: 0;
+  }
+}
+
+a.btn {
+  margin: 0;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .react-aria-ModalOverlay {

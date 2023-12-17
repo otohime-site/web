@@ -21,7 +21,9 @@ import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconFileDownload from "~icons/mdi/file-download"
+import IconHistory from "~icons/mdi/history"
 import IconLock from "~icons/mdi/lock"
+import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -283,11 +285,11 @@ const Player = ({ params }: { params: Params }) => {
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
               <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
-                編輯
+                <IconPencil /> 編輯
               </LinkButton>
             ) : null}
             <LinkButton href={`/dxi/p/${params.nickname}/history`}>
-              歷史紀錄
+              <IconHistory /> 歷史紀錄
             </LinkButton>
             <Select
               selectedKey={ordering}
