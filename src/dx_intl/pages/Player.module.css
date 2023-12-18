@@ -50,24 +50,27 @@
   display: grid;
   grid-template-columns: 3.2em 3.2em 3.2em 3.2em 3.2em 3.2em 3.2em;
   list-style: none;
-  gap: 0.5em 0;
+  gap: 0.4em 0;
   text-align: center;
   font-size: 0.9rem;
-  span {
-    display: block;
-    font-size: 1rem;
-    font-weight: 900;
-    color: var(--yellow-3);
-    text-shadow: 0 2px 0 var(--yellow-6);
-    -webkit-text-stroke: 2px var(--orange-9);
-    paint-order: stroke fill;
-  }
-  div:first-of-type span {
-    color: var(--red-2);
-    -webkit-text-stroke: 1px var(--red-8);
-  }
-  img {
-    display: block;
-    margin: auto;
+  div {
+    background: var(--stone-0);
+    padding: 0.4em;
+    span {
+      display: block;
+      font-weight: 900;
+      color: var(--yellow-3);
+      text-shadow: 0 2px 0 var(--yellow-6);
+      -webkit-text-stroke: 2px var(--orange-9);
+      paint-order: stroke fill;
+    }
+    &:first-of-type span {
+      color: var(--red-2);
+      -webkit-text-stroke: 1px var(--red-8);
+    }
+    img {
+      display: block;
+      margin: auto;
+    }
   }
 }
