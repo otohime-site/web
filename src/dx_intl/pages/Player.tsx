@@ -31,6 +31,7 @@ import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
+import { ComboFlag, SyncFlag } from "../components/Flags"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
@@ -336,21 +337,29 @@ const Player = ({ params }: { params: Params }) => {
             <Switch onChange={setIncludeInactive}>
               <div className="indicator" /> 顯示刪除曲
             </Switch>
-            <ul>
-              {scoreStats.scoreStats.map((count, i) => (
-                <li key={i}>{`${RANK_SCORES[i][1]}: ${count}`}</li>
-              ))}
-            </ul>
-            <ul>
-              {scoreStats.comboStats.map((count, i) => (
-                <li key={i}>{`${comboFlags[i]}: ${count}`}</li>
-              ))}
-            </ul>
-            <ul>
-              {scoreStats.syncStats.map((count, i) => (
-                <li key={i}>{`${syncFlags[i]}: ${count}`}</li>
-              ))}
-            </ul>
+            <div className={classes["score-stats"]}>
+              {scoreStats.scoreStats.map((count, i) =>
+                i !== 1 && i !== 2 ? (
+                  <div key={i}>
+                    <span>{RANK_SCORES[i][1]}</span> {count}
+                  </div>
+                ) : null,
+              )}
+              {scoreStats.comboStats.map((count, i) =>
+                i !== 0 ? (
+                  <div key={i}>
+                    <ComboFlag flag={comboFlags[i]} /> {count}
+                  </div>
+                ) : null,
+              )}
+              {scoreStats.syncStats.map((count, i) =>
+                i !== 0 ? (
+                  <div key={i}>
+                    <SyncFlag flag={syncFlags[i]} /> {count}
+                  </div>
+                ) : null,
+              )}
+            </div>
           </div>
           <div>
             <RadioGroup
