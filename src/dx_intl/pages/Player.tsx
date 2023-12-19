@@ -243,7 +243,9 @@ const Player = ({ params }: { params: Params }) => {
     )
   }, [params, scoreTable, recordResult])
 
-  const scoreStats = getScoreStats(scoreTable)
+  const scoreStats = getScoreStats(
+    includeInactive ? scoreTable : scoreTable.filter((s) => s.active),
+  )
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -292,51 +294,56 @@ const Player = ({ params }: { params: Params }) => {
             <LinkButton href={`/dxi/p/${params.nickname}/history`}>
               <IconHistory /> 歷史紀錄
             </LinkButton>
-            <Select
-              selectedKey={ordering}
-              onSelectionChange={(selected) =>
-                setOrdering(
-                  selected as
-                    | "index"
-                    | "level"
-                    | "internal_lv"
-                    | "score"
-                    | "rating"
-                    | "combo_flag"
-                    | "sync_flag",
-                )
-              }
-            >
-              <Label>排序</Label>
-              <Button style={{ width: "10em" }}>
-                <SelectValue />
-                <span aria-hidden="true">
-                  <IconArrowDropDown />
-                </span>
-              </Button>
-              <Popover>
-                <ListBox>
-                  <ListBoxItem id="index">預設</ListBoxItem>
-                  <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                  <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
-                  <ListBoxItem id="score">成績</ListBoxItem>
-                  <ListBoxItem id="rating">Rating 分數</ListBoxItem>
-                  <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                  <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                </ListBox>
-              </Popover>
-            </Select>
-            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
-              {({ isSelected }) =>
-                isSelected ? <IconArrowDown /> : <IconArrowUp />
-              }
-            </ToggleButton>
             <Button onPress={downloadCSV}>
-              <IconFileDownload /> 以 CSV 下載成績單
+              <IconFileDownload /> 下載 CSV
             </Button>
-            <Switch onChange={setIncludeInactive}>
-              <div className="indicator" /> 顯示刪除曲
-            </Switch>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Select
+                selectedKey={ordering}
+                onSelectionChange={(selected) =>
+                  setOrdering(
+                    selected as
+                      | "index"
+                      | "level"
+                      | "internal_lv"
+                      | "score"
+                      | "rating"
+                      | "combo_flag"
+                      | "sync_flag",
+                  )
+                }
+              >
+                <Label>排序</Label>
+                <Button style={{ width: "10em" }}>
+                  <SelectValue />
+                  <span aria-hidden="true">
+                    <IconArrowDropDown />
+                  </span>
+                </Button>
+                <Popover>
+                  <ListBox>
+                    <ListBoxItem id="index">預設</ListBoxItem>
+                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
+                    <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
+                    <ListBoxItem id="score">成績</ListBoxItem>
+                    <ListBoxItem id="rating">Rating 分數</ListBoxItem>
+                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
+                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                  </ListBox>
+                </Popover>
+              </Select>
+              <ToggleButton
+                isSelected={orderingDesc}
+                onChange={setOrderingDesc}
+              >
+                {({ isSelected }) =>
+                  isSelected ? <IconArrowDown /> : <IconArrowUp />
+                }
+              </ToggleButton>
+              <Switch onChange={setIncludeInactive}>
+                <div className="indicator" /> 顯示刪除曲
+              </Switch>
+            </div>
             <div className={classes["score-stats"]}>
               {scoreStats.scoreStats.map((count, i) =>
                 i !== 1 && i !== 2 ? (

@@ -46,11 +46,11 @@
 }
 .score-stats {
   font-family: "Roboto";
-  margin: 0;
+  margin: 0 1em 0 0;
   display: grid;
-  grid-template-columns: 3.2em 3.2em 3.2em 3.2em 3.2em 3.2em 3.2em;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   list-style: none;
-  gap: 0.4em 0;
+  gap: 0.1em 0;
   text-align: center;
   font-size: 0.9rem;
   div {

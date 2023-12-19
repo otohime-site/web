@@ -9,13 +9,13 @@ html {
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {
   --_bg: white;
-  border: var(--border-size-1) solid var(--violet-3);
-  --_text: var(--violet-10);
-  box-shadow: 0 1px 0 var(--violet-2);
+  border: var(--border-size-1) solid var(--stone-5);
+  --_text: var(--stone-10);
+  box-shadow: 0 1px 0 var(--stone-2);
   --_ink-shadow: none;
 
   &:where(:not(:active):hover) {
-    --_bg: var(--violet-0);
+    --_bg: var(--stone-0);
     --_highlight-size: 0;
   }
 }
