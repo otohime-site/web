@@ -69,14 +69,10 @@ a.btn {
 
   &[data-hovered],
   &[data-focused] {
-    background-color: var(--stone-1);
+    background-color: var(--stone-0);
   }
   &[data-selected] {
-    background-color: var(--violet-2);
-    &[data-hovered],
-    &[data-focused] {
-      background-color: var(--violet-1);
-    }
+    background-color: var(--stone-3);
   }
 }
 

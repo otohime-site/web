@@ -45,8 +45,8 @@ const PlayerItem = ({
     <div className={classes["player-item"]}>
       {player.private ? <IconLock /> : <IconPublic />}
       <div>
-        <p>{player.nickname}</p>
-        <p>
+        <p slot="label">{player.nickname}</p>
+        <p slot="description">
           {player.dx_intl_record == null ? (
             <>
               尚無紀錄
