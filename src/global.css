@@ -18,6 +18,11 @@ input:is([type="button"], [type="submit"], [type="reset"]) {
     --_bg: var(--stone-0);
     --_highlight-size: 0;
   }
+  &[data-focused] {
+    outline: 2px solid var(--stone-6);
+    outline-offset: -1px;
+  }
+  outline: none;
 }
 
 a.btn {
