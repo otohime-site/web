@@ -23,6 +23,12 @@ input:is([type="button"], [type="submit"], [type="reset"]) {
     outline-offset: -1px;
   }
   outline: none;
+  & > svg,
+  & > span[aria-hidden] > svg {
+    width: 2ch;
+    height: 2ch;
+    margin: calc(0.75em - 1ch) 0;
+  }
 }
 
 a.btn {

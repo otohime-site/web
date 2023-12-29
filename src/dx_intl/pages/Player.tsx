@@ -297,7 +297,13 @@ const Player = ({ params }: { params: Params }) => {
             <Button onPress={downloadCSV}>
               <IconFileDownload /> 下載 CSV
             </Button>
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "end",
+              }}
+            >
               <Select
                 selectedKey={ordering}
                 onSelectionChange={(selected) =>
