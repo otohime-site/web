@@ -11,38 +11,48 @@
 }
 
 .toggle-difficulty-0 {
+  padding: 0.5em;
   color: var(--green-8);
+  cursor: pointer;
 }
-.toggle-difficulty-0[data-state="on"] {
+.toggle-difficulty-0[data-selected] {
   color: var(--green-10);
-  border-color: var(--green-10);
+  background: var(--green-1);
 }
 .toggle-difficulty-1 {
-  color: var(--amber-8);
+  padding: 0.5em;
+  color: var(--orange-8);
+  cursor: pointer;
 }
-.toggle-difficulty-1[data-state="on"] {
-  color: var(--amber-10);
-  border-color: var(--amber-10);
+.toggle-difficulty-1[data-selected] {
+  color: var(--orange-10);
+  background: var(--orange-1);
 }
 .toggle-difficulty-2 {
+  padding: 0.5em;
   color: var(--red-8);
+  cursor: pointer;
 }
-.toggle-difficulty-2[data-state="on"] {
+.toggle-difficulty-2[data-selected] {
   color: var(--red-10);
-  border-color: var(--red-10);
+  background: var(--red-1);
 }
 .toggle-difficulty-3 {
+  padding: 0.5em;
   color: var(--violet-8);
+  cursor: pointer;
 }
-.toggle-difficulty-3[data-state="on"] {
+.toggle-difficulty-3[data-selected] {
   color: var(--violet-10);
-  border-color: var(--violet-10);
+  background: var(--violet-1);
 }
 .toggle-difficulty-4 {
-  color: var(--plum-8);
+  padding: 0.5em;
+  color: var(--purple-8);
+  cursor: pointer;
 }
-.toggle-difficulty-4[data-state="on"] {
-  border-color: var(--plum-10);
+.toggle-difficulty-4[data-selected] {
+  background: var(--purple-1);
 }
 .score-stats {
   font-family: "Roboto";

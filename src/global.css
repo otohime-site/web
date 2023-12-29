@@ -109,6 +109,7 @@ a.react-aria-ListBoxItem {
   align-items: center;
   gap: var(--size-1);
   color: var(--stone-12);
+  cursor: pointer;
 
   &:before {
     content: "";
