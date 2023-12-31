@@ -424,7 +424,6 @@ const Player = ({ params }: { params: Params }) => {
             ) : (
               <></>
             )}
-
             <PlayerScoreTable
               grouping={grouping}
               groupedData={table.groupedData}

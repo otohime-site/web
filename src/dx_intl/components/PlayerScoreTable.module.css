@@ -48,6 +48,10 @@
   font-family: "M PLUS 1p";
 }
 
+.table tbody tr {
+  height: 2em;
+}
+
 .table tbody tr td {
   padding: 0.3rem 0;
   border-bottom: 1px solid var(--mauve-6);
