@@ -131,7 +131,7 @@ export const RANK_SCORES: Array<[number, (typeof RANKS)[number], number]> = [
 ]
 
 export const comboFlags = ["", "fc", "fc+", "ap", "ap+"] as const
-export const syncFlags = ["", "fs", "fs+", "fdx", "fdx+"] as const
+export const syncFlags = ["", "s", "fs", "fs+", "fdx", "fdx+"] as const
 
 // eslint-disable-next-line no-sparse-arrays
 export const gradeNames = [

@@ -7,9 +7,11 @@ import FS from "../images/flags/fs.svg"
 import FSD from "../images/flags/fsd.svg"
 import FSDP from "../images/flags/fsdp.svg"
 import FSP from "../images/flags/fsp.svg"
+import S from "../images/flags/s.svg"
 import { comboFlags, syncFlags } from "../models/constants"
 import classes from "./Flags.module.css"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getComboImage = (flag: (typeof comboFlags)[number]): any => {
   switch (flag) {
     case "fc":
@@ -23,8 +25,11 @@ const getComboImage = (flag: (typeof comboFlags)[number]): any => {
   }
   return Blank
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getSyncImage = (flag: (typeof syncFlags)[number]): any => {
   switch (flag) {
+    case "s":
+      return S
     case "fs":
       return FS
     case "fs+":
