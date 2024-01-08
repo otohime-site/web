@@ -32,6 +32,7 @@ export const versions = [
   "UNiVERSE PLUS",
   "FESTiVAL",
   "FESTiVAL PLUS",
+  "BUDDiES",
 ] as const
 
 export const levels = [
@@ -240,7 +241,8 @@ export const versionTitles = [
   "煌",
   "宙",
   "星",
-  // "祭",
+  "祭",
+  "祝",
 ]
 
 export const versionTitleExcludes = [
