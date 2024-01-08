@@ -51,7 +51,7 @@ export const PlayerScoreTable = ({
           </Tab>
         ))}
       </TabList>
-      <TabPanel id="QQ">
+      <TabPanel id="QQ" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}>
         <table className={classes.table}>
           <colgroup>
             <col className="col-title" />
@@ -59,11 +59,12 @@ export const PlayerScoreTable = ({
             <col className="col-difficulty" />
             <col className="col-score" />
             <col className="col-flags" />
+            <col className="col-rating" />
           </colgroup>
           {[...groupedData.entries()].map(([group, table]) => {
             return (
               <tbody key={group?.toString()}>
-                <th scope="rowgroup" colSpan={5}>
+                <th scope="rowgroup" colSpan={6}>
                   {getGroupTitle(grouping, group)} ({table.length})
                 </th>
                 {table.map((entry) => (
@@ -98,6 +99,14 @@ export const PlayerScoreTable = ({
                     <td className="col-flags">
                       <ComboFlag flag={comboFlags[entry.combo_flag]} />
                       <SyncFlag flag={syncFlags[entry.sync_flag]} />
+                    </td>
+                    <td
+                      className={clsx(
+                        "col-rating",
+                        !entry.internal_lv && classes.estimated,
+                      )}
+                    >
+                      {entry.rating}
                     </td>
                   </tr>
                 ))}

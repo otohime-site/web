@@ -199,3 +199,7 @@ a.react-aria-ListBoxItem {
     }
   }
 }
+
+td {
+  background: white;
+}
