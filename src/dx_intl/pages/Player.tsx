@@ -13,6 +13,7 @@ import {
   SelectValue,
   Switch,
   ToggleButton,
+  Toolbar,
 } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
@@ -285,18 +286,20 @@ const Player = ({ params }: { params: Params }) => {
               : ""}
             更新
             {player.private ? <IconLock /> : <IconPublic />}
-            {editableResult.error == null &&
-            (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-              <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
-                <IconPencil /> 編輯
+            <Toolbar aria-label="成績單選項" className={classes.toolbar}>
+              {editableResult.error == null &&
+              (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+                <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
+                  <IconPencil /> 編輯
+                </LinkButton>
+              ) : null}
+              <LinkButton href={`/dxi/p/${params.nickname}/history`}>
+                <IconHistory /> 歷史紀錄
               </LinkButton>
-            ) : null}
-            <LinkButton href={`/dxi/p/${params.nickname}/history`}>
-              <IconHistory /> 歷史紀錄
-            </LinkButton>
-            <Button onPress={downloadCSV}>
-              <IconFileDownload /> 下載 CSV
-            </Button>
+              <Button onPress={downloadCSV}>
+                <IconFileDownload /> 下載 CSV
+              </Button>
+            </Toolbar>
             <div
               style={{
                 display: "flex",

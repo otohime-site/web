@@ -10,6 +10,17 @@
   }
 }
 
+.toolbar {
+  & > :not(button:first-child, :global(.btn):first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+  & > :not(button:last-child, :global(.btn):last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
 .toggle-difficulty-0 {
   padding: 0.5em;
   color: var(--green-8);
