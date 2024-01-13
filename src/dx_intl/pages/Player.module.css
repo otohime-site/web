@@ -1,12 +1,18 @@
 @media (min-width: 961px) {
   .player-container {
-    display: grid;
-    grid-template-columns: 22rem 1fr;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
   }
   .player-container > div:first-of-type {
-    align-self: start;
+    width: 22rem;
     position: sticky;
     top: 54px;
+  }
+  .player-container > div:last-of-type {
+    min-width: 0;
+    flex: 1 1 auto;
   }
 }
 

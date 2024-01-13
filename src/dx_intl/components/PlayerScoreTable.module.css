@@ -1,6 +1,5 @@
-.group-tab {
-  display: inline-block;
-  width: 10em;
+.scrollable-tab {
+  overflow-x: scroll;
 }
 
 .table {

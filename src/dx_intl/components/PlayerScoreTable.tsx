@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { useState } from "react"
 import { Tab, TabList, TabPanel, Tabs } from "react-aria-components"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import {
@@ -38,35 +39,45 @@ export const PlayerScoreTable = ({
     ScoreTableEntry[]
   >
 }) => {
+  const [selectedTab, setSelectedTab] = useState<number>(0)
   return (
-    <Tabs selectedKey="QQ">
-      <TabList>
-        {[...groupedData.entries()].map(([group, table]) => (
-          <Tab
-            key={group?.toString()}
-            id={group?.toString()}
-            className={classes["group-tab"]}
+    <Tabs
+      selectedKey={selectedTab.toString()}
+      onSelectionChange={(key) => {
+        if (typeof key == "string") {
+          setSelectedTab(parseInt(key, 10))
+        }
+      }}
+    >
+      <div className={classes["scrollable-tab"]}>
+        <TabList>
+          {[...groupedData.entries()].map(([group, table], i) => (
+            <Tab key={group?.toString()} id={i.toString()}>
+              {getGroupTitle(grouping, group)} ({table.length})
+            </Tab>
+          ))}
+        </TabList>
+      </div>
+      {[...groupedData.entries()].map(([group, table], i) => {
+        return (
+          <TabPanel
+            id={i.toString()}
+            key={`{i} group?.toString()`}
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
           >
-            {getGroupTitle(grouping, group)} ({table.length})
-          </Tab>
-        ))}
-      </TabList>
-      <TabPanel id="QQ" style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}>
-        <table className={classes.table}>
-          <colgroup>
-            <col className="col-title" />
-            <col className="col-deluxe" />
-            <col className="col-difficulty" />
-            <col className="col-score" />
-            <col className="col-flags" />
-            <col className="col-rating" />
-          </colgroup>
-          {[...groupedData.entries()].map(([group, table]) => {
-            return (
+            <table className={classes.table}>
+              <colgroup>
+                <col className="col-title" />
+                <col className="col-deluxe" />
+                <col className="col-difficulty" />
+                <col className="col-score" />
+                <col className="col-flags" />
+                <col className="col-rating" />
+              </colgroup>
               <tbody key={group?.toString()}>
                 <th scope="rowgroup" colSpan={6}>
                   {getGroupTitle(grouping, group)} ({table.length})
-                </th>
+                </th>{" "}
                 {table.map((entry) => (
                   <tr
                     key={getNoteHash(entry)}
@@ -111,10 +122,11 @@ export const PlayerScoreTable = ({
                   </tr>
                 ))}
               </tbody>
-            )
-          })}
-        </table>
-      </TabPanel>
+              )
+            </table>
+          </TabPanel>
+        )
+      })}
     </Tabs>
   )
 }

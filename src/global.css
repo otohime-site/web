@@ -200,6 +200,25 @@ a.react-aria-ListBoxItem {
   }
 }
 
+.react-aria-TabList {
+  display: flex;
+  .react-aria-Tab {
+    border-bottom: 3px solid var(--border-color);
+  }
+}
+
+.react-aria-Tab {
+  width: 10em;
+  flex-shrink: 0;
+  padding: var(--spacing-2);
+  cursor: default;
+  outline: none;
+  --border-color: transparent;
+  &[data-selected] {
+    --border-color: var(--violet-6);
+  }
+}
+
 td {
   background: white;
 }
