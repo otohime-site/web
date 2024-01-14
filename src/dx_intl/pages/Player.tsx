@@ -250,6 +250,19 @@ const Player = ({ params }: { params: Params }) => {
     )
   }, [params, scoreTable, recordResult])
 
+  const [tabList, setTabList] = useState<HTMLDivElement | null>(null)
+  const scrollableTabRef: React.Ref<HTMLDivElement> = useCallback(
+    (node: HTMLDivElement | null) => {
+      setTabList(node)
+    },
+    [],
+  )
+  const scrollBy = (amount: number) => () => {
+    if (tabList) {
+      tabList.scrollLeft += amount
+    }
+  }
+
   const scoreStats = getScoreStats(
     includeInactive ? scoreTable : scoreTable.filter((s) => s.active),
   )
@@ -434,19 +447,24 @@ const Player = ({ params }: { params: Params }) => {
               <></>
             )}
             <Tabs>
-              <TabList
-                items={[...table.groupedData.keys()].map((key, index) => ({
-                  key,
-                  index,
-                }))}
-              >
-                {({ key, index }) => (
-                  <Tab key={index} id={`${index}`}>
-                    {getGroupTitle(grouping, key)} (
-                    {table.groupedData.get(key)?.length})
-                  </Tab>
-                )}
-              </TabList>
+              <div className={classes["scrollable-tab"]}>
+                <Button onPress={scrollBy(-200)}>&lt;</Button>
+                <TabList
+                  ref={scrollableTabRef}
+                  items={[...table.groupedData.keys()].map((key, index) => ({
+                    key,
+                    index,
+                  }))}
+                >
+                  {({ key, index }) => (
+                    <Tab key={index} id={`${index}`}>
+                      {getGroupTitle(grouping, key)} (
+                      {table.groupedData.get(key)?.length})
+                    </Tab>
+                  )}
+                </TabList>
+                <Button onPress={scrollBy(200)}>&gt;</Button>
+              </div>
               <Collection
                 items={[...table.groupedData.entries()].map(
                   ([key, table], index) => ({

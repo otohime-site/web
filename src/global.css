@@ -202,7 +202,7 @@ a.react-aria-ListBoxItem {
 
 .react-aria-TabList {
   display: flex;
-  gap: var(--size-2);
+  gap: 1rem;
   .react-aria-Tab {
     border-bottom: 3px solid var(--border-color);
   }
@@ -211,7 +211,7 @@ a.react-aria-ListBoxItem {
 .react-aria-Tab {
   flex-shrink: 0;
   padding: var(--size-2);
-  cursor: default;
+  cursor: pointer;
   outline: none;
   --border-color: transparent;
   &[data-selected] {
