@@ -1,5 +1,10 @@
 .scrollable-tab {
   overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .table {
