@@ -5,6 +5,11 @@
   table-layout: fixed;
   border: none;
 }
+
+.table .rating-used td {
+  background: var(--stone-0);
+}
+
 .table :global(.col-title) {
   text-align: left;
   width: auto;

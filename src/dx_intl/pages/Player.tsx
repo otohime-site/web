@@ -195,7 +195,10 @@ const Player = ({ params }: { params: Params }) => {
     grouping,
     ordering:
       grouping === "current_version"
-        ? [{ key: "rating", desc: true }]
+        ? [
+            { key: "old_rank", desc: false },
+            { key: "new_rank", desc: false },
+          ]
         : [{ key: ordering, desc: orderingDesc }],
     difficulty,
     includeInactive,

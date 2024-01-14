@@ -20,7 +20,10 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
         {table.map((entry) => (
           <tr
             key={getNoteHash(entry)}
-            className={entry.active ? "" : "inactive"}
+            className={clsx(
+              !entry.active && "inactive",
+              entry.rating_used && classes["rating-used"],
+            )}
           >
             <td className="col-title">{entry.title}</td>
             <td className="col-deluxe">
