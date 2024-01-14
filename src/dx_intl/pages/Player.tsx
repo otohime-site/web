@@ -3,6 +3,7 @@ import saveAs from "file-saver"
 import { useCallback, useMemo, useState } from "react"
 import {
   Button,
+  Collection,
   Label,
   ListBox,
   ListBoxItem,
@@ -12,6 +13,10 @@ import {
   Select,
   SelectValue,
   Switch,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
   ToggleButton,
   Toolbar,
 } from "react-aria-components"
@@ -39,6 +44,7 @@ import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
   flatSongsResult,
+  getGroupTitle,
   getNoteHash,
   getRating,
   getScoreStats,
@@ -427,10 +433,36 @@ const Player = ({ params }: { params: Params }) => {
             ) : (
               <></>
             )}
-            <PlayerScoreTable
-              grouping={grouping}
-              groupedData={table.groupedData}
-            />
+            <Tabs>
+              <TabList
+                items={[...table.groupedData.keys()].map((key, index) => ({
+                  key,
+                  index,
+                }))}
+              >
+                {({ key, index }) => (
+                  <Tab key={index} id={`${index}`}>
+                    {getGroupTitle(grouping, key)} (
+                    {table.groupedData.get(key)?.length})
+                  </Tab>
+                )}
+              </TabList>
+              <Collection
+                items={[...table.groupedData.entries()].map(
+                  ([key, table], index) => ({
+                    key,
+                    table,
+                    index,
+                  }),
+                )}
+              >
+                {({ table, index }) => (
+                  <TabPanel id={`${index}`}>
+                    <PlayerScoreTable table={table} />
+                  </TabPanel>
+                )}
+              </Collection>
+            </Tabs>
           </div>
         </div>
       </div>

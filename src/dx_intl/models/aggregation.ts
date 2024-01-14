@@ -2,11 +2,13 @@ import { ResultOf } from "@graphql-typed-document-node/core"
 import { groupByKey } from "../../common/utils/grouping"
 import {
   RANK_SCORES,
+  categories,
   comboFlags,
   levels,
   syncFlags,
   versionTitleExcludes,
   versionTitles,
+  versions,
 } from "./constants"
 import { dxIntlSongsDocument } from "./queries"
 
@@ -181,4 +183,21 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
     }
   }
   return results
+}
+
+export const getGroupTitle = (
+  grouping: string,
+  group: string | number | boolean | null | undefined,
+): string => {
+  switch (grouping) {
+    case "current_version":
+      return group ? "新曲" : "舊曲"
+    case "category":
+      return categories[group as number] ?? ""
+    case "version":
+      return versions[group as number]
+    case "level":
+      return `Level ${group}`
+  }
+  return ""
 }
