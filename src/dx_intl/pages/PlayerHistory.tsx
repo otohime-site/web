@@ -1,9 +1,10 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import clsx from "clsx"
 import { useMemo } from "react"
+import { Link } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { Link, Params } from "wouter"
+import { Params } from "wouter"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 import { Alert } from "../../common/components/ui/Alert"
@@ -402,9 +403,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <div>
         {outerTimelines.timelines.map((time) => (
           <Link
-            href={`~/dxi/p/${params.nickname}/history/${dateStringToHash(
-              time,
-            )}`}
+            href={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
             key={time}
           >
             {formatDateTime(new Date(time))}

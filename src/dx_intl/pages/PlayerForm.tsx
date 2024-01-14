@@ -18,8 +18,7 @@ import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
-import { Params } from "wouter"
-import { useNavigate } from "../../common/utils/router"
+import { Params, useLocation } from "wouter"
 import { graphql } from "../../gql"
 import { dxIntlPlayersEditableDocument } from "../models/queries"
 import classes from "./PlayerForm.module.css"
@@ -59,7 +58,7 @@ const deleteDxIntlPlayerDocument = graphql(`
 
 const PlayerForm = ({ params }: { params: Params }) => {
   const user = useUser()
-  const navigate = useNavigate()
+  const [, navigate] = useLocation()
   const [, insertPlayer] = useMutation(insertDxIntlPlayerDocument)
   const [, updatePlayer] = useMutation(updateDxIntlPlayerDocument)
   const [, deletePlayer] = useMutation(deleteDxIntlPlayerDocument)
@@ -110,7 +109,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
       )
       return
     }
-    navigate(`~/dxi/p/${data.nickname}`)
+    navigate(`/dxi/p/${data.nickname}`)
   }
 
   const handleDeletePlayer = async (): Promise<void> => {

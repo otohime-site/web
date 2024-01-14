@@ -1,7 +1,6 @@
 import { lazy, Suspense } from "react"
-import { RouterProvider } from "react-aria-components"
-import { Link, Route, Router } from "wouter"
-import { navigate } from "wouter/use-browser-location"
+import { Link, RouterProvider } from "react-aria-components"
+import { Route, Router, useLocation } from "wouter"
 import classes from "./App.module.css"
 import UserBox from "./common/components/UserBox"
 import "./fonts.css"
@@ -14,10 +13,11 @@ const DxIntl = lazy(async () => await import("./dx_intl/index"))
 const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
+  const [, navigate] = useLocation()
   return (
     <>
       <div className={classes.top}>
-        <Link href="~/" className={classes.title}>
+        <Link href="/" className={classes.title}>
           <img src={Logo} /> <p>Otohime</p>
         </Link>
         <UserBox />

@@ -1,6 +1,7 @@
+import { Link } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { Link, Params } from "wouter"
+import { Params } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
 import { difficulties, levels } from "../models/constants"
@@ -102,12 +103,12 @@ const SongStats = ({ params }: { params: Params }) => {
             <h4>{song.title}</h4>
             <div>
               {variantMap.has(false) ? (
-                <Link href={`~/dxi/s/${params.songId}/std/`}>STANDARD</Link>
+                <Link href={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
               ) : (
                 ""
               )}
               {variantMap.has(true) ? (
-                <Link href={`~/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
+                <Link href={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
               ) : (
                 ""
               )}
@@ -115,7 +116,7 @@ const SongStats = ({ params }: { params: Params }) => {
             <div>
               {notes.map((_, i) => (
                 <Link
-                  href={`~/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
+                  href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
                   key={i}
                 >
                   {difficulties[i]}

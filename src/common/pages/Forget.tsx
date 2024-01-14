@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { Button } from "react-aria-components"
 import { useMutation } from "urql"
+import { useLocation } from "wouter"
 import { graphql } from "../../gql"
 import { Alert } from "../components/ui/Alert"
 import { useUser } from "../contexts"
-import { useNavigate } from "../utils/router"
 
 const deleteUserDocument = graphql(`
   mutation deleteUser {
@@ -15,7 +15,7 @@ const deleteUserDocument = graphql(`
 `)
 
 const Forget = () => {
-  const navigate = useNavigate()
+  const [, navigate] = useLocation()
   const user = useUser()
   const [, deleteUser] = useMutation(deleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
@@ -27,7 +27,7 @@ const Forget = () => {
     try {
       await deleteUser({})
       await user?.delete()
-      navigate("~/")
+      navigate("/")
     } catch {
       alert("發生錯誤，請登出再登入後重試。")
     }
