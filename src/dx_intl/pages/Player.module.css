@@ -37,7 +37,7 @@
       background: inherit;
     }
     &[data-disabled] {
-      cursor: normal;
+      display: none;
     }
     &[data-focused] {
       outline: none;

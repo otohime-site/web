@@ -1,3 +1,4 @@
+import { scrollIntoView } from "@react-aria/utils"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useState } from "react"
@@ -251,11 +252,57 @@ const Player = ({ params }: { params: Params }) => {
   }, [params, scoreTable, recordResult])
 
   const [tabList, setTabList] = useState<HTMLDivElement | null>(null)
+  const [scrollDisabled, setScrollDisabled] = useState<[boolean, boolean]>([
+    false,
+    false,
+  ])
+
+  const updateScroll = useCallback(() => {
+    if (!tabList) {
+      return
+    }
+    if (tabList.scrollWidth <= tabList.clientWidth) {
+      setScrollDisabled([true, true])
+      return
+    }
+    setScrollDisabled([false, false])
+  }, [tabList, setScrollDisabled])
+
   const scrollableTabRef: React.Ref<HTMLDivElement> = useCallback(
     (node: HTMLDivElement | null) => {
       setTabList(node)
+      if (node == null) {
+        return
+      }
+      const rob = new ResizeObserver(() => {
+        updateScroll()
+      })
+      const mob = new MutationObserver((mutations) => {
+        if (mutations.find((m) => m.type == "childList")) {
+          updateScroll()
+          return
+        }
+        const selected = mutations.filter(
+          (m) =>
+            m.type == "attributes" &&
+            (m.target as HTMLDivElement).getAttribute("aria-selected") ==
+              "true",
+        )[0].target
+        scrollIntoView(node, selected as HTMLDivElement)
+      })
+      rob.observe(node)
+      mob.observe(node, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["aria-selected"],
+      })
+      return () => {
+        rob.disconnect()
+        mob.disconnect()
+      }
     },
-    [],
+    [updateScroll],
   )
   const scrollBy = (amount: number) => () => {
     if (tabList) {
@@ -416,39 +463,11 @@ const Player = ({ params }: { params: Params }) => {
                 </Radio>
               ))}
             </RadioGroup>
-            {grouping === "category" || grouping === "version" ? (
-              <RadioGroup
-                value={difficulty.toString()}
-                onChange={(v) => {
-                  if (v) setDifficulty(parseInt(v, 10))
-                }}
-                style={{
-                  height: "3rem",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  fontSize: "85%",
-                }}
-              >
-                {difficulties.map((d, i) => (
-                  <Radio
-                    style={{ textTransform: "uppercase", flex: 1 }}
-                    key={i}
-                    value={i.toString()}
-                    className={
-                      classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                    }
-                  >
-                    {d}
-                  </Radio>
-                ))}
-              </RadioGroup>
-            ) : (
-              <></>
-            )}
             <Tabs>
               <div className={classes["scrollable-tab"]}>
-                <Button onPress={scrollBy(-200)}>&lt;</Button>
+                <Button isDisabled={scrollDisabled[0]} onPress={scrollBy(-200)}>
+                  &lt;
+                </Button>
                 <TabList
                   ref={scrollableTabRef}
                   items={[...table.groupedData.keys()].map((key, index) => ({
@@ -463,8 +482,40 @@ const Player = ({ params }: { params: Params }) => {
                     </Tab>
                   )}
                 </TabList>
-                <Button onPress={scrollBy(200)}>&gt;</Button>
+                <Button isDisabled={scrollDisabled[1]} onPress={scrollBy(200)}>
+                  &gt;
+                </Button>
               </div>
+              {grouping === "category" || grouping === "version" ? (
+                <RadioGroup
+                  value={difficulty.toString()}
+                  onChange={(v) => {
+                    if (v) setDifficulty(parseInt(v, 10))
+                  }}
+                  style={{
+                    height: "3rem",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    fontSize: "85%",
+                  }}
+                >
+                  {difficulties.map((d, i) => (
+                    <Radio
+                      style={{ textTransform: "uppercase", flex: 1 }}
+                      key={i}
+                      value={i.toString()}
+                      className={
+                        classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                      }
+                    >
+                      {d}
+                    </Radio>
+                  ))}
+                </RadioGroup>
+              ) : (
+                <></>
+              )}
               <Collection
                 items={[...table.groupedData.entries()].map(
                   ([key, table], index) => ({
