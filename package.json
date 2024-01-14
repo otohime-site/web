@@ -36,7 +36,7 @@
     "react-titled": "^2.0.0",
     "unplugin-icons": "^0.18.1",
     "urql": "^4.0.0",
-    "wouter": "^2.11.0"
+    "wouter": "^3.0.0-rc.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",

@@ -1,6 +1,6 @@
 import { ListBox, ListBoxItem } from "react-aria-components"
 import { useQuery } from "urql"
-import { navigate } from "wouter/use-location"
+import { navigate } from "wouter/use-browser-location"
 import IconAdd from "~icons/mdi/add"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"

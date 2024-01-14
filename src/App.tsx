@@ -1,9 +1,8 @@
 import { lazy, Suspense } from "react"
 import { RouterProvider } from "react-aria-components"
 import { Link, Route, Router } from "wouter"
-import { navigate } from "wouter/use-location"
+import { navigate } from "wouter/use-browser-location"
 import classes from "./App.module.css"
-import { NestedRoutes } from "./common/components/NestedRoutes"
 import UserBox from "./common/components/UserBox"
 import "./fonts.css"
 import "./global.css"
@@ -29,12 +28,12 @@ const App = () => {
             <Router>
               <Route path="/" component={Home} />
               <Route path="/forget" component={Forget} />
-              <NestedRoutes base="/dxi">
+              <Route path="/dxi" nest>
                 <DxIntl />
-              </NestedRoutes>
-              <NestedRoutes base="/fin">
+              </Route>
+              <Route path="/fin" nest>
                 <Finale />
-              </NestedRoutes>
+              </Route>
             </Router>
           </RouterProvider>
         </Suspense>
