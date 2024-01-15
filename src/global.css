@@ -88,7 +88,8 @@ a.btn {
 }
 
 /* Reset Open Props nornamlize styles */
-a.react-aria-ListBoxItem {
+a.react-aria-ListBoxItem,
+a.react-aria-Tab {
   display: block;
   color: inherit;
   text-decoration: inherit;

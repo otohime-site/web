@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { Link } from "react-aria-components"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
@@ -25,7 +26,15 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
               entry.rating_used && classes["rating-used"],
             )}
           >
-            <td className="col-title">{entry.title}</td>
+            <td className="col-title">
+              <Link
+                href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
+                  entry.deluxe ? "dx" : "std"
+                }/${entry.difficulty}`}
+              >
+                {entry.title}
+              </Link>
+            </td>
             <td className="col-deluxe">
               <Variant deluxe={entry.deluxe} />
             </td>
