@@ -1,4 +1,4 @@
-import { Link } from "react-aria-components"
+import { Tab, TabList, TabPanel, Tabs } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -91,64 +91,72 @@ const SongStats = ({ params }: { params: Params }) => {
     [],
   )
   return (
-    <>
-      <QueryResult result={songsResult}>
-        {song != null ? (
-          <>
-            <Titled
-              title={(title) =>
-                `${song.title} - maimai DX 曲目成績統計 - ${title}`
-              }
-            />
-            <h4>{song.title}</h4>
-            <div>
+    <QueryResult result={songsResult}>
+      {song != null ? (
+        <>
+          <Titled
+            title={(title) =>
+              `${song.title} - maimai DX 曲目成績統計 - ${title}`
+            }
+          />
+          <h4>{song.title}</h4>
+          <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
+            <TabList>
               {variantMap.has(false) ? (
-                <Link href={`/dxi/s/${params.songId}/std/`}>STANDARD</Link>
-              ) : (
-                ""
-              )}
+                <Tab id="std" href={`/dxi/s/${params.songId}/std/`}>
+                  STANDARD
+                </Tab>
+              ) : null}
               {variantMap.has(true) ? (
-                <Link href={`/dxi/s/${params.songId}/dx/`}>DELUXE</Link>
-              ) : (
-                ""
-              )}
-            </div>
-            <div>
-              {notes.map((_, i) => (
-                <Link
-                  href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
-                  key={i}
-                >
-                  {difficulties[i]}
-                </Link>
-              ))}
-            </div>
-            <QueryResult result={statsResult}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>評等</th>
-                    <th>玩家數</th>
-                    <th>累計</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {statsAccumulated.map((s) => (
-                    <tr key={s.range}>
-                      <td>{s.range ?? ""}</td>
-                      <td>{s.count ?? "0"}</td>
-                      <td>{s.accumulated}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </QueryResult>
-          </>
-        ) : (
-          ""
-        )}
-      </QueryResult>
-    </>
+                <Tab id="dx" href={`/dxi/s/${params.songId}/dx/`}>
+                  DELUXE
+                </Tab>
+              ) : null}
+            </TabList>
+            <TabPanel id={deluxe ? "dx" : "std"}>
+              <Tabs
+                slot="difficulty"
+                selectedKey={difficulty != null ? `${difficulty}` : ""}
+              >
+                <TabList items={notes.map((_, i) => ({ i }))}>
+                  {({ i }) => (
+                    <Tab
+                      href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
+                      key={i}
+                      id={`${i}`}
+                    >
+                      {difficulties[i]}
+                    </Tab>
+                  )}
+                </TabList>
+                <TabPanel id={difficulty != null ? `${difficulty}` : ""}>
+                  <QueryResult result={statsResult}>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>評等</th>
+                          <th>玩家數</th>
+                          <th>累計</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {statsAccumulated.map((s) => (
+                          <tr key={s.range}>
+                            <td>{s.range ?? ""}</td>
+                            <td>{s.count ?? "0"}</td>
+                            <td>{s.accumulated}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </QueryResult>
+                </TabPanel>
+              </Tabs>
+            </TabPanel>
+          </Tabs>
+        </>
+      ) : null}
+    </QueryResult>
   )
 }
 
