@@ -219,6 +219,11 @@ a.react-aria-ListBoxItem {
   }
 }
 
+.react-aria-TabPanel {
+  /* override tabindex in Open props normalize */
+  cursor: default;
+}
+
 td {
   background: white;
 }
