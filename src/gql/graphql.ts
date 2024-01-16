@@ -83,8 +83,8 @@ export type Scalars = {
       | "15"
   }
   dx_intl_sync_flag: {
-    input: "" | "fs" | "fs+" | "fdx" | "fdx+"
-    output: "" | "fs" | "fs+" | "fdx" | "fdx+"
+    input: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
+    output: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
   }
   dx_intl_trophy: {
     input: "normal" | "bronze" | "silver" | "gold" | "rainbow"
@@ -8599,7 +8599,7 @@ export type DxIntlScoresFieldsFragment = {
   difficulty: number
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-  sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+  sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
   start: string
 } & { " $fragmentName"?: "DxIntlScoresFieldsFragment" }
 
@@ -8623,7 +8623,7 @@ export type DxIntlScoresWithHistoryFieldsFragment = {
   difficulty?: number | null
   score?: number | null
   combo_flag?: "" | "fc" | "fc+" | "ap" | "ap+" | null
-  sync_flag?: "" | "fs" | "fs+" | "fdx" | "fdx+" | null
+  sync_flag?: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+" | null
 } & { " $fragmentName"?: "DxIntlScoresWithHistoryFieldsFragment" }
 
 export type DxIntlPlayersEditableQueryVariables = Exact<{

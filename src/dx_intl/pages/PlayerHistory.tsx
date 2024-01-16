@@ -76,7 +76,7 @@ const dxIntlPlayerWithTimelineDocument = graphql(`
 interface HistoryEntry {
   score: number
   combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
-  sync_flag: "" | "fs" | "fs+" | "fdx" | "fdx+"
+  sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
 }
 
 // Deal with precision for Postgres...
