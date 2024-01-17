@@ -447,7 +447,7 @@ const Player = ({ params }: { params: Params }) => {
                     fontSize: "85%",
                   }}
                 >
-                  {difficulties.map((d, i) => (
+                  {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
                     <Radio
                       style={{ textTransform: "uppercase", flex: 1 }}
                       key={i}
