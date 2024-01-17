@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import {
+  ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
   getRankScoreIndex,
   getRating,
@@ -8,7 +9,7 @@ import {
 import { RANK_SCORES } from "./models/constants"
 
 const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
-  const internalLv = entry.internal_lv
+  const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
       return [0, 0, []]
@@ -32,7 +33,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
     return <></>
   }
   return (
-    <table>
+    <table style={{ fontSize: "0.86rem" }}>
       <tbody>
         <tr>
           <td>{internalLv.toFixed(1)}</td>
