@@ -6,7 +6,16 @@ import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
-export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
+export const PlayerScoreTable = ({
+  table,
+  handleRatingPopOpen,
+}: {
+  table: ScoreTableEntry[]
+  handleRatingPopOpen: (
+    event: React.MouseEvent<HTMLElement>,
+    entry: ScoreTableEntry,
+  ) => void
+}) => {
   return (
     <table className={classes.table}>
       <colgroup>
@@ -63,6 +72,7 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
                 "col-rating",
                 !entry.internal_lv && classes.estimated,
               )}
+              onClick={(event) => handleRatingPopOpen(event, entry)}
             >
               {entry.rating}
             </td>

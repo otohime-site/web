@@ -1,10 +1,11 @@
 import { scrollIntoView } from "@react-aria/utils"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import {
   Button,
   Collection,
+  Dialog,
   Label,
   ListBox,
   ListBoxItem,
@@ -38,6 +39,7 @@ import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
+import NoteRating from "../NoteRating"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
@@ -127,6 +129,10 @@ const Player = ({ params }: { params: Params }) => {
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [difficulty, setDifficulty] = useState<number>(2)
   const [includeInactive, setIncludeInactive] = useState(false)
+  const ratingPopRef = useRef<HTMLElement | null>(null)
+  const [ratingPopEntry, setRatingPopEntry] = useState<ScoreTableEntry | null>(
+    null,
+  )
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
@@ -312,7 +318,13 @@ const Player = ({ params }: { params: Params }) => {
       tabList.scrollLeft += amount
     }
   }
-
+  const handleRatingPopOpen = (
+    event: React.MouseEvent<HTMLElement>,
+    entry: ScoreTableEntry,
+  ) => {
+    ratingPopRef.current = event.currentTarget
+    setRatingPopEntry(entry)
+  }
   const scoreStats = getScoreStats(
     includeInactive ? scoreTable : scoreTable.filter((s) => s.active),
   )
@@ -530,7 +542,10 @@ const Player = ({ params }: { params: Params }) => {
               >
                 {({ table, index }) => (
                   <TabPanel id={`${index}`}>
-                    <PlayerScoreTable table={table} />
+                    <PlayerScoreTable
+                      table={table}
+                      handleRatingPopOpen={handleRatingPopOpen}
+                    />
                   </TabPanel>
                 )}
               </Collection>
@@ -538,6 +553,20 @@ const Player = ({ params }: { params: Params }) => {
           </div>
         </div>
       </div>
+      <Popover
+        triggerRef={ratingPopRef}
+        isOpen={!!ratingPopEntry}
+        onOpenChange={(o) => {
+          if (!o) {
+            ratingPopRef.current = null
+            setRatingPopEntry(null)
+          }
+        }}
+      >
+        <Dialog>
+          {ratingPopEntry ? <NoteRating entry={ratingPopEntry} /> : null}
+        </Dialog>
+      </Popover>
     </>
   )
 }

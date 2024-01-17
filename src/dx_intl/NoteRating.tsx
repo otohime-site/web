@@ -1,29 +1,20 @@
 import { useMemo } from "react"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
-import { getRankScoreIndex, getRating } from "./models/aggregation"
-import { RANK_SCORES, levels } from "./models/constants"
+import {
+  ScoreTableEntry,
+  getRankScoreIndex,
+  getRating,
+} from "./models/aggregation"
+import { RANK_SCORES } from "./models/constants"
 
-const NoteRating = ({
-  note,
-  score,
-}: {
-  nickname?: string
-  note: {
-    song_id: string
-    deluxe: boolean
-    dificultiy: number
-    level: (typeof levels)[number]
-    internal_lv?: number | null
-  }
-  score: number
-}) => {
-  const internalLv = note.internal_lv
+const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
+  const internalLv = entry.internal_lv
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
       return [0, 0, []]
     }
-    const index = getRankScoreIndex(score)
-    const rating = getRating(score, internalLv)
+    const index = getRankScoreIndex(entry.score ?? 0)
+    const rating = getRating(entry.score ?? 0, internalLv)
     const maxRating = getRating(100.5, internalLv)
     const targets =
       index >= 0
@@ -36,7 +27,7 @@ const NoteRating = ({
         : []
 
     return [rating, maxRating, targets]
-  }, [internalLv, score])
+  }, [internalLv, entry])
   if (internalLv == null) {
     return <></>
   }
