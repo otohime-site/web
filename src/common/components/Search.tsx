@@ -1,5 +1,19 @@
+import { ResultOf } from "@graphql-typed-document-node/core"
 import { useState } from "react"
+import {
+  Collection,
+  ComboBox,
+  FieldError,
+  Header,
+  Input,
+  ListBox,
+  ListBoxItem,
+  Popover,
+  Section,
+} from "react-aria-components"
 import { useQuery } from "urql"
+import PlayerItem from "../../dx_intl/components/PlayerItem"
+import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql } from "../../gql"
 import { useUser } from "../contexts"
 
@@ -49,7 +63,7 @@ const escapeForLike = (keyword: string): string =>
 const Search = () => {
   const user = useUser()
   // const navigate = useNavigate()
-  const [keyword] = useState("")
+  const [keyword, setKeyword] = useState("")
   const [keywordAnonResult] = useQuery({
     query: dxIntlPlayersWithKeywordAnonymousDocument,
     variables: {
@@ -79,20 +93,59 @@ const Search = () => {
     keyword.length === 0
       ? []
       : [
-          ...(userPlayers ?? []).map((player) => ({
-            ...player,
-            from: "你的成績單",
-          })),
-          ...(otherPlayers ?? []).map((player) => ({
-            ...player,
-            from: "大家的成績單",
-          })),
+          {
+            name: "你的成績單",
+            id: "user",
+            children: (userPlayers ?? []) as ResultOf<
+              typeof dxIntlPlayersFields
+            >[],
+          },
+
+          {
+            name: "大家的成績單",
+            id: "others",
+            children: (otherPlayers ?? []) as ResultOf<
+              typeof dxIntlPlayersFields
+            >[],
+          },
         ]
 
-  console.log(hasError)
-  console.log(options)
-
-  return <></>
+  return (
+    <ComboBox
+      items={options}
+      inputValue={keyword}
+      onInputChange={setKeyword}
+      allowsCustomValue
+    >
+      <div>
+        <Input placeholder="搜尋玩家暱稱..." />
+      </div>
+      <FieldError>{hasError ? "搜尋發生錯誤。" : undefined}</FieldError>
+      <Popover>
+        <ListBox>
+          {(section: (typeof options)[number]) => (
+            <Section id={section.id}>
+              {section.children.length > 0 ? (
+                <>
+                  <Header>{section.name}</Header>
+                  <Collection items={section.children}>
+                    {(item) => (
+                      <ListBoxItem
+                        id={item.id}
+                        href={`/dxi/p/${item.nickname}`}
+                      >
+                        <PlayerItem player={item} />
+                      </ListBoxItem>
+                    )}
+                  </Collection>
+                </>
+              ) : null}
+            </Section>
+          )}
+        </ListBox>
+      </Popover>
+    </ComboBox>
+  )
 }
 
 export default Search

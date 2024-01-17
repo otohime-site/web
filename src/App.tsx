@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react"
 import { Link, RouterProvider } from "react-aria-components"
 import { Route, Router, useLocation } from "wouter"
 import classes from "./App.module.css"
+import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
 import "./fonts.css"
 import "./global.css"
@@ -20,6 +21,7 @@ const App = () => {
         <Link href="/" className={classes.title}>
           <img src={Logo} /> <p>Otohime</p>
         </Link>
+        <Search />
         <UserBox />
       </div>
       <div className={classes.container}>
