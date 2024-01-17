@@ -247,6 +247,7 @@ const Book = () => {
             <p>上傳完成！</p>
             <p>您現在可以在 Otohime 網站上檢視你的成績單了。</p>
             <a
+              className="btn"
               target="_blank"
               rel="noreferrer"
               href={`https://${host}/dxi/p/${
