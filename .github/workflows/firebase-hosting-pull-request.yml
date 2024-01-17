@@ -18,6 +18,7 @@ jobs:
           FIREBASE: ${{secrets.FIREBASE}}
       - run: npm install
       - run: npm run build
+      - run: cp go.js dist/
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
