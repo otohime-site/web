@@ -9,13 +9,16 @@
     width: 22rem;
     position: sticky;
     top: 54px;
+    padding: var(--size-2);
   }
   .player-container > div:last-of-type {
     min-width: 0;
     flex: 1 1 auto;
   }
 }
-
+.player-container > div:last-of-type {
+  padding: var(--size-2);
+}
 .toolbar {
   & > :not(button:first-child, :global(.btn):first-child) {
     border-start-start-radius: 0;

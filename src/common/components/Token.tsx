@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button } from "react-aria-components"
+import { Button, Dialog, DialogTrigger, Modal } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import IconLink from "~icons/mdi/link"
@@ -85,25 +85,31 @@ const User = () => {
   return (
     <div>
       {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
-      {bookDialogOpen && (
-        <div>
-          <h3>Bookmarklet 操作說明</h3>
-          <div>
-            <p>連結已經複製到剪貼簿！接下來的步驟大致如下：</p>
-            <ol>
-              <li>將這個網頁加入書籤。（標題已經幫你改好了）</li>
-              <li>打開瀏覽器的書籤，並選擇編輯書籤。</li>
-              <li>將剛加入的書籤網址清空，將剪貼簿的內容貼上於網址中即可。</li>
-            </ol>
-            <p>
-              接下來只要進到官方成績單網站後，選開書籤，點擊「更新 Otohime
-              成績」即可。 但如果你使用 Android 的
-              Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
-            </p>
-            <Button onPress={handleClose}>關閉</Button>
-          </div>
-        </div>
-      )}
+      <DialogTrigger isOpen={bookDialogOpen}>
+        <Modal>
+          <Dialog role="alertdialog">
+            <div>
+              <h3>Bookmarklet 操作說明</h3>
+              <div>
+                <p>連結已經複製到剪貼簿！接下來的步驟大致如下：</p>
+                <ol>
+                  <li>將這個網頁加入書籤。（標題已經幫你改好了）</li>
+                  <li>打開瀏覽器的書籤，並選擇編輯書籤。</li>
+                  <li>
+                    將剛加入的書籤網址清空，將剪貼簿的內容貼上於網址中即可。
+                  </li>
+                </ol>
+                <p>
+                  接下來只要進到官方成績單網站後，選開書籤，點擊「更新 Otohime
+                  成績」即可。 但如果你使用 Android 的
+                  Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
+                </p>
+                <Button onPress={handleClose}>關閉</Button>
+              </div>
+            </div>
+          </Dialog>
+        </Modal>
+      </DialogTrigger>
       <QueryResult
         result={tokensResult}
         skeletonVariant="rectangular"

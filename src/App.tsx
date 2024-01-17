@@ -22,6 +22,7 @@ const App = () => {
           <img src={Logo} /> <p>Otohime</p>
         </Link>
         <Search />
+        <div className={classes.space} />
         <UserBox />
       </div>
       <div className={classes.container}>

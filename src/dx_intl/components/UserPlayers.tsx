@@ -41,7 +41,7 @@ const UserPlayers = () => {
             if (keys !== "all") {
               const nickname = keys.values().next().value
               if (nickname) {
-                navigate(`/dxi/p/${nickname}`)
+                navigate(`~/dxi/p/${nickname}`)
               }
             }
           }}

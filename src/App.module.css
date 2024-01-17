@@ -2,12 +2,28 @@
   padding: 0.25em 3rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   height: 48px;
   position: sticky;
   top: 0;
   background: white;
+
+  :global(.react-aria-ComboBox) {
+    padding-left: 2rem;
+  }
+
+  .space {
+    flex: 1;
+  }
+}
+@media (max-width: 960px) {
+  .top {
+    padding: 0.25rem;
+    text-wrap: nowrap;
+    input {
+      width: 10rem;
+    }
+  }
 }
 
 .title {

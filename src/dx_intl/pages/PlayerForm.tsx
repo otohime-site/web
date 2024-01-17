@@ -109,7 +109,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
       )
       return
     }
-    navigate(`/dxi/p/${data.nickname}`)
+    navigate(`~/dxi/p/${data.nickname}`)
   }
 
   const handleDeletePlayer = async (): Promise<void> => {
