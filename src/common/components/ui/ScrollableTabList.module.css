@@ -1,0 +1,28 @@
+.scrollable-tab {
+  display: flex;
+  flex-direction: row;
+
+  & button {
+    border: none;
+    box-shadow: none;
+    &:hover {
+      background: inherit;
+    }
+    &[data-disabled] {
+      display: none;
+    }
+    &[data-focused] {
+      outline: none;
+    }
+  }
+
+  & :global(.react-aria-TabList) {
+    flex: 1;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

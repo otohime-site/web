@@ -1,4 +1,3 @@
-import { scrollIntoView } from "@react-aria/utils"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
@@ -16,7 +15,6 @@ import {
   SelectValue,
   Switch,
   Tab,
-  TabList,
   TabPanel,
   Tabs,
   ToggleButton,
@@ -35,6 +33,7 @@ import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
+import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { useUser } from "../../common/contexts"
 import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
@@ -260,64 +259,6 @@ const Player = ({ params }: { params: Params }) => {
     )
   }, [params, scoreTable, recordResult])
 
-  const [tabList, setTabList] = useState<HTMLDivElement | null>(null)
-  const [scrollDisabled, setScrollDisabled] = useState<[boolean, boolean]>([
-    false,
-    false,
-  ])
-
-  const updateScroll = useCallback(() => {
-    if (!tabList) {
-      return
-    }
-    if (tabList.scrollWidth <= tabList.clientWidth) {
-      setScrollDisabled([true, true])
-      return
-    }
-    setScrollDisabled([false, false])
-  }, [tabList, setScrollDisabled])
-
-  const scrollableTabRef: React.Ref<HTMLDivElement> = useCallback(
-    (node: HTMLDivElement | null) => {
-      setTabList(node)
-      if (node == null) {
-        return
-      }
-      const rob = new ResizeObserver(() => {
-        updateScroll()
-      })
-      const mob = new MutationObserver((mutations) => {
-        if (mutations.find((m) => m.type == "childList")) {
-          updateScroll()
-          return
-        }
-        const selected = mutations.filter(
-          (m) =>
-            m.type == "attributes" &&
-            (m.target as HTMLDivElement).getAttribute("aria-selected") ==
-              "true",
-        )[0].target
-        scrollIntoView(node, selected as HTMLDivElement)
-      })
-      rob.observe(node)
-      mob.observe(node, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["aria-selected"],
-      })
-      return () => {
-        rob.disconnect()
-        mob.disconnect()
-      }
-    },
-    [updateScroll],
-  )
-  const scrollBy = (amount: number) => () => {
-    if (tabList) {
-      tabList.scrollLeft += amount
-    }
-  }
   const handleRatingPopOpen = (
     event: React.MouseEvent<HTMLElement>,
     entry: ScoreTableEntry,
@@ -479,28 +420,19 @@ const Player = ({ params }: { params: Params }) => {
               ))}
             </RadioGroup>
             <Tabs>
-              <div className={classes["scrollable-tab"]}>
-                <Button isDisabled={scrollDisabled[0]} onPress={scrollBy(-200)}>
-                  &lt;
-                </Button>
-                <TabList
-                  ref={scrollableTabRef}
-                  items={[...table.groupedData.keys()].map((key, index) => ({
-                    key,
-                    index,
-                  }))}
-                >
-                  {({ key, index }) => (
-                    <Tab key={index} id={`${index}`}>
-                      {getGroupTitle(grouping, key)} (
-                      {table.groupedData.get(key)?.length})
-                    </Tab>
-                  )}
-                </TabList>
-                <Button isDisabled={scrollDisabled[1]} onPress={scrollBy(200)}>
-                  &gt;
-                </Button>
-              </div>
+              <ScrollableTabList
+                items={[...table.groupedData.keys()].map((key, index) => ({
+                  key,
+                  index,
+                }))}
+              >
+                {({ key, index }) => (
+                  <Tab key={index} id={`${index}`}>
+                    {getGroupTitle(grouping, key)} (
+                    {table.groupedData.get(key)?.length})
+                  </Tab>
+                )}
+              </ScrollableTabList>
               {grouping === "category" || grouping === "version" ? (
                 <RadioGroup
                   value={difficulty.toString()}

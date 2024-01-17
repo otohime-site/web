@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import clsx from "clsx"
 import { useMemo } from "react"
-import { Link } from "react-aria-components"
+import { Tab, TabPanel, Tabs } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -9,6 +9,7 @@ import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
+import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { formatDateTime } from "../../common/utils/datetime"
 import { getFragmentData, graphql } from "../../gql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
@@ -400,23 +401,30 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <LinkButton href={`/dxi/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>
-      <div>
-        {outerTimelines.timelines.map((time) => (
-          <Link
-            href={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
-            key={time}
-          >
-            {formatDateTime(new Date(time))}
-          </Link>
-        ))}
-      </div>
-      {params.hash == null ? (
-        <div>請選擇一個時間檢視該時間的歷程。</div>
-      ) : timelineResult.data == null ? (
-        <></>
-      ) : (
-        showTimelineResult(timelineResult.data)
-      )}
+      <Tabs selectedKey={params.hash ?? ""}>
+        <ScrollableTabList
+          items={outerTimelines.timelines.map((time) => ({ time }))}
+        >
+          {({ time }) => (
+            <Tab
+              href={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
+              key={time}
+              id={dateStringToHash(time)}
+            >
+              {formatDateTime(new Date(time))}
+            </Tab>
+          )}
+        </ScrollableTabList>
+        <TabPanel id={params.hash ?? ""}>
+          {params.hash == null ? (
+            <div>請選擇一個時間檢視該時間的歷程。</div>
+          ) : timelineResult.data == null ? (
+            <></>
+          ) : (
+            showTimelineResult(timelineResult.data)
+          )}
+        </TabPanel>
+      </Tabs>
     </>
   )
 }

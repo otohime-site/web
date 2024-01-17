@@ -98,6 +98,11 @@ a.react-aria-Tab {
   color: inherit;
   text-decoration: inherit;
 
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+
   &[href]:visited .react-aria-ListBoxItem {
     text-decoration: inherit;
   }
