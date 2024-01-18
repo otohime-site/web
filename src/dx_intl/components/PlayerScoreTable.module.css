@@ -3,7 +3,11 @@
   font-size: 0.875rem;
   border-collapse: collapse;
   table-layout: fixed;
+  background: transparent;
   border: none;
+  td {
+    background: transparent;
+  }
 }
 
 .table .rating-used td {

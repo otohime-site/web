@@ -233,7 +233,3 @@ a.react-aria-Tab {
   /* override tabindex in Open props normalize */
   cursor: default;
 }
-
-td {
-  background: white;
-}
