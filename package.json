@@ -1,6 +1,6 @@
 {
   "name": "otohime-web",
-  "version": "24.1.0",
+  "version": "24.1.2",
   "repository": "git@github.com:otohime-site/web.git",
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@otohime-site/parser": "^24.1.0",
+    "@otohime-site/parser": "^24.1.1",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@types/babel__core": "^7.1.19",
     "@urql/exchange-auth": "^2.1.0",
