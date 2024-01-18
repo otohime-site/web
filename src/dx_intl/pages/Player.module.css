@@ -6,6 +6,7 @@
     gap: 0.5rem;
   }
   .player-container > div:first-of-type {
+    align-self: start;
     width: 22rem;
     position: sticky;
     top: 54px;
