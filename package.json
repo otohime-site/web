@@ -44,6 +44,7 @@
     "@graphql-codegen/client-preset-swc-plugin": "^0.2.0",
     "@graphql-codegen/introspection": "^4.0.0",
     "@iconify-json/mdi": "^1.1.52",
+    "@iconify-json/grommet-icons": "^1.1.10",
     "@svgr/core": "^8.0.0",
     "@svgr/plugin-jsx": "^8.0.1",
     "@types/file-saver": "^2.0.5",
