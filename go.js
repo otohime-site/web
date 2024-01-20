@@ -31,6 +31,8 @@ const HEAD_PROD = `
   frame.style.width = "100vw"
   frame.style.height = "100vh"
   frame.style.border = "0"
+  frame.style.colorScheme = "light"
+  frame.style.background = "transparent"
   const head = injected.includes("localhost") ? HEAD_LOCAL : HEAD_PROD
   frame.srcdoc = `
 <html>
