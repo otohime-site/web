@@ -1,7 +1,5 @@
 ### The Otohime front-end
 
-<strong>The main branch is under huge rewrite and may not function as expected. Please refer to the `legacy` branch or latest release tag for a working version.</strong>
-
 It is a TypeScript / React project.
 
 #### Get Started
