@@ -11,7 +11,7 @@
 }
 
 .table .rating-used td {
-  background: var(--stone-0);
+  background: var(--surface-1);
 }
 
 .table :global(.col-title) {
