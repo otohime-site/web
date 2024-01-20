@@ -7,6 +7,9 @@
   position: sticky;
   top: 0;
   background: white;
+  @media (prefers-color-scheme: dark) {
+    background: #333333;
+  }
 
   :global(.react-aria-ComboBox) {
     padding-left: 2rem;
@@ -30,6 +33,9 @@
   text-decoration: none;
   font-size: 1.2rem;
   color: var(--violet-10);
+  @media (prefers-color-scheme: dark) {
+    color: var(--violet-2);
+  }
   font-family: "McLaren", cursive;
   display: inline-flex;
   align-items: center;

@@ -60,6 +60,9 @@ a.btn {
 
 .react-aria-Modal {
   background: white;
+  @media (prefers-color-scheme: dark) {
+    background: #121212;
+  }
 }
 
 .react-aria-Modal :where(h2) {
@@ -69,7 +72,7 @@ a.btn {
 
 .react-aria-ListBox {
   border-radius: var(--radius-2);
-  border: var(--border-size-1) solid var(--stone-7);
+  border: var(--border-size-1) solid var(--surface-4);
 }
 
 .react-aria-ListBoxItem {
@@ -78,13 +81,22 @@ a.btn {
   padding: var(--size-2);
   border-radius: var(--radius-2);
   color: var(--stone-12);
+  @media (prefers-color-scheme: dark) {
+    color: var(--stone-2);
+  }
 
   &[data-hovered],
   &[data-focused] {
-    background-color: var(--stone-0);
+    background-color: var(--stone-1);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--stone-11);
+    }
   }
   &[data-selected] {
     background-color: var(--stone-3);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--stone-9);
+    }
   }
 }
 
@@ -115,12 +127,11 @@ a.react-aria-Tab {
   display: flex;
   align-items: center;
   gap: var(--size-1);
-  color: var(--stone-12);
   cursor: pointer;
 
   &:before {
     content: "";
-    display: black;
+    display: block;
     width: 1.286rem;
     height: 1.286rem;
     border: 0.143rem solid var(--stone-8);
@@ -150,6 +161,9 @@ a.react-aria-Tab {
   .react-aria-ListBox {
     display: block;
     background: white;
+    @media (prefers-color-scheme: dark) {
+      background: #121212;
+    }
     width: unset;
     max-height: inherit;
     min-height: unset;

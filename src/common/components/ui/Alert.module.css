@@ -19,3 +19,21 @@
   background: var(--yellow-1);
   color: var(--yellow-11);
 }
+
+@media (prefers-color-scheme: dark) {
+  .alert[data-severity="info"] {
+    border-color: var(--blue-10);
+    background: var(--blue-12);
+    color: var(--blue-7);
+  }
+  .alert[data-severity="error"] {
+    border-color: var(--red-10);
+    background: var(--red-12);
+    color: var(--red-7);
+  }
+  .alert[data-severity="warning"] {
+    border-color: var(--yellow-10);
+    background: var(--yellow-12);
+    color: var(--yellow-7);
+  }
+}
