@@ -37,18 +37,24 @@ export const useTable = <T extends TableEntry>({
         ? [{ key: grouping, desc: false }]
         : []),
     ]
-    orderingWithGroup.map(({ key, desc }) => {
-      const fn = (a: T, b: T) => {
+    const fn = (a: T, b: T) => {
+      for (let i = 0; i < orderingWithGroup.length; i++) {
+        const { key, desc } = orderingWithGroup[i]
         const custom = sortingFns?.[key]
         const compare = custom
           ? custom(a, b)
           : (a[key] ?? 0) > (b[key] ?? 0)
             ? 1
             : -1
-        return desc ? compare * -1 : compare
+        const result = desc ? compare * -1 : compare
+        if (result !== 0) {
+          return result
+        }
       }
-      sortedData.sort(fn)
-    })
+      return 0
+    }
+
+    sortedData.sort(fn)
     const ungroupedData = sortedData.filter((entry) =>
       filterFn(entry, { grouping, difficulty }),
     )
