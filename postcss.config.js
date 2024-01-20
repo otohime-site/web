@@ -4,5 +4,9 @@ import postcssNesting from "postcss-nesting"
 import postcssPresetEnv from "postcss-preset-env"
 
 export default {
-  plugins: [postcssJitProps(OpenProps), postcssNesting(), postcssPresetEnv()],
+  plugins: [
+    postcssJitProps(OpenProps),
+    postcssNesting(),
+    postcssPresetEnv({ browsers: ">0.2% and not dead" }),
+  ],
 }
