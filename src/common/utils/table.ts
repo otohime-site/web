@@ -32,10 +32,10 @@ export const useTable = <T extends TableEntry>({
       ...(includeInactive ? data : data.filter((e) => e.active)),
     ]
     const orderingWithGroup = [
-      ...ordering,
       ...(!ordering.find((o) => o.key == grouping)
-        ? [{ key: grouping, desc: false }]
+        ? [{ key: grouping, desc: grouping === "current_version" }]
         : []),
+      ...ordering,
     ]
     const fn = (a: T, b: T) => {
       for (let i = 0; i < orderingWithGroup.length; i++) {
@@ -43,12 +43,13 @@ export const useTable = <T extends TableEntry>({
         const custom = sortingFns?.[key]
         const compare = custom
           ? custom(a, b)
-          : (a[key] ?? 0) > (b[key] ?? 0)
-            ? 1
-            : -1
-        const result = desc ? compare * -1 : compare
-        if (result !== 0) {
-          return result
+          : (a[key] ?? 0) == (b[key] ?? 0)
+            ? 0
+            : (a[key] ?? 0) > (b[key] ?? 0)
+              ? 1
+              : -1
+        if (compare !== 0) {
+          return desc ? compare * -1 : compare
         }
       }
       return 0
