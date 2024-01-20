@@ -8,14 +8,11 @@ html {
 .btn,
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {
-  --_bg: white;
-  border: var(--border-size-1) solid var(--stone-5);
-  --_text: var(--stone-10);
-  box-shadow: 0 1px 0 var(--stone-2);
+  border: var(--border-size-1) solid var(--_border);
+  box-shadow: 0 1px 0 var(--surface-3);
   --_ink-shadow: none;
 
   &:where(:not(:active):hover) {
-    --_bg: var(--stone-0);
     --_highlight-size: 0;
   }
   &[data-focused] {
