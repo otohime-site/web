@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import { Link, RouterProvider } from "react-aria-components"
 import { Route, Router, useLocation } from "wouter"
+import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
@@ -40,6 +41,37 @@ const App = () => {
             </Router>
           </RouterProvider>
         </Suspense>
+      </div>
+      <div className={classes.footer}>
+        <div>
+          &copy; 2021－2024 Otohime Team.
+          <a
+            href="https://github.com/otohime-site/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GitHubIcon style={{ marginRight: "8px" }} fontSize="inherit" />
+            GitHub
+          </a>
+          <a
+            href="https://littlebtc.gitbook.io/otohime-docs/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            關於我們
+          </a>{" "}
+          <a
+            href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            資料使用政策
+          </a>{" "}
+        </div>
+        <div>
+          Otohime
+          團隊與本站中所支援遊戲的相關遊戲公司皆無關聯。我們不為任何造成的問題提供擔保。
+        </div>
       </div>
     </>
   )
