@@ -3,22 +3,22 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 0.5rem;
+    & > div {
+      padding: var(--size-2);
+    }
+
+    & > div:first-of-type {
+      flex: 1 0 26rem;
+      align-self: start;
+      position: sticky;
+      top: 54px;
+      padding: var(--size-2);
+    }
+    & > div:last-of-type {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
   }
-  .player-container > div:first-of-type {
-    align-self: start;
-    width: 22rem;
-    position: sticky;
-    top: 54px;
-    padding: var(--size-2);
-  }
-  .player-container > div:last-of-type {
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-}
-.player-container > div:last-of-type {
-  padding: var(--size-2);
 }
 .toolbar {
   & > :not(button:first-child, :global(.btn):first-child) {
