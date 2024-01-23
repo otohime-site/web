@@ -3,10 +3,11 @@
   flex-direction: row;
 
   & button {
+    background: transparent;
     border: none;
     box-shadow: none;
     &:hover {
-      background: inherit;
+      background: transparent;
     }
     &[data-disabled] {
       display: none;
