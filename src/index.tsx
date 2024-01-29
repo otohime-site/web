@@ -7,7 +7,7 @@ const container = document.getElementById("root")
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 createRoot(container!).render(
   <Titled title="Otohime">
-    <AppProvider skeleton={<>Loading...</>}>
+    <AppProvider skeleton={<></>}>
       <App />
     </AppProvider>
   </Titled>,
