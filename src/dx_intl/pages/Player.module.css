@@ -31,6 +31,12 @@
   }
 }
 
+.grouping-tab {
+  & :global(.react-aria-Tab)[data-selected] {
+    --border-color: var(--blue-6);
+  }
+}
+
 .toggle-difficulty-0 {
   padding: 0.5em;
   color: var(--green-8);

@@ -15,6 +15,7 @@ import {
   SelectValue,
   Switch,
   Tab,
+  TabList,
   TabPanel,
   Tabs,
   ToggleButton,
@@ -400,26 +401,25 @@ const Player = ({ params }: { params: Params }) => {
             </div>
           </div>
           <div>
-            <RadioGroup
-              value={grouping}
-              onChange={(payload) => {
-                if (payload)
-                  setGrouping(payload as keyof typeof groupKeyOptions)
-              }}
-              style={{
-                height: "2.5rem",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
+            {/* Change to nested tabs will hit
+            https://github.com/adobe/react-spectrum/issues/5469 */}
+            <Tabs
+              className={classes["grouping-tab"]}
+              slot="grouping"
+              selectedKey={grouping}
+              onSelectionChange={(v) => {
+                setGrouping(v as typeof grouping)
               }}
             >
-              {Object.entries(groupKeyOptions).map(([k, v], i) => (
-                <Radio key={k} value={k} style={{ flex: i == 0 ? "3" : "2" }}>
-                  {v}
-                </Radio>
-              ))}
-            </RadioGroup>
-            <Tabs>
+              <TabList>
+                {Object.entries(groupKeyOptions).map(([k, v], i) => (
+                  <Tab key={k} id={k} style={{ flex: i == 0 ? "3" : "2" }}>
+                    {v}
+                  </Tab>
+                ))}
+              </TabList>
+            </Tabs>
+            <Tabs slot="groups">
               <ScrollableTabList
                 items={[...table.groupedData.keys()].map((key, index) => ({
                   key,
