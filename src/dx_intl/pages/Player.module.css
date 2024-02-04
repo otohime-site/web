@@ -1,18 +1,19 @@
+.player-container {
+  & > div {
+    padding: var(--size-2);
+  }
+}
 @media (min-width: 961px) {
   .player-container {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    & > div {
-      padding: var(--size-2);
-    }
 
     & > div:first-of-type {
       flex: 1 0 24rem;
       align-self: start;
       position: sticky;
       top: 54px;
-      padding: var(--size-2);
     }
     & > div:last-of-type {
       min-width: 0;
