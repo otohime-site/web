@@ -6,12 +6,16 @@
   height: 48px;
   position: sticky;
   top: 0;
+  background: var(--stone-0);
   :global(.react-aria-ComboBox) {
     padding-left: 2rem;
   }
 
   .space {
     flex: 1;
+  }
+  @media (prefers-color-scheme: dark) {
+    background: var(--stone-11);
   }
 }
 @media (max-width: 960px) {
