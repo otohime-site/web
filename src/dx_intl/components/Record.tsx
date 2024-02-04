@@ -1,5 +1,8 @@
 import { ResultOf } from "@graphql-typed-document-node/core"
 import clsx from "clsx"
+import IconLock from "~icons/mdi/lock"
+import IconPublic from "~icons/mdi/public"
+import { formatRelative } from "../../common/utils/datetime"
 import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
@@ -8,12 +11,21 @@ import classes from "./Record.module.css"
 
 const Record = ({
   record,
+  updatedAt,
+  isPrivate,
 }: {
   record: ResultOf<typeof dxIntlRecordsFields>
+  updatedAt?: string | null
+  isPrivate: boolean
 }) => (
   <div>
     <div className={classes["info-row"]}>
       <Rating rating={record.rating} legacy={record.rating_legacy} />
+      <span>
+        {updatedAt != null ? formatRelative(new Date(updatedAt)) : ""}
+        更新
+        {isPrivate ? <IconLock /> : <IconPublic />}
+      </span>
     </div>
     <div className={classes["info-row"]}>
       <div className={classes["card-name"]}>{record.card_name}</div>

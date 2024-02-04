@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: space-between;
   width: 20em;
+  & span svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 .inner-col {

@@ -29,14 +29,11 @@ import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconHistory from "~icons/mdi/history"
-import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
-import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { useUser } from "../../common/contexts"
-import { formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { getFragmentData, graphql } from "../../gql"
 import NoteRating from "../NoteRating"
@@ -302,12 +299,12 @@ const Player = ({ params }: { params: Params }) => {
       ) : null}
       <div className={classes["player-container"]}>
         <div>
-          <Record record={record} />
-          {player.updated_at != null
-            ? formatRelative(new Date(player.updated_at))
-            : ""}
-          更新
-          {player.private ? <IconLock /> : <IconPublic />}
+          <Record
+            record={record}
+            updatedAt={player.updated_at}
+            isPrivate={player.private}
+          />
+
           <Toolbar aria-label="成績單選項" className={classes.toolbar}>
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
