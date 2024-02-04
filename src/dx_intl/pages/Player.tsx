@@ -300,189 +300,184 @@ const Player = ({ params }: { params: Params }) => {
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
       ) : null}
-      <div>
-        <div className={classes["player-container"]}>
-          <div>
-            <Record record={record} />
-            {player.updated_at != null
-              ? formatRelative(new Date(player.updated_at))
-              : ""}
-            更新
-            {player.private ? <IconLock /> : <IconPublic />}
-            <Toolbar aria-label="成績單選項" className={classes.toolbar}>
-              {editableResult.error == null &&
-              (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-                <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
-                  <IconPencil /> 編輯
-                </LinkButton>
-              ) : null}
-              <LinkButton href={`/dxi/p/${params.nickname}/history`}>
-                <IconHistory /> 歷史紀錄
+      <div className={classes["player-container"]}>
+        <div>
+          <Record record={record} />
+          {player.updated_at != null
+            ? formatRelative(new Date(player.updated_at))
+            : ""}
+          更新
+          {player.private ? <IconLock /> : <IconPublic />}
+          <Toolbar aria-label="成績單選項" className={classes.toolbar}>
+            {editableResult.error == null &&
+            (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+              <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
+                <IconPencil /> 編輯
               </LinkButton>
-              <Button onPress={downloadCSV}>
-                <IconFileDownload /> 下載 CSV
+            ) : null}
+            <LinkButton href={`/dxi/p/${params.nickname}/history`}>
+              <IconHistory /> 歷史紀錄
+            </LinkButton>
+            <Button onPress={downloadCSV}>
+              <IconFileDownload /> 下載 CSV
+            </Button>
+          </Toolbar>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "end",
+            }}
+          >
+            <Select
+              selectedKey={ordering}
+              onSelectionChange={(selected) =>
+                setOrdering(
+                  selected as
+                    | "index"
+                    | "level"
+                    | "internal_lv"
+                    | "score"
+                    | "rating"
+                    | "combo_flag"
+                    | "sync_flag",
+                )
+              }
+            >
+              <Label>排序</Label>
+              <Button style={{ width: "10em" }}>
+                <SelectValue />
+                <span aria-hidden="true">
+                  <IconArrowDropDown />
+                </span>
               </Button>
-            </Toolbar>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "end",
-              }}
-            >
-              <Select
-                selectedKey={ordering}
-                onSelectionChange={(selected) =>
-                  setOrdering(
-                    selected as
-                      | "index"
-                      | "level"
-                      | "internal_lv"
-                      | "score"
-                      | "rating"
-                      | "combo_flag"
-                      | "sync_flag",
-                  )
-                }
-              >
-                <Label>排序</Label>
-                <Button style={{ width: "10em" }}>
-                  <SelectValue />
-                  <span aria-hidden="true">
-                    <IconArrowDropDown />
-                  </span>
-                </Button>
-                <Popover>
-                  <ListBox>
-                    <ListBoxItem id="index">預設</ListBoxItem>
-                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                    <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
-                    <ListBoxItem id="score">成績</ListBoxItem>
-                    <ListBoxItem id="rating">Rating 分數</ListBoxItem>
-                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                  </ListBox>
-                </Popover>
-              </Select>
-              <ToggleButton
-                isSelected={orderingDesc}
-                onChange={setOrderingDesc}
-              >
-                {({ isSelected }) =>
-                  isSelected ? <IconArrowDown /> : <IconArrowUp />
-                }
-              </ToggleButton>
-              <Switch onChange={setIncludeInactive}>
-                <div className="indicator" /> 顯示刪除曲
-              </Switch>
-            </div>
-            <div className={classes["score-stats"]}>
-              {scoreStats.scoreStats.map((count, i) =>
-                i !== 1 && i !== 2 ? (
-                  <div key={i}>
-                    <span>{RANK_SCORES[i][1]}</span> {count}
-                  </div>
-                ) : null,
-              )}
-              {scoreStats.comboStats.map((count, i) =>
-                i !== 0 ? (
-                  <div key={i}>
-                    <ComboFlag flag={comboFlags[i]} /> {count}
-                  </div>
-                ) : null,
-              )}
-              {scoreStats.syncStats.map((count, i) =>
-                i !== 0 ? (
-                  <div key={i}>
-                    <SyncFlag flag={syncFlags[i]} /> {count}
-                  </div>
-                ) : null,
-              )}
-            </div>
+              <Popover>
+                <ListBox>
+                  <ListBoxItem id="index">預設</ListBoxItem>
+                  <ListBoxItem id="level">樂曲等級</ListBoxItem>
+                  <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
+                  <ListBoxItem id="score">成績</ListBoxItem>
+                  <ListBoxItem id="rating">Rating 分數</ListBoxItem>
+                  <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
+                  <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                </ListBox>
+              </Popover>
+            </Select>
+            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
+              {({ isSelected }) =>
+                isSelected ? <IconArrowDown /> : <IconArrowUp />
+              }
+            </ToggleButton>
+            <Switch onChange={setIncludeInactive}>
+              <div className="indicator" /> 顯示刪除曲
+            </Switch>
           </div>
-          <div>
-            {/* Change to nested tabs will hit
+          <div className={classes["score-stats"]}>
+            {scoreStats.scoreStats.map((count, i) =>
+              i !== 1 && i !== 2 ? (
+                <div key={i}>
+                  <span>{RANK_SCORES[i][1]}</span> {count}
+                </div>
+              ) : null,
+            )}
+            {scoreStats.comboStats.map((count, i) =>
+              i !== 0 ? (
+                <div key={i}>
+                  <ComboFlag flag={comboFlags[i]} /> {count}
+                </div>
+              ) : null,
+            )}
+            {scoreStats.syncStats.map((count, i) =>
+              i !== 0 ? (
+                <div key={i}>
+                  <SyncFlag flag={syncFlags[i]} /> {count}
+                </div>
+              ) : null,
+            )}
+          </div>
+        </div>
+        <div>
+          {/* Change to nested tabs will hit
             https://github.com/adobe/react-spectrum/issues/5469 */}
-            <Tabs
-              className={classes["grouping-tab"]}
-              slot="grouping"
-              selectedKey={grouping}
-              onSelectionChange={(v) => {
-                setGrouping(v as typeof grouping)
-              }}
+          <Tabs
+            className={classes["grouping-tab"]}
+            slot="grouping"
+            selectedKey={grouping}
+            onSelectionChange={(v) => {
+              setGrouping(v as typeof grouping)
+            }}
+          >
+            <TabList>
+              {Object.entries(groupKeyOptions).map(([k, v], i) => (
+                <Tab key={k} id={k} style={{ flex: i == 0 ? "3" : "2" }}>
+                  {v}
+                </Tab>
+              ))}
+            </TabList>
+          </Tabs>
+          <Tabs slot="groups">
+            <ScrollableTabList
+              items={[...table.groupedData.keys()].map((key, index) => ({
+                key,
+                index,
+              }))}
             >
-              <TabList>
-                {Object.entries(groupKeyOptions).map(([k, v], i) => (
-                  <Tab key={k} id={k} style={{ flex: i == 0 ? "3" : "2" }}>
-                    {v}
-                  </Tab>
-                ))}
-              </TabList>
-            </Tabs>
-            <Tabs slot="groups">
-              <ScrollableTabList
-                items={[...table.groupedData.keys()].map((key, index) => ({
-                  key,
-                  index,
-                }))}
-              >
-                {({ key, index }) => (
-                  <Tab key={index} id={`${index}`}>
-                    {getGroupTitle(grouping, key)} (
-                    {table.groupedData.get(key)?.length})
-                  </Tab>
-                )}
-              </ScrollableTabList>
-              {grouping === "category" || grouping === "version" ? (
-                <RadioGroup
-                  value={difficulty.toString()}
-                  onChange={(v) => {
-                    if (v) setDifficulty(parseInt(v, 10))
-                  }}
-                  style={{
-                    height: "3rem",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    fontSize: "85%",
-                  }}
-                >
-                  {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                    <Radio
-                      style={{ textTransform: "uppercase", flex: 1 }}
-                      key={i}
-                      value={i.toString()}
-                      className={
-                        classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                      }
-                    >
-                      {d}
-                    </Radio>
-                  ))}
-                </RadioGroup>
-              ) : (
-                <></>
+              {({ key, index }) => (
+                <Tab key={index} id={`${index}`}>
+                  {getGroupTitle(grouping, key)} (
+                  {table.groupedData.get(key)?.length})
+                </Tab>
               )}
-              <Collection
-                items={[...table.groupedData.entries()].map(
-                  ([key, table], index) => ({
-                    key,
-                    table,
-                    index,
-                  }),
-                )}
+            </ScrollableTabList>
+            {grouping === "category" || grouping === "version" ? (
+              <RadioGroup
+                value={difficulty.toString()}
+                onChange={(v) => {
+                  if (v) setDifficulty(parseInt(v, 10))
+                }}
+                style={{
+                  height: "3rem",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  fontSize: "85%",
+                }}
               >
-                {({ table, index }) => (
-                  <TabPanel id={`${index}`}>
-                    <PlayerScoreTable
-                      table={table}
-                      handleRatingPopOpen={handleRatingPopOpen}
-                    />
-                  </TabPanel>
-                )}
-              </Collection>
-            </Tabs>
-          </div>
+                {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
+                  <Radio
+                    style={{ textTransform: "uppercase", flex: 1 }}
+                    key={i}
+                    value={i.toString()}
+                    className={
+                      classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                    }
+                  >
+                    {d}
+                  </Radio>
+                ))}
+              </RadioGroup>
+            ) : (
+              <></>
+            )}
+            <Collection
+              items={[...table.groupedData.entries()].map(
+                ([key, table], index) => ({
+                  key,
+                  table,
+                  index,
+                }),
+              )}
+            >
+              {({ table, index }) => (
+                <TabPanel id={`${index}`}>
+                  <PlayerScoreTable
+                    table={table}
+                    handleRatingPopOpen={handleRatingPopOpen}
+                  />
+                </TabPanel>
+              )}
+            </Collection>
+          </Tabs>
         </div>
       </div>
       <Popover
