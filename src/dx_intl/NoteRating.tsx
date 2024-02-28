@@ -17,15 +17,12 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
     const index = getRankScoreIndex(entry.score ?? 0)
     const rating = getRating(entry.score ?? 0, internalLv)
     const maxRating = getRating(100.5, internalLv)
-    const targets =
-      index >= 0
-        ? RANK_SCORES.slice(index + 1, index + 4).map(
-            ([minScore, rankName]) => [
-              rankName,
-              getRating(minScore, internalLv) - rating,
-            ],
-          )
-        : []
+    const targets = RANK_SCORES.slice(index + 1, index + 4).map(
+      ([minScore, rankName]) => [
+        rankName,
+        getRating(minScore, internalLv) - rating,
+      ],
+    )
 
     return [rating, maxRating, targets]
   }, [internalLv, entry])
@@ -50,7 +47,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
             </a>
           </td>
         </tr>
-        {targets.length === 0 ? (
+        {entry.score && entry.score >= 100.5 ? (
           <tr>
             <td colSpan={2}>已拿滿！</td>
           </tr>
