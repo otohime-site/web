@@ -32,55 +32,71 @@
   }
 }
 
-.grouping-tab {
-  & :global(.react-aria-Tab)[data-selected] {
-    --border-color: var(--blue-6);
-  }
+.sticky-header {
+  position: sticky;
+  top: 48px;
+  background: white;
+  padding: var(--size-2);
+  font-size: 90%;
 }
 
-.toggle-difficulty-0 {
-  padding: 0.5em;
+.tab-like-radio-group {
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--radius-3);
+  gap: var(--size-3);
+
+  & .tab-like-radio {
+    padding: var(--size-2);
+    cursor: pointer;
+    flex: 1;
+  }
+  &:first-of-type .tab-like-radio {
+    &[data-selected] {
+      background: white;
+      border-bottom: 3px solid var(--blue-8);
+    }
+  }
+  &:first-of-type .tab-like-radio:first-of-type {
+    flex: 2;
+  }
+  &:last-of-type .tab-like-radio {
+    text-transform: uppercase;
+  }
+}
+.radio-difficulty-0 {
   color: var(--green-8);
-  cursor: pointer;
+  &[data-selected] {
+    color: var(--green-10);
+    background: var(--green-1);
+  }
 }
-.toggle-difficulty-0[data-selected] {
-  color: var(--green-10);
-  background: var(--green-1);
-}
-.toggle-difficulty-1 {
-  padding: 0.5em;
+.radio-difficulty-1 {
   color: var(--orange-8);
-  cursor: pointer;
+  &[data-selected] {
+    color: var(--orange-10);
+    background: var(--orange-1);
+  }
 }
-.toggle-difficulty-1[data-selected] {
-  color: var(--orange-10);
-  background: var(--orange-1);
-}
-.toggle-difficulty-2 {
-  padding: 0.5em;
+.radio-difficulty-2 {
   color: var(--red-8);
-  cursor: pointer;
+  &[data-selected] {
+    color: var(--red-10);
+    background: var(--red-1);
+  }
 }
-.toggle-difficulty-2[data-selected] {
-  color: var(--red-10);
-  background: var(--red-1);
-}
-.toggle-difficulty-3 {
-  padding: 0.5em;
+.radio-difficulty-3 {
   color: var(--violet-8);
-  cursor: pointer;
+  &[data-selected] {
+    color: var(--violet-10);
+    background: var(--violet-1);
+  }
 }
-.toggle-difficulty-3[data-selected] {
-  color: var(--violet-10);
-  background: var(--violet-1);
-}
-.toggle-difficulty-4 {
-  padding: 0.5em;
+.radio-difficulty-4 {
   color: var(--purple-8);
-  cursor: pointer;
-}
-.toggle-difficulty-4[data-selected] {
-  background: var(--purple-1);
+  &[data-selected] {
+    background: var(--purple-1);
+  }
 }
 .score-stats {
   font-family: "Roboto";

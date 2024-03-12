@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
@@ -15,7 +16,6 @@ import {
   SelectValue,
   Switch,
   Tab,
-  TabList,
   TabPanel,
   Tabs,
   ToggleButton,
@@ -393,26 +393,24 @@ const Player = ({ params }: { params: Params }) => {
             )}
           </div>
         </div>
-        <div>
-          {/* Change to nested tabs will hit
+        {/* Nested tab will hit the following issue and unreliable 
             https://github.com/adobe/react-spectrum/issues/5469 */}
-          <Tabs
-            className={classes["grouping-tab"]}
-            slot="grouping"
-            selectedKey={grouping}
-            onSelectionChange={(v) => {
-              setGrouping(v as typeof grouping)
-            }}
-          >
-            <TabList>
-              {Object.entries(groupKeyOptions).map(([k, v], i) => (
-                <Tab key={k} id={k} style={{ flex: i == 0 ? "3" : "2" }}>
+        <Tabs slot="groups">
+          <div className={classes["sticky-header"]}>
+            <RadioGroup
+              orientation="horizontal"
+              value={grouping}
+              onChange={(v) => {
+                if (v) setGrouping(v as typeof grouping)
+              }}
+              className={classes["tab-like-radio-group"]}
+            >
+              {Object.entries(groupKeyOptions).map(([k, v]) => (
+                <Radio key={k} value={k} className={classes["tab-like-radio"]}>
                   {v}
-                </Tab>
+                </Radio>
               ))}
-            </TabList>
-          </Tabs>
-          <Tabs slot="groups">
+            </RadioGroup>
             <ScrollableTabList
               items={[...table.groupedData.keys()].map((key, index) => ({
                 key,
@@ -428,26 +426,21 @@ const Player = ({ params }: { params: Params }) => {
             </ScrollableTabList>
             {grouping === "category" || grouping === "version" ? (
               <RadioGroup
+                orientation="horizontal"
                 value={difficulty.toString()}
                 onChange={(v) => {
                   if (v) setDifficulty(parseInt(v, 10))
                 }}
-                style={{
-                  height: "3rem",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  fontSize: "85%",
-                }}
+                className={classes["tab-like-radio-group"]}
               >
                 {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
                   <Radio
-                    style={{ textTransform: "uppercase", flex: 1 }}
                     key={i}
                     value={i.toString()}
-                    className={
-                      classes[`toggle-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                    }
+                    className={clsx(
+                      classes["tab-like-radio"],
+                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
+                    )}
                   >
                     {d}
                   </Radio>
@@ -456,26 +449,26 @@ const Player = ({ params }: { params: Params }) => {
             ) : (
               <></>
             )}
-            <Collection
-              items={[...table.groupedData.entries()].map(
-                ([key, table], index) => ({
-                  key,
-                  table,
-                  index,
-                }),
-              )}
-            >
-              {({ table, index }) => (
-                <TabPanel id={`${index}`}>
-                  <PlayerScoreTable
-                    table={table}
-                    handleRatingPopOpen={handleRatingPopOpen}
-                  />
-                </TabPanel>
-              )}
-            </Collection>
-          </Tabs>
-        </div>
+          </div>
+          <Collection
+            items={[...table.groupedData.entries()].map(
+              ([key, table], index) => ({
+                key,
+                table,
+                index,
+              }),
+            )}
+          >
+            {({ table, index }) => (
+              <TabPanel id={`${index}`}>
+                <PlayerScoreTable
+                  table={table}
+                  handleRatingPopOpen={handleRatingPopOpen}
+                />
+              </TabPanel>
+            )}
+          </Collection>
+        </Tabs>
       </div>
       <Popover
         triggerRef={ratingPopRef}
