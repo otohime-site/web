@@ -38,6 +38,9 @@
   background: white;
   padding: var(--size-2);
   font-size: 90%;
+  @media (prefers-color-scheme: dark) {
+    background: #1c1b22;
+  }
 }
 
 .tab-like-radio-group {
@@ -53,7 +56,6 @@
   }
   &:first-of-type .tab-like-radio {
     &[data-selected] {
-      background: white;
       border-bottom: 3px solid var(--blue-8);
     }
   }
