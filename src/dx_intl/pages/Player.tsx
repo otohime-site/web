@@ -206,6 +206,12 @@ const Player = ({ params }: { params: Params }) => {
     difficulty,
     includeInactive,
     sortingFns: {
+      // Ensure difficulty is also considered
+      // In case like group with level
+      index: (a, b) =>
+        a.difficulty !== b.difficulty
+          ? a.difficulty - b.difficulty
+          : a.index - b.index,
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
       internal_lv: (a, b) =>
         (a.internal_lv ?? levelCompareKey[a.level]) -

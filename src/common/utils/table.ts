@@ -32,9 +32,6 @@ export const useTable = <T extends TableEntry>({
       ...(includeInactive ? data : data.filter((e) => e.active)),
     ]
     const orderingWithGroup = [
-      ...(grouping === "level"
-        ? [{ key: "difficulty" as keyof T, desc: false }]
-        : []),
       ...(!ordering.find((o) => o.key == grouping)
         ? [{ key: grouping, desc: grouping === "current_version" }]
         : []),
