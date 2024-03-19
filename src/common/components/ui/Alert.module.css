@@ -1,4 +1,5 @@
 .alert {
+  margin: var(--size-2) 0;
   padding: var(--size-2);
   border-width: var(--border-size-1);
   border-radius: var(--radius-2);
@@ -22,18 +23,18 @@
 
 @media (prefers-color-scheme: dark) {
   .alert[data-severity="info"] {
-    border-color: var(--blue-10);
-    background: var(--blue-12);
-    color: var(--blue-7);
+    border-color: var(--blue-12);
+    background: var(--blue-10);
+    color: var(--blue-1);
   }
   .alert[data-severity="error"] {
     border-color: var(--red-10);
     background: var(--red-12);
-    color: var(--red-7);
+    color: var(--red-1);
   }
   .alert[data-severity="warning"] {
     border-color: var(--yellow-10);
     background: var(--yellow-12);
-    color: var(--yellow-7);
+    color: var(--yellow-1);
   }
 }
