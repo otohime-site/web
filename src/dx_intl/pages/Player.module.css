@@ -31,7 +31,6 @@
   position: sticky;
   top: 48px;
   background: white;
-  padding: var(--size-2);
   font-size: 90%;
   @media (prefers-color-scheme: dark) {
     background: #1c1b22;

@@ -5,6 +5,10 @@ html {
   background-color: transparent;
 }
 
+:where(p, ul, ol, dl, h6) {
+  font-size: var(--font-size-1);
+}
+
 .btn,
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {

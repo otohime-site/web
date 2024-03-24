@@ -6,9 +6,7 @@ import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
 import { difficulties, levels } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
-
-//  font-family: "M PLUS 1p";
-//  font-weight: 700;
+import classes from "./SongStats.module.css"
 
 const dxIntlScoresStatsDocument = graphql(`
   query dxIntlScoresStats(
@@ -99,7 +97,7 @@ const SongStats = ({ params }: { params: Params }) => {
               `${song.title} - maimai DX 曲目成績統計 - ${title}`
             }
           />
-          <h4>{song.title}</h4>
+          <h4 className={classes.title}>{song.title}</h4>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
               {variantMap.has(false) ? (
