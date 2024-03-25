@@ -4,7 +4,8 @@ import { useQuery } from "urql"
 import { Params } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../gql"
-import { difficulties, levels } from "../models/constants"
+import { flatSongsResult } from "../models/aggregation"
+import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./SongStats.module.css"
 
@@ -36,29 +37,16 @@ const SongStats = ({ params }: { params: Params }) => {
   const [songsResult] = useQuery({
     query: dxIntlSongsDocument,
   })
+  const songEntries = flatSongsResult(songsResult.data).filter((entry) =>
+    entry.song_id.startsWith(songId),
+  )
   const song = (songsResult.data?.dx_intl_songs || []).filter((song) =>
     song.id.startsWith(songId),
   )[0]
-  const variantMap = new Map(
-    (song?.dx_intl_variants ?? []).map((variant) => [
-      variant.deluxe,
-      {
-        version: variant.version,
-        active: variant.active,
-        notes: variant.dx_intl_notes.reduce<
-          Array<{
-            level: (typeof levels)[number]
-          }>
-        >((accr, note) => {
-          accr[note.difficulty] = {
-            level: note.level,
-          }
-          return accr
-        }, []),
-      },
-    ]),
+  const variants = [false, true].map((deluxe) =>
+    songEntries.some((entry) => entry.deluxe == deluxe),
   )
-  const notes = variantMap.get(params.variant === "dx")?.notes ?? []
+  const variantEntries = songEntries.filter((entry) => entry.deluxe == deluxe)
   const [statsResult] = useQuery({
     query: dxIntlScoresStatsDocument,
     variables: {
@@ -100,12 +88,12 @@ const SongStats = ({ params }: { params: Params }) => {
           <h4 className={classes.title}>{song.title}</h4>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
-              {variantMap.has(false) ? (
+              {variants[0] ? (
                 <Tab id="std" href={`/dxi/s/${params.songId}/std/`}>
                   STANDARD
                 </Tab>
               ) : null}
-              {variantMap.has(true) ? (
+              {variants[1] ? (
                 <Tab id="dx" href={`/dxi/s/${params.songId}/dx/`}>
                   DELUXE
                 </Tab>
@@ -116,14 +104,15 @@ const SongStats = ({ params }: { params: Params }) => {
                 slot="difficulty"
                 selectedKey={difficulty != null ? `${difficulty}` : ""}
               >
-                <TabList items={notes.map((_, i) => ({ i }))}>
-                  {({ i }) => (
+                <TabList items={variantEntries.map((entry) => ({ entry }))}>
+                  {({ entry }) => (
                     <Tab
-                      href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${i}`}
-                      key={i}
-                      id={`${i}`}
+                      href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${entry.difficulty}`}
+                      key={entry.difficulty}
+                      id={`${entry.difficulty}`}
                     >
-                      {difficulties[i]}
+                      {difficulties[entry.difficulty]}{" "}
+                      {entry.internal_lv ?? entry.level}
                     </Tab>
                   )}
                 </TabList>
