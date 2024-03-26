@@ -112,7 +112,9 @@ const SongStats = ({ params }: { params: Params }) => {
                       id={`${entry.difficulty}`}
                     >
                       {difficulties[entry.difficulty]}{" "}
-                      {entry.internal_lv ?? entry.level}
+                      {entry.internal_lv
+                        ? entry.internal_lv.toFixed(1)
+                        : entry.level}
                     </Tab>
                   )}
                 </TabList>
