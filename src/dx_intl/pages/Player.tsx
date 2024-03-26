@@ -392,35 +392,41 @@ const Player = ({ params }: { params: Params }) => {
               <div className="indicator" /> 顯示刪除曲
             </Switch>
           </div>
-          {statFolder
-            ? `${getGroupTitle(grouping, currentGroupEntry[0])}`
-            : "全曲"}{" "}
-          ({scoreStatsTargets.length})
-          <Switch isSelected={statFolder} onChange={setStatFolder}>
-            <div className="indicator" /> 限資料夾
-          </Switch>
-          <div className={classes["score-stats"]}>
-            {scoreStats.scoreStats.map((count, i) =>
-              i !== 1 && i !== 2 ? (
-                <div key={i}>
-                  <span>{RANK_SCORES[i][1]}</span> {count}
-                </div>
-              ) : null,
-            )}
-            {scoreStats.comboStats.map((count, i) =>
-              i !== 0 ? (
-                <div key={i}>
-                  <ComboFlag flag={comboFlags[i]} /> {count}
-                </div>
-              ) : null,
-            )}
-            {scoreStats.syncStats.map((count, i) =>
-              i !== 0 ? (
-                <div key={i}>
-                  <SyncFlag flag={syncFlags[i]} /> {count}
-                </div>
-              ) : null,
-            )}
+          <div className={classes["score-stats-block"]}>
+            <p>
+              <strong>
+                {statFolder
+                  ? `${getGroupTitle(grouping, currentGroupEntry[0])}`
+                  : "全曲"}{" "}
+                ({scoreStatsTargets.length})
+              </strong>
+              <Switch isSelected={statFolder} onChange={setStatFolder}>
+                <div className="indicator" /> 限資料夾
+              </Switch>
+            </p>
+            <ul>
+              {scoreStats.scoreStats.map((count, i) =>
+                i !== 1 && i !== 2 ? (
+                  <li key={i}>
+                    <span>{RANK_SCORES[i][1]}</span> {count}
+                  </li>
+                ) : null,
+              )}
+              {scoreStats.comboStats.map((count, i) =>
+                i !== 0 ? (
+                  <li key={i}>
+                    <ComboFlag flag={comboFlags[i]} /> {count}
+                  </li>
+                ) : null,
+              )}
+              {scoreStats.syncStats.map((count, i) =>
+                i !== 0 ? (
+                  <li key={i}>
+                    <SyncFlag flag={syncFlags[i]} /> {count}
+                  </li>
+                ) : null,
+              )}
+            </ul>
           </div>
         </div>
         {/* Nested tab will hit the following issue and unreliable 
