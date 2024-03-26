@@ -18,6 +18,7 @@ import {
   Tab,
   TabPanel,
   Tabs,
+  TabsContext,
   ToggleButton,
   Toolbar,
 } from "react-aria-components"
@@ -114,6 +115,9 @@ const Player = ({ params }: { params: Params }) => {
   const [grouping, setGrouping] = useState<
     "current_version" | "category" | "version" | "level"
   >("current_version")
+  const [selectedGroup, setSelectedGroup] = useState<string | number | null>(
+    null,
+  )
   const [ordering, setOrdering] = useState<
     | "index"
     | "level"
@@ -126,6 +130,7 @@ const Player = ({ params }: { params: Params }) => {
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [difficulty, setDifficulty] = useState<number>(2)
   const [includeInactive, setIncludeInactive] = useState(false)
+  const [statFolder, setStatFolder] = useState(true)
   const ratingPopRef = useRef<HTMLElement | null>(null)
   const [ratingPopEntry, setRatingPopEntry] = useState<ScoreTableEntry | null>(
     null,
@@ -228,6 +233,17 @@ const Player = ({ params }: { params: Params }) => {
       }
     },
   })
+  const { currentGroupEntry, scoreStatsTargets, scoreStats } = useMemo(() => {
+    const currentGroupEntry = [...table.groupedData.entries()][
+      parseInt(`${selectedGroup}`, 10)
+    ] ?? ["", []]
+    const scoreStatsTargets = (
+      statFolder ? currentGroupEntry[1] : scoreTable
+    )?.filter((s) => includeInactive || s.active)
+    const scoreStats = getScoreStats(scoreStatsTargets)
+    return { currentGroupEntry, scoreStatsTargets, scoreStats }
+  }, [scoreTable, table, includeInactive, selectedGroup, statFolder])
+
   const downloadCSV = useCallback(async (): Promise<void> => {
     const papa = await import("papaparse")
     const updatedAt = recordResult.data?.dx_intl_players[0]?.updated_at
@@ -270,9 +286,6 @@ const Player = ({ params }: { params: Params }) => {
     ratingPopRef.current = event.currentTarget
     setRatingPopEntry(entry)
   }
-  const scoreStats = getScoreStats(
-    includeInactive ? scoreTable : scoreTable.filter((s) => s.active),
-  )
 
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
@@ -294,7 +307,12 @@ const Player = ({ params }: { params: Params }) => {
   }
 
   return (
-    <>
+    <TabsContext.Provider
+      value={{
+        selectedKey: selectedGroup,
+        onSelectionChange: setSelectedGroup,
+      }}
+    >
       <Titled
         title={(title) => `${record.card_name} - maimai DX 成績單 - ${title}`}
       />
@@ -310,7 +328,6 @@ const Player = ({ params }: { params: Params }) => {
             updatedAt={player.updated_at}
             isPrivate={player.private}
           />
-
           <Toolbar aria-label="成績單選項" className={classes.toolbar}>
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
@@ -371,10 +388,17 @@ const Player = ({ params }: { params: Params }) => {
                 isSelected ? <IconArrowDown /> : <IconArrowUp />
               }
             </ToggleButton>
-            <Switch onChange={setIncludeInactive}>
+            <Switch isSelected={includeInactive} onChange={setIncludeInactive}>
               <div className="indicator" /> 顯示刪除曲
             </Switch>
           </div>
+          {statFolder
+            ? `${getGroupTitle(grouping, currentGroupEntry[0])}`
+            : "全曲"}{" "}
+          ({scoreStatsTargets.length})
+          <Switch isSelected={statFolder} onChange={setStatFolder}>
+            <div className="indicator" /> 限資料夾
+          </Switch>
           <div className={classes["score-stats"]}>
             {scoreStats.scoreStats.map((count, i) =>
               i !== 1 && i !== 2 ? (
@@ -490,7 +514,7 @@ const Player = ({ params }: { params: Params }) => {
           {ratingPopEntry ? <NoteRating entry={ratingPopEntry} /> : null}
         </Dialog>
       </Popover>
-    </>
+    </TabsContext.Provider>
   )
 }
 export default Player
