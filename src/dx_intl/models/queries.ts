@@ -27,6 +27,12 @@ export const dxIntlSongsDocument = graphql(`
           internal_lv
           difficulty
           level
+          dx_intl_scores_rates {
+            play
+            sss_rate
+            fc_rate
+            ap_rate
+          }
         }
       }
     }

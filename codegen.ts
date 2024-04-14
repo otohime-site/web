@@ -30,6 +30,8 @@ const config: CodegenConfig = {
       dx_intl_combo_flag: "'' | 'fc' | 'fc+' | 'ap' | 'ap+'",
       dx_intl_sync_flag: "'' | 's' | 'fs' | 'fs+' | 'fdx' | 'fdx+'",
       dx_intl_trophy: "'normal' | 'bronze' | 'silver' | 'gold' | 'rainbow'",
+      dx_intl_scores_stats_ranges:
+        "'AP+' | 'SSS+' | 'SSS' | 'SS+' | 'SS' | 'S+' | 'S' | 'AAA' | 'AA' | 'A' | 'D～BBB'",
       finale_level:
         "'1' | '2' | '3' | '4' | '5' | '6' | '7' | '7+' | '8' | '8+' | '9' | '9+' | '10' | '10+' | '11' | '11+' | '12' | '12+' | '13' | '13+' | '14'",
       finale_combo_flag: "'' | 'fc_silver' | 'fc_gold' | 'ap' | 'ap_plus'",
