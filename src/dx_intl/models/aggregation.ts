@@ -103,6 +103,7 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
         difficulty: note.difficulty,
         level: note.level,
         internal_lv: note.internal_lv,
+        dx_intl_scores_rates: note.dx_intl_scores_rates,
       })),
     ),
   )

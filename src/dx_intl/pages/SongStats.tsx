@@ -47,6 +47,9 @@ const SongStats = ({ params }: { params: Params }) => {
     songEntries.some((entry) => entry.deluxe == deluxe),
   )
   const variantEntries = songEntries.filter((entry) => entry.deluxe == deluxe)
+  const rates =
+    (variantEntries ?? []).filter((e) => e.difficulty === difficulty)[0]
+      ?.dx_intl_scores_rates ?? {}
   const [statsResult] = useQuery({
     query: dxIntlScoresStatsDocument,
     variables: {
@@ -86,6 +89,7 @@ const SongStats = ({ params }: { params: Params }) => {
             }
           />
           <h4 className={classes.title}>{song.title}</h4>
+          <p>（每十分鐘更新）</p>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
               {variants[0] ? (
@@ -119,6 +123,18 @@ const SongStats = ({ params }: { params: Params }) => {
                   )}
                 </TabList>
                 <TabPanel id={difficulty != null ? `${difficulty}` : ""}>
+                  <ul>
+                    <li>Play: {rates?.play ?? 0}</li>
+                    <li>
+                      SSS Rate: {((rates?.sss_rate ?? 0) * 100).toFixed(2)}%
+                    </li>
+                    <li>
+                      FC Rate: {((rates?.fc_rate ?? 0) * 100).toFixed(2)}%
+                    </li>
+                    <li>
+                      AP Rate: {((rates?.ap_rate ?? 0) * 100).toFixed(2)}%
+                    </li>
+                  </ul>
                   <QueryResult result={statsResult}>
                     <table>
                       <thead>

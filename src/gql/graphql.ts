@@ -82,6 +82,32 @@ export type Scalars = {
       | "14+"
       | "15"
   }
+  dx_intl_scores_stats_ranges: {
+    input:
+      | "AP+"
+      | "SSS+"
+      | "SSS"
+      | "SS+"
+      | "SS"
+      | "S+"
+      | "S"
+      | "AAA"
+      | "AA"
+      | "A"
+      | "D～BBB"
+    output:
+      | "AP+"
+      | "SSS+"
+      | "SSS"
+      | "SS+"
+      | "SS"
+      | "S+"
+      | "S"
+      | "AAA"
+      | "AA"
+      | "A"
+      | "D～BBB"
+  }
   dx_intl_sync_flag: {
     input: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
     output: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
@@ -398,6 +424,8 @@ export type Dx_Intl_Notes = {
   /** An aggregate relationship */
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** An object relationship */
+  dx_intl_scores_rates?: Maybe<Dx_Intl_Scores_Rates>
+  /** An object relationship */
   dx_intl_variant?: Maybe<Dx_Intl_Variants>
   internal_lv?: Maybe<Scalars["numeric"]["output"]>
   level: Scalars["dx_intl_level"]["output"]
@@ -522,6 +550,7 @@ export type Dx_Intl_Notes_Bool_Exp = {
   difficulty?: InputMaybe<Smallint_Comparison_Exp>
   dx_intl_scores?: InputMaybe<Dx_Intl_Scores_Bool_Exp>
   dx_intl_scores_aggregate?: InputMaybe<Dx_Intl_Scores_Aggregate_Bool_Exp>
+  dx_intl_scores_rates?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
   dx_intl_variant?: InputMaybe<Dx_Intl_Variants_Bool_Exp>
   internal_lv?: InputMaybe<Numeric_Comparison_Exp>
   level?: InputMaybe<Dx_Intl_Level_Comparison_Exp>
@@ -545,6 +574,7 @@ export type Dx_Intl_Notes_Insert_Input = {
   deluxe?: InputMaybe<Scalars["Boolean"]["input"]>
   difficulty?: InputMaybe<Scalars["smallint"]["input"]>
   dx_intl_scores?: InputMaybe<Dx_Intl_Scores_Arr_Rel_Insert_Input>
+  dx_intl_scores_rates?: InputMaybe<Dx_Intl_Scores_Rates_Obj_Rel_Insert_Input>
   dx_intl_variant?: InputMaybe<Dx_Intl_Variants_Obj_Rel_Insert_Input>
   internal_lv?: InputMaybe<Scalars["numeric"]["input"]>
   level?: InputMaybe<Scalars["dx_intl_level"]["input"]>
@@ -613,6 +643,7 @@ export type Dx_Intl_Notes_Order_By = {
   deluxe?: InputMaybe<Order_By>
   difficulty?: InputMaybe<Order_By>
   dx_intl_scores_aggregate?: InputMaybe<Dx_Intl_Scores_Aggregate_Order_By>
+  dx_intl_scores_rates?: InputMaybe<Dx_Intl_Scores_Rates_Order_By>
   dx_intl_variant?: InputMaybe<Dx_Intl_Variants_Order_By>
   internal_lv?: InputMaybe<Order_By>
   level?: InputMaybe<Order_By>
@@ -2277,6 +2308,260 @@ export type Dx_Intl_Scores_Pk_Columns_Input = {
   id: Scalars["bigint"]["input"]
 }
 
+/** columns and relationships of "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates = {
+  __typename?: "dx_intl_scores_rates"
+  ap_rate?: Maybe<Scalars["numeric"]["output"]>
+  deluxe?: Maybe<Scalars["Boolean"]["output"]>
+  difficulty?: Maybe<Scalars["smallint"]["output"]>
+  fc_rate?: Maybe<Scalars["numeric"]["output"]>
+  play?: Maybe<Scalars["bigint"]["output"]>
+  song_id?: Maybe<Scalars["String"]["output"]>
+  sss_rate?: Maybe<Scalars["numeric"]["output"]>
+}
+
+/** aggregated selection of "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Aggregate = {
+  __typename?: "dx_intl_scores_rates_aggregate"
+  aggregate?: Maybe<Dx_Intl_Scores_Rates_Aggregate_Fields>
+  nodes: Array<Dx_Intl_Scores_Rates>
+}
+
+/** aggregate fields of "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Aggregate_Fields = {
+  __typename?: "dx_intl_scores_rates_aggregate_fields"
+  avg?: Maybe<Dx_Intl_Scores_Rates_Avg_Fields>
+  count: Scalars["Int"]["output"]
+  max?: Maybe<Dx_Intl_Scores_Rates_Max_Fields>
+  min?: Maybe<Dx_Intl_Scores_Rates_Min_Fields>
+  stddev?: Maybe<Dx_Intl_Scores_Rates_Stddev_Fields>
+  stddev_pop?: Maybe<Dx_Intl_Scores_Rates_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Dx_Intl_Scores_Rates_Stddev_Samp_Fields>
+  sum?: Maybe<Dx_Intl_Scores_Rates_Sum_Fields>
+  var_pop?: Maybe<Dx_Intl_Scores_Rates_Var_Pop_Fields>
+  var_samp?: Maybe<Dx_Intl_Scores_Rates_Var_Samp_Fields>
+  variance?: Maybe<Dx_Intl_Scores_Rates_Variance_Fields>
+}
+
+/** aggregate fields of "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Dx_Intl_Scores_Rates_Select_Column>>
+  distinct?: InputMaybe<Scalars["Boolean"]["input"]>
+}
+
+/** aggregate avg on columns */
+export type Dx_Intl_Scores_Rates_Avg_Fields = {
+  __typename?: "dx_intl_scores_rates_avg_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** Boolean expression to filter rows from the table "dx_intl_scores_rates". All fields are combined with a logical 'AND'. */
+export type Dx_Intl_Scores_Rates_Bool_Exp = {
+  _and?: InputMaybe<Array<Dx_Intl_Scores_Rates_Bool_Exp>>
+  _not?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
+  _or?: InputMaybe<Array<Dx_Intl_Scores_Rates_Bool_Exp>>
+  ap_rate?: InputMaybe<Numeric_Comparison_Exp>
+  deluxe?: InputMaybe<Boolean_Comparison_Exp>
+  difficulty?: InputMaybe<Smallint_Comparison_Exp>
+  fc_rate?: InputMaybe<Numeric_Comparison_Exp>
+  play?: InputMaybe<Bigint_Comparison_Exp>
+  song_id?: InputMaybe<String_Comparison_Exp>
+  sss_rate?: InputMaybe<Numeric_Comparison_Exp>
+}
+
+/** unique or primary key constraints on table "dx_intl_scores_rates" */
+export enum Dx_Intl_Scores_Rates_Constraint {
+  /** unique or primary key constraint on columns "deluxe", "difficulty", "song_id" */
+  DxIntlScoresRatesSongIdDeluxeDifficultyIdx = "dx_intl_scores_rates_song_id_deluxe_difficulty_idx",
+}
+
+/** input type for inserting data into table "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Insert_Input = {
+  ap_rate?: InputMaybe<Scalars["numeric"]["input"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]["input"]>
+  difficulty?: InputMaybe<Scalars["smallint"]["input"]>
+  fc_rate?: InputMaybe<Scalars["numeric"]["input"]>
+  play?: InputMaybe<Scalars["bigint"]["input"]>
+  song_id?: InputMaybe<Scalars["String"]["input"]>
+  sss_rate?: InputMaybe<Scalars["numeric"]["input"]>
+}
+
+/** aggregate max on columns */
+export type Dx_Intl_Scores_Rates_Max_Fields = {
+  __typename?: "dx_intl_scores_rates_max_fields"
+  ap_rate?: Maybe<Scalars["numeric"]["output"]>
+  difficulty?: Maybe<Scalars["smallint"]["output"]>
+  fc_rate?: Maybe<Scalars["numeric"]["output"]>
+  play?: Maybe<Scalars["bigint"]["output"]>
+  song_id?: Maybe<Scalars["String"]["output"]>
+  sss_rate?: Maybe<Scalars["numeric"]["output"]>
+}
+
+/** aggregate min on columns */
+export type Dx_Intl_Scores_Rates_Min_Fields = {
+  __typename?: "dx_intl_scores_rates_min_fields"
+  ap_rate?: Maybe<Scalars["numeric"]["output"]>
+  difficulty?: Maybe<Scalars["smallint"]["output"]>
+  fc_rate?: Maybe<Scalars["numeric"]["output"]>
+  play?: Maybe<Scalars["bigint"]["output"]>
+  song_id?: Maybe<Scalars["String"]["output"]>
+  sss_rate?: Maybe<Scalars["numeric"]["output"]>
+}
+
+/** input type for inserting object relation for remote table "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Obj_Rel_Insert_Input = {
+  data: Dx_Intl_Scores_Rates_Insert_Input
+  /** upsert condition */
+  on_conflict?: InputMaybe<Dx_Intl_Scores_Rates_On_Conflict>
+}
+
+/** on_conflict condition type for table "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_On_Conflict = {
+  constraint: Dx_Intl_Scores_Rates_Constraint
+  update_columns?: Array<Dx_Intl_Scores_Rates_Update_Column>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
+}
+
+/** Ordering options when selecting data from "dx_intl_scores_rates". */
+export type Dx_Intl_Scores_Rates_Order_By = {
+  ap_rate?: InputMaybe<Order_By>
+  deluxe?: InputMaybe<Order_By>
+  difficulty?: InputMaybe<Order_By>
+  fc_rate?: InputMaybe<Order_By>
+  play?: InputMaybe<Order_By>
+  song_id?: InputMaybe<Order_By>
+  sss_rate?: InputMaybe<Order_By>
+}
+
+/** select columns of table "dx_intl_scores_rates" */
+export enum Dx_Intl_Scores_Rates_Select_Column {
+  /** column name */
+  ApRate = "ap_rate",
+  /** column name */
+  Deluxe = "deluxe",
+  /** column name */
+  Difficulty = "difficulty",
+  /** column name */
+  FcRate = "fc_rate",
+  /** column name */
+  Play = "play",
+  /** column name */
+  SongId = "song_id",
+  /** column name */
+  SssRate = "sss_rate",
+}
+
+/** aggregate stddev on columns */
+export type Dx_Intl_Scores_Rates_Stddev_Fields = {
+  __typename?: "dx_intl_scores_rates_stddev_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** aggregate stddev_pop on columns */
+export type Dx_Intl_Scores_Rates_Stddev_Pop_Fields = {
+  __typename?: "dx_intl_scores_rates_stddev_pop_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** aggregate stddev_samp on columns */
+export type Dx_Intl_Scores_Rates_Stddev_Samp_Fields = {
+  __typename?: "dx_intl_scores_rates_stddev_samp_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** Streaming cursor of the table "dx_intl_scores_rates" */
+export type Dx_Intl_Scores_Rates_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Dx_Intl_Scores_Rates_Stream_Cursor_Value_Input
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>
+}
+
+/** Initial value of the column from where the streaming should start */
+export type Dx_Intl_Scores_Rates_Stream_Cursor_Value_Input = {
+  ap_rate?: InputMaybe<Scalars["numeric"]["input"]>
+  deluxe?: InputMaybe<Scalars["Boolean"]["input"]>
+  difficulty?: InputMaybe<Scalars["smallint"]["input"]>
+  fc_rate?: InputMaybe<Scalars["numeric"]["input"]>
+  play?: InputMaybe<Scalars["bigint"]["input"]>
+  song_id?: InputMaybe<Scalars["String"]["input"]>
+  sss_rate?: InputMaybe<Scalars["numeric"]["input"]>
+}
+
+/** aggregate sum on columns */
+export type Dx_Intl_Scores_Rates_Sum_Fields = {
+  __typename?: "dx_intl_scores_rates_sum_fields"
+  ap_rate?: Maybe<Scalars["numeric"]["output"]>
+  difficulty?: Maybe<Scalars["smallint"]["output"]>
+  fc_rate?: Maybe<Scalars["numeric"]["output"]>
+  play?: Maybe<Scalars["bigint"]["output"]>
+  sss_rate?: Maybe<Scalars["numeric"]["output"]>
+}
+
+/** update columns of table "dx_intl_scores_rates" */
+export enum Dx_Intl_Scores_Rates_Update_Column {
+  /** column name */
+  ApRate = "ap_rate",
+  /** column name */
+  Deluxe = "deluxe",
+  /** column name */
+  Difficulty = "difficulty",
+  /** column name */
+  FcRate = "fc_rate",
+  /** column name */
+  Play = "play",
+  /** column name */
+  SongId = "song_id",
+  /** column name */
+  SssRate = "sss_rate",
+}
+
+/** aggregate var_pop on columns */
+export type Dx_Intl_Scores_Rates_Var_Pop_Fields = {
+  __typename?: "dx_intl_scores_rates_var_pop_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** aggregate var_samp on columns */
+export type Dx_Intl_Scores_Rates_Var_Samp_Fields = {
+  __typename?: "dx_intl_scores_rates_var_samp_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
+/** aggregate variance on columns */
+export type Dx_Intl_Scores_Rates_Variance_Fields = {
+  __typename?: "dx_intl_scores_rates_variance_fields"
+  ap_rate?: Maybe<Scalars["Float"]["output"]>
+  difficulty?: Maybe<Scalars["Float"]["output"]>
+  fc_rate?: Maybe<Scalars["Float"]["output"]>
+  play?: Maybe<Scalars["Float"]["output"]>
+  sss_rate?: Maybe<Scalars["Float"]["output"]>
+}
+
 /** select columns of table "dx_intl_scores" */
 export enum Dx_Intl_Scores_Select_Column {
   /** column name */
@@ -2333,7 +2618,7 @@ export type Dx_Intl_Scores_Stats = {
   count?: Maybe<Scalars["bigint"]["output"]>
   deluxe?: Maybe<Scalars["Boolean"]["output"]>
   difficulty?: Maybe<Scalars["smallint"]["output"]>
-  range?: Maybe<Scalars["String"]["output"]>
+  range?: Maybe<Scalars["dx_intl_scores_stats_ranges"]["output"]>
   song_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -2381,7 +2666,7 @@ export type Dx_Intl_Scores_Stats_Bool_Exp = {
   count?: InputMaybe<Bigint_Comparison_Exp>
   deluxe?: InputMaybe<Boolean_Comparison_Exp>
   difficulty?: InputMaybe<Smallint_Comparison_Exp>
-  range?: InputMaybe<String_Comparison_Exp>
+  range?: InputMaybe<Dx_Intl_Scores_Stats_Ranges_Comparison_Exp>
   song_id?: InputMaybe<String_Comparison_Exp>
 }
 
@@ -2390,7 +2675,7 @@ export type Dx_Intl_Scores_Stats_Max_Fields = {
   __typename?: "dx_intl_scores_stats_max_fields"
   count?: Maybe<Scalars["bigint"]["output"]>
   difficulty?: Maybe<Scalars["smallint"]["output"]>
-  range?: Maybe<Scalars["String"]["output"]>
+  range?: Maybe<Scalars["dx_intl_scores_stats_ranges"]["output"]>
   song_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -2399,7 +2684,7 @@ export type Dx_Intl_Scores_Stats_Min_Fields = {
   __typename?: "dx_intl_scores_stats_min_fields"
   count?: Maybe<Scalars["bigint"]["output"]>
   difficulty?: Maybe<Scalars["smallint"]["output"]>
-  range?: Maybe<Scalars["String"]["output"]>
+  range?: Maybe<Scalars["dx_intl_scores_stats_ranges"]["output"]>
   song_id?: Maybe<Scalars["String"]["output"]>
 }
 
@@ -2410,6 +2695,19 @@ export type Dx_Intl_Scores_Stats_Order_By = {
   difficulty?: InputMaybe<Order_By>
   range?: InputMaybe<Order_By>
   song_id?: InputMaybe<Order_By>
+}
+
+/** Boolean expression to compare columns of type "dx_intl_scores_stats_ranges". All fields are combined with logical 'AND'. */
+export type Dx_Intl_Scores_Stats_Ranges_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _gt?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _gte?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _in?: InputMaybe<Array<Scalars["dx_intl_scores_stats_ranges"]["input"]>>
+  _is_null?: InputMaybe<Scalars["Boolean"]["input"]>
+  _lt?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _lte?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _neq?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
+  _nin?: InputMaybe<Array<Scalars["dx_intl_scores_stats_ranges"]["input"]>>
 }
 
 /** select columns of table "dx_intl_scores_stats" */
@@ -2460,7 +2758,7 @@ export type Dx_Intl_Scores_Stats_Stream_Cursor_Value_Input = {
   count?: InputMaybe<Scalars["bigint"]["input"]>
   deluxe?: InputMaybe<Scalars["Boolean"]["input"]>
   difficulty?: InputMaybe<Scalars["smallint"]["input"]>
-  range?: InputMaybe<Scalars["String"]["input"]>
+  range?: InputMaybe<Scalars["dx_intl_scores_stats_ranges"]["input"]>
   song_id?: InputMaybe<Scalars["String"]["input"]>
 }
 
@@ -6900,6 +7198,10 @@ export type Query_Root = {
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>
+  /** fetch data from the table: "dx_intl_scores_rates" */
+  dx_intl_scores_rates: Array<Dx_Intl_Scores_Rates>
+  /** fetch aggregated fields from the table: "dx_intl_scores_rates" */
+  dx_intl_scores_rates_aggregate: Dx_Intl_Scores_Rates_Aggregate
   /** fetch data from the table: "dx_intl_scores_stats" */
   dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>
   /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
@@ -7104,6 +7406,22 @@ export type Query_RootDx_Intl_Scores_AggregateArgs = {
 
 export type Query_RootDx_Intl_Scores_By_PkArgs = {
   id: Scalars["bigint"]["input"]
+}
+
+export type Query_RootDx_Intl_Scores_RatesArgs = {
+  distinct_on?: InputMaybe<Array<Dx_Intl_Scores_Rates_Select_Column>>
+  limit?: InputMaybe<Scalars["Int"]["input"]>
+  offset?: InputMaybe<Scalars["Int"]["input"]>
+  order_by?: InputMaybe<Array<Dx_Intl_Scores_Rates_Order_By>>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
+}
+
+export type Query_RootDx_Intl_Scores_Rates_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Dx_Intl_Scores_Rates_Select_Column>>
+  limit?: InputMaybe<Scalars["Int"]["input"]>
+  offset?: InputMaybe<Scalars["Int"]["input"]>
+  order_by?: InputMaybe<Array<Dx_Intl_Scores_Rates_Order_By>>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
 }
 
 export type Query_RootDx_Intl_Scores_StatsArgs = {
@@ -7431,6 +7749,12 @@ export type Subscription_Root = {
   dx_intl_scores_aggregate: Dx_Intl_Scores_Aggregate
   /** fetch data from the table: "dx_intl_scores" using primary key columns */
   dx_intl_scores_by_pk?: Maybe<Dx_Intl_Scores>
+  /** fetch data from the table: "dx_intl_scores_rates" */
+  dx_intl_scores_rates: Array<Dx_Intl_Scores_Rates>
+  /** fetch aggregated fields from the table: "dx_intl_scores_rates" */
+  dx_intl_scores_rates_aggregate: Dx_Intl_Scores_Rates_Aggregate
+  /** fetch data from the table in a streaming manner: "dx_intl_scores_rates" */
+  dx_intl_scores_rates_stream: Array<Dx_Intl_Scores_Rates>
   /** fetch data from the table: "dx_intl_scores_stats" */
   dx_intl_scores_stats: Array<Dx_Intl_Scores_Stats>
   /** fetch aggregated fields from the table: "dx_intl_scores_stats" */
@@ -7701,6 +8025,28 @@ export type Subscription_RootDx_Intl_Scores_AggregateArgs = {
 
 export type Subscription_RootDx_Intl_Scores_By_PkArgs = {
   id: Scalars["bigint"]["input"]
+}
+
+export type Subscription_RootDx_Intl_Scores_RatesArgs = {
+  distinct_on?: InputMaybe<Array<Dx_Intl_Scores_Rates_Select_Column>>
+  limit?: InputMaybe<Scalars["Int"]["input"]>
+  offset?: InputMaybe<Scalars["Int"]["input"]>
+  order_by?: InputMaybe<Array<Dx_Intl_Scores_Rates_Order_By>>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Scores_Rates_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Dx_Intl_Scores_Rates_Select_Column>>
+  limit?: InputMaybe<Scalars["Int"]["input"]>
+  offset?: InputMaybe<Scalars["Int"]["input"]>
+  order_by?: InputMaybe<Array<Dx_Intl_Scores_Rates_Order_By>>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
+}
+
+export type Subscription_RootDx_Intl_Scores_Rates_StreamArgs = {
+  batch_size: Scalars["Int"]["input"]
+  cursor: Array<InputMaybe<Dx_Intl_Scores_Rates_Stream_Cursor_Input>>
+  where?: InputMaybe<Dx_Intl_Scores_Rates_Bool_Exp>
 }
 
 export type Subscription_RootDx_Intl_Scores_StatsArgs = {
@@ -8684,6 +9030,13 @@ export type DxIntlSongsQuery = {
           | "14"
           | "14+"
           | "15"
+        dx_intl_scores_rates?: {
+          __typename?: "dx_intl_scores_rates"
+          play?: number | null
+          sss_rate?: number | null
+          fc_rate?: number | null
+          ap_rate?: number | null
+        } | null
       }>
     }>
   }>
@@ -8825,7 +9178,19 @@ export type DxIntlScoresStatsQuery = {
   __typename?: "query_root"
   dx_intl_scores_stats: Array<{
     __typename?: "dx_intl_scores_stats"
-    range?: string | null
+    range?:
+      | "AP+"
+      | "SSS+"
+      | "SSS"
+      | "SS+"
+      | "SS"
+      | "S+"
+      | "S"
+      | "AAA"
+      | "AA"
+      | "A"
+      | "D～BBB"
+      | null
     count?: number | null
   }>
 }
@@ -10078,6 +10443,34 @@ export const DxIntlSongsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "level" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "dx_intl_scores_rates",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "play" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "sss_rate" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "fc_rate" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "ap_rate" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
