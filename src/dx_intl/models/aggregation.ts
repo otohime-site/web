@@ -188,7 +188,13 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
 
 export const getGroupTitle = (
   grouping: string,
-  group: string | number | boolean | null | undefined,
+  group:
+    | string
+    | number
+    | boolean
+    | ScoreTableEntry["dx_intl_scores_rates"]
+    | null
+    | undefined,
 ): string => {
   switch (grouping) {
     case "current_version":
