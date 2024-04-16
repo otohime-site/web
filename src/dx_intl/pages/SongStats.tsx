@@ -89,7 +89,6 @@ const SongStats = ({ params }: { params: Params }) => {
             }
           />
           <h4 className={classes.title}>{song.title}</h4>
-          <p>（每十分鐘更新）</p>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
               {variants[0] ? (
@@ -123,18 +122,29 @@ const SongStats = ({ params }: { params: Params }) => {
                   )}
                 </TabList>
                 <TabPanel id={difficulty != null ? `${difficulty}` : ""}>
-                  <ul>
-                    <li>Play: {rates?.play ?? 0}</li>
+                  <ul className={classes.rates}>
                     <li>
-                      SSS Rate: {((rates?.sss_rate ?? 0) * 100).toFixed(2)}%
+                      <span>Play</span>
+                      <span>{rates?.play ?? 0}</span>
                     </li>
                     <li>
-                      FC Rate: {((rates?.fc_rate ?? 0) * 100).toFixed(2)}%
+                      <span>SSS Rate</span>
+                      <span>{((rates?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
                     </li>
                     <li>
-                      AP Rate: {((rates?.ap_rate ?? 0) * 100).toFixed(2)}%
+                      <span>FC Rate</span>
+                      <span>{((rates?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
+                    </li>
+                    <li>
+                      <span>AP Rate</span>
+                      <span>{((rates?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
                     </li>
                   </ul>
+                  <ul>
+                    <li>數字來自 Otohime 系統中所有登錄且公開的成績單。</li>
+                    <li>每十分鐘更新。</li>
+                  </ul>
+                  <h5>分數別玩家統計</h5>
                   <QueryResult result={statsResult}>
                     <table>
                       <thead>

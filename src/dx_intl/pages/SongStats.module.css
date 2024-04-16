@@ -2,3 +2,30 @@
   font-family: "M PLUS 1p";
   font-weight: 700;
 }
+
+.rates {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  margin: var(--size-2) 0;
+  gap: var(--size-2);
+  & li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 6rem;
+    text-align: right;
+    flex-direction: column;
+    list-style-type: none;
+    background: var(--surface-1);
+    border-radius: var(--radius-3);
+    padding: var(--size-2);
+    & span:first-child {
+      font-size: 0.8rem;
+    }
+    & span:last-child {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+}
