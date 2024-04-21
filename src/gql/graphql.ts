@@ -11459,6 +11459,20 @@ export const DxIntlScoresStatsDocument = {
                   ],
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "range" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",

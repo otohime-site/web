@@ -21,6 +21,7 @@ const dxIntlScoresStatsDocument = graphql(`
         deluxe: { _eq: $deluxe }
         difficulty: { _eq: $difficulty }
       }
+      order_by: { range: asc }
     ) {
       range
       count

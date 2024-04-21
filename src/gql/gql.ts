@@ -57,7 +57,7 @@ const documents = {
     types.DxIntlPlayersTimelinesDocument,
   "\n  query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {\n    beforeRecord: dx_intl_records_with_history(\n      where: {\n        dx_intl_player: { nickname: { _eq: $nickname } }\n        end: { _eq: $time }\n      }\n    ) {\n      ...dxIntlRecordsWithHistoryFields\n    }\n    afterRecord: dx_intl_records_with_history(\n      where: {\n        dx_intl_player: { nickname: { _eq: $nickname } }\n        start: { _eq: $time }\n      }\n    ) {\n      ...dxIntlRecordsWithHistoryFields\n    }\n    beforeScores: dx_intl_scores_with_history(\n      where: {\n        dx_intl_player: { nickname: { _eq: $nickname } }\n        end: { _eq: $time }\n      }\n    ) {\n      ...dxIntlScoresWithHistoryFields\n    }\n    afterScores: dx_intl_scores_with_history(\n      where: {\n        dx_intl_player: { nickname: { _eq: $nickname } }\n        start: { _eq: $time }\n      }\n    ) {\n      ...dxIntlScoresWithHistoryFields\n    }\n  }\n":
     types.DxIntlPlayerWithTimelineDocument,
-  "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n":
+  "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n      order_by: { range: asc }\n    ) {\n      range\n      count\n    }\n  }\n":
     types.DxIntlScoresStatsDocument,
   "\n  query finalePlayersForUser($userId: String!) {\n    finale_players(where: { user_id: { _eq: $userId } }) {\n      ...finalePlayersFields\n    }\n  }\n":
     types.FinalePlayersForUserDocument,
@@ -215,8 +215,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n",
-): (typeof documents)["\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n    ) {\n      range\n      count\n    }\n  }\n"]
+  source: "\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n      order_by: { range: asc }\n    ) {\n      range\n      count\n    }\n  }\n",
+): (typeof documents)["\n  query dxIntlScoresStats(\n    $songId: String!\n    $deluxe: Boolean!\n    $difficulty: smallint!\n  ) {\n    dx_intl_scores_stats(\n      where: {\n        song_id: { _eq: $songId }\n        deluxe: { _eq: $deluxe }\n        difficulty: { _eq: $difficulty }\n      }\n      order_by: { range: asc }\n    ) {\n      range\n      count\n    }\n  }\n"]
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
