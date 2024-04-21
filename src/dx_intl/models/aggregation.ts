@@ -103,7 +103,10 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
         difficulty: note.difficulty,
         level: note.level,
         internal_lv: note.internal_lv,
-        dx_intl_scores_rates: note.dx_intl_scores_rates,
+        play: note.dx_intl_scores_rates?.play,
+        sss_rate: note.dx_intl_scores_rates?.sss_rate,
+        fc_rate: note.dx_intl_scores_rates?.fc_rate,
+        ap_rate: note.dx_intl_scores_rates?.ap_rate,
       })),
     ),
   )
@@ -188,13 +191,7 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
 
 export const getGroupTitle = (
   grouping: string,
-  group:
-    | string
-    | number
-    | boolean
-    | ScoreTableEntry["dx_intl_scores_rates"]
-    | null
-    | undefined,
+  group: string | number | boolean | null | undefined,
 ): string => {
   switch (grouping) {
     case "current_version":

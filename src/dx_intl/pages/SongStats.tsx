@@ -48,9 +48,9 @@ const SongStats = ({ params }: { params: Params }) => {
     songEntries.some((entry) => entry.deluxe == deluxe),
   )
   const variantEntries = songEntries.filter((entry) => entry.deluxe == deluxe)
-  const rates =
-    (variantEntries ?? []).filter((e) => e.difficulty === difficulty)[0]
-      ?.dx_intl_scores_rates ?? {}
+  const note = (variantEntries ?? []).filter(
+    (e) => e.difficulty === difficulty,
+  )[0]
   const [statsResult] = useQuery({
     query: dxIntlScoresStatsDocument,
     variables: {
@@ -126,19 +126,19 @@ const SongStats = ({ params }: { params: Params }) => {
                   <ul className={classes.rates}>
                     <li>
                       <span>Play</span>
-                      <span>{rates?.play ?? 0}</span>
+                      <span>{note?.play ?? 0}</span>
                     </li>
                     <li>
                       <span>SSS Rate</span>
-                      <span>{((rates?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
+                      <span>{((note?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
                     </li>
                     <li>
                       <span>FC Rate</span>
-                      <span>{((rates?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
+                      <span>{((note?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
                     </li>
                     <li>
                       <span>AP Rate</span>
-                      <span>{((rates?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
+                      <span>{((note?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
                     </li>
                   </ul>
                   <ul>

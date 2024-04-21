@@ -6,12 +6,14 @@ import {
   Button,
   Collection,
   Dialog,
+  Header,
   Label,
   ListBox,
   ListBoxItem,
   Popover,
   Radio,
   RadioGroup,
+  Section,
   Select,
   SelectValue,
   Switch,
@@ -126,6 +128,9 @@ const Player = ({ params }: { params: Params }) => {
     | "rating"
     | "combo_flag"
     | "sync_flag"
+    | "sss_rate"
+    | "fc_rate"
+    | "ap_rate"
   >("index")
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [difficulty, setDifficulty] = useState<number>(2)
@@ -373,13 +378,25 @@ const Player = ({ params }: { params: Params }) => {
               </Button>
               <Popover>
                 <ListBox>
-                  <ListBoxItem id="index">預設</ListBoxItem>
-                  <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                  <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
-                  <ListBoxItem id="score">成績</ListBoxItem>
-                  <ListBoxItem id="rating">Rating 分數</ListBoxItem>
-                  <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                  <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                  <Section>
+                    <Header>譜面</Header>
+                    <ListBoxItem id="index">預設</ListBoxItem>
+                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
+                    <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
+                  </Section>
+                  <Section>
+                    <Header>成績單</Header>
+                    <ListBoxItem id="score">成績</ListBoxItem>
+                    <ListBoxItem id="rating">Rating 分數</ListBoxItem>
+                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
+                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                  </Section>
+                  <Section>
+                    <Header>玩家統計</Header>
+                    <ListBoxItem id="sss_rate">SSS Rate</ListBoxItem>
+                    <ListBoxItem id="fc_rate">FC Rate</ListBoxItem>
+                    <ListBoxItem id="ap_rate">AP Rate</ListBoxItem>
+                  </Section>
                 </ListBox>
               </Popover>
             </Select>
