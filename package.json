@@ -26,6 +26,7 @@
     "date-fns": "^3.0.5",
     "file-saver": "^2.0.5",
     "firebase": "^10.1.0",
+    "gql.tada": "^1.6.2",
     "graphql": "^16.3.0",
     "open-props": "^1.6.12",
     "papaparse": "^5.3.1",
@@ -39,12 +40,9 @@
     "wouter": "^3.0.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
-    "@graphql-codegen/client-preset-swc-plugin": "^0.2.0",
-    "@graphql-codegen/introspection": "^4.0.0",
-    "@iconify-json/mdi": "^1.1.52",
+    "@0no-co/graphqlsp": "^1.12.1",
     "@iconify-json/grommet-icons": "^1.1.10",
+    "@iconify-json/mdi": "^1.1.52",
     "@svgr/core": "^8.0.0",
     "@svgr/plugin-jsx": "^8.0.1",
     "@types/file-saver": "^2.0.5",
