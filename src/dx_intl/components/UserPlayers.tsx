@@ -5,17 +5,20 @@ import IconAdd from "~icons/mdi/add"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
-import { getFragmentData, graphql } from "../../gql"
+import { graphql, readFragment } from "../../graphql"
 import { dxIntlPlayersFields } from "../models/fragments"
 import PlayerItem from "./PlayerItem"
 
-const dxIntlPlayersForUserDocument = graphql(`
-  query dxIntlPlayersForUser($userId: String!) {
-    dx_intl_players(where: { user_id: { _eq: $userId } }) {
-      ...dxIntlPlayersFields
+const dxIntlPlayersForUserDocument = graphql(
+  `
+    query dxIntlPlayersForUser($userId: String!) {
+      dx_intl_players(where: { user_id: { _eq: $userId } }) {
+        ...dxIntlPlayersFields
+      }
     }
-  }
-`)
+  `,
+  [dxIntlPlayersFields],
+)
 
 const UserPlayers = () => {
   const user = useUser()
@@ -24,9 +27,9 @@ const UserPlayers = () => {
     variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
-  const players = getFragmentData(
+  const players = readFragment(
     dxIntlPlayersFields,
-    playersResult.data?.dx_intl_players,
+    playersResult.data?.dx_intl_players ?? [],
   )
 
   if (user == null) {
@@ -34,7 +37,7 @@ const UserPlayers = () => {
   }
   return (
     <QueryResult result={playersResult}>
-      {players != null && players.length > 0 ? (
+      {players.length > 0 ? (
         <ListBox
           selectionMode="single"
           onSelectionChange={(keys) => {

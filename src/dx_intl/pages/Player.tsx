@@ -38,7 +38,7 @@ import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
-import { getFragmentData, graphql } from "../../gql"
+import { graphql, readFragment } from "../../graphql"
 import NoteRating from "../NoteRating"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
@@ -71,20 +71,23 @@ import {
 } from "../models/queries"
 import classes from "./Player.module.css"
 
-const dxIntlRecordWithScoresDocument = graphql(`
-  query dxIntlRecordWithScores($nickname: String!) {
-    dx_intl_players(where: { nickname: { _eq: $nickname } }) {
-      updated_at
-      private
-      dx_intl_record {
-        ...dxIntlRecordsFields
-      }
-      dx_intl_scores {
-        ...dxIntlScoresFields
+const dxIntlRecordWithScoresDocument = graphql(
+  `
+    query dxIntlRecordWithScores($nickname: String!) {
+      dx_intl_players(where: { nickname: { _eq: $nickname } }) {
+        updated_at
+        private
+        dx_intl_record {
+          ...dxIntlRecordsFields
+        }
+        dx_intl_scores {
+          ...dxIntlScoresFields
+        }
       }
     }
-  }
-`)
+  `,
+  [dxIntlRecordsFields, dxIntlScoresFields],
+)
 const groupKeyOptions = {
   current_version: "Rating 組成",
   category: "分類",
@@ -147,7 +150,7 @@ const Player = ({ params }: { params: Params }) => {
     }
     const maxVersion = Math.max(...flattedEntries.map((entry) => entry.version))
     const scores =
-      getFragmentData(
+      readFragment(
         dxIntlScoresFields,
         recordResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
       ) ?? []
@@ -303,7 +306,7 @@ const Player = ({ params }: { params: Params }) => {
   }
 
   const player = recordResult.data.dx_intl_players[0]
-  const record = getFragmentData(dxIntlRecordsFields, player.dx_intl_record)
+  const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
 
   if (record == null) {
     return (

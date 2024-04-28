@@ -19,7 +19,7 @@ import { useUser } from "../../common/contexts"
 
 import { useState } from "react"
 import { Params, useLocation } from "wouter"
-import { graphql } from "../../gql"
+import { graphql } from "../../graphql"
 import { dxIntlPlayersEditableDocument } from "../models/queries"
 import classes from "./PlayerForm.module.css"
 

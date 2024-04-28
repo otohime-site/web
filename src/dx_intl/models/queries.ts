@@ -1,4 +1,4 @@
-import { graphql } from "../../gql"
+import { graphql } from "../../graphql"
 
 export const dxIntlPlayersEditableDocument = graphql(`
   query dxIntlPlayersEditable($userId: String!, $nickname: String!) {

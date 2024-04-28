@@ -1,4 +1,4 @@
-import { graphql } from "../../gql"
+import { graphql } from "../../graphql"
 
 export const dxIntlPlayersFields = graphql(`
   fragment dxIntlPlayersFields on dx_intl_players {

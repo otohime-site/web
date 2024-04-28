@@ -6,14 +6,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [
-    react({
-      plugins: [
-        [
-          "@graphql-codegen/client-preset-swc-plugin",
-          { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
-        ],
-      ],
-    }),
+    react(),
     icons({ compiler: "jsx", jsx: "react" }),
     basicSsl(),
     visualizer(),

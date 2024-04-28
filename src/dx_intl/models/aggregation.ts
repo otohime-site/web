@@ -1,5 +1,5 @@
-import { ResultOf } from "@graphql-typed-document-node/core"
 import { groupByKey } from "../../common/utils/grouping"
+import { ResultOf } from "../../graphql"
 import {
   RANK_SCORES,
   categories,

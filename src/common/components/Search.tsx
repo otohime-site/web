@@ -1,4 +1,3 @@
-import { ResultOf } from "@graphql-typed-document-node/core"
 import { useState } from "react"
 import {
   Collection,
@@ -14,48 +13,54 @@ import {
 import { useQuery } from "urql"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
-import { graphql } from "../../gql"
+import { graphql, readFragment } from "../../graphql"
 import { useUser } from "../contexts"
 
-const dxIntlPlayersWithKeywordAnonymousDocument = graphql(`
-  query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
-    other_players: dx_intl_players(
-      where: { nickname: { _ilike: $nickname_like }, dx_intl_record: {} }
-      order_by: { nickname: asc }
-      limit: 10
-    ) {
-      ...dxIntlPlayersFields
-    }
-  }
-`)
-const dxIntlPlayersWithKeywordUserDocument = graphql(`
-  query dxIntlPlayersWithKeywordUser(
-    $userId: String!
-    $nickname_like: String!
-  ) {
-    user_players: dx_intl_players(
-      where: {
-        user_id: { _eq: $userId }
-        nickname: { _ilike: $nickname_like }
-        dx_intl_record: {}
+const dxIntlPlayersWithKeywordAnonymousDocument = graphql(
+  `
+    query dxIntlPlayersWithKeywordAnonymous($nickname_like: String!) {
+      other_players: dx_intl_players(
+        where: { nickname: { _ilike: $nickname_like }, dx_intl_record: {} }
+        order_by: { nickname: asc }
+        limit: 10
+      ) {
+        ...dxIntlPlayersFields
       }
-      order_by: { nickname: asc }
-    ) {
-      ...dxIntlPlayersFields
     }
-    other_players: dx_intl_players(
-      where: {
-        user_id: { _neq: $userId }
-        nickname: { _ilike: $nickname_like }
-        dx_intl_record: {}
+  `,
+  [dxIntlPlayersFields],
+)
+const dxIntlPlayersWithKeywordUserDocument = graphql(
+  `
+    query dxIntlPlayersWithKeywordUser(
+      $userId: String!
+      $nickname_like: String!
+    ) {
+      user_players: dx_intl_players(
+        where: {
+          user_id: { _eq: $userId }
+          nickname: { _ilike: $nickname_like }
+          dx_intl_record: {}
+        }
+        order_by: { nickname: asc }
+      ) {
+        ...dxIntlPlayersFields
       }
-      order_by: { nickname: asc }
-      limit: 10
-    ) {
-      ...dxIntlPlayersFields
+      other_players: dx_intl_players(
+        where: {
+          user_id: { _neq: $userId }
+          nickname: { _ilike: $nickname_like }
+          dx_intl_record: {}
+        }
+        order_by: { nickname: asc }
+        limit: 10
+      ) {
+        ...dxIntlPlayersFields
+      }
     }
-  }
-`)
+  `,
+  [dxIntlPlayersFields],
+)
 
 const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
@@ -96,17 +101,13 @@ const Search = () => {
           {
             name: "你的成績單",
             id: "user",
-            children: (userPlayers ?? []) as ResultOf<
-              typeof dxIntlPlayersFields
-            >[],
+            children: readFragment(dxIntlPlayersFields, userPlayers ?? []),
           },
 
           {
             name: "大家的成績單",
             id: "others",
-            children: (otherPlayers ?? []) as ResultOf<
-              typeof dxIntlPlayersFields
-            >[],
+            children: readFragment(dxIntlPlayersFields, otherPlayers ?? []),
           },
         ]
 

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button } from "react-aria-components"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
-import { graphql } from "../../gql"
+import { graphql } from "../../graphql"
 import { Alert } from "../components/ui/Alert"
 import { useUser } from "../contexts"
 

@@ -21,6 +21,5 @@
       "version": "detect"
     }
   },
-  "env": { "browser": true },
-  "ignorePatterns": ["src/gql/*"]
+  "env": { "browser": true }
 }

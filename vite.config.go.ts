@@ -7,14 +7,7 @@ import { defineConfig } from "vite"
 export default defineConfig({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins: [
-    react({
-      plugins: [
-        [
-          "@graphql-codegen/client-preset-swc-plugin",
-          { artifactDirectory: "./src/gql", gqlTagName: "graphql" },
-        ],
-      ],
-    }),
+    react(),
     icons({ compiler: "jsx", jsx: "react" }),
     visualizer({ filename: "stats-go.html" }),
   ],

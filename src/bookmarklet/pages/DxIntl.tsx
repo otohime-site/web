@@ -15,20 +15,23 @@ import { QueryResult } from "../../common/components/QueryResult"
 import { Alert } from "../../common/components/ui/Alert"
 import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
-import { getFragmentData, graphql } from "../../gql"
+import { graphql, readFragment } from "../../graphql"
 import host from "../../host"
 import classes from "./DxIntl.module.scss"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
 // Needed as bookmarklet will not know user ID
-const dxIntlPlayersDocument = graphql(`
-  query dxIntlPlayers {
-    dx_intl_players {
-      ...dxIntlPlayersFields
+const dxIntlPlayersDocument = graphql(
+  `
+    query dxIntlPlayers {
+      dx_intl_players {
+        ...dxIntlPlayersFields
+      }
     }
-  }
-`)
+  `,
+  [dxIntlPlayersFields],
+)
 
 const insertDxIntlRecordWithScoresDocument = graphql(`
   mutation InsertDxIntlRecordWithScores(
@@ -95,7 +98,7 @@ const Book = () => {
   )
   const client = useClient()
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
-  const players = getFragmentData(
+  const players = readFragment(
     dxIntlPlayersFields,
     dxIntlPlayersResult.data?.dx_intl_players ?? [],
   )
@@ -125,7 +128,7 @@ const Book = () => {
       setPageState("error")
       return
     }
-    const firstMatchPlayer = getFragmentData(
+    const firstMatchPlayer = readFragment(
       dxIntlPlayersFields,
       dxIntlPlayersResult.data?.dx_intl_players ?? [],
     ).find(
@@ -269,7 +272,7 @@ const Book = () => {
             result={dxIntlPlayersResult}
             errorMsg="無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。"
           >
-            {players == null || players.length === 0 ? (
+            {players.length === 0 ? (
               <Alert severity="warning">
                 請到 Otohime 網站上
                 <a

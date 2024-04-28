@@ -1,4 +1,3 @@
-import { ResultOf } from "@graphql-typed-document-node/core"
 import clsx from "clsx"
 import { useMemo } from "react"
 import { Tab, TabPanel, Tabs } from "react-aria-components"
@@ -11,7 +10,7 @@ import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { formatDateTime } from "../../common/utils/datetime"
-import { getFragmentData, graphql } from "../../gql"
+import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
@@ -37,42 +36,45 @@ const dxIntlPlayersTimelinesDocument = graphql(`
   }
 `)
 
-const dxIntlPlayerWithTimelineDocument = graphql(`
-  query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
-    beforeRecord: dx_intl_records_with_history(
-      where: {
-        dx_intl_player: { nickname: { _eq: $nickname } }
-        end: { _eq: $time }
+const dxIntlPlayerWithTimelineDocument = graphql(
+  `
+    query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
+      beforeRecord: dx_intl_records_with_history(
+        where: {
+          dx_intl_player: { nickname: { _eq: $nickname } }
+          end: { _eq: $time }
+        }
+      ) {
+        ...dxIntlRecordsWithHistoryFields
       }
-    ) {
-      ...dxIntlRecordsWithHistoryFields
-    }
-    afterRecord: dx_intl_records_with_history(
-      where: {
-        dx_intl_player: { nickname: { _eq: $nickname } }
-        start: { _eq: $time }
+      afterRecord: dx_intl_records_with_history(
+        where: {
+          dx_intl_player: { nickname: { _eq: $nickname } }
+          start: { _eq: $time }
+        }
+      ) {
+        ...dxIntlRecordsWithHistoryFields
       }
-    ) {
-      ...dxIntlRecordsWithHistoryFields
-    }
-    beforeScores: dx_intl_scores_with_history(
-      where: {
-        dx_intl_player: { nickname: { _eq: $nickname } }
-        end: { _eq: $time }
+      beforeScores: dx_intl_scores_with_history(
+        where: {
+          dx_intl_player: { nickname: { _eq: $nickname } }
+          end: { _eq: $time }
+        }
+      ) {
+        ...dxIntlScoresWithHistoryFields
       }
-    ) {
-      ...dxIntlScoresWithHistoryFields
-    }
-    afterScores: dx_intl_scores_with_history(
-      where: {
-        dx_intl_player: { nickname: { _eq: $nickname } }
-        start: { _eq: $time }
+      afterScores: dx_intl_scores_with_history(
+        where: {
+          dx_intl_player: { nickname: { _eq: $nickname } }
+          start: { _eq: $time }
+        }
+      ) {
+        ...dxIntlScoresWithHistoryFields
       }
-    ) {
-      ...dxIntlScoresWithHistoryFields
     }
-  }
-`)
+  `,
+  [dxIntlRecordsWithHistoryFields, dxIntlScoresWithHistoryFields],
+)
 
 interface HistoryEntry {
   score: number
@@ -130,11 +132,11 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   )
 
   const { beforeMap, afterMap } = useMemo(() => {
-    const beforeScores = getFragmentData(
+    const beforeScores = readFragment(
       dxIntlScoresWithHistoryFields,
       timelineResult.data?.beforeScores ?? [],
     )
-    const afterScores = getFragmentData(
+    const afterScores = readFragment(
       dxIntlScoresWithHistoryFields,
       timelineResult.data?.afterScores ?? [],
     )
@@ -323,14 +325,8 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <tbody>
         {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
           recordDiffRows(
-            getFragmentData(
-              dxIntlRecordsWithHistoryFields,
-              data.beforeRecord[0],
-            ),
-            getFragmentData(
-              dxIntlRecordsWithHistoryFields,
-              data.afterRecord[0],
-            ),
+            readFragment(dxIntlRecordsWithHistoryFields, data.beforeRecord[0]),
+            readFragment(dxIntlRecordsWithHistoryFields, data.afterRecord[0]),
           )
         ) : (
           <></>

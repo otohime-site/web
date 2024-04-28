@@ -1,6 +1,6 @@
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
-import { graphql } from "../../gql"
+import { graphql } from "../../graphql"
 
 const dxIntlNewRatingStatsDocument = graphql(`
   query dxIntlNewRatingStats {

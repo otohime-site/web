@@ -1,15 +1,18 @@
 import { useQuery } from "urql"
 import { useUser } from "../common/contexts"
-import { getFragmentData, graphql } from "../gql"
+import { graphql, readFragment } from "../graphql"
 import { finalePlayersFields } from "./models/fragments"
 
-const finalePlayersForUserDocument = graphql(`
-  query finalePlayersForUser($userId: String!) {
-    finale_players(where: { user_id: { _eq: $userId } }) {
-      ...finalePlayersFields
+const finalePlayersForUserDocument = graphql(
+  `
+    query finalePlayersForUser($userId: String!) {
+      finale_players(where: { user_id: { _eq: $userId } }) {
+        ...finalePlayersFields
+      }
     }
-  }
-`)
+  `,
+  [finalePlayersFields],
+)
 
 const FinaleIndexComponent = () => {
   const user = useUser()
@@ -18,14 +21,14 @@ const FinaleIndexComponent = () => {
     variables: { userId: user?.uid ?? "" },
     requestPolicy: "network-only",
   })
-  const players = getFragmentData(
+  const players = readFragment(
     finalePlayersFields,
-    playersResult.data?.finale_players,
+    playersResult.data?.finale_players ?? [],
   )
   if (user == null) {
     return <>Please log in</>
   }
-  if (players == null) {
+  if (players.length === 0) {
     return <>No Finale Players</>
   }
 

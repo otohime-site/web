@@ -1,7 +1,7 @@
-import { ResultOf } from "@graphql-typed-document-node/core"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { formatRelative } from "../../common/utils/datetime"
+import { ResultOf } from "../../graphql"
 import {
   classRankNames,
   gradeNames,
