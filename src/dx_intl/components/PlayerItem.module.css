@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: var(--size-2);
 }
 .player-item svg {
   font-size: 1.2em;

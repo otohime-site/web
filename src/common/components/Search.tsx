@@ -95,7 +95,8 @@ const Search = () => {
       ? keywordAnonResult.data?.other_players
       : keywordUserResult.data?.other_players
   const options =
-    keyword.length === 0
+    keyword.length === 0 ||
+    (userPlayers ?? []).length + (otherPlayers ?? []).length === 0
       ? []
       : [
           {

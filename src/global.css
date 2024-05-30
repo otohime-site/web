@@ -79,10 +79,24 @@ a.btn {
   border: var(--border-size-1) solid var(--surface-4);
 }
 
+.react-aria-Section:not(:first-child) {
+  margin-top: var(--size-2);
+}
+
+.react-aria-Header {
+  margin: var(--size-1);
+  font-size: 95%;
+  font-weight: bold;
+  color: var(--stone-8);
+  @media (prefers-color-scheme: dark) {
+    color: var(--stone-5);
+  }
+}
+
 .react-aria-ListBoxItem {
   outline: none;
-  margin: var(--size-2);
-  padding: var(--size-2);
+  margin: var(--size-1) var(--size-2);
+  padding: var(--size-1);
   border-radius: var(--radius-2);
   color: var(--stone-12);
   @media (prefers-color-scheme: dark) {
@@ -105,8 +119,8 @@ a.btn {
 }
 
 /* Reset Open Props nornamlize styles */
-a.react-aria-ListBoxItem,
-a.react-aria-Tab {
+a:where(.react-aria-ListBoxItem),
+a:where(.react-aria-Tab) {
   display: block;
   color: inherit;
   text-decoration: inherit;
