@@ -96,7 +96,7 @@ a.btn {
 .react-aria-ListBoxItem {
   outline: none;
   margin: var(--size-1) var(--size-2);
-  padding: var(--size-1);
+  padding: var(--size-2);
   border-radius: var(--radius-2);
   color: var(--stone-12);
   @media (prefers-color-scheme: dark) {
