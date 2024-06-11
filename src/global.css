@@ -6,8 +6,8 @@ html {
   font-size: 14px;
 }
 
-:where(p, ul, ol, dl, h6) {
-  font-size: var(--font-size-1);
+:where(h6) {
+  font-size: var(--font-size-2);
 }
 
 .btn,
