@@ -24,6 +24,8 @@
   }
 }
 .table :global(.col-score) {
+  width: clamp(6.6rem, 15vw, 14rem);
+  padding: 0 clamp(0.5rem, 1vw, 2rem);
   text-align: right;
 }
 .table :global(.col-deluxe) {
