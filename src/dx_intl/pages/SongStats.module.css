@@ -21,11 +21,11 @@
     border-radius: var(--radius-3);
     padding: var(--size-2);
     & span:first-child {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
     & span:last-child {
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: var(--font-size-2);
     }
   }
 }

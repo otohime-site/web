@@ -3,6 +3,7 @@
 
 html {
   background-color: transparent;
+  font-size: 14px;
 }
 
 :where(p, ul, ol, dl, h6) {

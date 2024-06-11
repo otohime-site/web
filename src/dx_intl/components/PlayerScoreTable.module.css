@@ -1,6 +1,5 @@
 .table {
   width: 100%;
-  font-size: 0.875rem;
   border-collapse: collapse;
   table-layout: fixed;
   background: transparent;
@@ -31,12 +30,12 @@
   width: 1.8rem;
 }
 .table :global(.col-difficulty) {
-  width: 1.7rem;
-  font-size: 80%;
+  width: 2rem;
+  font-size: var(--font-size-0);
 }
 .table :global(.col-rating) {
   width: 1.6rem;
-  font-size: 80%;
+  font-size: var(--font-size-0);
 }
 .table :global(.col-flags) {
   width: 3.3rem;

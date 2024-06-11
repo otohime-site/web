@@ -31,7 +31,6 @@
   position: sticky;
   top: 48px;
   background: white;
-  font-size: 90%;
   @media (prefers-color-scheme: dark) {
     background: #1c1b22;
   }
@@ -113,7 +112,6 @@
     list-style: none;
     gap: 0.1em 0;
     text-align: center;
-    font-size: 0.9rem;
     li {
       list-style-type: none;
       padding: var(--size-1);
