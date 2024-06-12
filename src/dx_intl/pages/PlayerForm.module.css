@@ -2,3 +2,34 @@
   font-size: 0.9em;
   color: var(--mauve-12);
 }
+
+.radio-group {
+  label:global(.react-aria-Radio) {
+    padding: var(--size-2) var(--size-5);
+    border: 1px solid var(--stone-5);
+    border-radius: var(--radius-2);
+    &[data-selected] {
+      border-color: var(--violet-6);
+    }
+    div {
+      margin-left: var(--size-3);
+      display: flex;
+      flex-direction: column;
+      dt {
+        display: flex;
+        flex-direction: row;
+        font-size: var(--font-size-2);
+        gap: var(--size-1);
+      }
+      dd ul,
+      dd li {
+        font-size: var(--font-size-1);
+        margin: 0;
+        padding: 0;
+      }
+      dd li {
+        margin-left: var(--size-6);
+      }
+    }
+  }
+}

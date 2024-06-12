@@ -154,6 +154,7 @@ a:where(.react-aria-Tab) {
     width: 1.286rem;
     height: 1.286rem;
     border: 0.143rem solid var(--stone-8);
+    padding: 0 0.286rem;
     border-radius: var(--radius-round);
     transition: all 200ms;
   }
@@ -166,6 +167,7 @@ a:where(.react-aria-Tab) {
     &:before {
       border-color: var(--violet-9);
       border-width: 0.429rem;
+      padding: 0;
     }
   }
   &[data-focus-visible]:before {

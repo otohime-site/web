@@ -17,6 +17,7 @@ import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 
+import clsx from "clsx"
 import { useState } from "react"
 import { Params, useLocation } from "wouter"
 import { graphql } from "../../graphql"
@@ -166,7 +167,9 @@ const PlayerForm = ({ params }: { params: Params }) => {
           defaultValue={params.nickname ?? ""}
         >
           <Label>暱稱（作為網址的一部分）</Label>
-          <Input />
+          <div>
+            <Input />
+          </div>
           <FieldError />
         </TextField>
         隱私設定
@@ -177,6 +180,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
               ? "private"
               : "public"
           }
+          className={clsx("react-aria-RadioGroup", classes["radio-group"])}
         >
           <Radio value="public">
             <div>
