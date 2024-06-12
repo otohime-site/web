@@ -413,7 +413,7 @@ const Player = ({ params }: { params: Params }) => {
             </Switch>
           </div>
           <div className={classes["score-stats-block"]}>
-            <p>
+            <div>
               <strong>
                 {statFolder
                   ? `${getGroupTitle(grouping, currentGroupEntry[0])}`
@@ -423,7 +423,7 @@ const Player = ({ params }: { params: Params }) => {
               <Switch isSelected={statFolder} onChange={setStatFolder}>
                 <div className="indicator" /> 限資料夾
               </Switch>
-            </p>
+            </div>
             <ul>
               {scoreStats.scoreStats.map((count, i) =>
                 i !== 1 && i !== 2 ? (
