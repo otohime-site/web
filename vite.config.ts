@@ -34,6 +34,10 @@ export default defineConfig({
               rewrite: (path) => `/v1${path}`,
               ws: true,
             },
+      "/__/auth": {
+        target: "https://otohime-web.firebaseapp.com/",
+        changeOrigin: true,
+      },
     },
     hmr: {
       host: "localhost",
