@@ -85,8 +85,8 @@ const User = () => {
   return (
     <div>
       {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
-      <DialogTrigger isOpen={bookDialogOpen}>
-        <Modal>
+      <DialogTrigger isOpen={bookDialogOpen} onOpenChange={setBookDialogOpen}>
+        <Modal isDismissable>
           <Dialog role="alertdialog">
             <div>
               <h3>Bookmarklet 操作說明</h3>
