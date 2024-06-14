@@ -6,6 +6,10 @@ html {
   font-size: 14px;
 }
 
+:where(p) {
+  max-width: initial;
+}
+
 :where(p, ul, ol, dl) {
   font-size: var(--font-size-1);
 }
