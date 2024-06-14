@@ -11,11 +11,6 @@ const HomeComponent = () => {
     return (
       <>
         <Titled title="Otohime: 音 Game 成績單網站" />
-        <Alert severity="warning">
-          因應國際版更新，目前本站先將尚未完成潤飾的新版前端上架。
-          <br />
-          版面會在近幾天陸續更新，功能面如有問題請至交流區回報 QQ
-        </Alert>
         <p>
           Otohime
           可以把您遊戲機台的成績整理至單一的成績單頁面，將其設為公開或自己才能閱覽。
