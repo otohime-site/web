@@ -33,6 +33,24 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
     <table style={{ fontSize: "0.86rem" }}>
       <tbody>
         <tr>
+          <th colSpan={2}>SSS/FC/AP Rate</th>
+        </tr>
+        <tr>
+          <td>SSS</td>
+          <td>{((entry?.sss_rate ?? 0) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr>
+          <td>FC</td>
+          <td>{((entry?.fc_rate ?? 0) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr>
+          <td>AP</td>
+          <td>{((entry?.ap_rate ?? 0) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr>
+          <th colSpan={2}>Rating</th>
+        </tr>
+        <tr>
           <td>{internalLv.toFixed(1)}</td>
           <td>
             {rating} / {maxRating}
