@@ -1,0 +1,9 @@
+.dialog {
+  padding: var(--size-5);
+  border: 1px solid var(--stone-5);
+  border-radius: var(--radius-2);
+  background: var(--stone-0);
+  @media (prefers-color-scheme: dark) {
+    background: var(--stone-10);
+  }
+}

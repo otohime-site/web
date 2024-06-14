@@ -35,7 +35,16 @@ export const AppProvider = ({
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getRedirectResult(firebaseAuth).then()
+    getRedirectResult(firebaseAuth)
+      .then((r) => {
+        if (r?.operationType == "link") {
+          alert("綁定 Google 帳號成功，感謝您 :)")
+        }
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .catch((e: any) => {
+        alert(`登入或綁定失敗，原因：${e.code}`)
+      })
     const unlisten = onAuthStateChanged(firebaseAuth, (user) => {
       setUser(user)
       setLoading(false)

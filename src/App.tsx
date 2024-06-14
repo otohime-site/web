@@ -3,6 +3,7 @@ import { Link, RouterProvider } from "react-aria-components"
 import { Route, Router, useLocation } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
+import { AuthMigrate } from "./common/components/AuthMigrate"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
 import "./fonts.css"
@@ -27,6 +28,7 @@ const App = () => {
         <UserBox />
       </div>
       <div className={classes.container}>
+        <AuthMigrate />
         <Suspense fallback={<></>}>
           <RouterProvider navigate={navigate}>
             <Router>
