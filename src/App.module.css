@@ -41,6 +41,9 @@
   font-family: "McLaren", cursive;
   display: inline-flex;
   align-items: center;
+  p {
+    font-size: var(--font-size-3);
+  }
 }
 .title img {
   height: 1.7rem;
