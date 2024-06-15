@@ -123,7 +123,12 @@ const Search = () => {
         <Input placeholder="搜尋玩家暱稱..." />
       </div>
       <FieldError>{hasError ? "搜尋發生錯誤。" : undefined}</FieldError>
-      <Popover>
+      <Popover
+        ref={(ref) =>
+          // https://github.com/adobe/react-spectrum/issues/1513
+          ref?.addEventListener("touchend", (e) => e.preventDefault())
+        }
+      >
         <ListBox>
           {(section: (typeof options)[number]) => (
             <Section id={section.id}>

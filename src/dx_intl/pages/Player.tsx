@@ -379,7 +379,12 @@ const Player = ({ params }: { params: Params }) => {
                   <IconArrowDropDown />
                 </span>
               </Button>
-              <Popover>
+              <Popover
+                ref={(ref) =>
+                  // https://github.com/adobe/react-spectrum/issues/1513
+                  ref?.addEventListener("touchend", (e) => e.preventDefault())
+                }
+              >
                 <ListBox>
                   <Section>
                     <Header>譜面</Header>
@@ -527,6 +532,10 @@ const Player = ({ params }: { params: Params }) => {
         </Tabs>
       </div>
       <Popover
+        ref={(ref) =>
+          // https://github.com/adobe/react-spectrum/issues/1513
+          ref?.addEventListener("touchend", (e) => e.preventDefault())
+        }
         triggerRef={ratingPopRef}
         isOpen={!!ratingPopEntry}
         onOpenChange={(o) => {

@@ -75,7 +75,12 @@ const UserBoxComponent = () => {
     <Fragment>
       <DialogTrigger>
         <Button>登入</Button>
-        <Popover>
+        <Popover
+          ref={(ref) =>
+            // https://github.com/adobe/react-spectrum/issues/1513
+            ref?.addEventListener("touchend", (e) => e.preventDefault())
+          }
+        >
           <Dialog className={clsx("react-aria-Dialog", classes["dialog"])}>
             <Alert severity="warning">
               <p>Facebook 登入將於 7/15 停止運作。</p>
