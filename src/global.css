@@ -6,6 +6,11 @@ html {
   font-size: 14px;
 }
 
+input {
+  /* Make sure iOS will not zoom when focus */
+  font-size: 16px;
+}
+
 :where(p) {
   max-width: initial;
 }
