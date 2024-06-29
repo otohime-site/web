@@ -135,7 +135,7 @@ export const getScoreStats = (
   syncStats: number[]
 } => {
   const scoreStats = RANK_SCORES.map(
-    (v, i) =>
+    (_, i) =>
       scores.filter((s) => s.score && getRankScoreIndex(s.score) >= i).length,
   )
   const comboStats = comboFlags.map(

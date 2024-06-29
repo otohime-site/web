@@ -1,33 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "es2020",
-    "module": "es2020",
-    "moduleResolution": "node",
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "skipLibCheck": true,
-    "plugins": [
-      { "name": "typescript-plugin-css-modules" },
-      {
-        "name": "@0no-co/graphqlsp",
-        "schema": {
-          "url": "http://localhost:8580/v1/graphql",
-          "headers": {
-            "X-Hasura-Admin-Secret": "development-hasura-secret"
-          }
-        },
-        "tadaOutputLocation": "./src/graphql-env.d.ts"
-      }
-    ],
-    "types": ["unplugin-icons/types/react"]
-  },
+  "files": [],
   "references": [
     {
-      "path": "./tsconfig.vite.json"
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
     }
   ]
 }

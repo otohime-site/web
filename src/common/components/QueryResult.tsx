@@ -13,9 +13,6 @@ interface Props {
 export const QueryResult = ({
   result,
   errorMsg,
-  skeletonVariant,
-  skeletonWidth,
-  skeletonHeight,
   children,
 }: PropsWithChildren<Props>) => {
   if (result.fetching) {

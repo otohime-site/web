@@ -9,9 +9,6 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "parserOptions": {
-    "project": "tsconfig.json"
-  },
   "rules": {
     "react/prop-types": "off",
     "@typescript-eslint/restrict-template-expressions": "off"
