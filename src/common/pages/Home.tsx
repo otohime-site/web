@@ -53,7 +53,12 @@ const HomeComponent = () => {
         <Token />
       </div>
       <h4>暫時放這裡</h4>
-      <LinkButton href="/dxi">DX 公開玩家統計</LinkButton>
+      <p>
+        <LinkButton href="/dxi">DX 公開玩家統計</LinkButton>
+      </p>
+      <p>
+        <LinkButton href="/forget">忘記我</LinkButton>
+      </p>
     </div>
   )
 }
