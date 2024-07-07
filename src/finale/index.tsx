@@ -1,51 +1,16 @@
-import { useQuery } from "urql"
-import { useUser } from "../common/contexts"
-import { graphql, readFragment } from "../graphql"
-import { finalePlayersFields } from "./models/fragments"
+import { Route } from "wouter"
+import Player from "./pages/Player"
+/* import PlayerForm from "./pages/PlayerForm"
+import PlayerHistory from "./pages/PlayerHistory"
+import SongStats from "./pages/SongStats"*/
 
-const finalePlayersForUserDocument = graphql(
-  `
-    query finalePlayersForUser($userId: String!) {
-      finale_players(where: { user_id: { _eq: $userId } }) {
-        ...finalePlayersFields
-      }
-    }
-  `,
-  [finalePlayersFields],
+const Finale = () => (
+  <>
+    {/*<Route path="/p/:nickname/edit" component={PlayerForm} />
+<Route path="/p/:nickname/history" component={PlayerHistory} />
+<Route path="/p/:nickname/history/:hash" component={PlayerHistory} />*/}
+    <Route path="/p/:nickname" component={Player} />
+  </>
 )
 
-const FinaleIndexComponent = () => {
-  const user = useUser()
-  const [playersResult] = useQuery({
-    query: finalePlayersForUserDocument,
-    variables: { userId: user?.uid ?? "" },
-    requestPolicy: "network-only",
-  })
-  const players = readFragment(
-    finalePlayersFields,
-    playersResult.data?.finale_players ?? [],
-  )
-  if (user == null) {
-    return <>Please log in</>
-  }
-  if (players.length === 0) {
-    return <>No Finale Players</>
-  }
-
-  return (
-    <>
-      {players.map((player) => {
-        const record = player.finale_record
-
-        return (
-          <p key={player.id} style={{ background: "#CCCCCC", margin: "3px" }}>
-            {player.nickname} / {player.private ? "Private" : "Public"} /
-            {record ? `${record.card_name} / ${record.rating}` : "No record"}
-          </p>
-        )
-      })}
-    </>
-  )
-}
-
-export default FinaleIndexComponent
+export default Finale

@@ -6,18 +6,22 @@ import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
+import { finalePlayersFields } from "../../finale/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import { dxIntlPlayersFields } from "../models/fragments"
 
 const dxIntlPlayersForUserDocument = graphql(
   `
-    query dxIntlPlayersForUser($userId: String!) {
+    query playersForUser($userId: String!) {
       dx_intl_players(where: { user_id: { _eq: $userId } }) {
         ...dxIntlPlayersFields
       }
+      finale_players(where: { user_id: { _eq: $userId } }) {
+        ...finalePlayersFields
+      }
     }
   `,
-  [dxIntlPlayersFields],
+  [dxIntlPlayersFields, finalePlayersFields],
 )
 
 const UserPlayers = () => {
@@ -30,6 +34,10 @@ const UserPlayers = () => {
   const players = readFragment(
     dxIntlPlayersFields,
     playersResult.data?.dx_intl_players ?? [],
+  )
+  const finalePlayers = readFragment(
+    finalePlayersFields,
+    playersResult.data?.finale_players ?? [],
   )
 
   if (user == null) {
@@ -52,8 +60,18 @@ const UserPlayers = () => {
           {players.map((player) => (
             <ListBoxItem
               href={`/dxi/p/${player.nickname}`}
-              key={player.id}
-              id={player.nickname}
+              key={`dxi-${player.id}`}
+              id={`dxi-${player.nickname}`}
+            >
+              <PlayerItem player={player} />
+            </ListBoxItem>
+          ))}
+
+          {finalePlayers.map((player) => (
+            <ListBoxItem
+              href={`/fin/p/${player.nickname}`}
+              key={`fin-${player.id}`}
+              id={`fin-${player.nickname}`}
             >
               <PlayerItem player={player} />
             </ListBoxItem>

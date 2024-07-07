@@ -6,6 +6,8 @@ import {
   legacyCourseRankNames,
 } from "../../dx_intl/models/constants"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
+import { classNames } from "../../finale/models/constants"
+import { finalePlayersFields } from "../../finale/models/fragments"
 import { ResultOf } from "../../graphql"
 import { formatRelative } from "../utils/datetime"
 import classes from "./PlayerItem.module.css"
@@ -28,7 +30,9 @@ const getGradeOrRanks = (record: {
 }
 
 const formatUpdatedAt = (
-  player: ResultOf<typeof dxIntlPlayersFields>,
+  player:
+    | ResultOf<typeof dxIntlPlayersFields>
+    | ResultOf<typeof finalePlayersFields>,
 ): string =>
   player.updated_at != null ? formatRelative(new Date(player.updated_at)) : "?"
 
@@ -36,18 +40,22 @@ const PlayerItem = ({
   player,
   forAutoComplete,
 }: {
-  player: ResultOf<typeof dxIntlPlayersFields>
+  player:
+    | ResultOf<typeof dxIntlPlayersFields>
+    | ResultOf<typeof finalePlayersFields>
   selected?: boolean
   forAutoComplete?: boolean
   onSelect?: (id: number) => void
 }) => {
+  const record =
+    "dx_intl_record" in player ? player.dx_intl_record : player.finale_record
   return (
     <div className={classes["player-item"]}>
       {player.private ? <IconLock /> : <IconPublic />}
       <div>
         <p slot="label">{player.nickname}</p>
         <p slot="description">
-          {player.dx_intl_record == null ? (
+          {record == null ? (
             <>
               尚無紀錄
               {forAutoComplete ?? false ? (
@@ -62,13 +70,16 @@ const PlayerItem = ({
             </>
           ) : (
             <>
-              {player.dx_intl_record.card_name}
+              {record.card_name}
               {forAutoComplete ?? false ? (
                 <></>
               ) : (
                 <>
-                  / {player.dx_intl_record.rating}{" "}
-                  {getGradeOrRanks(player.dx_intl_record)}
+                  / {record.rating}{" "}
+                  {"course_rank" in record ? getGradeOrRanks(record) : null}
+                  {"class" in record
+                    ? classNames[record.class.split("_")[0]]
+                    : null}
                   {` / ${formatUpdatedAt(player)}更新`}
                 </>
               )}
