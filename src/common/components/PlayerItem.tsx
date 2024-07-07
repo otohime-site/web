@@ -1,13 +1,13 @@
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
-import { formatRelative } from "../../common/utils/datetime"
-import { ResultOf } from "../../graphql"
 import {
   classRankNames,
   gradeNames,
   legacyCourseRankNames,
-} from "../models/constants"
-import { dxIntlPlayersFields } from "../models/fragments"
+} from "../../dx_intl/models/constants"
+import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
+import { ResultOf } from "../../graphql"
+import { formatRelative } from "../utils/datetime"
 import classes from "./PlayerItem.module.css"
 
 const getGradeOrRanks = (record: {

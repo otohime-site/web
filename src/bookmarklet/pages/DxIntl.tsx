@@ -11,9 +11,9 @@ import {
   Selection,
 } from "react-aria-components"
 import { useClient, useQuery } from "urql"
+import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
 import { Alert } from "../../common/components/ui/Alert"
-import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import host from "../../host"

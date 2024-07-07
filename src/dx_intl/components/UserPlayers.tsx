@@ -2,12 +2,12 @@ import { ListBox, ListBoxItem } from "react-aria-components"
 import { useQuery } from "urql"
 import { navigate } from "wouter/use-browser-location"
 import IconAdd from "~icons/mdi/add"
+import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
 import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 import { graphql, readFragment } from "../../graphql"
 import { dxIntlPlayersFields } from "../models/fragments"
-import PlayerItem from "./PlayerItem"
 
 const dxIntlPlayersForUserDocument = graphql(
   `

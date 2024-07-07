@@ -11,10 +11,10 @@ import {
   Section,
 } from "react-aria-components"
 import { useQuery } from "urql"
-import PlayerItem from "../../dx_intl/components/PlayerItem"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import { useUser } from "../contexts"
+import PlayerItem from "./PlayerItem"
 
 const dxIntlPlayersWithKeywordAnonymousDocument = graphql(
   `
