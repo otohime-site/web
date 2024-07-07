@@ -8,6 +8,13 @@ export const classNames: Record<string, string> = {
   "07": "七段",
   "08": "八段",
   "09": "九段",
-  10: "十段",
-  11: "皆伝",
+  "10": "十段",
+  "11": "皆伝",
 }
+
+export const classLevels = {
+  "08": "silver",
+  "09": "gold",
+  "10": "gold-black",
+  "11": "gold-red",
+} as const

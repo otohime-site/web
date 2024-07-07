@@ -1,0 +1,40 @@
+.player-class {
+  font-family: "Gen Jyuu Gothic Heavy";
+  font-size: 125%;
+  display: inline-block;
+  margin-right: 1em;
+  font-weight: bold;
+
+  &.class-silver {
+    color: white;
+    text-shadow:
+      1px 1px 0 #333333,
+      -1px -1px 0 #333333,
+      1px -1px 0 #333333,
+      -1px 1px 0 #333333;
+  }
+  &.class-gold {
+    color: #fffa66;
+    text-shadow:
+      1px 1px 0 #333333,
+      -1px -1px 0 #333333,
+      1px -1px 0 #333333,
+      -1px 1px 0 #333333;
+  }
+  &.class-gold-black {
+    color: #333333;
+    text-shadow:
+      1px 1px 0 #ccc85b,
+      -1px -1px 0 #ccc85b,
+      1px -1px 0 #ccc85b,
+      -1px 1px 0 #ccc85b;
+  }
+  &.class-gold-red {
+    color: #993333;
+    text-shadow:
+      1px 1px 0 #ccc85b,
+      -1px -1px 0 #ccc85b,
+      1px -1px 0 #ccc85b,
+      -1px 1px 0 #ccc85b;
+  }
+}
