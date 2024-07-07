@@ -43,7 +43,7 @@ Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
 
 ### License
 
-Copyright (c) 2018 - 2023 Otohime Team (Hsiao-Ting Yu and others)
+Copyright (c) 2018 - 2024 Otohime Team (Hsiao-Ting Yu and others)
 
 Licensed under MIT license, see LICENSE.md.
 
