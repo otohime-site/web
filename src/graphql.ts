@@ -66,7 +66,7 @@ export const graphql = initGraphQLTada<{
       | "13+"
       | "14"
     finale_combo_flag: "" | "fc_silver" | "fc_gold" | "ap" | "ap_plus"
-    finale_synx_flag: "" | "100"
+    finale_sync_flag: "" | "100"
     bigint: number
     numeric: number
     smallint: number
