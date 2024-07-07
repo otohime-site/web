@@ -18,3 +18,6 @@ export const classLevels = {
   "10": "gold-black",
   "11": "gold-red",
 } as const
+
+export const comboFlags = ["", "fc_silver", "fc_gold", "ap", "ap_plus"] as const
+export const syncFlags = ["", "100"] as const

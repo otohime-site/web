@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconPencil from "~icons/mdi/pencil"
@@ -6,8 +7,17 @@ import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 import { graphql, readFragment } from "../../graphql"
 import Record from "../components/Record"
+import {
+  flatSongsResult,
+  getNoteHash,
+  ScoreTableEntry,
+} from "../models/aggregation"
+import { comboFlags, syncFlags } from "../models/constants"
 import { finaleRecordsFields, finaleScoresFields } from "../models/fragments"
-import { finalePlayersEditableDocument } from "../models/queries"
+import {
+  finalePlayersEditableDocument,
+  finaleSongsDocument,
+} from "../models/queries"
 
 const finaleRecordWithScoresDocument = graphql(
   `
@@ -38,7 +48,36 @@ const Player = ({ params }: { params: Params }) => {
     query: finaleRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
   })
-
+  const [songsResult] = useQuery({ query: finaleSongsDocument })
+  const flattedEntries = useMemo(
+    () => flatSongsResult(songsResult.data),
+    [songsResult],
+  )
+  const scoreTable = useMemo(() => {
+    if (!recordResult.data) {
+      return []
+    }
+    const scores =
+      readFragment(
+        finaleScoresFields,
+        recordResult.data.finale_players[0]?.finale_scores ?? [],
+      ) ?? []
+    const scoresMap = new Map(
+      scores.map((score) => [getNoteHash(score), score]),
+    )
+    return flattedEntries.map<ScoreTableEntry>((entry, index) => {
+      const score = scoresMap.get(entry.hash)
+      scoresMap.delete(entry.hash)
+      return {
+        index,
+        ...entry,
+        score: score?.score,
+        combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
+        sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
+        updated_at: score?.start,
+      }
+    })
+  }, [flattedEntries, recordResult])
   if (recordResult.error != null /*|| songsResult.error != null*/) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
@@ -73,6 +112,7 @@ const Player = ({ params }: { params: Params }) => {
           <IconPencil /> 編輯
         </LinkButton>
       ) : null}
+      {JSON.stringify(scoreTable)}
     </>
   )
 }
