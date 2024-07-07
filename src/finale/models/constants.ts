@@ -1,3 +1,48 @@
+// eslint-disable-next-line no-sparse-arrays
+export const categories = [
+  "POPS ＆ アニメ",
+  "niconico ＆ ボーカロイド™",
+  "東方Project",
+  "SEGA",
+  "ゲーム ＆ バラエティ",
+  "オリジナル ＆ ジョイポリス",
+] as const
+
+export const versions = [
+  "maimai",
+  "maimai PLUS",
+  "GreeN",
+  "GreeN PLUS",
+  "ORANGE",
+  "ORANGE PLUS",
+  "PiNK",
+  "PiNK PLUS",
+  "MURASAKi",
+  "MURASAKi PLUS",
+  "MiLK",
+  "MiLK PLUS",
+  "FiNALE",
+] as const
+
+export const difficulties = [
+  "Easy",
+  "Basic",
+  "Advanced",
+  "Expert",
+  "Master",
+  "Re:Master",
+] as const
+
+// Make typescript-plugin-css-modules happy
+export const difficultyClasses = [
+  "diff0",
+  "diff1",
+  "diff2",
+  "diff3",
+  "diff4",
+  "diff5",
+] as const
+
 export const classNames: Record<string, string> = {
   "01": "初段",
   "02": "二段",
