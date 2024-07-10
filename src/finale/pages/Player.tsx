@@ -21,6 +21,7 @@ import {
   TabsContext,
   ToggleButton,
 } from "react-aria-components"
+import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
@@ -175,6 +176,9 @@ const Player = ({ params }: { params: Params }) => {
         onSelectionChange: setSelectedGroup,
       }}
     >
+      <Titled
+        title={(title) => `${record.card_name} - 舊版 maimai 成績單 - ${title}`}
+      />
       <Alert severity="info">
         <p>這是從以前 Semiquaver 成績單系統中轉移的 maimai 舊框成績單。</p>
       </Alert>
