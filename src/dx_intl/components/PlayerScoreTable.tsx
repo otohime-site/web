@@ -19,23 +19,23 @@ export const PlayerScoreTable = ({
   return (
     <table className={classes.table}>
       <colgroup>
-        <col className="col-title" />
-        <col className="col-deluxe" />
-        <col className="col-difficulty" />
-        <col className="col-score" />
-        <col className="col-flags" />
-        <col className="col-rating" />
+        <col className={classes["col-title"]} />
+        <col className={classes["col-deluxe"]} />
+        <col className={classes["col-difficulty"]} />
+        <col className={classes["col-score"]} />
+        <col className={classes["col-flags"]} />
+        <col className={classes["col-rating"]} />
       </colgroup>
       <tbody>
         {table.map((entry) => (
           <tr
             key={getNoteHash(entry)}
             className={clsx(
-              !entry.active && "inactive",
+              !entry.active && classes["inactive"],
               entry.rating_used && classes["rating-used"],
             )}
           >
-            <td className="col-title">
+            <td className={classes["col-title"]}>
               <Link
                 href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
                   entry.deluxe ? "dx" : "std"
@@ -44,32 +44,32 @@ export const PlayerScoreTable = ({
                 {entry.title}
               </Link>
             </td>
-            <td className="col-deluxe">
+            <td className={classes["col-deluxe"]}>
               <Variant deluxe={entry.deluxe} />
             </td>
             <td
               className={clsx(
-                "col-difficulty",
+                classes["col-difficulty"],
                 classes[`difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`],
                 entry.internal_lv
                   ? ""
                   : entry.level.includes("+")
-                    ? "plus"
-                    : "non-plus",
+                    ? classes["plus"]
+                    : classes["non-plus"],
               )}
             >
               {entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}
             </td>
-            <td className="col-score">
+            <td className={classes["col-score"]}>
               {entry.score ? entry.score.toFixed(4) + "%" : ""}
             </td>
-            <td className="col-flags">
+            <td className={classes["col-flags"]}>
               <ComboFlag flag={comboFlags[entry.combo_flag]} />
               <SyncFlag flag={syncFlags[entry.sync_flag]} />
             </td>
             <td
               className={clsx(
-                "col-rating",
+                classes["col-rating"],
                 !entry.internal_lv && classes.estimated,
               )}
               onClick={(event) => handleRatingPopOpen(event, entry)}

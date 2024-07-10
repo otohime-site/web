@@ -13,7 +13,7 @@
   background: var(--surface-1);
 }
 
-.table :global(.col-title) {
+.table .col-title {
   text-align: left;
   width: auto;
   a {
@@ -23,23 +23,23 @@
     }
   }
 }
-.table :global(.col-score) {
+.table .col-score {
   width: clamp(6.6rem, 15vw, 14rem);
   padding: 0 clamp(0.5rem, 1vw, 2rem);
   text-align: right;
 }
-.table :global(.col-deluxe) {
+.table .col-deluxe {
   width: 1.8rem;
 }
-.table :global(.col-difficulty) {
+.table .col-difficulty {
   width: 2rem;
   font-size: var(--font-size-0);
 }
-.table :global(.col-rating) {
+.table .col-rating {
   width: 1.6rem;
   font-size: var(--font-size-0);
 }
-.table :global(.col-flags) {
+.table .col-flags {
   width: 3.3rem;
   height: 2rem;
   & img {
@@ -70,7 +70,7 @@
   word-break: break-all;
 }
 
-.table td:global(.col-rating) {
+.table td.col-rating {
   text-align: right;
 }
 
@@ -80,14 +80,14 @@
   border-radius: 0.3rem;
 }
 
-.table td:global(.col-difficulty) {
+.table td.col-difficulty {
   text-align: right;
   font-weight: 400;
 }
-.table td:global(.col-difficulty):global(.plus) {
+.table td.col-difficulty.plus {
   padding-right: 0.165em;
 }
-.table td:global(.col-difficulty):global(.non-plus) {
+.table td.col-difficulty.non-plus {
   padding-right: 0.9em;
 }
 
@@ -113,9 +113,9 @@
   background: var(--red-2);
 }
 
-.table tr:global(.inactive) {
+.table tr.inactive {
   color: var(--stone-6);
-  :global(.col-title) {
+  .col-title {
     text-decoration: line-through;
   }
 }
