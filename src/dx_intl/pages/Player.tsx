@@ -33,6 +33,7 @@ import IconArrowUp from "~icons/mdi/arrow-up"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconHistory from "~icons/mdi/history"
 import IconPencil from "~icons/mdi/pencil"
+import layoutClasses from "../../common/components/PlayerLayout.module.scss"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
@@ -329,14 +330,14 @@ const Player = ({ params }: { params: Params }) => {
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
       ) : null}
-      <div className={classes["player-container"]}>
+      <div className={layoutClasses["player-container"]}>
         <div>
           <Record
             record={record}
             updatedAt={player.updated_at}
             isPrivate={player.private}
           />
-          <Toolbar aria-label="成績單選項" className={classes.toolbar}>
+          <Toolbar aria-label="成績單選項" className={layoutClasses.toolbar}>
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
               <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
@@ -457,17 +458,21 @@ const Player = ({ params }: { params: Params }) => {
         {/* Nested tab will hit the following issue and unreliable 
             https://github.com/adobe/react-spectrum/issues/5469 */}
         <Tabs slot="groups">
-          <div className={classes["sticky-header"]}>
+          <div className={layoutClasses["sticky-header"]}>
             <RadioGroup
               orientation="horizontal"
               value={grouping}
               onChange={(v) => {
                 if (v) setGrouping(v as typeof grouping)
               }}
-              className={classes["tab-like-radio-group"]}
+              className={layoutClasses["tab-like-radio-group"]}
             >
               {Object.entries(groupKeyOptions).map(([k, v]) => (
-                <Radio key={k} value={k} className={classes["tab-like-radio"]}>
+                <Radio
+                  key={k}
+                  value={k}
+                  className={layoutClasses["tab-like-radio"]}
+                >
                   {v}
                 </Radio>
               ))}
@@ -492,14 +497,14 @@ const Player = ({ params }: { params: Params }) => {
                 onChange={(v) => {
                   if (v) setDifficulty(parseInt(v, 10))
                 }}
-                className={classes["tab-like-radio-group"]}
+                className={layoutClasses["tab-like-radio-group"]}
               >
                 {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
                   <Radio
                     key={i}
                     value={i.toString()}
                     className={clsx(
-                      classes["tab-like-radio"],
+                      layoutClasses["tab-like-radio"],
                       classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
                     )}
                   >
