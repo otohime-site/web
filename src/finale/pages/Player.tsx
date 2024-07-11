@@ -36,6 +36,7 @@ import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { levels } from "../../dx_intl/models/constants"
 import { graphql, readFragment } from "../../graphql"
+import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
   flatSongsResult,
@@ -319,7 +320,9 @@ const Player = ({ params }: { params: Params }) => {
             )}
           >
             {({ table, index }) => (
-              <TabPanel id={`${index}`}>{JSON.stringify(table)}</TabPanel>
+              <TabPanel id={`${index}`}>
+                <PlayerScoreTable table={table} />
+              </TabPanel>
             )}
           </Collection>
         </Tabs>

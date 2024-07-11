@@ -1,0 +1,128 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: transparent;
+  border: none;
+  td {
+    background: transparent;
+  }
+}
+
+.table .rating-used td {
+  background: var(--surface-1);
+}
+
+.table .col-title {
+  text-align: left;
+  width: auto;
+  a {
+    color: inherit;
+    &:hover {
+      text-decoration-color: var(--stone-6);
+    }
+  }
+}
+.table .col-score {
+  width: clamp(6.6rem, 15vw, 14rem);
+  padding: 0 clamp(0.5rem, 1vw, 2rem);
+  text-align: right;
+}
+.table .col-deluxe {
+  width: 1.8rem;
+}
+.table .col-difficulty {
+  width: 2rem;
+  font-size: var(--font-size-0);
+}
+.table .col-rating {
+  width: 1.6rem;
+  font-size: var(--font-size-0);
+}
+.table .col-flags {
+  width: 3.3rem;
+  height: 2rem;
+  & img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+.table svg {
+  vertical-align: middle;
+}
+
+.table thead th svg {
+  width: 0.8em;
+  height: 0.8em;
+}
+
+.table tbody {
+  font-family: "M PLUS 1p";
+}
+
+.table tbody tr {
+  height: 2em;
+}
+
+.table tbody tr td {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--stone-2);
+  word-break: break-all;
+}
+
+.table td.col-rating {
+  text-align: right;
+}
+
+.table td span {
+  display: inline-block;
+  padding: 0.1rem;
+  border-radius: 0.3rem;
+}
+
+.table td.col-difficulty {
+  text-align: right;
+  font-weight: 400;
+}
+.table td.col-difficulty.plus {
+  padding-right: 0.165em;
+}
+.table td.col-difficulty.non-plus {
+  padding-right: 0.9em;
+}
+
+.difficulty-0 {
+  color: var(--blue-8);
+}
+.difficulty-1 {
+  color: var(--green-8);
+}
+.difficulty-2 {
+  color: var(--yellow-8);
+}
+.difficulty-3 {
+  color: var(--red-8);
+}
+.difficulty-4 {
+  color: var(--violet-8);
+}
+.difficulty-5 {
+  color: var(--purple-2);
+  -webkit-text-stroke: 0.07rem var(--purple-6);
+  paint-order: stroke fill;
+}
+
+.table tr.used td {
+  background: var(--red-2);
+}
+
+.table tr.inactive {
+  color: var(--stone-6);
+  .col-title {
+    text-decoration: line-through;
+  }
+}
+
+.estimated {
+  font-style: italic;
+}
