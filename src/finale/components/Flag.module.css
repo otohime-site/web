@@ -1,0 +1,26 @@
+.flag {
+  display: inline-block;
+  text-align: center;
+  font-size: 65%;
+  color: #999999;
+  margin-right: 0.2em;
+  &.flag-fc-gold {
+    border: 1px solid #999933;
+    color: #999933;
+    font-weight: bold;
+    background: #ffffee;
+  }
+
+  &.flag.flag-ap {
+    border: 1px solid #990000;
+    color: #990000;
+    font-weight: bold;
+  }
+
+  &.flag.flag-ap-plus {
+    border: 1px solid #aa0000;
+    color: #aa0000;
+    background: white;
+    font-weight: bold;
+  }
+}
