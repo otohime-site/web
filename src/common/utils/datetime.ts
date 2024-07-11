@@ -14,8 +14,16 @@ const dtf = new Intl.DateTimeFormat("zh-TW", {
   hour: "numeric",
   minute: "numeric",
 })
+const df = new Intl.DateTimeFormat("zh-TW", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+})
 const rtf = new Intl.RelativeTimeFormat("zh-TW", { style: "short" })
 
+export const formatDate = (input: Date): string => {
+  return df.format(input)
+}
 export const formatDateTime = (input: Date): string => {
   return dtf.format(input)
 }

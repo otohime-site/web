@@ -1,6 +1,6 @@
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
-import { formatDateTime } from "../../common/utils/datetime"
+import { formatDate } from "../../common/utils/datetime"
 import { ResultOf } from "../../graphql"
 import { finaleRecordsFields } from "../models/fragments"
 import Class from "./Class"
@@ -19,7 +19,7 @@ const Record = ({
     <div className={classes["info-row"]}>
       {record.rating}
       <span>
-        {updatedAt != null ? formatDateTime(new Date(updatedAt)) : ""}
+        {updatedAt != null ? formatDate(new Date(updatedAt)) : ""}
         更新
         {isPrivate ? <IconLock /> : <IconPublic />}
       </span>
