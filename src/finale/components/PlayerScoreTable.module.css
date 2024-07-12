@@ -22,6 +22,11 @@
       text-decoration-color: var(--stone-6);
     }
   }
+  & span {
+    margin-left: var(--size-2);
+    color: var(--stone-6);
+    font-size: 75%;
+  }
 }
 .table .col-score {
   width: clamp(6.5rem, 12vw, 11rem);

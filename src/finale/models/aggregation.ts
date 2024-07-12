@@ -17,6 +17,7 @@ export const flatSongsResult = (data?: ResultOf<typeof finaleSongsDocument>) =>
       }),
       song_id: song.id,
       category: song.category,
+      english_title: song.english_title,
       title: song.title,
       order: song.order,
       version: song.version,

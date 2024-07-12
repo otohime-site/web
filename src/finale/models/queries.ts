@@ -18,6 +18,7 @@ export const finaleSongsDocument = graphql(`
       id
       category
       title
+      english_title
       order
       active
       version

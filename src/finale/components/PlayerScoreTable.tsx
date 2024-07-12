@@ -19,7 +19,10 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
             key={getNoteHash(entry)}
             className={clsx(!entry.active && classes["inactive"])}
           >
-            <td className={classes["col-title"]}>{entry.title}</td>
+            <td className={classes["col-title"]}>
+              {entry.title}
+              <span>{entry.english_title}</span>
+            </td>
             <td
               className={clsx(
                 classes["col-difficulty"],
