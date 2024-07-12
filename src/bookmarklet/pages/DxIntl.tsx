@@ -17,7 +17,7 @@ import { Alert } from "../../common/components/ui/Alert"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import host from "../../host"
-import classes from "./DxIntl.module.scss"
+import classes from "./DxIntl.module.css"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
