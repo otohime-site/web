@@ -24,23 +24,16 @@
   }
 }
 .table .col-score {
-  width: clamp(6.6rem, 15vw, 14rem);
+  width: clamp(6.5rem, 12vw, 11rem);
   padding: 0 clamp(0.5rem, 1vw, 2rem);
   text-align: right;
 }
-.table .col-deluxe {
-  width: 1.8rem;
-}
-.table .col-difficulty {
+table .col-difficulty {
   width: 2rem;
   font-size: var(--font-size-0);
 }
-.table .col-rating {
-  width: 1.6rem;
-  font-size: var(--font-size-0);
-}
 .table .col-flags {
-  width: 3.3rem;
+  width: 4.5rem;
   height: 2rem;
   & img {
     display: inline-block;

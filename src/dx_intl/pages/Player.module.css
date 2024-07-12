@@ -32,6 +32,7 @@
     background: var(--purple-1);
   }
 }
+
 .score-stats-block {
   margin: 0 1em 0 0;
   padding: var(--size-2);

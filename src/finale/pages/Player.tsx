@@ -50,6 +50,7 @@ import {
   finalePlayersEditableDocument,
   finaleSongsDocument,
 } from "../models/queries"
+import classes from "./Player.module.css"
 
 const finaleRecordWithScoresDocument = graphql(
   `
@@ -199,55 +200,57 @@ const Player = ({ params }: { params: Params }) => {
               <IconPencil /> 編輯
             </LinkButton>
           ) : null}
-          <Select
-            selectedKey={ordering}
-            onSelectionChange={(selected) =>
-              setOrdering(
-                selected as
-                  | "index"
-                  | "level"
-                  | "score"
-                  | "combo_flag"
-                  | "sync_flag",
-              )
-            }
-          >
-            <Label>排序</Label>
-            <Button style={{ width: "10em" }}>
-              <SelectValue />
-              <span aria-hidden="true">
-                <IconArrowDropDown />
-              </span>
-            </Button>
-            <Popover
-              ref={(ref) =>
-                // https://github.com/adobe/react-spectrum/issues/1513
-                ref?.addEventListener("touchend", (e) => e.preventDefault())
+          <div className={layoutClasses.line}>
+            <Select
+              selectedKey={ordering}
+              onSelectionChange={(selected) =>
+                setOrdering(
+                  selected as
+                    | "index"
+                    | "level"
+                    | "score"
+                    | "combo_flag"
+                    | "sync_flag",
+                )
               }
             >
-              <ListBox>
-                <Section>
-                  <Header>譜面</Header>
-                  <ListBoxItem id="index">預設</ListBoxItem>
-                  <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                </Section>
-                <Section>
-                  <Header>成績單</Header>
-                  <ListBoxItem id="score">成績</ListBoxItem>
-                  <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                  <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                </Section>
-              </ListBox>
-            </Popover>
-          </Select>
-          <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
-            {({ isSelected }) =>
-              isSelected ? <IconArrowDown /> : <IconArrowUp />
-            }
-          </ToggleButton>
-          <Switch isSelected={includeInactive} onChange={setIncludeInactive}>
-            <div className="indicator" /> 顯示刪除曲
-          </Switch>
+              <Label>排序</Label>
+              <Button style={{ width: "10em" }}>
+                <SelectValue />
+                <span aria-hidden="true">
+                  <IconArrowDropDown />
+                </span>
+              </Button>
+              <Popover
+                ref={(ref) =>
+                  // https://github.com/adobe/react-spectrum/issues/1513
+                  ref?.addEventListener("touchend", (e) => e.preventDefault())
+                }
+              >
+                <ListBox>
+                  <Section>
+                    <Header>譜面</Header>
+                    <ListBoxItem id="index">預設</ListBoxItem>
+                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
+                  </Section>
+                  <Section>
+                    <Header>成績單</Header>
+                    <ListBoxItem id="score">成績</ListBoxItem>
+                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
+                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
+                  </Section>
+                </ListBox>
+              </Popover>
+            </Select>
+            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
+              {({ isSelected }) =>
+                isSelected ? <IconArrowDown /> : <IconArrowUp />
+              }
+            </ToggleButton>
+            <Switch isSelected={includeInactive} onChange={setIncludeInactive}>
+              <div className="indicator" /> 顯示刪除曲
+            </Switch>
+          </div>
         </div>
         {/* Nested tab will hit the following issue and unreliable 
             https://github.com/adobe/react-spectrum/issues/5469 */}
@@ -299,7 +302,7 @@ const Player = ({ params }: { params: Params }) => {
                     value={i.toString()}
                     className={clsx(
                       layoutClasses["tab-like-radio"],
-                      /*classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}]*/
+                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
                     )}
                   >
                     {d}

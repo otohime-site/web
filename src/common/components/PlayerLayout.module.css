@@ -28,6 +28,12 @@
   }
 }
 
+.line {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
 .sticky-header {
   position: sticky;
   top: 48px;
@@ -54,9 +60,6 @@
     &[data-selected] {
       border-bottom: 3px solid var(--blue-8);
     }
-  }
-  &:first-of-type .tab-like-radio:first-of-type {
-    flex: 2;
   }
   &:last-of-type .tab-like-radio {
     text-transform: uppercase;

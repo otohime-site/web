@@ -1,26 +1,37 @@
 .flag {
   display: inline-block;
   text-align: center;
-  font-size: 65%;
-  color: #999999;
+  width: 1.6rem;
+  font-size: 80%;
+  font-family: "Noto Serif";
+  font-weight: 900;
   margin-right: 0.2em;
-  &.flag-fc-gold {
-    border: 1px solid #999933;
-    color: #999933;
+  &.flag-fc-silver {
+    -webkit-text-stroke: 2px var(--blue-4);
+    paint-order: stroke fill;
+    color: var(--blue-1);
     font-weight: bold;
-    background: #ffffee;
+  }
+  &.flag-fc-gold {
+    -webkit-text-stroke: 2px var(--red-4);
+    paint-order: stroke fill;
+    color: var(--choco-1);
+    font-weight: bold;
   }
 
-  &.flag.flag-ap {
-    border: 1px solid #990000;
-    color: #990000;
+  &.flag.flag-ap,
+  &.flag.flag-100 {
+    -webkit-text-stroke: 2px var(--red-4);
+    paint-order: stroke fill;
+    color: var(--yellow-1);
     font-weight: bold;
   }
 
   &.flag.flag-ap-plus {
-    border: 1px solid #aa0000;
-    color: #aa0000;
-    background: white;
+    font-size: 77%;
+    -webkit-text-stroke: 2px var(--pink-6);
+    paint-order: stroke fill;
+    color: var(--yellow-1);
     font-weight: bold;
   }
 }

@@ -1,5 +1,43 @@
 .info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 20em;
+  & span svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 .card-name {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  width: 100%;
+  background: white;
+  color: black;
+  border-radius: 0.2em;
+  font-size: 120%;
+  font-weight: 800;
+  font-family: "M PLUS Rounded 1c";
+}
+
+.title {
+  width: 20em;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 0.4em;
+  border: 0.1em solid;
+  color: white;
+  -webkit-text-stroke: 0.04em #000000;
+  text-shadow: 0.06em 0.06em #000000;
+  font-weight: 800;
+  font-family: "M PLUS Rounded 1c";
+  margin-bottom: 0.5em;
+
+  background: #dadada;
+  border-color: #b8b8b8;
+  box-shadow: 0 0.2em #666666;
 }

@@ -351,13 +351,7 @@ const Player = ({ params }: { params: Params }) => {
               <IconFileDownload /> 下載 CSV
             </Button>
           </Toolbar>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "end",
-            }}
-          >
+          <div className={layoutClasses.line}>
             <Select
               selectedKey={ordering}
               onSelectionChange={(selected) =>
@@ -472,6 +466,7 @@ const Player = ({ params }: { params: Params }) => {
                   key={k}
                   value={k}
                   className={layoutClasses["tab-like-radio"]}
+                  style={k == "current_version" ? { flex: 2 } : undefined}
                 >
                   {v}
                 </Radio>

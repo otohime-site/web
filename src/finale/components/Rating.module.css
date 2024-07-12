@@ -1,0 +1,74 @@
+.rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "Noto Serif";
+  font-weight: 900;
+  text-transform: uppercase;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  border-radius: var(--radius-2);
+  border: 1px solid var(--stone-7);
+  padding: 0 var(--size-2);
+  & span {
+    font-size: 0.9rem;
+  }
+  &.normal {
+    background: white;
+    border-color: var(--stone-7);
+    color: var(--stone-11);
+  }
+  &.blue {
+    background-color: var(--blue-1);
+    border-color: var(--blue-7);
+    color: var(--blue-11);
+  }
+  &.green {
+    background-color: var(--green-1);
+    border-color: var(--green-7);
+    color: var(--green-11);
+  }
+  &.orange {
+    background-color: var(--orange-1);
+    border-color: var(--orange-7);
+    color: var(--orange-11);
+  }
+  &.red {
+    background-color: var(--red-1);
+    border-color: var(--red-7);
+    color: var(--red-11);
+  }
+  &.purple {
+    background-color: var(--purple-1);
+    border-color: var(--purple-7);
+    color: var(--purple-11);
+  }
+  &.bronze {
+    background: linear-gradient(90deg, #aa6666 0%, #ffcc99 50%, #aa6666 100%);
+    border-color: var(--choco-7);
+    color: var(--choco-11);
+  }
+
+  &.silver {
+    background: linear-gradient(90deg, #669999 0%, #cceeff 50%, #669999 100%);
+    border-color: var(--cyan-7);
+    color: var(--cyan-11);
+  }
+  &.gold {
+    background: linear-gradient(90deg, #ffbb00 0%, #ffee99 50%, #ffbb00 100%);
+    border-color: var(--yellow-7);
+    color: var(--yellow-11);
+  }
+  &.rainbow {
+    background: linear-gradient(
+      90deg,
+      var(--red-8) 0%,
+      var(--yellow-8) 25%,
+      var(--green-8) 50%,
+      var(--blue-8) 75%,
+      var(--red-8) 100%
+    );
+    border-color: var(--yellow-7);
+    color: var(--yellow-0);
+  }
+}

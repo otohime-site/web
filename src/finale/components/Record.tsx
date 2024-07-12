@@ -4,6 +4,7 @@ import { formatDate } from "../../common/utils/datetime"
 import { ResultOf } from "../../graphql"
 import { finaleRecordsFields } from "../models/fragments"
 import Class from "./Class"
+import Rating from "./Rating"
 import classes from "./Record.module.css"
 
 const Record = ({
@@ -17,19 +18,21 @@ const Record = ({
 }) => (
   <div>
     <div className={classes["info-row"]}>
-      {record.rating}
-      <span>
-        {updatedAt != null ? formatDate(new Date(updatedAt)) : ""}
-        更新
-        {isPrivate ? <IconLock /> : <IconPublic />}
-      </span>
-    </div>
-    <div className={classes["info-row"]}>
-      <div className={classes["card-name"]}>{record.card_name}</div>
+      <Rating rating={record.rating} />
       {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
       {record.class != null ? <Class rawClass={record.class} /> : ""}
     </div>
-    <div title={record.title}>{record.title}</div>
+    <div className={classes["info-row"]}>
+      <div className={classes["card-name"]}>{record.card_name}</div>
+    </div>
+    <div className={classes.title} title={record.title}>
+      {record.title}
+    </div>
+    <div className={classes["info-row"]}>
+      {updatedAt != null ? formatDate(new Date(updatedAt)) : ""}
+      更新
+      {isPrivate ? <IconLock /> : <IconPublic />}
+    </div>
   </div>
 )
 
