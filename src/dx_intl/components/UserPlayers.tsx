@@ -45,7 +45,7 @@ const UserPlayers = () => {
   }
   return (
     <QueryResult result={playersResult}>
-      {players.length > 0 ? (
+      {players.length + finalePlayers.length > 0 ? (
         <ListBox
           selectionMode="single"
           onSelectionChange={(keys) => {

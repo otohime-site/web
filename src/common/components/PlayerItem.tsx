@@ -55,6 +55,7 @@ const PlayerItem = ({
       <div>
         <p slot="label">{player.nickname}</p>
         <p slot="description">
+          {"dx_intl_record" in player ? null : "舊版 maimai / "}
           {record == null ? (
             <>
               尚無紀錄
