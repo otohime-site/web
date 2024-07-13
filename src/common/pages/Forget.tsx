@@ -39,16 +39,11 @@ const Forget = () => {
 
   return (
     <div>
-      <h3>忘記我</h3>
+      <h3>刪除帳號</h3>
       <Alert severity="error">
-        <p>
-          這個功能將會移除您在本站的所有個人資料，以滿足各地個資法規的要求。包含：
-        </p>
+        <p>這個功能將會移除您在本站的所有個人資料，包含：</p>
         <ul>
-          <li>
-            Firebase 認證所儲存的 Facebook 內部 ID
-            與電子郵件地址（雖然我們不會利用它）
-          </li>
+          <li>Firebase 的帳號與其儲存的 Facebook / Google 帳號公開資料</li>
           <li>所有遊戲的成績單與歷史紀錄</li>
         </ul>
         <p>
@@ -68,6 +63,13 @@ const Forget = () => {
         </p>
         <p>
           如果執行失敗，可能是您登入太久了，請您嘗試登出、再登入、再重新執行一次。
+        </p>
+        <p>
+          如果您因為 Facebook 登入被停用等理由無法重新登入，請您參考{" "}
+          <a href="https://littlebtc.gitbook.io/otohime-docs/data-policy">
+            隱私權與資料使用政策
+          </a>
+          中「關於您的權利」一段，填寫請求表單請求刪除。
         </p>
         <Button isDisabled={!confirmed} onPress={bye}>
           Bye :)

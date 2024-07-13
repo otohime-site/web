@@ -11,7 +11,7 @@ input {
   font-size: 16px;
 }
 
-:where(p) {
+:where(p, li) {
   max-width: initial;
 }
 
