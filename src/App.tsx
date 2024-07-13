@@ -12,6 +12,7 @@ import Logo from "./logo/favicon.svg"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
 const Forget = lazy(async () => await import("./common/pages/Forget"))
+const Transfer = lazy(async () => await import("./common/pages/Transfer"))
 const DxIntl = lazy(async () => await import("./dx_intl/index"))
 const Finale = lazy(async () => await import("./finale/index"))
 
@@ -33,6 +34,7 @@ const App = () => {
           <RouterProvider navigate={navigate}>
             <Router>
               <Route path="/" component={Home} />
+              <Route path="/transfer" component={Transfer} />
               <Route path="/forget" component={Forget} />
               <Route path="/dxi" nest>
                 <DxIntl />

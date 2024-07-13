@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Button } from "react-aria-components"
+import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
 import { graphql } from "../../graphql"
@@ -39,6 +40,7 @@ const Forget = () => {
 
   return (
     <div>
+      <Titled title={(title) => `刪除帳號 - ${title}`} />
       <h3>刪除帳號</h3>
       <Alert severity="error">
         <p>這個功能將會移除您在本站的所有個人資料，包含：</p>
