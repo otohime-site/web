@@ -23,8 +23,9 @@ import {
   ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
-import { useQuery } from "urql"
+import { useMutation, useQuery } from "urql"
 import { Params } from "wouter"
+import { navigate } from "wouter/use-browser-location"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconPencil from "~icons/mdi/pencil"
@@ -56,6 +57,7 @@ const finaleRecordWithScoresDocument = graphql(
   `
     query finaleRecordWithScores($nickname: String!) {
       finale_players(where: { nickname: { _eq: $nickname } }) {
+        id
         updated_at
         private
         finale_record {
@@ -69,6 +71,14 @@ const finaleRecordWithScoresDocument = graphql(
   `,
   [finaleRecordsFields, finaleScoresFields],
 )
+
+const deleteFinalePlayerDocument = graphql(`
+  mutation deleteFinalePlayer($pk: Int!) {
+    delete_finale_players_by_pk(id: $pk) {
+      id
+    }
+  }
+`)
 const groupKeyOptions = {
   category: "分類",
   version: "版本",
@@ -87,6 +97,8 @@ const Player = ({ params }: { params: Params }) => {
     variables: { nickname: params.nickname ?? "" },
   })
   const [songsResult] = useQuery({ query: finaleSongsDocument })
+  const [, deletePlayer] = useMutation(deleteFinalePlayerDocument)
+
   const flattedEntries = useMemo(
     () => flatSongsResult(songsResult.data),
     [songsResult],
@@ -156,6 +168,26 @@ const Player = ({ params }: { params: Params }) => {
     },
   })
 
+  const handleDeletePlayer = async (): Promise<void> => {
+    if (
+      prompt(`
+是否確定要移除成績單？成績單與你在網站上的歷史紀錄將被移除。
+此動作無法復原！
+
+如果您已經確定了，請在下面重新輸入你的成績單暱稱（${
+        params.nickname ?? ""
+      }）。`) !== params.nickname
+    ) {
+      return
+    }
+    const playerId = recordResult.data?.finale_players[0]?.id
+    if (playerId == null) {
+      throw new Error("No Player ID!")
+    }
+    await deletePlayer({ pk: playerId })
+    navigate("/")
+  }
+
   if (recordResult.error != null || songsResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
@@ -196,8 +228,8 @@ const Player = ({ params }: { params: Params }) => {
           />
           {editableResult.error == null &&
           (editableResult.data?.finale_players?.length ?? 0) > 0 ? (
-            <LinkButton href={`/fin/p/${params.nickname}/edit`}>
-              <IconPencil /> 編輯
+            <LinkButton onPress={handleDeletePlayer}>
+              <IconPencil /> 刪除
             </LinkButton>
           ) : null}
           <div className={layoutClasses.line}>
