@@ -57,7 +57,7 @@ const HomeComponent = () => {
         <LinkButton href="/dxi">DX 公開玩家統計</LinkButton>
       </p>
       <p>
-        <LinkButton href="/forget">刪除帳號</LinkButton>
+        <LinkButton href="/forget">忘記我 (刪除帳號)</LinkButton>
       </p>
     </div>
   )
