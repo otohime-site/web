@@ -6,8 +6,7 @@ It is a TypeScript / React project.
 
 Register and set:
 
-- Facebook Login
-- Firebase Auth connecting with Facebook
+- Firebase Auth connecting with Google
 
 Make sure the server is up with `docker-compose` and `.env` set correctly.
 In order to import the score correctly, please check documents of the server.
