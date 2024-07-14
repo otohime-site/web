@@ -1,6 +1,5 @@
 import clsx from "clsx"
 import {
-  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
@@ -8,15 +7,12 @@ import {
 } from "firebase/auth"
 import { Fragment, useCallback } from "react"
 import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components"
-import IconArrowDown from "~icons/mdi/arrow-down"
-import IconFacebook from "~icons/mdi/facebook"
 import IconGoogle from "~icons/mdi/google"
 import { firebaseAuth, useUser } from "../contexts"
 
 import classes from "./UserBox.module.css"
 import { Alert } from "./ui/Alert"
 
-const facebookProvider = new FacebookAuthProvider()
 const googleProvider = new GoogleAuthProvider()
 
 const isInAppBrowser = (agent: string): boolean =>
@@ -26,9 +22,7 @@ const isInAppBrowser = (agent: string): boolean =>
 const UserBoxComponent = () => {
   const user = useUser()
 
-  const performLogin = async (
-    provider: FacebookAuthProvider | GoogleAuthProvider,
-  ) => {
+  const performLogin = async (provider: GoogleAuthProvider) => {
     try {
       if (isInAppBrowser(navigator.userAgent)) {
         await signInWithRedirect(firebaseAuth, provider)
@@ -46,19 +40,7 @@ const UserBoxComponent = () => {
   }
 
   const handleLoginGoogle = useCallback(async (): Promise<void> => {
-    if (
-      !confirm(`登入成功後，該 Google 帳號將無法執行帳號綁定。
-
-如果您希望將已有的 Facebook 帳號重新綁定，請先按「取消」，再點選「以 Facebook 帳號登入」，登入後我們會提示您如何綁定。
-
-是否確定繼續？`)
-    ) {
-      return
-    }
     await performLogin(googleProvider)
-  }, [])
-  const handleLoginFacebook = useCallback(async (): Promise<void> => {
-    await performLogin(facebookProvider)
   }, [])
 
   const handleLogout = async (): Promise<void> => {
@@ -82,26 +64,29 @@ const UserBoxComponent = () => {
           }
         >
           <Dialog className={clsx("react-aria-Dialog", classes["dialog"])}>
-            <Alert severity="warning">
-              <p>Facebook 登入將於 7/15 停止運作。</p>
-              <p>既有使用者請儘速登入後循指示重新綁定。</p>
-              <IconArrowDown />
-            </Alert>
-            <p>
-              <Button onPress={handleLoginFacebook}>
-                <IconFacebook /> 以 Facebook 帳號登入
-              </Button>
-            </p>
-            <p>&nbsp;</p>
-            <Alert severity="info">
-              <p>新加入或已完成綁定的使用者請使用這個。</p>
-              <IconArrowDown />
-            </Alert>
             <p>
               <Button onPress={handleLoginGoogle}>
                 <IconGoogle /> 以 Google 帳號登入
               </Button>
             </p>
+            <Alert severity="warning">
+              <p>Facebook 登入已於 7/15 停止運作。</p>
+              <p>
+                如果您還沒重新綁定，您可以登入後透過既有的 Bookmarklet
+                連結進行成績單帳號轉移。
+              </p>
+              <p>
+                請參考{" "}
+                <a
+                  href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  隱私權與資料使用政策
+                </a>
+                了解個人資料的取回、刪除等詳情。
+              </p>
+            </Alert>
           </Dialog>
         </Popover>
       </DialogTrigger>
