@@ -28,7 +28,7 @@ import { Params } from "wouter"
 import { navigate } from "wouter/use-browser-location"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
-import IconPencil from "~icons/mdi/pencil"
+import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -229,7 +229,7 @@ const Player = ({ params }: { params: Params }) => {
           {editableResult.error == null &&
           (editableResult.data?.finale_players?.length ?? 0) > 0 ? (
             <LinkButton onPress={handleDeletePlayer}>
-              <IconPencil /> 刪除
+              <MdiDeleteAlert /> 刪除
             </LinkButton>
           ) : null}
           <div className={layoutClasses.line}>
