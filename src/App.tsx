@@ -69,7 +69,7 @@ const App = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            資料使用政策
+            隱私權與資料使用政策
           </a>{" "}
         </div>
         <div>

@@ -213,8 +213,12 @@ const PlayerForm = ({ params }: { params: Params }) => {
         <div className={classes.notes}>
           <p>
             Otohime 會記錄的東西如下，也建議您詳閱我們的
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              隱私政策與資料使用方針
+            <a
+              href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              隱私權與資料使用政策
             </a>
             。
           </p>

@@ -68,7 +68,11 @@ const Forget = () => {
         </p>
         <p>
           如果您因為 Facebook 登入被停用等理由無法重新登入，請您參考{" "}
-          <a href="https://littlebtc.gitbook.io/otohime-docs/data-policy">
+          <a
+            href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             隱私權與資料使用政策
           </a>
           中「關於您的權利」一段，填寫請求表單請求刪除。

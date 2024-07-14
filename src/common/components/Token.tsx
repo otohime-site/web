@@ -2,13 +2,15 @@ import { useState } from "react"
 import { Button, Dialog, DialogTrigger, Modal } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
-import IconLink from "~icons/mdi/link"
+import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
+import MdiCloudDownloadOutline from "~icons/mdi/cloud-download-outline"
 import IconRefresh from "~icons/mdi/refresh"
 import { graphql } from "../../graphql"
 import host from "../../host"
 import { useUser } from "../contexts"
 import { QueryResult } from "./QueryResult"
 import { Alert } from "./ui/Alert"
+import { LinkButton } from "./ui/Button"
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -42,7 +44,10 @@ const regenerateTokenDocument = graphql(`
 
 const User = () => {
   const user = useUser()
-  const [tokensResult, refetchTokens] = useQuery({ query: tokensDocument })
+  const [tokensResult, refetchTokens] = useQuery({
+    query: tokensDocument,
+    requestPolicy: "network-only",
+  })
   const [regenerateTokenResult, regenerateToken] = useMutation(
     regenerateTokenDocument,
   )
@@ -116,28 +121,70 @@ const User = () => {
         skeletonHeight={36}
       >
         {token.length === 0 ? (
-          <Button
-            isDisabled={regenerateTokenResult.fetching}
-            onPress={generateToken}
-          >
-            產生權杖
-          </Button>
+          <div>
+            <p>
+              如果您第一次使用，您要先產生一個權杖來生成觸發更新的 Bookmarklet。
+            </p>
+            <p>
+              <Button
+                isDisabled={regenerateTokenResult.fetching}
+                onPress={generateToken}
+              >
+                產生權杖
+              </Button>
+            </p>
+            <p>
+              如果您因為任何原因無法在存取帳號（例如以前透過 Facebook
+              登入），但您的 Bookmarklet
+              觸發書籤留著，您可以使用這個功能將原本帳號的成績單轉移。
+            </p>
+            <p>
+              <LinkButton href="/transfer">
+                <MdiBriefcaseTransfer />
+                成績單帳號轉移
+              </LinkButton>
+            </p>
+          </div>
         ) : (
           <div>
-            <a
-              className="btn"
-              href={bookmarkletContent(token)}
-              onClick={async (e) => await copyBookmarklet(e, token)}
-            >
-              <IconLink />
-              更新 Otohime 成績
-            </a>
-            <Button
-              isDisabled={regenerateTokenResult.fetching}
-              onPress={generateToken}
-            >
-              <IconRefresh /> 重新產生
-            </Button>
+            <p>新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。</p>
+            <p>
+              如果您使用桌面瀏覽器，請將下面的按鈕拖曳到書籤列。如果您使用手機瀏覽器，請按下下方按鈕。{" "}
+              <a
+                href="https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help"
+                target="_blank"
+                rel="noreferrer"
+              >
+                詳細圖文說明
+              </a>
+              。
+            </p>
+            <p>
+              <a
+                className="btn"
+                href={bookmarkletContent(token)}
+                onClick={async (e) => await copyBookmarklet(e, token)}
+              >
+                <MdiCloudDownloadOutline />
+                更新 Otohime 成績
+              </a>
+            </p>
+            <p>
+              請妥善保管好您的連結，取得這個連結的人除了可以更新成績單，也能將您已上傳的成績單跟歷史紀錄轉移到其他帳號。
+            </p>
+            <p>如果您有需要可以重新產生權杖，或者使用成績單帳號轉移。</p>
+            <p>
+              <Button
+                isDisabled={regenerateTokenResult.fetching}
+                onPress={generateToken}
+              >
+                <IconRefresh /> 重新產生權杖
+              </Button>
+              <LinkButton href="/transfer">
+                <MdiBriefcaseTransfer />
+                成績單帳號轉移
+              </LinkButton>
+            </p>
           </div>
         )}
       </QueryResult>

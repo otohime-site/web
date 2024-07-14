@@ -1,0 +1,16 @@
+@media (min-width: 961px) {
+  .home-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    & > div:first-of-type {
+      flex: 1;
+    }
+    & h5 {
+      margin-top: var(--size-3);
+    }
+    & > div:last-of-type {
+      width: 30rem;
+    }
+  }
+}
