@@ -1,20 +1,7 @@
 /* eslint-disable */
 /* prettier-ignore */
 
-/** An IntrospectionQuery representation of your schema.
- *
- * @remarks
- * This is an introspection of your schema saved as a file by GraphQLSP.
- * It will automatically be used by `gql.tada` to infer the types of your GraphQL documents.
- * If you need to reuse this data or update your `scalars`, update `tadaOutputLocation` to
- * instead save to a .ts instead of a .d.ts file.
- */
-export type introspection = {
-  name: never;
-  query: 'query_root';
-  mutation: 'mutation_root';
-  subscription: 'subscription_root';
-  types: {
+export type introspection_types = {
     'Boolean': unknown;
     'Boolean_comparison_exp': { kind: 'INPUT_OBJECT'; name: 'Boolean_comparison_exp'; isOneOf: false; inputFields: [{ name: '_eq'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_gt'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_gte'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_in'; type: { kind: 'LIST'; name: never; ofType: { kind: 'NON_NULL'; name: never; ofType: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; }; }; defaultValue: null }, { name: '_is_null'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_lt'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_lte'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_neq'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_nin'; type: { kind: 'LIST'; name: never; ofType: { kind: 'NON_NULL'; name: never; ofType: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; }; }; defaultValue: null }]; };
     'Float': unknown;
@@ -686,8 +673,23 @@ export type introspection = {
     'users_updates': { kind: 'INPUT_OBJECT'; name: 'users_updates'; isOneOf: false; inputFields: [{ name: '_set'; type: { kind: 'INPUT_OBJECT'; name: 'users_set_input'; ofType: null; }; defaultValue: null }, { name: 'where'; type: { kind: 'NON_NULL'; name: never; ofType: { kind: 'INPUT_OBJECT'; name: 'users_bool_exp'; ofType: null; }; }; defaultValue: null }]; };
     'uuid': unknown;
     'uuid_comparison_exp': { kind: 'INPUT_OBJECT'; name: 'uuid_comparison_exp'; isOneOf: false; inputFields: [{ name: '_eq'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_gt'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_gte'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_in'; type: { kind: 'LIST'; name: never; ofType: { kind: 'NON_NULL'; name: never; ofType: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; }; }; defaultValue: null }, { name: '_is_null'; type: { kind: 'SCALAR'; name: 'Boolean'; ofType: null; }; defaultValue: null }, { name: '_lt'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_lte'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_neq'; type: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; defaultValue: null }, { name: '_nin'; type: { kind: 'LIST'; name: never; ofType: { kind: 'NON_NULL'; name: never; ofType: { kind: 'SCALAR'; name: 'uuid'; ofType: null; }; }; }; defaultValue: null }]; };
-  };
 };
+
+/** An IntrospectionQuery representation of your schema.
+ *
+ * @remarks
+ * This is an introspection of your schema saved as a file by GraphQLSP.
+ * It will automatically be used by `gql.tada` to infer the types of your GraphQL documents.
+ * If you need to reuse this data or update your `scalars`, update `tadaOutputLocation` to
+ * instead save to a .ts instead of a .d.ts file.
+ */
+export type introspection = {
+  name: never
+  query: "query_root"
+  mutation: "mutation_root"
+  subscription: "subscription_root"
+  types: introspection_types
+}
 
 import "gql.tada"
 
