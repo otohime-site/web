@@ -21,6 +21,9 @@ import classes from "./DxIntl.module.css"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
 
+const castKey = (key: string | number | undefined): number | undefined =>
+  typeof key === "number" ? key : undefined
+
 // Needed as bookmarklet will not know user ID
 const dxIntlPlayersDocument = graphql(
   `
@@ -145,7 +148,7 @@ const Book = () => {
   const [fetchProgress, setFetchProgress] = useState(0)
   const selectedPlayerId =
     selectedPlayerIds !== "all"
-      ? selectedPlayerIds.values().next().value
+      ? castKey(selectedPlayerIds.values().next().value)
       : undefined
   const handleFetch = async (): Promise<void> => {
     const player = players.find((p) => p.id === selectedPlayerId)
