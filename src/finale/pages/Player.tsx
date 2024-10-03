@@ -253,12 +253,7 @@ const Player = ({ params }: { params: Params }) => {
                   <IconArrowDropDown />
                 </span>
               </Button>
-              <Popover
-                ref={(ref) =>
-                  // https://github.com/adobe/react-spectrum/issues/1513
-                  ref?.addEventListener("touchend", (e) => e.preventDefault())
-                }
-              >
+              <Popover>
                 <ListBox>
                   <Section>
                     <Header>譜面</Header>
