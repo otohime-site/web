@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import Blue from "../images/ratings/blue.svg"
 import Bronze from "../images/ratings/bronze.svg"
 import Gold from "../images/ratings/gold.svg"

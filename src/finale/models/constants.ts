@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-sparse-arrays
 export const categories = [
   "POPS ＆ アニメ",
   "niconico ＆ ボーカロイド™",

@@ -73,7 +73,6 @@ const SongStats = ({ params }: { params: Params }) => {
       ...accr,
       {
         ...curr,
-        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
         accumulated:
           (accr[accr.length - 1]?.accumulated ?? 0) + (curr.count ?? 0),
       },

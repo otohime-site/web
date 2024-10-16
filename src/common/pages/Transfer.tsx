@@ -62,8 +62,7 @@ const Transfer = () => {
 將跳轉回首頁，由於權杖會重新產生，請重新複製您的 Bookmarklet 連結。
 `)
       navigate("/")
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
+    } catch {
       alert("發生錯誤，請重試。")
     }
   }

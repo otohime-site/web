@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-sparse-arrays
+/* eslint-disable no-sparse-arrays */
+
 export const categories = [
   ,
   // start from 1
@@ -135,7 +136,6 @@ export const RANK_SCORES: Array<[number, (typeof RANKS)[number], number]> = [
 export const comboFlags = ["", "fc", "fc+", "ap", "ap+"] as const
 export const syncFlags = ["", "s", "fs", "fs+", "fdx", "fdx+"] as const
 
-// eslint-disable-next-line no-sparse-arrays
 export const gradeNames = [
   ,
   // start from 1
