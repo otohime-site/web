@@ -22,7 +22,7 @@
     "clsx": "^2.0.0",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
-    "firebase": "^10.1.0",
+    "firebase": "^11.0.1",
     "gql.tada": "^1.6.2",
     "graphql": "^16.3.0",
     "open-props": "^1.6.12",
