@@ -48,7 +48,7 @@ const App = () => {
       </div>
       <div className={classes.footer}>
         <div>
-          &copy; 2018－2024 Otohime Team.
+          &copy; 2018－2025 Otohime Team.
           <a
             href="https://github.com/otohime-site/"
             target="_blank"
