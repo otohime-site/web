@@ -32,7 +32,7 @@
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
     "react-titled": "^2.1.0",
-    "unplugin-icons": "^0.22.0",
+    "unplugin-icons": "^22.0.0",
     "urql": "^4.0.0",
     "wouter": "^3.0.0"
   },
