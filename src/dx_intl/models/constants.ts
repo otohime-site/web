@@ -246,6 +246,7 @@ export const versionTitles = [
   "祭",
   "祝",
   "双",
+  "宴",
 ]
 
 export const versionTitleExcludes = [
