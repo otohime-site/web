@@ -162,7 +162,13 @@ const User = () => {
             <p>
               <a
                 className="btn"
-                href={bookmarkletContent(token)}
+                ref={(node) => {
+                  // Fix React 19 blocking `javascript:` URLs
+                  // https://github.com/facebook/react/issues/16382#issuecomment-607252694
+                  if (node) {
+                    node.setAttribute("href", bookmarkletContent(token))
+                  }
+                }}
                 onClick={async (e) => await copyBookmarklet(e, token)}
               >
                 <MdiCloudDownloadOutline />
