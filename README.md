@@ -1,6 +1,7 @@
 ### The Otohime front-end
 
-It is a TypeScript / React project.
+It is a TypeScript / React project, serving the [Otohime](https://otohi.me/) front-end
+and the [bookmarklet](https://otohi.me/go.js) to trigger the update.
 
 #### Get Started
 
@@ -39,6 +40,20 @@ npm start
 ```
 
 Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
+If you have the server Docker Compose Project running at the same machine, the whold site should work.
+
+#### What's used?
+
+- [urql](https://github.com/urql-graphql/urql) and [gql.tada](https://gql-tada.0no.co/) for GraphQL
+  The gql.tada TypeScript generation should work out of the box if you run server Docker Compose.
+- [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) - Providing Headless React Components
+- [Open Props](https://open-props.style/) for CSS Styling
+
+##### Bookmarklet
+
+Bookmarklet is a long story, basically, it will use the `src/go.js` as the entry, injecting an `<iframe>` (for live-loading and style resets) loading `src/bookmarklet/entry.tsx`, and use `window.parent` to fetch the scores to bypass most CORS issues.
+
+`go.js` has some development addition, so live reloading shall work with the Dev Server. (it may be changed after Vite updates)
 
 ### License
 
