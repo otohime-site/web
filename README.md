@@ -40,12 +40,12 @@ npm start
 ```
 
 Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
-If you have the server Docker Compose Project running at the same machine, the whold site should work.
+If you have the server Docker Compose Project running at the same machine, the whole site should work out of the box.
 
 #### What's used?
 
 - [urql](https://github.com/urql-graphql/urql) and [gql.tada](https://gql-tada.0no.co/) for GraphQL
-  The gql.tada TypeScript generation should work out of the box if you run server Docker Compose.
+  The gql.tada TypeScript generation should work when server Docker Compose is running.
 - [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) - Providing Headless React Components
 - [Open Props](https://open-props.style/) for CSS Styling
 
