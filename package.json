@@ -16,7 +16,7 @@
   "dependencies": {
     "@otohime-site/parser": "^24.1.1",
     "@urql/exchange-auth": "^2.1.0",
-    "@vitejs/plugin-basic-ssl": "^1.2.0",
+    "@vitejs/plugin-basic-ssl": "^2.0.0",
     "chart.js": "^4.0.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "clsx": "^2.0.0",
@@ -54,7 +54,7 @@
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.0.6",
     "lint-staged": "^15.0.0",
     "postcss-jit-props": "^1.0.14",
