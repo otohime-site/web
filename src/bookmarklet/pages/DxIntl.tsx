@@ -1,5 +1,6 @@
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
+import clsx from "clsx"
 import { useEffect, useState } from "react"
 import {
   Button,
@@ -230,7 +231,7 @@ const Book = () => {
 
   return (
     <Modal isDismissable isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Dialog className={classes.dialog}>
+      <Dialog className={clsx("react-aria-Dialog", classes.dialog)}>
         <Heading slot="title">更新 Otohime 成績單</Heading>
         {pageState === "loading" ? (
           <div></div>

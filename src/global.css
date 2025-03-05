@@ -74,6 +74,7 @@ a.btn {
 
 .react-aria-Dialog {
   outline: none;
+  padding: var(--size-4);
 }
 
 .react-aria-Modal {
