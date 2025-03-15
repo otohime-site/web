@@ -45,6 +45,15 @@
   font-family: "M PLUS 1p";
 }
 
+.grouping-tablist {
+  & :global(.react-aria-Tab) {
+    flex: 1;
+  }
+  & :global(.react-aria-Tab[data-selected]) {
+    --border-color: var(--blue-8);
+  }
+}
+
 .tab-like-radio-group {
   display: flex;
   flex-direction: row;
@@ -56,12 +65,7 @@
     cursor: pointer;
     flex: 1;
   }
-  &:first-of-type .tab-like-radio {
-    &[data-selected] {
-      border-bottom: 3px solid var(--blue-8);
-    }
-  }
-  &:last-of-type .tab-like-radio {
+  & .tab-like-radio {
     text-transform: uppercase;
   }
 }

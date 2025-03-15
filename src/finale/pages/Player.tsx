@@ -9,17 +9,17 @@ import {
   Label,
   ListBox,
   ListBoxItem,
+  ListBoxSection,
   Popover,
   Radio,
   RadioGroup,
-  Section,
   Select,
   SelectValue,
   Switch,
   Tab,
+  TabList,
   TabPanel,
   Tabs,
-  TabsContext,
   ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
@@ -207,12 +207,7 @@ const Player = ({ params }: { params: Params }) => {
     )
   }
   return (
-    <TabsContext.Provider
-      value={{
-        selectedKey: selectedGroup,
-        onSelectionChange: setSelectedGroup,
-      }}
-    >
+    <>
       <Titled
         title={(title) => `${record.card_name} - 舊版 maimai 成績單 - ${title}`}
       />
@@ -255,17 +250,17 @@ const Player = ({ params }: { params: Params }) => {
               </Button>
               <Popover>
                 <ListBox>
-                  <Section>
+                  <ListBoxSection>
                     <Header>譜面</Header>
                     <ListBoxItem id="index">預設</ListBoxItem>
                     <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                  </Section>
-                  <Section>
+                  </ListBoxSection>
+                  <ListBoxSection>
                     <Header>成績單</Header>
                     <ListBoxItem id="score">成績</ListBoxItem>
                     <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
                     <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                  </Section>
+                  </ListBoxSection>
                 </ListBox>
               </Popover>
             </Select>
@@ -281,83 +276,101 @@ const Player = ({ params }: { params: Params }) => {
         </div>
         {/* Nested tab will hit the following issue and unreliable 
             https://github.com/adobe/react-spectrum/issues/5469 */}
-        <Tabs slot="groups">
+        <Tabs
+          slot="grouping"
+          selectedKey={grouping}
+          onSelectionChange={(v) => {
+            setGrouping(v as typeof grouping)
+            setSelectedGroup("0")
+          }}
+        >
           <div className={layoutClasses["sticky-header"]}>
-            <RadioGroup
-              orientation="horizontal"
-              value={grouping}
-              onChange={(v) => {
-                if (v) setGrouping(v as typeof grouping)
-              }}
-              className={layoutClasses["tab-like-radio-group"]}
-            >
-              {Object.entries(groupKeyOptions).map(([k, v]) => (
-                <Radio
-                  key={k}
-                  value={k}
-                  className={layoutClasses["tab-like-radio"]}
-                >
-                  {v}
-                </Radio>
-              ))}
-            </RadioGroup>
-            <ScrollableTabList
-              items={[...table.groupedData.keys()].map((key, index) => ({
+            <TabList
+              items={Object.entries(groupKeyOptions).map(([key], index) => ({
                 key,
                 index,
               }))}
+              className={clsx(
+                "react-aria-TabList",
+                layoutClasses["grouping-tablist"],
+              )}
             >
-              {({ key, index }) => (
-                <Tab key={index} id={`${index}`}>
-                  {getGroupTitle(grouping, key)} (
-                  {table.groupedData.get(key)?.length})
+              {({ key }) => (
+                <Tab key={key} id={`${key}`}>
+                  {groupKeyOptions[key as typeof grouping]}
                 </Tab>
               )}
-            </ScrollableTabList>
-            {grouping === "category" || grouping === "version" ? (
-              <RadioGroup
-                orientation="horizontal"
-                value={difficulty.toString()}
-                onChange={(v) => {
-                  if (v) setDifficulty(parseInt(v, 10))
-                }}
-                className={layoutClasses["tab-like-radio-group"]}
-              >
-                {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                  <Radio
-                    key={i}
-                    value={i.toString()}
-                    className={clsx(
-                      layoutClasses["tab-like-radio"],
-                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
-                    )}
-                  >
-                    {d}
-                  </Radio>
-                ))}
-              </RadioGroup>
-            ) : (
-              <></>
-            )}
+            </TabList>
           </div>
-          <Collection
-            items={[...table.groupedData.entries()].map(
-              ([key, table], index) => ({
-                key,
-                table,
-                index,
-              }),
-            )}
-          >
-            {({ table, index }) => (
-              <TabPanel id={`${index}`}>
-                <PlayerScoreTable table={table} />
-              </TabPanel>
-            )}
-          </Collection>
+          <TabPanel id={grouping}>
+            <Tabs
+              slot="group"
+              selectedKey={selectedGroup}
+              onSelectionChange={setSelectedGroup}
+            >
+              <div
+                className={layoutClasses["sticky-header"]}
+                style={{ top: "87.5px" }}
+              >
+                <ScrollableTabList
+                  items={[...table.groupedData.keys()].map((key, index) => ({
+                    key,
+                    index,
+                  }))}
+                >
+                  {({ key, index }) => (
+                    <Tab key={index} id={`${index}`}>
+                      {getGroupTitle(grouping, key)} (
+                      {table.groupedData.get(key)?.length})
+                    </Tab>
+                  )}
+                </ScrollableTabList>
+              </div>
+              {grouping === "category" || grouping === "version" ? (
+                <RadioGroup
+                  orientation="horizontal"
+                  value={difficulty.toString()}
+                  onChange={(v) => {
+                    if (v) setDifficulty(parseInt(v, 10))
+                  }}
+                  className={layoutClasses["tab-like-radio-group"]}
+                >
+                  {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
+                    <Radio
+                      key={i}
+                      value={i.toString()}
+                      className={clsx(
+                        layoutClasses["tab-like-radio"],
+                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
+                      )}
+                    >
+                      {d}
+                    </Radio>
+                  ))}
+                </RadioGroup>
+              ) : (
+                <></>
+              )}
+              <Collection
+                items={[...table.groupedData.entries()].map(
+                  ([key, table], index) => ({
+                    key,
+                    table,
+                    index,
+                  }),
+                )}
+              >
+                {({ table, index }) => (
+                  <TabPanel id={`${index}`}>
+                    <PlayerScoreTable table={table} />
+                  </TabPanel>
+                )}
+              </Collection>
+            </Tabs>
+          </TabPanel>
         </Tabs>
       </div>
-    </TabsContext.Provider>
+    </>
   )
 }
 

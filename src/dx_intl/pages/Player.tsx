@@ -453,9 +453,17 @@ const Player = ({ params }: { params: Params }) => {
                 key,
                 index,
               }))}
+              className={clsx(
+                "react-aria-TabList",
+                layoutClasses["grouping-tablist"],
+              )}
             >
-              {({ key, index }) => (
-                <Tab key={key} id={`${key}`}>
+              {({ key }) => (
+                <Tab
+                  key={key}
+                  id={`${key}`}
+                  style={key === "current_version" ? { flex: 2 } : undefined}
+                >
                   {groupKeyOptions[key as typeof grouping]}
                 </Tab>
               )}
@@ -469,7 +477,7 @@ const Player = ({ params }: { params: Params }) => {
             >
               <div
                 className={layoutClasses["sticky-header"]}
-                style={{ top: "80px" }}
+                style={{ top: "87.5px" }}
               >
                 <ScrollableTabList
                   items={[...table.groupedData.keys()].map((key, index) => ({
