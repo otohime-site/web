@@ -290,10 +290,9 @@ const Player = ({ params }: { params: Params }) => {
                 key,
                 index,
               }))}
-              className={clsx(
-                "react-aria-TabList",
-                layoutClasses["grouping-tablist"],
-              )}
+              className={({ defaultClassName }) =>
+                clsx(defaultClassName, layoutClasses["grouping-tablist"])
+              }
             >
               {({ key }) => (
                 <Tab key={key} id={`${key}`}>

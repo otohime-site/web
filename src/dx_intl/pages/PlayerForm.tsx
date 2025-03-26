@@ -167,9 +167,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
           defaultValue={params.nickname ?? ""}
         >
           <Label>暱稱（作為網址的一部分）</Label>
-          <div>
-            <Input />
-          </div>
+          <Input />
           <FieldError />
         </TextField>
         隱私設定
@@ -180,7 +178,9 @@ const PlayerForm = ({ params }: { params: Params }) => {
               ? "private"
               : "public"
           }
-          className={clsx("react-aria-RadioGroup", classes["radio-group"])}
+          className={({ defaultClassName }) =>
+            clsx(defaultClassName, classes["radio-group"])
+          }
         >
           <Radio value="public">
             <div>
