@@ -1,6 +1,9 @@
+import { useMemo } from "react"
 import { useQuery } from "urql"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../graphql"
+import { flatSongsResult } from "../models/aggregation"
+import { dxIntlSongsDocument } from "../models/queries"
 
 const dxIntlNewRatingStatsDocument = graphql(`
   query dxIntlNewRatingStats {
@@ -12,6 +15,13 @@ const dxIntlNewRatingStatsDocument = graphql(`
 `)
 
 const Overview = () => {
+  const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const flattedEntries = useMemo(() => {
+    const flattened = flatSongsResult(songsResult.data)
+    flattened.sort((a, b) => (b.play ?? 0) - (a.play ?? 0))
+    return flattened.slice(0, 50)
+  }, [songsResult])
+  console.log(flattedEntries)
   const [baseRatingResult] = useQuery({ query: dxIntlNewRatingStatsDocument })
   const baseRatingAccumulated = (
     baseRatingResult.data?.dx_intl_new_rating_stats ?? []
