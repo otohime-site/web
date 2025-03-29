@@ -64,11 +64,10 @@
   margin-left: auto;
   max-width: 1280px;
   border-top: 1px solid var(--stone-4);
-  color: var(--stone-9);
+  color: var(--text-2);
 
   @media (prefers-color-scheme: dark) {
     border-top: 1px solid var(--stone-9);
-    color: var(--stone-6);
   }
   a {
     display: inline-block;
