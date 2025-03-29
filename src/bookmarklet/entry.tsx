@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client"
+import "../bookmarklet.css"
 import "../fonts.css"
 import "../global.css"
 import host from "../host"

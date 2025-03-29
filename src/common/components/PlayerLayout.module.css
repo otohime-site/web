@@ -50,7 +50,7 @@
   background: white;
   font-size: var(--font-size-2);
   @media (prefers-color-scheme: dark) {
-    background: #1c1b22;
+    background: var(--surface-1);
   }
   font-family: "M PLUS 1p";
 }
