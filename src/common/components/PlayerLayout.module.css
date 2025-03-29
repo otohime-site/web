@@ -18,13 +18,14 @@
   }
 }
 .toolbar {
-  & > :not(button:first-child, :global(.btn):first-child) {
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-  }
   & > :not(button:last-child, :global(.btn):last-child) {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
+  }
+  & > :not(button:first-child, :global(.btn):first-child) {
+    border-left: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
   }
 }
 
@@ -32,6 +33,15 @@
   display: flex;
   flex-direction: row;
   align-items: end;
+  & :global(.react-aria-Select) button {
+    border-right: 0;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+  & :global(.react-aria-ToggleButton) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
 }
 
 .sticky-header {

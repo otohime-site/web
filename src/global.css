@@ -23,9 +23,17 @@ input {
   font-size: var(--font-size-2);
 }
 
+:where(:not(:active):focus-visible) {
+  outline-offset: 0;
+}
+
 .btn,
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {
+  --_accent: var(--violet-10);
+  @media (prefers-color-scheme: dark) {
+    --_accent: var(--violet-2);
+  }
   border: var(--border-size-1) solid var(--_border);
   box-shadow: 0 1px 0 var(--surface-3);
   --_ink-shadow: none;
@@ -36,6 +44,9 @@ input:is([type="button"], [type="submit"], [type="reset"]) {
   &[data-focused] {
     outline: 2px solid var(--stone-6);
     outline-offset: -1px;
+  }
+  &input:is[type="submit"] {
+    border-color: var(--_accent);
   }
   outline: none;
   & > svg,
