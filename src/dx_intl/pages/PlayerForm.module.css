@@ -6,9 +6,10 @@
 .radio-group {
   label:global(.react-aria-Radio) {
     padding: var(--size-2) var(--size-5);
-    border: 1px solid var(--stone-5);
+    border: 1px solid var(--surface-3);
     border-radius: var(--radius-2);
     &[data-selected] {
+      background: var(--surface-2);
       border-color: var(--violet-6);
     }
     div {
@@ -23,11 +24,13 @@
       }
       dd ul,
       dd li {
+        color: var(--text-2);
         font-size: var(--font-size-1);
         margin: 0;
         padding: 0;
       }
       dd li {
+        color: var(--text-2);
         margin-left: var(--size-6);
       }
     }
