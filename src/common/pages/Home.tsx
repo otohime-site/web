@@ -33,21 +33,26 @@ const HomeComponent = () => {
       <Titled title={(title) => `首頁 - ${title}`} />
       <div className={classes["home-container"]}>
         <div>
-          <h4>我的帳號與成績單</h4>
-          <DxUserPlayers />
-          <h5>權杖與 Bookmarklet</h5>
-
-          <Token />
-          <h5>刪除帳號（忘記我）</h5>
-          <p>
-            您可以刪除在本網站儲存的所有帳號、第三方登入紀錄的個人資料與成績單。
-          </p>
-          <p>
-            <LinkButton href="/forget">
-              <MdiDeleteAlert />
-              刪除帳號
-            </LinkButton>
-          </p>
+          <article>
+            <h4>我的帳號與成績單</h4>
+            <DxUserPlayers />
+          </article>
+          <article>
+            <h5>權杖與 Bookmarklet</h5>
+            <Token />
+          </article>
+          <article>
+            <h5>刪除帳號（忘記我）</h5>
+            <p>
+              您可以刪除在本網站儲存的所有帳號、第三方登入紀錄的個人資料與成績單。
+            </p>
+            <p>
+              <LinkButton href="/forget">
+                <MdiDeleteAlert />
+                刪除帳號
+              </LinkButton>
+            </p>
+          </article>
         </div>
         <div>
           <h5>暫時放這裡</h5>

@@ -9,6 +9,11 @@
     & h5 {
       margin-top: var(--size-3);
     }
+    & > div:first-of-type {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-3);
+    }
     & > div:last-of-type {
       width: 30rem;
     }
