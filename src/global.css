@@ -130,16 +130,10 @@ a.btn {
 
   &[data-hovered],
   &[data-focused] {
-    background-color: var(--stone-1);
-    @media (prefers-color-scheme: dark) {
-      background-color: var(--stone-11);
-    }
+    background-color: var(--surface-2);
   }
   &[data-selected] {
-    background-color: var(--stone-3);
-    @media (prefers-color-scheme: dark) {
-      background-color: var(--stone-9);
-    }
+    background-color: var(--surface-3);
   }
 }
 
@@ -205,10 +199,7 @@ a:where(.react-aria-Tab) {
   min-width: var(--trigger-width);
   .react-aria-ListBox {
     display: block;
-    background: white;
-    @media (prefers-color-scheme: dark) {
-      background: #121212;
-    }
+    background: var(--surface-1);
     width: unset;
     max-height: inherit;
     min-height: unset;
