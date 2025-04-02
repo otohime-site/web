@@ -88,10 +88,7 @@ a.btn {
 }
 
 .react-aria-Modal {
-  background: white;
-  @media (prefers-color-scheme: dark) {
-    background: #121212;
-  }
+  background: var(--surface-1);
 }
 
 .react-aria-Modal :where(h2) {
@@ -112,10 +109,7 @@ a.btn {
   margin: var(--size-1);
   font-size: 95%;
   font-weight: bold;
-  color: var(--stone-8);
-  @media (prefers-color-scheme: dark) {
-    color: var(--stone-5);
-  }
+  color: var(--text-2);
 }
 
 .react-aria-ListBoxItem {
@@ -123,10 +117,7 @@ a.btn {
   margin: var(--size-1) var(--size-2);
   padding: var(--size-2);
   border-radius: var(--radius-2);
-  color: var(--stone-12);
-  @media (prefers-color-scheme: dark) {
-    color: var(--stone-2);
-  }
+  color: var(--text-1);
 
   &[data-hovered],
   &[data-focused] {
