@@ -97,6 +97,7 @@ a.btn {
 }
 
 .react-aria-ListBox {
+  padding: var(--size-1) 0;
   border-radius: var(--radius-2);
   border: var(--border-size-1) solid var(--surface-4);
 }
@@ -106,8 +107,7 @@ a.btn {
 }
 
 .react-aria-Header {
-  margin: var(--size-1);
-  font-size: 95%;
+  margin: var(--size-2);
   font-weight: bold;
   color: var(--text-2);
 }

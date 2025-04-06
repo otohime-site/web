@@ -7,8 +7,8 @@ import {
   Input,
   ListBox,
   ListBoxItem,
+  ListBoxSection,
   Popover,
-  Section,
 } from "react-aria-components"
 import { useQuery } from "urql"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
@@ -126,7 +126,7 @@ const Search = () => {
       <Popover>
         <ListBox>
           {(section: (typeof options)[number]) => (
-            <Section id={section.id}>
+            <ListBoxSection id={section.id}>
               {section.children.length > 0 ? (
                 <>
                   <Header>{section.name}</Header>
@@ -142,7 +142,7 @@ const Search = () => {
                   </Collection>
                 </>
               ) : null}
-            </Section>
+            </ListBoxSection>
           )}
         </ListBox>
       </Popover>
