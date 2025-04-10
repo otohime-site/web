@@ -2,6 +2,9 @@
   font-family: "M PLUS 1p";
   padding: 8px;
   width: 100%;
+  img {
+    max-inline-size: none;
+  }
 }
 .table th {
   font-weight: 700;
