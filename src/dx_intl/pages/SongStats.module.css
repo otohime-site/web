@@ -17,7 +17,7 @@
     text-align: right;
     flex-direction: column;
     list-style-type: none;
-    background: var(--surface-1);
+    background: var(--surface-2);
     border-radius: var(--radius-3);
     padding: var(--size-2);
     & span:first-child {
