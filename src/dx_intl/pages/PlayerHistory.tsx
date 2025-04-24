@@ -6,18 +6,19 @@ import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
+
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
+import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
   classRankNames,
   difficulties,
-  difficultyClasses,
   gradeNames,
   legacyCourseRankNames,
 } from "../models/constants"
@@ -198,11 +199,11 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {before?.card_name !== after?.card_name ? (
         <tr>
           <td colSpan={3}>Name</td>
-          <td>{before?.card_name ?? ""}</td>
-          <td>
+          <td colSpan={2}>{before?.card_name ?? ""}</td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>{after?.card_name ?? ""}</td>
+          <td colSpan={2}>{after?.card_name ?? ""}</td>
         </tr>
       ) : (
         <></>
@@ -210,11 +211,11 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {before?.title !== after?.title ? (
         <tr>
           <td colSpan={3}>Title</td>
-          <td>{before?.title ?? ""}</td>
-          <td>
+          <td colSpan={2}>{before?.title ?? ""}</td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>{after?.title ?? ""}</td>
+          <td colSpan={2}>{after?.title ?? ""}</td>
         </tr>
       ) : (
         <></>
@@ -222,11 +223,11 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {before?.rating !== after?.rating ? (
         <tr>
           <td colSpan={3}>Rating</td>
-          <td>{before?.rating ?? ""}</td>
-          <td>
+          <td colSpan={2}>{before?.rating ?? ""}</td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>{after?.rating ?? ""}</td>
+          <td colSpan={2}>{after?.rating ?? ""}</td>
         </tr>
       ) : (
         <></>
@@ -234,14 +235,14 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {before?.max_rating !== after?.max_rating ? (
         <tr>
           <td colSpan={3}>Max Rating</td>
-          <td>
-            {(before?.max_rating ?? 0) >= 0 ? before?.max_rating ?? "" : ""}
+          <td colSpan={2}>
+            {(before?.max_rating ?? 0) >= 0 ? (before?.max_rating ?? "") : ""}
           </td>
-          <td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>
-            {(after?.max_rating ?? 0) >= 0 ? after?.max_rating ?? "" : ""}
+          <td colSpan={2}>
+            {(after?.max_rating ?? 0) >= 0 ? (after?.max_rating ?? "") : ""}
           </td>
         </tr>
       ) : (
@@ -250,11 +251,11 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {before?.grade !== after?.grade ? (
         <tr>
           <td colSpan={3}>Grade</td>
-          <td>{gradeNames[before?.grade ?? 0] ?? ""}</td>
-          <td>
+          <td colSpan={2}>{gradeNames[before?.grade ?? 0] ?? ""}</td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>{gradeNames[after?.grade ?? 0] ?? ""}</td>
+          <td colSpan={2}>{gradeNames[after?.grade ?? 0] ?? ""}</td>
         </tr>
       ) : (
         <></>
@@ -262,17 +263,17 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {(before?.course_rank ?? null) !== (after?.course_rank ?? null) ? (
         <tr>
           <td colSpan={3}>段位</td>
-          <td>
+          <td colSpan={2}>
             {before?.course_rank != null
-              ? legacyCourseRankNames[before.course_rank] ?? ""
+              ? (legacyCourseRankNames[before.course_rank] ?? "")
               : ""}
           </td>
-          <td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>
+          <td colSpan={2}>
             {after?.course_rank != null
-              ? legacyCourseRankNames[after.course_rank] ?? ""
+              ? (legacyCourseRankNames[after.course_rank] ?? "")
               : ""}
           </td>
         </tr>
@@ -282,17 +283,17 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {(before?.class_rank ?? null) !== (after?.class_rank ?? null) ? (
         <tr>
           <td colSpan={3}>對戰階級</td>
-          <td>
+          <td colSpan={2}>
             {before?.class_rank != null
-              ? classRankNames[before.class_rank] ?? ""
+              ? (classRankNames[before.class_rank] ?? "")
               : ""}
           </td>
-          <td>
+          <td className={classes["col-arrow"]}>
             <IconNavigateNext />
           </td>
-          <td>
+          <td colSpan={2}>
             {after?.class_rank != null
-              ? classRankNames[after.class_rank] ?? ""
+              ? (classRankNames[after.class_rank] ?? "")
               : ""}
           </td>
         </tr>
@@ -305,21 +306,23 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   const showTimelineResult = (
     data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>,
   ): React.ReactNode => (
-    <table className={classes.table}>
+    <table className={tableClasses.table}>
       <colgroup>
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
-        <col />
+        <col className={tableClasses["col-title"]} />
+        <col className={tableClasses["col-deluxe"]} />
+        <col className={classes["col-level-diff"]} />
+        <col className={tableClasses["col-score"]} />
+        <col className={tableClasses["col-flags"]} />
+        <col className={classes["col-arrow"]} />
+        <col className={tableClasses["col-score"]} />
+        <col className={tableClasses["col-flags"]} />
       </colgroup>
       <thead>
         <tr>
           <th colSpan={3}>項目</th>
-          <th>Before</th>
+          <th colSpan={2}>Before</th>
           <th></th>
-          <th>After</th>
+          <th colSpan={2}>After</th>
         </tr>
       </thead>
       <tbody>
@@ -340,50 +343,49 @@ const PlayerHistory = ({ params }: { params: Params }) => {
             const after = afterMap.get(entry.hash)
             return (
               <tr key={entry.hash}>
-                <th>{entry.title}</th>
+                <td className={tableClasses["col-title"]}>{entry.title}</td>
                 <td>
                   <Variant deluxe={entry.deluxe} />
                 </td>
                 <td
                   className={clsx(
-                    classes["diff"],
-                    classes[difficultyClasses[entry.difficulty]],
+                    classes["col-level-diff"],
+                    tableClasses[
+                      `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
+                    ],
+                    entry.internal_lv
+                      ? ""
+                      : entry.level.includes("+")
+                        ? tableClasses["plus"]
+                        : tableClasses["non-plus"],
                   )}
                 >
                   {difficulties[entry.difficulty].slice(0, 3)} {entry.level}
                 </td>
-                <td>
-                  {before != null ? (
-                    <div className={classes.container}>
-                      <span className={classes.score}>
-                        {before.score.toFixed(4)}%
-                      </span>
-                      <span className={classes.flags}>
-                        <ComboFlag flag={before.combo_flag} />
-                        <SyncFlag flag={before.sync_flag} />
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={classes.container} />
-                  )}
+                <td className={tableClasses["col-score"]}>
+                  {before ? `${before.score.toFixed(4)}%` : ""}
                 </td>
-                <td>
+                <td className={tableClasses["col-flags"]}>
+                  {before ? (
+                    <>
+                      <ComboFlag flag={before.combo_flag} />
+                      <SyncFlag flag={before.sync_flag} />
+                    </>
+                  ) : null}
+                </td>
+                <td className={classes["col-arrow"]}>
                   <IconNavigateNext />
                 </td>
-                <td>
-                  {after != null ? (
-                    <div className={classes.container}>
-                      <span className={classes.score}>
-                        {after.score.toFixed(4)}%
-                      </span>
-                      <span className={classes.flags}>
-                        <ComboFlag flag={after.combo_flag} />
-                        <SyncFlag flag={after.sync_flag} />
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={classes.container} />
-                  )}
+                <td className={tableClasses["col-score"]}>
+                  {after ? `${after.score.toFixed(4)}%` : ""}
+                </td>
+                <td className={tableClasses["col-flags"]}>
+                  {after ? (
+                    <>
+                      <ComboFlag flag={after.combo_flag} />
+                      <SyncFlag flag={after.sync_flag} />
+                    </>
+                  ) : null}
                 </td>
               </tr>
             )

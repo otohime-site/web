@@ -1,34 +1,15 @@
-.table {
-  font-family: "M PLUS 1p";
-  padding: 8px;
-  width: 100%;
-  img {
-    max-inline-size: none;
-  }
-}
-.table th {
-  font-weight: 700;
-}
-
-.diff {
+.col-level-diff {
+  width: 7em;
   font-size: 85%;
   text-transform: uppercase;
 }
-.diff0 {
-  color: var(--green-11);
-}
-.diff1 {
-  color: var(--orange-11);
-}
-.diff2 {
-  color: var(--red-11);
-}
-.diff3 {
-  color: var(--plum-11);
-}
-.diff4 {
-  color: var(--violet-11);
-  box-shadow: inset 0 0 0 1px var(--violet-7);
+
+.col-arrow {
+  width: 3em;
+  text-align: center;
+  svg {
+    display: inline-block;
+  }
 }
 
 .container {
