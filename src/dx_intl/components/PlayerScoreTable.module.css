@@ -10,13 +10,42 @@
   img {
     max-inline-size: none;
   }
+  svg {
+    vertical-align: middle;
+  }
+  thead th svg {
+    width: 0.8em;
+    height: 0.8em;
+  }
+  tbody {
+    font-family: "M PLUS 1p";
+  }
+  tbody tr {
+    height: 2em;
+  }
+  tbody tr td {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--surface-3);
+    word-break: break-all;
+  }
+
+  tr.used td {
+    background: var(--red-2);
+  }
+
+  tr.inactive {
+    color: var(--stone-6);
+    .col-title {
+      text-decoration: line-through;
+    }
+  }
 }
 
-.table .rating-used td {
+.rating-used td {
   background: var(--surface-2);
 }
 
-.table .col-title {
+.col-title {
   text-align: left;
   width: auto;
   a {
@@ -26,23 +55,23 @@
     }
   }
 }
-.table .col-score {
+.col-score {
   width: clamp(6.6rem, 15vw, 14rem);
   padding: 0 clamp(0.5rem, 1vw, 2rem);
   text-align: right;
 }
-.table .col-deluxe {
+.col-deluxe {
   width: 1.8rem;
 }
-.table .col-difficulty {
+.col-difficulty {
   width: 2rem;
   font-size: var(--font-size-0);
 }
-.table .col-rating {
+.col-rating {
   width: 1.6rem;
   font-size: var(--font-size-0);
 }
-.table .col-flags {
+.col-flags {
   width: 3.3rem;
   height: 2rem;
   & img {
@@ -50,41 +79,17 @@
     vertical-align: middle;
   }
 }
-.table svg {
-  vertical-align: middle;
-}
-
-.table thead th svg {
-  width: 0.8em;
-  height: 0.8em;
-}
-
-.table tbody {
-  font-family: "M PLUS 1p";
-}
-
-.table tbody tr {
-  height: 2em;
-}
-
-.table tbody tr td {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--surface-3);
-  word-break: break-all;
-}
-
-.table td.col-rating {
+td.col-rating {
   text-align: right;
 }
-
-.table td.col-difficulty {
+td.col-difficulty {
   text-align: right;
   font-weight: 400;
 }
-.table td.col-difficulty.plus {
+td.col-difficulty.plus {
   padding-right: 0.165em;
 }
-.table td.col-difficulty.non-plus {
+td.col-difficulty.non-plus {
   padding-right: 0.9em;
 }
 
@@ -104,17 +109,6 @@
   color: var(--purple-2);
   -webkit-text-stroke: 0.07rem var(--purple-6);
   paint-order: stroke fill;
-}
-
-.table tr.used td {
-  background: var(--red-2);
-}
-
-.table tr.inactive {
-  color: var(--stone-6);
-  .col-title {
-    text-decoration: line-through;
-  }
 }
 
 .estimated {

@@ -1,3 +1,54 @@
+.table {
+  composes: table from "../components/PlayerScoreTable.module.css";
+  @media (max-width: 960px) {
+    display: block;
+    table-layout: unset;
+    tbody,
+    th,
+    td {
+      display: block;
+    }
+    thead {
+      display: none;
+    }
+    tbody tr {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--size-1);
+      height: auto;
+      border-bottom: 1px solid var(--surface-3);
+      padding: var(--size-1) 0;
+    }
+    tbody tr td {
+      height: 2.5rem;
+      border: none;
+      &.col-item {
+        height: auto;
+      }
+    }
+    .col-value {
+      min-width: 45vw;
+      text-align: center;
+    }
+  }
+}
+
+.col-item {
+  min-width: 100%;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    & > span:last-child {
+      display: flex;
+      flex-direction: row;
+      gap: var(--size-2);
+    }
+  }
+}
+
 .col-level-diff {
   width: 7em;
   font-size: 85%;
@@ -9,6 +60,10 @@
   text-align: center;
   svg {
     display: inline-block;
+  }
+  @media (max-width: 960px) {
+    width: auto;
+    flex: 1em;
   }
 }
 

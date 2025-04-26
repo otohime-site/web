@@ -191,126 +191,89 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
   }
 
-  const recordDiffRows = (
+  const recordDiffs = (
     before?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
     after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
-  ): React.ReactNode => (
-    <>
-      {before?.card_name !== after?.card_name ? (
-        <tr>
-          <td colSpan={3}>Name</td>
-          <td colSpan={2}>{before?.card_name ?? ""}</td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>{after?.card_name ?? ""}</td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {before?.title !== after?.title ? (
-        <tr>
-          <td colSpan={3}>Title</td>
-          <td colSpan={2}>{before?.title ?? ""}</td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>{after?.title ?? ""}</td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {before?.rating !== after?.rating ? (
-        <tr>
-          <td colSpan={3}>Rating</td>
-          <td colSpan={2}>{before?.rating ?? ""}</td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>{after?.rating ?? ""}</td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {before?.max_rating !== after?.max_rating ? (
-        <tr>
-          <td colSpan={3}>Max Rating</td>
-          <td colSpan={2}>
-            {(before?.max_rating ?? 0) >= 0 ? (before?.max_rating ?? "") : ""}
-          </td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>
-            {(after?.max_rating ?? 0) >= 0 ? (after?.max_rating ?? "") : ""}
-          </td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {before?.grade !== after?.grade ? (
-        <tr>
-          <td colSpan={3}>Grade</td>
-          <td colSpan={2}>{gradeNames[before?.grade ?? 0] ?? ""}</td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>{gradeNames[after?.grade ?? 0] ?? ""}</td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {(before?.course_rank ?? null) !== (after?.course_rank ?? null) ? (
-        <tr>
-          <td colSpan={3}>段位</td>
-          <td colSpan={2}>
-            {before?.course_rank != null
-              ? (legacyCourseRankNames[before.course_rank] ?? "")
-              : ""}
-          </td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>
-            {after?.course_rank != null
-              ? (legacyCourseRankNames[after.course_rank] ?? "")
-              : ""}
-          </td>
-        </tr>
-      ) : (
-        <></>
-      )}
-      {(before?.class_rank ?? null) !== (after?.class_rank ?? null) ? (
-        <tr>
-          <td colSpan={3}>對戰階級</td>
-          <td colSpan={2}>
-            {before?.class_rank != null
-              ? (classRankNames[before.class_rank] ?? "")
-              : ""}
-          </td>
-          <td className={classes["col-arrow"]}>
-            <IconNavigateNext />
-          </td>
-          <td colSpan={2}>
-            {after?.class_rank != null
-              ? (classRankNames[after.class_rank] ?? "")
-              : ""}
-          </td>
-        </tr>
-      ) : (
-        <></>
-      )}
-    </>
-  )
+  ): { item: string; before: string; after: string }[] => {
+    const results = []
+    if (before?.card_name !== after?.card_name) {
+      results.push({
+        item: "卡名",
+        before: before?.card_name ?? "",
+        after: after?.card_name ?? "",
+      })
+    }
+    if (before?.title !== after?.title) {
+      results.push({
+        item: "稱號",
+        before: before?.title ?? "",
+        after: after?.title ?? "",
+      })
+    }
+    if (before?.rating != after?.rating) {
+      results.push({
+        item: "Rating",
+        before: `${before?.rating ?? ""}`,
+        after: `${after?.rating ?? ""}`,
+      })
+    }
+    if (
+      before?.max_rating != after?.max_rating &&
+      (after?.max_rating ?? 0) >= 0
+    ) {
+      results.push({
+        item: "Max Rating",
+        before:
+          (before?.max_rating ?? 0) >= 0 ? `${before?.max_rating ?? ""}` : "",
+        after:
+          (after?.max_rating ?? 0) >= 0 ? `${after?.max_rating ?? ""}` : "",
+      })
+    }
+    if (before?.grade !== after?.grade && after?.grade != null) {
+      results.push({
+        item: "舊版段位",
+        before: before?.grade != null ? (gradeNames[before?.grade] ?? "") : "",
+        after: after?.grade != null ? (gradeNames[after?.grade] ?? "") : "",
+      })
+    }
+    if (
+      before?.course_rank !== after?.course_rank &&
+      after?.course_rank != null
+    ) {
+      results.push({
+        item: "段位",
+        before:
+          before?.course_rank != null
+            ? (legacyCourseRankNames[before?.course_rank] ?? "")
+            : "",
+        after:
+          after?.course_rank != null
+            ? (legacyCourseRankNames[after?.course_rank] ?? "")
+            : "",
+      })
+    }
+    if (before?.class_rank !== after?.class_rank && after?.class_rank != null) {
+      results.push({
+        item: "對戰階級",
+        before:
+          before?.class_rank != null
+            ? (classRankNames[before.class_rank] ?? "")
+            : "",
+        after:
+          after?.class_rank != null
+            ? (classRankNames[after.class_rank] ?? "")
+            : "",
+      })
+    }
+    return results
+  }
 
   const showTimelineResult = (
     data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>,
   ): React.ReactNode => (
-    <table className={tableClasses.table}>
+    <table className={clsx(classes.table)}>
       <colgroup>
         <col className={tableClasses["col-title"]} />
-        <col className={tableClasses["col-deluxe"]} />
-        <col className={classes["col-level-diff"]} />
         <col className={tableClasses["col-score"]} />
         <col className={tableClasses["col-flags"]} />
         <col className={classes["col-arrow"]} />
@@ -319,7 +282,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       </colgroup>
       <thead>
         <tr>
-          <th colSpan={3}>項目</th>
+          <th>項目</th>
           <th colSpan={2}>Before</th>
           <th></th>
           <th colSpan={2}>After</th>
@@ -327,10 +290,27 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       </thead>
       <tbody>
         {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
-          recordDiffRows(
+          recordDiffs(
             readFragment(dxIntlRecordsWithHistoryFields, data.beforeRecord[0]),
             readFragment(dxIntlRecordsWithHistoryFields, data.afterRecord[0]),
-          )
+          ).map((entry) => (
+            <tr key={entry.item}>
+              <td
+                className={clsx(tableClasses["col-title"], classes["col-item"])}
+              >
+                {entry.item}
+              </td>
+              <td colSpan={2} className={classes["col-value"]}>
+                {entry.before}
+              </td>
+              <td className={classes["col-arrow"]}>
+                <IconNavigateNext />
+              </td>
+              <td colSpan={2} className={classes["col-value"]}>
+                {entry.after}
+              </td>
+            </tr>
+          ))
         ) : (
           <></>
         )}
@@ -343,24 +323,34 @@ const PlayerHistory = ({ params }: { params: Params }) => {
             const after = afterMap.get(entry.hash)
             return (
               <tr key={entry.hash}>
-                <td className={tableClasses["col-title"]}>{entry.title}</td>
-                <td>
-                  <Variant deluxe={entry.deluxe} />
-                </td>
                 <td
                   className={clsx(
-                    classes["col-level-diff"],
-                    tableClasses[
-                      `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
-                    ],
-                    entry.internal_lv
-                      ? ""
-                      : entry.level.includes("+")
-                        ? tableClasses["plus"]
-                        : tableClasses["non-plus"],
+                    tableClasses["col-title"],
+                    classes["col-item"],
                   )}
                 >
-                  {difficulties[entry.difficulty].slice(0, 3)} {entry.level}
+                  <div>
+                    <span>{entry.title}</span>
+                    <span>
+                      <Variant deluxe={entry.deluxe} />
+                      <span
+                        className={clsx(
+                          classes["col-level-diff"],
+                          tableClasses[
+                            `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
+                          ],
+                          entry.internal_lv
+                            ? ""
+                            : entry.level.includes("+")
+                              ? tableClasses["plus"]
+                              : tableClasses["non-plus"],
+                        )}
+                      >
+                        {difficulties[entry.difficulty].slice(0, 3)}{" "}
+                        {entry.level}
+                      </span>
+                    </span>
+                  </div>
                 </td>
                 <td className={tableClasses["col-score"]}>
                   {before ? `${before.score.toFixed(4)}%` : ""}
