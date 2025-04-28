@@ -1,6 +1,18 @@
+import {
+  Chart,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip,
+} from "chart.js"
+import "chartjs-adapter-date-fns"
 import clsx from "clsx"
 import { useMemo } from "react"
 import { Tab, TabPanel, Tabs } from "react-aria-components"
+import { Line } from "react-chartjs-2"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -29,10 +41,32 @@ import {
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./PlayerHistory.module.css"
 
+Chart.register(
+  LinearScale,
+  TimeScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+)
+
 const dxIntlPlayersTimelinesDocument = graphql(`
   query dxIntlPlayersTimelines($nickname: String!) {
     dx_intl_players_timelines(where: { nickname: { _eq: $nickname } }) {
       timelines
+    }
+  }
+`)
+
+const dxIntlPlayerRatingGraphDocument = graphql(`
+  query dxIntlPlayerRatingGraph($nickname: String!) {
+    dx_intl_records_with_history(
+      where: { dx_intl_player: { nickname: { _eq: $nickname } } }
+      order_by: { start: asc }
+    ) {
+      start
+      rating
     }
   }
 `)
@@ -116,6 +150,10 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   })
   const [timelinesResult] = useQuery({
     query: dxIntlPlayersTimelinesDocument,
+    variables: { nickname: params.nickname ?? "" },
+  })
+  const [ratingGraphResult] = useQuery({
+    query: dxIntlPlayerRatingGraphDocument,
     variables: { nickname: params.nickname ?? "" },
   })
   const [timelineResult] = useQuery({
@@ -405,7 +443,41 @@ const PlayerHistory = ({ params }: { params: Params }) => {
         </ScrollableTabList>
         <TabPanel id={params.hash ?? ""}>
           {params.hash == null ? (
-            <div>請選擇一個時間檢視該時間的歷程。</div>
+            <div>
+              請選擇一個時間檢視該時間的歷程。
+              {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
+                <div style={{ height: "40vh" }}>
+                  <Line
+                    data={{
+                      labels:
+                        ratingGraphResult.data.dx_intl_records_with_history.map(
+                          (record) => record.start,
+                        ),
+
+                      datasets: [
+                        {
+                          label: "Rating",
+                          data: ratingGraphResult.data.dx_intl_records_with_history.map(
+                            (record) => record.rating,
+                          ),
+                          borderColor: "rgb(112, 72, 232)",
+                          backgroundColor: "rgba(112, 72, 232, 0.2)",
+                        },
+                      ],
+                    }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      scales: {
+                        x: {
+                          type: "time",
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              ) : null}
+            </div>
           ) : timelineResult.data == null ? (
             <></>
           ) : (
