@@ -56,7 +56,7 @@
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.0.6",
-    "lint-staged": "^15.0.0",
+    "lint-staged": "^16.0.0",
     "postcss-jit-props": "^1.0.14",
     "postcss-nesting": "^13.0.0",
     "postcss-preset-env": "^10.0.0",
