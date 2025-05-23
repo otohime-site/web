@@ -1,18 +1,7 @@
-import {
-  Chart,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  TimeScale,
-  Title,
-  Tooltip,
-} from "chart.js"
-import "chartjs-adapter-date-fns"
+import { ResponsiveLine } from "@nivo/line"
 import clsx from "clsx"
 import { useMemo } from "react"
 import { Tab, TabPanel, Tabs } from "react-aria-components"
-import { Line } from "react-chartjs-2"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
@@ -40,16 +29,6 @@ import {
 } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./PlayerHistory.module.css"
-
-Chart.register(
-  LinearScale,
-  TimeScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-)
 
 const dxIntlPlayersTimelinesDocument = graphql(`
   query dxIntlPlayersTimelines($nickname: String!) {
@@ -447,33 +426,27 @@ const PlayerHistory = ({ params }: { params: Params }) => {
               請選擇一個時間檢視該時間的歷程。
               {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
                 <div style={{ height: "40vh" }}>
-                  <Line
-                    data={{
-                      labels:
-                        ratingGraphResult.data.dx_intl_records_with_history.map(
-                          (record) => record.start,
+                  <ResponsiveLine
+                    colors={{ scheme: "category10" }}
+                    margin={{ top: 20, right: 20, bottom: 60, left: 50 }}
+                    data={[
+                      {
+                        id: "Rating",
+                        data: ratingGraphResult.data.dx_intl_records_with_history.map(
+                          (record) => ({
+                            x: record.start,
+                            y: record.rating,
+                          }),
                         ),
-
-                      datasets: [
-                        {
-                          label: "Rating",
-                          data: ratingGraphResult.data.dx_intl_records_with_history.map(
-                            (record) => record.rating,
-                          ),
-                          borderColor: "rgb(112, 72, 232)",
-                          backgroundColor: "rgba(112, 72, 232, 0.2)",
-                        },
-                      ],
-                    }}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                        x: {
-                          type: "time",
-                        },
                       },
+                    ]}
+                    xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%f%Z" }}
+                    yScale={{ type: "linear", min: "auto", max: 16500 }}
+                    xFormat={"time:%Y-%m-%d"}
+                    axisBottom={{
+                      format: "%Y-%m-%d",
                     }}
+                    useMesh={true}
                   />
                 </div>
               ) : null}
