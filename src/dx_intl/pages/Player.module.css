@@ -48,8 +48,7 @@
     padding: 0;
     font-family: "Roboto";
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    list-style: none;
+    grid-template-columns: repeat(auto-fill, 3.1rem);
     gap: 0.1em 0;
     text-align: center;
     li {
