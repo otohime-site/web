@@ -274,8 +274,6 @@ const Player = ({ params }: { params: Params }) => {
             </Switch>
           </div>
         </div>
-        {/* Nested tab will hit the following issue and unreliable 
-            https://github.com/adobe/react-spectrum/issues/5469 */}
         <Tabs
           slot="grouping"
           selectedKey={grouping}
