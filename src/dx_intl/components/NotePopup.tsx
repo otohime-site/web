@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { Link } from "react-aria-components"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import {
   ESTIMATED_INTERNAL_LV,
@@ -37,6 +38,17 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
             {entry.title} ({entry.internal_lv ?? entry.level})
           </th>
           <td> {versions[entry.version]}</td>
+        </tr>
+        <tr>
+          <td>
+            <Link
+              href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
+                entry.deluxe ? "dx" : "std"
+              }/${entry.difficulty}`}
+            >
+              檢視統計
+            </Link>
+          </td>
         </tr>
       </thead>
       <tbody>

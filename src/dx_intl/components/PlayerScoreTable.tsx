@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import { Link } from "react-aria-components"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
@@ -36,15 +35,7 @@ export const PlayerScoreTable = ({
             )}
             onClick={(event) => handleNotePopupOpen(event, entry)}
           >
-            <td className={classes["col-title"]}>
-              <Link
-                href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
-                  entry.deluxe ? "dx" : "std"
-                }/${entry.difficulty}`}
-              >
-                {entry.title}
-              </Link>
-            </td>
+            <td className={classes["col-title"]}>{entry.title}</td>
             <td className={classes["col-deluxe"]}>
               <Variant deluxe={entry.deluxe} />
             </td>
