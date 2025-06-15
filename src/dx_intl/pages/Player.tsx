@@ -40,8 +40,8 @@ import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
-import NoteRating from "../NoteRating"
 import { ComboFlag, SyncFlag } from "../components/Flags"
+import NotePopup from "../components/NotePopup"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
@@ -141,7 +141,7 @@ const Player = ({ params }: { params: Params }) => {
   const [includeInactive, setIncludeInactive] = useState(false)
   const [statFolder, setStatFolder] = useState(true)
   const ratingPopRef = useRef<HTMLElement | null>(null)
-  const [ratingPopEntry, setRatingPopEntry] = useState<ScoreTableEntry | null>(
+  const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
     null,
   )
 
@@ -288,12 +288,12 @@ const Player = ({ params }: { params: Params }) => {
     )
   }, [params, scoreTable, recordResult])
 
-  const handleRatingPopOpen = (
+  const handleNotePopupOpen = (
     event: React.MouseEvent<HTMLElement>,
     entry: ScoreTableEntry,
   ) => {
     ratingPopRef.current = event.currentTarget
-    setRatingPopEntry(entry)
+    setNotePopupEntry(entry)
   }
 
   if (recordResult.error != null || songsResult.error != null) {
@@ -530,7 +530,7 @@ const Player = ({ params }: { params: Params }) => {
                   <TabPanel id={`${index}`}>
                     <PlayerScoreTable
                       table={table}
-                      handleRatingPopOpen={handleRatingPopOpen}
+                      handleNotePopupOpen={handleNotePopupOpen}
                     />
                   </TabPanel>
                 )}
@@ -541,16 +541,16 @@ const Player = ({ params }: { params: Params }) => {
       </div>
       <Popover
         triggerRef={ratingPopRef}
-        isOpen={!!ratingPopEntry}
+        isOpen={!!notePopupEntry}
         onOpenChange={(o) => {
           if (!o) {
             ratingPopRef.current = null
-            setRatingPopEntry(null)
+            setNotePopupEntry(null)
           }
         }}
       >
         <Dialog>
-          {ratingPopEntry ? <NoteRating entry={ratingPopEntry} /> : null}
+          {notePopupEntry ? <NotePopup entry={notePopupEntry} /> : null}
         </Dialog>
       </Popover>
     </>

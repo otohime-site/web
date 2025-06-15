@@ -5,8 +5,8 @@ import {
   ScoreTableEntry,
   getRankScoreIndex,
   getRating,
-} from "./models/aggregation"
-import { RANK_SCORES } from "./models/constants"
+} from "../models/aggregation"
+import { RANK_SCORES, versions } from "../models/constants"
 
 const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
@@ -31,6 +31,14 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
   }
   return (
     <table style={{ fontSize: "0.86rem" }}>
+      <thead>
+        <tr>
+          <th>
+            {entry.title} ({entry.internal_lv ?? entry.level})
+          </th>
+          <td> {versions[entry.version]}</td>
+        </tr>
+      </thead>
       <tbody>
         <tr>
           <th colSpan={2}>SSS/FC/AP Rate</th>

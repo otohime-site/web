@@ -8,10 +8,10 @@ import Variant from "./Variant"
 
 export const PlayerScoreTable = ({
   table,
-  handleRatingPopOpen,
+  handleNotePopupOpen,
 }: {
   table: ScoreTableEntry[]
-  handleRatingPopOpen: (
+  handleNotePopupOpen: (
     event: React.MouseEvent<HTMLElement>,
     entry: ScoreTableEntry,
   ) => void
@@ -34,6 +34,7 @@ export const PlayerScoreTable = ({
               !entry.active && classes["inactive"],
               entry.rating_used && classes["rating-used"],
             )}
+            onClick={(event) => handleNotePopupOpen(event, entry)}
           >
             <td className={classes["col-title"]}>
               <Link
@@ -72,7 +73,6 @@ export const PlayerScoreTable = ({
                 classes["col-rating"],
                 !entry.internal_lv && classes.estimated,
               )}
-              onClick={(event) => handleRatingPopOpen(event, entry)}
             >
               {entry.rating}
             </td>
