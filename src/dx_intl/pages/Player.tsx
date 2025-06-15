@@ -140,7 +140,7 @@ const Player = ({ params }: { params: Params }) => {
   const [difficulty, setDifficulty] = useState<number>(2)
   const [includeInactive, setIncludeInactive] = useState(false)
   const [statFolder, setStatFolder] = useState(true)
-  const ratingPopRef = useRef<HTMLElement | null>(null)
+  const notePopupRef = useRef<HTMLElement | null>(null)
   const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
     null,
   )
@@ -292,7 +292,7 @@ const Player = ({ params }: { params: Params }) => {
     event: React.MouseEvent<HTMLElement>,
     entry: ScoreTableEntry,
   ) => {
-    ratingPopRef.current = event.currentTarget
+    notePopupRef.current = event.currentTarget
     setNotePopupEntry(entry)
   }
 
@@ -540,11 +540,11 @@ const Player = ({ params }: { params: Params }) => {
         </Tabs>
       </div>
       <Popover
-        triggerRef={ratingPopRef}
+        triggerRef={notePopupRef}
         isOpen={!!notePopupEntry}
         onOpenChange={(o) => {
           if (!o) {
-            ratingPopRef.current = null
+            notePopupRef.current = null
             setNotePopupEntry(null)
           }
         }}
