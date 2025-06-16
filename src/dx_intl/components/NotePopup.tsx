@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Link } from "react-aria-components"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
+import { Progress } from "../../common/components/ui/Progress"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
@@ -27,6 +28,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
 
     return [rating, maxRating, targets]
   }, [internalLv, entry])
+
   if (internalLv == null) {
     return <></>
   }
@@ -68,12 +70,8 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
           <td>{((entry?.ap_rate ?? 0) * 100).toFixed(1)}%</td>
         </tr>
         <tr>
-          <th colSpan={2}>Rating</th>
-        </tr>
-        <tr>
-          <td>{internalLv.toFixed(1)}</td>
-          <td>
-            {rating} / {maxRating}
+          <th colSpan={2}>
+            Rating{" "}
             <a
               href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
               target="_blank"
@@ -83,15 +81,18 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
             >
               <IconCircleOutline />
             </a>
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={2}>
+            <Progress
+              label={internalLv.toFixed(1)}
+              value={rating}
+              maxValue={maxRating}
+              valueLabel={`${rating} / ${maxRating}`}
+            />
           </td>
         </tr>
-        {entry.score && entry.score >= 100.5 ? (
-          <tr>
-            <td colSpan={2}>已拿滿！</td>
-          </tr>
-        ) : (
-          <></>
-        )}
         {targets.map((t) => (
           <tr key={t[0]}>
             <td>{t[0]}</td>

@@ -1,0 +1,20 @@
+.progress {
+  display: grid;
+  grid-template-areas: "label value" "bar bar";
+  grid-template-columns: 1fr auto;
+  gap: var(--size-2);
+  .value {
+    grid-area: value;
+  }
+  .bar {
+    grid-area: bar;
+    border-radius: var(--radius-2);
+    border: 1px solid var(--violet-8);
+    will-change: transfor;
+    height: 0.5rem;
+  }
+  .fill {
+    background-color: var(--violet-3);
+    height: 100%;
+  }
+}
