@@ -97,6 +97,8 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
         category: song.category,
         title: song.title,
         order: song.order,
+        artist: song.artist,
+        title_kana: song.title_kana,
         deluxe: variant.deluxe,
         version: variant.version,
         active: variant.active,
@@ -163,7 +165,7 @@ export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
   for (let ver = 1; ver < versionTitles.length; ver++) {
     const versionTable =
       [
-        ...(ver == 1 ? versionGroups?.get(0) ?? [] : []),
+        ...(ver == 1 ? (versionGroups?.get(0) ?? []) : []),
         ...(versionGroups?.get(ver) ?? []),
       ].filter(
         (entry) =>

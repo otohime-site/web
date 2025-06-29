@@ -37,9 +37,16 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
       <thead>
         <tr>
           <th>
+            <img
+              src={`https://covers.otohi.me/${entry.song_id.substring(0, 8)}.webp`}
+              style={{ width: "32px", height: "32px", display: "inline-block" }}
+            />{" "}
             {entry.title} ({entry.internal_lv ?? entry.level})
           </th>
           <td> {versions[entry.version]}</td>
+        </tr>
+        <tr>
+          <td colSpan={2}>{entry.artist}</td>
         </tr>
         <tr>
           <td>

@@ -18,6 +18,8 @@ export const dxIntlSongsDocument = graphql(`
       id
       category
       title
+      artist
+      title_kana
       order
       dx_intl_variants(order_by: { deluxe: asc }) {
         deluxe
