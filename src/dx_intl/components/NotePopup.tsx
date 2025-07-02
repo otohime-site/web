@@ -5,6 +5,7 @@ import { Progress } from "../../common/components/ui/Progress"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
+  getCoverUrl,
   getRankScoreIndex,
   getRating,
 } from "../models/aggregation"
@@ -38,7 +39,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
         <tr>
           <th>
             <img
-              src={`https://covers.otohi.me/${entry.song_id.substring(0, 8)}.webp`}
+              src={getCoverUrl(entry)}
               style={{ width: "32px", height: "32px", display: "inline-block" }}
             />{" "}
             {entry.title} ({entry.internal_lv ?? entry.level})
