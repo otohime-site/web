@@ -134,6 +134,29 @@ export const RANK_SCORES: Array<[number, (typeof RANKS)[number], number]> = [
   [100.5, "SSS+", 0.224],
 ]
 
+// Rating will be `internal_lv` * `rank_const` * `score`.
+// As there are `.4999` and `.9999` score boundary, we need to avoid floating point issues.
+// For example, the last line [1005000, 224] means for 100.5% score with level 14.0,
+// internal lv will be floor(14.0 * 22.4 * 100.5%) = 315
+// we will calculate with floor(140 * 224 * 1005000 / 100000000) = 315
+export const RANK_CONST_BORDERS: Array<[number, number]> = [
+  [800000, 136],
+  [899999, 144],
+  [900000, 152],
+  [939999, 160],
+  [940000, 168],
+  [969999, 176],
+  [970000, 200],
+  [980000, 203],
+  [989999, 206],
+  [990000, 208],
+  [995000, 211],
+  [999999, 214],
+  [1000000, 216],
+  [1004999, 222],
+  [1005000, 224],
+]
+
 export const comboFlags = ["", "fc", "fc+", "ap", "ap+"] as const
 export const syncFlags = ["", "s", "fs", "fs+", "fdx", "fdx+"] as const
 

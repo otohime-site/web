@@ -1,6 +1,7 @@
 import { groupByKey } from "../../common/utils/grouping"
 import { ResultOf } from "../../graphql"
 import {
+  RANK_CONST_BORDERS,
   RANK_SCORES,
   categories,
   comboFlags,
@@ -25,6 +26,12 @@ export const getNoteHash = (instance: {
 // Get current index of SCORE_RANKS that matches the score
 export const getRankScoreIndex = (score: number): number =>
   RANK_SCORES.reduce((curr, rank, idx) => (rank[0] <= score ? idx : curr), -1)
+
+export const getRankConstIndex = (score: number): number =>
+  RANK_CONST_BORDERS.reduce(
+    (curr, rank, idx) => (rank[0] <= score * 10000 ? idx : curr),
+    -1,
+  )
 
 export const ESTIMATED_INTERNAL_LV: Record<(typeof levels)[number], number> = {
   "1": 1.5,
@@ -78,9 +85,12 @@ export const levelCompareKey: Record<(typeof levels)[number], number> = {
   "15": 15.0 - 0.01,
 }
 export const getRating = (score: number, internalLv: number): number => {
-  const rankScore = RANK_SCORES[getRankScoreIndex(score)]
+  const rankScore = RANK_CONST_BORDERS[getRankConstIndex(score)]
   return rankScore != null
-    ? Math.floor(rankScore[2] * Math.min(100.5, score) * internalLv)
+    ? Math.floor(
+        (rankScore[1] * Math.min(1005000, score * 10000) * (internalLv * 10)) /
+          100000000,
+      )
     : 0
 }
 
