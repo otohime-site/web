@@ -88,10 +88,7 @@ const SongStats = ({ params }: { params: Params }) => {
               `${song.title} - maimai DX 曲目成績統計 - ${title}`
             }
           />
-          <img
-            src={getCoverUrl(song.id)}
-            style={{ width: "32px", height: "32px", display: "inline-block" }}
-          />
+          <img src={getCoverUrl(song.id)} />
           <h4 className={classes.title}>{song.title}</h4>
           <p>{song.artist}</p>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
