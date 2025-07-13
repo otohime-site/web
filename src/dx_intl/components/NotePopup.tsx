@@ -39,7 +39,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
         <tr>
           <th>
             <img
-              src={getCoverUrl(entry)}
+              src={getCoverUrl(entry.song_id)}
               style={{ width: "32px", height: "32px", display: "inline-block" }}
             />{" "}
             {entry.title} ({entry.internal_lv ?? entry.level})

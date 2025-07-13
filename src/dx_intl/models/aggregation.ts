@@ -218,8 +218,8 @@ export const getGroupTitle = (
   return ""
 }
 
-export const getCoverUrl = (entry: ScoreTableEntry) => {
-  let coverId = entry.song_id.substring(0, 8)
+export const getCoverUrl = (songId: string) => {
+  let coverId = songId.substring(0, 8)
   // TODO: remove this after version update
   if (coverId === "9545c71f") {
     coverId = "f03c2701"

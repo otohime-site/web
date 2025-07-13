@@ -4,7 +4,7 @@ import { useQuery } from "urql"
 import { Params } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../graphql"
-import { flatSongsResult } from "../models/aggregation"
+import { flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./SongStats.module.css"
@@ -88,7 +88,12 @@ const SongStats = ({ params }: { params: Params }) => {
               `${song.title} - maimai DX 曲目成績統計 - ${title}`
             }
           />
+          <img
+            src={getCoverUrl(song.id)}
+            style={{ width: "32px", height: "32px", display: "inline-block" }}
+          />
           <h4 className={classes.title}>{song.title}</h4>
+          <p>{song.artist}</p>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
               {variants[0] ? (
