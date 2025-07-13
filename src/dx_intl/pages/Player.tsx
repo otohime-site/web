@@ -222,10 +222,20 @@ const Player = ({ params }: { params: Params }) => {
     sortingFns: {
       // Ensure difficulty is also considered
       // In case like group with level
-      index: (a, b) =>
-        a.difficulty !== b.difficulty
-          ? a.difficulty - b.difficulty
-          : a.index - b.index,
+      // Also, when grouping with level, also consider internal lv.
+      // (we may have better solution on this.)
+      index: (a, b) => {
+        if (grouping === "level") {
+          const internalLvA = a.internal_lv ?? levelCompareKey[a.level]
+          const internalLvB = b.internal_lv ?? levelCompareKey[b.level]
+          return internalLvA !== internalLvB
+            ? internalLvA - internalLvB
+            : a.index !== b.index
+              ? a.index - b.index
+              : a.difficulty - b.difficulty
+        }
+        return a.index - b.index
+      },
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
       internal_lv: (a, b) =>
         (a.internal_lv ?? levelCompareKey[a.level]) -
