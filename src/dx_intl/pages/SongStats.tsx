@@ -88,9 +88,13 @@ const SongStats = ({ params }: { params: Params }) => {
               `${song.title} - maimai DX 曲目成績統計 - ${title}`
             }
           />
-          <img src={getCoverUrl(song.id)} />
-          <h4 className={classes.title}>{song.title}</h4>
-          <p>{song.artist}</p>
+          <section className={classes.intro}>
+            <img src={getCoverUrl(song.id)} />
+            <div>
+              <h4 className={classes.title}>{song.title}</h4>
+              <p>{song.artist}</p>
+            </div>
+          </section>
           <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
             <TabList>
               {variants[0] ? (

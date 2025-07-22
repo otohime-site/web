@@ -29,3 +29,15 @@
     }
   }
 }
+
+.intro {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--size-2);
+  font-family: "M PLUS 1p";
+
+  img {
+    height: 4em;
+  }
+}
