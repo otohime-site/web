@@ -454,7 +454,7 @@ const Player = ({ params }: { params: Params }) => {
           selectedKey={grouping}
           onSelectionChange={(v) => {
             setGrouping(v as typeof grouping)
-            setSelectedGroup("0")
+            setSelectedGroup(0)
           }}
         >
           <div className={layoutClasses["sticky-header"]}>
@@ -470,7 +470,7 @@ const Player = ({ params }: { params: Params }) => {
               {({ key }) => (
                 <Tab
                   key={key}
-                  id={`${key}`}
+                  id={key}
                   style={key === "current_version" ? { flex: 2 } : undefined}
                 >
                   {groupKeyOptions[key as typeof grouping]}
@@ -495,7 +495,7 @@ const Player = ({ params }: { params: Params }) => {
                   }))}
                 >
                   {({ key, index }) => (
-                    <Tab key={index} id={`${index}`}>
+                    <Tab key={index} id={index}>
                       {getGroupTitle(grouping, key)} (
                       {table.groupedData.get(key)?.length})
                     </Tab>
@@ -537,7 +537,7 @@ const Player = ({ params }: { params: Params }) => {
                 )}
               >
                 {({ table, index }) => (
-                  <TabPanel id={`${index}`}>
+                  <TabPanel id={index}>
                     <PlayerScoreTable
                       table={table}
                       handleNotePopupOpen={handleNotePopupOpen}

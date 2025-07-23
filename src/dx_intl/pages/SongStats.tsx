@@ -109,16 +109,13 @@ const SongStats = ({ params }: { params: Params }) => {
               ) : null}
             </TabList>
             <TabPanel id={deluxe ? "dx" : "std"}>
-              <Tabs
-                slot="difficulty"
-                selectedKey={difficulty != null ? `${difficulty}` : ""}
-              >
+              <Tabs slot="difficulty" selectedKey={difficulty ?? ""}>
                 <TabList items={variantEntries.map((entry) => ({ entry }))}>
                   {({ entry }) => (
                     <Tab
                       href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${entry.difficulty}`}
                       key={entry.difficulty}
-                      id={`${entry.difficulty}`}
+                      id={entry.difficulty}
                     >
                       {difficulties[entry.difficulty]}{" "}
                       {entry.internal_lv
@@ -127,7 +124,7 @@ const SongStats = ({ params }: { params: Params }) => {
                     </Tab>
                   )}
                 </TabList>
-                <TabPanel id={difficulty != null ? `${difficulty}` : ""}>
+                <TabPanel id={difficulty ?? ""}>
                   <ul className={classes.rates}>
                     <li>
                       <span>Play</span>
