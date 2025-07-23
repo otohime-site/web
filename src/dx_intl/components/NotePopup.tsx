@@ -4,12 +4,17 @@ import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import { Progress } from "../../common/components/ui/Progress"
 import {
   ESTIMATED_INTERNAL_LV,
-  ScoreTableEntry,
   getCoverUrl,
   getRankScoreIndex,
   getRating,
+  ScoreTableEntry,
 } from "../models/aggregation"
-import { RANK_SCORES, difficulties, versions } from "../models/constants"
+import {
+  categories,
+  difficulties,
+  RANK_SCORES,
+  versions,
+} from "../models/constants"
 import classes from "./NotePopup.module.css"
 
 const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
@@ -22,10 +27,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
     const rating = getRating(entry.score ?? 0, internalLv)
     const maxRating = getRating(100.5, internalLv)
     const targets = RANK_SCORES.slice(index + 1, index + 4).map(
-      ([minScore, rankName]) => [
-        rankName,
-        getRating(minScore, internalLv) - rating,
-      ],
+      ([minScore, rankName]) => [rankName, getRating(minScore, internalLv)],
     )
 
     return [rating, maxRating, targets]
@@ -35,84 +37,92 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
     return <></>
   }
   return (
-    <div className={classes.popup}>
-      <Link
-        href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
-          entry.deluxe ? "dx" : "std"
-        }/${entry.difficulty}`}
-      >
-        <img src={getCoverUrl(entry.song_id)} />
-        {entry.title}
-        <div className={classes.artist} title={entry.artist ?? ""}>
-          {entry.artist}
-        </div>
-      </Link>
-      {difficulties[entry.difficulty]}
-      {entry.internal_lv ?? entry.level}
-      {versions[entry.version]}
-      <table>
-        <thead>
-          <tr>
-            <td>
+    <table className={classes.popup}>
+      <thead>
+        <tr>
+          <th colSpan={2}>
+            <section>
+              <img src={getCoverUrl(entry.song_id)} />
               <Link
                 href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
                   entry.deluxe ? "dx" : "std"
                 }/${entry.difficulty}`}
               >
-                檢視統計
+                <h6>{entry.title}</h6>
+                <p>{entry.artist ?? ""}</p>
+                <p>
+                  {categories[entry.category]} /{" "}
+                  {entry.deluxe ? "DELUXE" : "STANDARD"} (
+                  {versions[entry.version]}) / {difficulties[entry.difficulty]}{" "}
+                  {entry.internal_lv ? internalLv.toFixed(1) : entry.level}
+                </p>
               </Link>
-            </td>
+            </section>
+            <ul className={classes.rates}>
+              <li>
+                <span>Play</span>
+                <span>{entry?.play ?? 0}</span>
+              </li>
+              <li>
+                <span>SSS Rate</span>
+                <span>{((entry?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
+              </li>
+              <li>
+                <span>FC Rate</span>
+                <span>{((entry?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
+              </li>
+              <li>
+                <span>AP Rate</span>
+                <span>{((entry?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
+              </li>
+            </ul>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th colSpan={2}>
+            Rating{" "}
+            <a
+              href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
+              target="_blank"
+              rel="noreferrer"
+              title="顯示相關說明"
+              style={{ display: "inline-flex", alignItems: "center" }}
+            >
+              <IconCircleOutline />
+            </a>
+          </th>
+        </tr>
+        <tr>
+          <td colSpan={2}>
+            <Progress
+              label={`${internalLv.toFixed(1)}`}
+              value={rating}
+              maxValue={maxRating}
+              valueLabel={`${rating} / ${maxRating}`}
+            />
+          </td>
+        </tr>
+        {targets.map((t) => (
+          <tr key={t[0]}>
+            <td>{t[0]}</td>
+            <td>{t[1]}</td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th colSpan={2}>SSS/FC/AP Rate</th>
-          </tr>
-          <tr>
-            <td>SSS</td>
-            <td>{((entry?.sss_rate ?? 0) * 100).toFixed(1)}%</td>
-          </tr>
-          <tr>
-            <td>FC</td>
-            <td>{((entry?.fc_rate ?? 0) * 100).toFixed(1)}%</td>
-          </tr>
-          <tr>
-            <td>AP</td>
-            <td>{((entry?.ap_rate ?? 0) * 100).toFixed(1)}%</td>
-          </tr>
-          <tr>
-            <th colSpan={2}>
-              Rating{" "}
-              <a
-                href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
-                target="_blank"
-                rel="noreferrer"
-                title="顯示相關說明"
-                style={{ display: "inline-flex", alignItems: "center" }}
-              >
-                <IconCircleOutline />
-              </a>
-            </th>
-          </tr>
-          <tr>
-            <td colSpan={2}>
-              <Progress
-                label={internalLv.toFixed(1)}
-                value={rating}
-                maxValue={maxRating}
-                valueLabel={`${rating} / ${maxRating}`}
-              />
-            </td>
-          </tr>
-          {targets.map((t) => (
-            <tr key={t[0]}>
-              <td>{t[0]}</td>
-              <td>+{t[1]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+        ))}
+        <tr>
+          <td colSpan={2}>
+            <Link
+              href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
+                entry.deluxe ? "dx" : "std"
+              }/${entry.difficulty}`}
+            >
+              檢視統計
+            </Link>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   )
 }
 

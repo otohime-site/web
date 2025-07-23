@@ -1,6 +1,63 @@
 .popup {
+  border: 1px solid var(--violet-5);
+  width: 22rem;
   font-size: 0.86rem;
 
-  .artist {
+  section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--size-2);
+    font-family: "M PLUS 1p";
+    text-align: left;
+
+    h6 {
+      font-family: "M PLUS 1p";
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    p {
+      width: 100%;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      font-weight: 400;
+    }
+    img {
+      min-width: 5em;
+      width: 5em;
+      height: 5em;
+    }
+  }
+  .rates {
+    font-family: "M PLUS 1p";
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    margin: var(--size-1) 0;
+    gap: var(--size-2);
+    & li {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      width: 5em;
+      text-align: right;
+      flex-direction: column;
+      list-style-type: none;
+      background: var(--surface-3);
+      border-radius: var(--radius-3);
+      padding: var(--size-2);
+      & span:first-child {
+        font-size: 0.75rem;
+        font-weight: 400;
+      }
+      & span:last-child {
+        font-size: 0.8rem;
+        font-weight: bold;
+        font-size: var(--font-size-2);
+      }
+    }
+  }
+  table {
+    width: 100%;
   }
 }
