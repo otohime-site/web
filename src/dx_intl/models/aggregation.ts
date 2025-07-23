@@ -220,9 +220,5 @@ export const getGroupTitle = (
 
 export const getCoverUrl = (songId: string) => {
   let coverId = songId.substring(0, 8)
-  // TODO: remove this after version update
-  if (coverId === "9545c71f") {
-    coverId = "f03c2701"
-  }
   return `https://covers.otohi.me/${coverId}.webp`
 }
