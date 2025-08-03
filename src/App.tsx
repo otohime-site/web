@@ -6,7 +6,6 @@ import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
-import "./fonts.css"
 import "./global.css"
 import Logo from "./logo/favicon.svg"
 
