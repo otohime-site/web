@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     icons({ compiler: "jsx", jsx: "react" }),
-    webfontDownload([], { assetsSubfolder: "fonts" }),
+    webfontDownload([], { assetsSubfolder: "fonts", injectAsStyleTag: false }),
     basicSsl(),
     visualizer(),
   ],
