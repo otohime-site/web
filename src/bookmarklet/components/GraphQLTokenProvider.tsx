@@ -11,6 +11,7 @@ const GraphQLTokenProvider = ({
     () =>
       createClient({
         url: `https://${apiHost}/graphql`,
+        preferGetMethod: false, // Hasura doesn't support it for free
         fetchOptions: {
           headers: {
             Authorization: `Bearer ${token}`,

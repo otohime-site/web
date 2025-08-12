@@ -16,7 +16,7 @@
   "dependencies": {
     "@nivo/line": "^0.99.0",
     "@otohime-site/parser": "^24.1.1",
-    "@urql/exchange-auth": "^2.1.0",
+    "@urql/exchange-auth": "^3.0.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "clsx": "^2.0.0",
     "date-fns": "^4.1.0",
@@ -31,7 +31,7 @@
     "react-dom": "^19.0.0",
     "react-titled": "^2.1.0",
     "unplugin-icons": "^22.0.0",
-    "urql": "^4.0.0",
+    "urql": "^5.0.0",
     "wouter": "^3.0.0"
   },
   "devDependencies": {
