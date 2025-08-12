@@ -3,11 +3,13 @@ import react from "@vitejs/plugin-react-swc"
 import { visualizer } from "rollup-plugin-visualizer"
 import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"
+import webfontDownload from "vite-plugin-webfont-dl"
 
 export default defineConfig({
   plugins: [
     react(),
     icons({ compiler: "jsx", jsx: "react" }),
+    webfontDownload([], { assetsSubfolder: "fonts" }),
     basicSsl(),
     visualizer(),
   ],
