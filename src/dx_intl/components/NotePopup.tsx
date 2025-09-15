@@ -99,8 +99,8 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
             <Progress
               label={`${internalLv.toFixed(1)}`}
               value={rating}
-              maxValue={maxRating}
-              valueLabel={`${rating} / ${maxRating}`}
+              max={maxRating}
+              translations={{ value: () => `${rating} / ${maxRating}` }}
             />
           </td>
         </tr>
