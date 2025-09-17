@@ -69,44 +69,78 @@ a.btn {
     text-decoration: none;
   }
 }
+[data-scope="dialog"] {
+  &[data-part="backdrop"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255 255 255 / 0.3);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.react-aria-ModalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: var(--visual-viewport-height);
-  background: rgba(0 0 0 / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &[data-entering] {
-    animation: var(--animation-fade-in);
+    &[data-state="open"] {
+      animation: var(--animation-fade-in);
+    }
+    &[data-state="closed"] {
+      animation: var(--animation-fade-out);
+    }
   }
-  &[data-existing] {
-    animation: var(--animation-fade-out);
+  &[data-part="positioner"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: var(--size-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &[data-part="content"] {
+    outline: none;
+    padding: var(--size-4);
+    background: var(--surface-1);
+    &[data-state="open"] {
+      animation: var(--animation-fade-in);
+    }
+
+    &[data-state="closed"] {
+      animation: var(--animation-fade-out);
+    }
+    :where(h2) {
+      font-size: var(--font-size-3);
+      margin-bottom: var(--size-2);
+    }
   }
 }
 
-.react-aria-Dialog {
-  outline: none;
-  padding: var(--size-4);
-}
+[data-scope="listbox"] {
+  &[data-part="root"] {
+    padding: var(--size-1) 0;
+    border-radius: var(--radius-2);
+    border: var(--border-size-1) solid var(--surface-4);
+  }
+  &[data-part="content"] {
+    outline: none;
+  }
+  &[data-part="item"] {
+    margin: var(--size-1) var(--size-2);
+    padding: var(--size-2);
+    border-radius: var(--radius-2);
+    color: var(--text-1);
 
-.react-aria-Modal {
-  background: var(--surface-1);
-}
-
-.react-aria-Modal :where(h2) {
-  font-size: var(--font-size-3);
-  margin-bottom: var(--size-2);
-}
-
-.react-aria-ListBox {
-  padding: var(--size-1) 0;
-  border-radius: var(--radius-2);
-  border: var(--border-size-1) solid var(--surface-4);
+    &:hover,
+    &:focus {
+      background-color: var(--surface-2);
+    }
+    &[data-state="checked"] {
+      background-color: var(--surface-3);
+    }
+  }
 }
 
 .react-aria-Section:not(:first-child) {

@@ -1,16 +1,9 @@
+import { Dialog } from "@ark-ui/react/dialog"
+import { Listbox, createListCollection } from "@ark-ui/react/listbox"
+import { Portal } from "@ark-ui/react/portal"
 import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
 import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
-import clsx from "clsx"
 import { useEffect, useState } from "react"
-import {
-  Button,
-  Dialog,
-  Heading,
-  ListBox,
-  ListBoxItem,
-  Modal,
-  Selection,
-} from "react-aria-components"
 import { useClient, useQuery } from "urql"
 import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -21,9 +14,6 @@ import host from "../../host"
 import classes from "./DxIntl.module.css"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]
-
-const castKey = (key: string | number | undefined): number | undefined =>
-  typeof key === "number" ? key : undefined
 
 // Needed as bookmarklet will not know user ID
 const dxIntlPlayersDocument = graphql(
@@ -93,13 +83,10 @@ const sha256Sum = async (text: string): Promise<string> => {
 }
 
 const Book = () => {
-  const [isOpen, setOpen] = useState(true)
   const [pageState, setPageState] = useState<
     "loading" | "ready" | "fetching" | "error" | "done"
   >("loading")
-  const [selectedPlayerIds, setSelectedPlayerIds] = useState<Selection>(
-    new Set(),
-  )
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
   const client = useClient()
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
   const players = readFragment(
@@ -140,17 +127,17 @@ const Book = () => {
         player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
     )
     if (firstMatchPlayer != null) {
-      setSelectedPlayerIds(new Set([firstMatchPlayer.id]))
+      setSelectedPlayerIds([`${firstMatchPlayer.id}`])
     }
     setPageState("ready")
   }, [netPlayerResult, dxIntlPlayersResult, pageState])
 
   const parsedPlayer = netPlayerResult.data
   const [fetchProgress, setFetchProgress] = useState(0)
-  const selectedPlayerId =
-    selectedPlayerIds !== "all"
-      ? castKey(selectedPlayerIds.values().next().value)
-      : undefined
+
+  const selectedPlayerId = selectedPlayerIds[0]
+    ? parseInt(selectedPlayerIds[0], 10)
+    : undefined
   const handleFetch = async (): Promise<void> => {
     const player = players.find((p) => p.id === selectedPlayerId)
     if (player == null) {
@@ -218,109 +205,125 @@ const Book = () => {
     }
   }
 
-  const onOpenChange = (open: boolean): void => {
-    setOpen(open)
-    if (!open) {
-      window.parent.location.href = "/"
-    }
+  const onExitComplete = () => {
+    window.parent.location.href = "/"
   }
 
   if (netPlayerResult.fetching) {
     return <></>
   }
 
+  const collection = createListCollection({
+    items: players,
+    itemToValue: (item) => `${item.id}`,
+  })
+
   return (
-    <Modal isDismissable isOpen={isOpen} onOpenChange={onOpenChange}>
-      <Dialog className={clsx("react-aria-Dialog", classes.dialog)}>
-        <Heading slot="title">更新 Otohime 成績單</Heading>
-        {pageState === "loading" ? (
-          <div></div>
-        ) : pageState === "fetching" ? (
-          <div>
-            <p>
-              {fetchProgress < DIFFICULTIES.length
-                ? "擷取成績中..."
-                : "正在上傳成績單..."}
-            </p>
-            <progress
-              value={
-                fetchProgress < DIFFICULTIES.length ? fetchProgress : undefined
-              }
-              max={DIFFICULTIES.length + 1}
-            />
-          </div>
-        ) : pageState === "done" ? (
-          <div>
-            <p>上傳完成！</p>
-            <p>您現在可以在 Otohime 網站上檢視你的成績單了。</p>
-            <a
-              className="btn"
-              target="_blank"
-              rel="noreferrer"
-              href={`https://${host}/dxi/p/${
-                (players ?? []).find((p) => p.id === selectedPlayerId)
-                  ?.nickname ?? ""
-              }`}
-            >
-              檢視成績單
-            </a>
-          </div>
-        ) : pageState === "error" ? (
-          <div>
-            <Alert severity="error">
-              成績擷取或上傳發生錯誤。請稍後再重試一次。
-            </Alert>
-          </div>
-        ) : (
-          <QueryResult
-            result={dxIntlPlayersResult}
-            errorMsg="無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。"
-          >
-            {players.length === 0 ? (
-              <Alert severity="warning">
-                請到 Otohime 網站上
-                <a
-                  target="_blank"
-                  href={`https://${host}/dxi/p/new`}
-                  rel="noreferrer"
-                >
-                  新增一個成績單。
-                </a>
-              </Alert>
-            ) : (
+    <Dialog.Root
+      defaultOpen={true}
+      onExitComplete={onExitComplete}
+      unmountOnExit={true}
+    >
+      <Portal>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content className={classes.dialog}>
+            <Dialog.Title>更新 Otohime 成績單</Dialog.Title>
+            {pageState === "loading" ? (
+              <div></div>
+            ) : pageState === "fetching" ? (
               <div>
-                <div>請選擇要更新的成績單：</div>
-                <ListBox
-                  selectionMode="single"
-                  selectedKeys={selectedPlayerIds}
-                  onSelectionChange={setSelectedPlayerIds}
-                >
-                  {players.map((player) => (
-                    <ListBoxItem key={player.id} id={player.id}>
-                      <PlayerItem player={player} />
-                    </ListBoxItem>
-                  ))}
-                </ListBox>
+                <p>
+                  {fetchProgress < DIFFICULTIES.length
+                    ? "擷取成績中..."
+                    : "正在上傳成績單..."}
+                </p>
+                <progress
+                  value={
+                    fetchProgress < DIFFICULTIES.length
+                      ? fetchProgress
+                      : undefined
+                  }
+                  max={DIFFICULTIES.length + 1}
+                />
               </div>
+            ) : pageState === "done" ? (
+              <div>
+                <p>上傳完成！</p>
+                <p>您現在可以在 Otohime 網站上檢視你的成績單了。</p>
+                <a
+                  className="btn"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://${host}/dxi/p/${
+                    (players ?? []).find((p) => p.id === selectedPlayerId)
+                      ?.nickname ?? ""
+                  }`}
+                >
+                  檢視成績單
+                </a>
+              </div>
+            ) : pageState === "error" ? (
+              <div>
+                <Alert severity="error">
+                  成績擷取或上傳發生錯誤。請稍後再重試一次。
+                </Alert>
+              </div>
+            ) : (
+              <QueryResult
+                result={dxIntlPlayersResult}
+                errorMsg="無法取得玩家資料。可能您的權杖失效了，請到 Otohime 上重新複製新的連結。"
+              >
+                {players.length === 0 ? (
+                  <Alert severity="warning">
+                    請到 Otohime 網站上
+                    <a
+                      target="_blank"
+                      href={`https://${host}/dxi/p/new`}
+                      rel="noreferrer"
+                    >
+                      新增一個成績單。
+                    </a>
+                  </Alert>
+                ) : (
+                  <div>
+                    <div>請選擇要更新的成績單：</div>
+                    <Listbox.Root
+                      value={selectedPlayerIds}
+                      onValueChange={(e) => setSelectedPlayerIds(e.value)}
+                      collection={collection}
+                    >
+                      <Listbox.Content>
+                        {collection.items.map((item) => (
+                          <Listbox.Item key={item.id} item={item}>
+                            <Listbox.ItemText asChild>
+                              <PlayerItem player={item} />
+                            </Listbox.ItemText>
+                          </Listbox.Item>
+                        ))}
+                      </Listbox.Content>
+                    </Listbox.Root>
+                  </div>
+                )}
+              </QueryResult>
             )}
-          </QueryResult>
-        )}
-        <div>
-          <Button
-            isDisabled={pageState !== "ready" || selectedPlayerId === undefined}
-            onPress={handleFetchWithCatch}
-          >
-            上傳成績
-          </Button>
-          <Button
-            isDisabled={pageState === "fetching"}
-            onPress={() => onOpenChange(false)}
-          >
-            關閉
-          </Button>
-        </div>
-      </Dialog>
-    </Modal>
+            <div>
+              <button
+                disabled={
+                  pageState !== "ready" || selectedPlayerId === undefined
+                }
+                onClick={handleFetchWithCatch}
+              >
+                上傳成績
+              </button>
+              <Dialog.CloseTrigger asChild>
+                <button disabled={pageState === "fetching"}>關閉</button>
+              </Dialog.CloseTrigger>
+            </div>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   )
 }
 export default Book
