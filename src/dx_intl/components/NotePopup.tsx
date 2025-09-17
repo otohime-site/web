@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { Link } from "react-aria-components"
+import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import { Progress } from "../../common/components/ui/Progress"
 import {
@@ -44,7 +44,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
             <section>
               <img src={getCoverUrl(entry.song_id)} />
               <Link
-                href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
+                href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
                   entry.deluxe ? "dx" : "std"
                 }/${entry.difficulty}`}
               >
@@ -113,7 +113,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
         <tr>
           <td colSpan={2}>
             <Link
-              href={`/dxi/s/${entry.song_id.substring(0, 8)}/${
+              href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
                 entry.deluxe ? "dx" : "std"
               }/${entry.difficulty}`}
             >

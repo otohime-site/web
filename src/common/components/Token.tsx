@@ -139,7 +139,7 @@ const User = () => {
               觸發書籤留著，您可以使用這個功能將原本帳號的成績單轉移。
             </p>
             <p>
-              <LinkButton href="/transfer">
+              <LinkButton href="~/transfer">
                 <MdiBriefcaseTransfer />
                 成績單帳號轉移
               </LinkButton>
@@ -186,7 +186,7 @@ const User = () => {
               >
                 <IconRefresh /> 重新產生權杖
               </Button>
-              <LinkButton href="/transfer">
+              <LinkButton href="~/transfer">
                 <MdiBriefcaseTransfer />
                 成績單帳號轉移
               </LinkButton>

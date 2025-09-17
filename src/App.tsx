@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react"
-import { Link, RouterProvider } from "react-aria-components"
-import { Route, Router, useLocation } from "wouter"
+import { RouterProvider } from "react-aria-components"
+import { Link, Route, Router, useLocation } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <>
       <div className={classes.top}>
-        <Link href="/" className={classes.title}>
+        <Link href="~/" className={classes.title}>
           <img src={Logo} /> <p>Otohime</p>
         </Link>
         <Search />

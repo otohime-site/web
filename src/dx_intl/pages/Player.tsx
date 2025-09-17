@@ -345,11 +345,11 @@ const Player = ({ params }: { params: Params }) => {
           <Toolbar aria-label="成績單選項" className={layoutClasses.toolbar}>
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
-              <LinkButton href={`/dxi/p/${params.nickname}/edit`}>
+              <LinkButton href={`~/dxi/p/${params.nickname}/edit`}>
                 <IconPencil /> 編輯
               </LinkButton>
             ) : null}
-            <LinkButton href={`/dxi/p/${params.nickname}/history`}>
+            <LinkButton href={`~/dxi/p/${params.nickname}/history`}>
               <IconHistory /> 歷史紀錄
             </LinkButton>
             <Button onPress={downloadCSV}>

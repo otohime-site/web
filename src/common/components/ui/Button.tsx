@@ -1,9 +1,9 @@
-import { Link, LinkProps } from "react-aria-components"
+import { Link, LinkProps } from "wouter"
 
 export const LinkButton = (props: LinkProps) => {
   return (
-    <Link className="btn" {...props}>
-      {props.children}
+    <Link {...props} asChild>
+      <a className="btn">{props.children}</a>
     </Link>
   )
 }
