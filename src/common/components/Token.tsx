@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Dialog, DialogTrigger, Modal } from "react-aria-components"
+import { Dialog, DialogTrigger, Modal } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
@@ -109,7 +109,7 @@ const User = () => {
                   成績」即可。 但如果你使用 Android 的
                   Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
                 </p>
-                <Button onPress={handleClose}>關閉</Button>
+                <button onClick={handleClose}>關閉</button>
               </div>
             </div>
           </Dialog>
@@ -126,12 +126,12 @@ const User = () => {
               如果您第一次使用，您要先產生一個權杖來生成觸發更新的 Bookmarklet。
             </p>
             <p>
-              <Button
-                isDisabled={regenerateTokenResult.fetching}
-                onPress={generateToken}
+              <button
+                disabled={regenerateTokenResult.fetching}
+                onClick={generateToken}
               >
                 產生權杖
-              </Button>
+              </button>
             </p>
             <p>
               如果您因為任何原因無法在存取帳號（例如以前透過 Facebook
@@ -180,12 +180,12 @@ const User = () => {
             </p>
             <p>如果您有需要可以重新產生權杖，或者使用成績單帳號轉移。</p>
             <p>
-              <Button
-                isDisabled={regenerateTokenResult.fetching}
-                onPress={generateToken}
+              <button
+                disabled={regenerateTokenResult.fetching}
+                onClick={generateToken}
               >
                 <IconRefresh /> 重新產生權杖
-              </Button>
+              </button>
               <LinkButton href="~/transfer">
                 <MdiBriefcaseTransfer />
                 成績單帳號轉移

@@ -240,7 +240,7 @@ a:where(.react-aria-Tab) {
   }
 }
 
-.react-aria-Button[data-focused] {
+button[data-focused] {
   outline: none;
 }
 

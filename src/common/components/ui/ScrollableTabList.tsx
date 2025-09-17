@@ -1,6 +1,6 @@
 import { scrollIntoView } from "@react-aria/utils"
 import { useCallback, useState } from "react"
-import { Button, TabList, TabListProps } from "react-aria-components"
+import { TabList, TabListProps } from "react-aria-components"
 import classes from "./ScrollableTabList.module.css"
 
 export const ScrollableTabList = <T extends object>({
@@ -67,15 +67,15 @@ export const ScrollableTabList = <T extends object>({
   }
   return (
     <div className={classes["scrollable-tab"]}>
-      <Button isDisabled={scrollDisabled[0]} onPress={scrollBy(-200)}>
+      <button disabled={scrollDisabled[0]} onClick={scrollBy(-200)}>
         &lt;
-      </Button>
+      </button>
       <TabList {...props} ref={scrollableTabRef}>
         {children}
       </TabList>
-      <Button isDisabled={scrollDisabled[1]} onPress={scrollBy(200)}>
+      <button disabled={scrollDisabled[1]} onClick={scrollBy(200)}>
         &gt;
-      </Button>
+      </button>
     </div>
   )
 }

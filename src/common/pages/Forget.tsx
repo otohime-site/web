@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Button } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
@@ -77,9 +76,9 @@ const Forget = () => {
           </a>
           中「關於您的權利」一段，填寫請求表單請求刪除。
         </p>
-        <Button isDisabled={!confirmed} onPress={bye}>
+        <button disabled={!confirmed} onClick={bye}>
           Bye :)
-        </Button>
+        </button>
       </Alert>
     </div>
   )

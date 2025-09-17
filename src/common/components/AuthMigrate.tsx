@@ -4,7 +4,6 @@ import {
   linkWithRedirect,
 } from "firebase/auth"
 import { useCallback } from "react"
-import { Button } from "react-aria-components"
 import IconGoogle from "~icons/mdi/google"
 import { useUser } from "../contexts"
 import { Alert } from "./ui/Alert"
@@ -54,9 +53,9 @@ export const AuthMigrate = () => {
           請使用下方的按鈕綁定一個 Google 帳號，確保以後您可以繼續以 Google
           帳號登入。
         </p>
-        <Button onPress={handleMigrate}>
+        <button onClick={handleMigrate}>
           <IconGoogle /> 登入並綁定 Google 帳號
-        </Button>
+        </button>
         <p>（如果你來不及或忘記進行綁定，日後可能會提供贖回程序）</p>
       </Alert>
     )

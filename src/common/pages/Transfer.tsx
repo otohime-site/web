@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { Button } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
@@ -126,9 +125,9 @@ const Transfer = () => {
             <p>書籤觸發後才能繼續。</p>
           </div>
         )}
-        <Button isDisabled={!token} onPress={handleTransfer}>
+        <button disabled={!token} onClick={handleTransfer}>
           <MdiBriefcaseTransfer /> 進行轉移
-        </Button>
+        </button>
       </div>
     </div>
   )

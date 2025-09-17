@@ -3,7 +3,6 @@ import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
 import {
-  Button,
   FieldError,
   Form,
   Input,
@@ -228,11 +227,11 @@ const PlayerForm = ({ params }: { params: Params }) => {
           </ul>
         </div>
         {params.nickname == null ? (
-          <Button type="submit">新增</Button>
+          <button type="submit">新增</button>
         ) : (
           <div>
-            <Button type="submit">編輯</Button>
-            <Button onPress={handleDeletePlayer}>刪除成績單</Button>
+            <button type="submit">編輯</button>
+            <button onClick={handleDeletePlayer}>刪除成績單</button>
           </div>
         )}
       </Form>

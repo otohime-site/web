@@ -352,9 +352,9 @@ const Player = ({ params }: { params: Params }) => {
             <LinkButton href={`~/dxi/p/${params.nickname}/history`}>
               <IconHistory /> 歷史紀錄
             </LinkButton>
-            <Button onPress={downloadCSV}>
+            <button onClick={downloadCSV}>
               <IconFileDownload /> 下載 CSV
-            </Button>
+            </button>
           </Toolbar>
           <div className={layoutClasses.line}>
             <Select

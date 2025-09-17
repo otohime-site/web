@@ -49,7 +49,7 @@ const UserBoxComponent = () => {
   if (user !== null) {
     return (
       <>
-        <Button onPress={handleLogout}>登出</Button>
+        <button onClick={handleLogout}>登出</button>
       </>
     )
   }
@@ -60,9 +60,9 @@ const UserBoxComponent = () => {
         <Popover>
           <Dialog className={clsx("react-aria-Dialog", classes["dialog"])}>
             <p>
-              <Button onPress={handleLoginGoogle}>
+              <button onClick={handleLoginGoogle}>
                 <IconGoogle /> 以 Google 帳號登入
-              </Button>
+              </button>
             </p>
             <Alert severity="warning">
               <p>Facebook 登入已於 7/15 停止運作。</p>
