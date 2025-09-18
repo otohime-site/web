@@ -1,10 +1,10 @@
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 
+import { Tabs } from "@ark-ui/react/tabs"
 import clsx from "clsx"
 import { useMemo, useState } from "react"
 import {
   Button,
-  Collection,
   Header,
   Label,
   ListBox,
@@ -16,10 +16,6 @@ import {
   Select,
   SelectValue,
   Switch,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
   ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
@@ -106,9 +102,7 @@ const Player = ({ params }: { params: Params }) => {
   const [grouping, setGrouping] = useState<"category" | "version" | "level">(
     "category",
   )
-  const [selectedGroup, setSelectedGroup] = useState<string | number | null>(
-    null,
-  )
+  const [selectedGroup, setSelectedGroup] = useState(0)
   const [ordering, setOrdering] = useState<
     "index" | "level" | "score" | "combo_flag" | "sync_flag"
   >("index")
@@ -273,53 +267,40 @@ const Player = ({ params }: { params: Params }) => {
             </Switch>
           </div>
         </div>
-        <Tabs
-          slot="grouping"
-          selectedKey={grouping}
-          onSelectionChange={(v) => {
-            setGrouping(v as typeof grouping)
+        <Tabs.Root
+          value={grouping}
+          onValueChange={({ value }) => {
+            setGrouping(value as typeof grouping)
             setSelectedGroup(0)
           }}
         >
           <div className={layoutClasses["sticky-header"]}>
-            <TabList
-              items={Object.entries(groupKeyOptions).map(([key], index) => ({
-                key,
-                index,
-              }))}
-              className={({ defaultClassName }) =>
-                clsx(defaultClassName, layoutClasses["grouping-tablist"])
-              }
-            >
-              {({ key }) => (
-                <Tab key={key} id={key}>
+            <Tabs.List className={layoutClasses["grouping-tablist"]}>
+              {Object.entries(groupKeyOptions).map(([key]) => (
+                <Tabs.Trigger key={key} value={key}>
                   {groupKeyOptions[key as typeof grouping]}
-                </Tab>
-              )}
-            </TabList>
+                </Tabs.Trigger>
+              ))}
+            </Tabs.List>
           </div>
-          <TabPanel id={grouping}>
-            <Tabs
-              slot="group"
-              selectedKey={selectedGroup}
-              onSelectionChange={setSelectedGroup}
+          <Tabs.Content value={grouping}>
+            <Tabs.Root
+              value={`${selectedGroup}`}
+              onValueChange={({ value }) =>
+                setSelectedGroup(parseInt(value, 10))
+              }
             >
               <div
                 className={layoutClasses["sticky-header"]}
                 style={{ top: "87.5px" }}
               >
-                <ScrollableTabList
-                  items={[...table.groupedData.keys()].map((key, index) => ({
-                    key,
-                    index,
-                  }))}
-                >
-                  {({ key, index }) => (
-                    <Tab key={index} id={index}>
+                <ScrollableTabList>
+                  {[...table.groupedData.keys()].map((key, index) => (
+                    <Tabs.Trigger key={index} value={`${index}`}>
                       {getGroupTitle(grouping, key)} (
                       {table.groupedData.get(key)?.length})
-                    </Tab>
-                  )}
+                    </Tabs.Trigger>
+                  ))}
                 </ScrollableTabList>
               </div>
               {grouping === "category" || grouping === "version" ? (
@@ -347,24 +328,15 @@ const Player = ({ params }: { params: Params }) => {
               ) : (
                 <></>
               )}
-              <Collection
-                items={[...table.groupedData.entries()].map(
-                  ([key, table], index) => ({
-                    key,
-                    table,
-                    index,
-                  }),
-                )}
-              >
-                {({ table, index }) => (
-                  <TabPanel id={index}>
-                    <PlayerScoreTable table={table} />
-                  </TabPanel>
-                )}
-              </Collection>
-            </Tabs>
-          </TabPanel>
-        </Tabs>
+
+              {[...table.groupedData.values()].map((table, index) => (
+                <Tabs.Content key={index} value={index.toString()}>
+                  <PlayerScoreTable table={table} />
+                </Tabs.Content>
+              ))}
+            </Tabs.Root>
+          </Tabs.Content>
+        </Tabs.Root>
       </div>
     </>
   )

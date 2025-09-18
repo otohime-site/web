@@ -1,10 +1,10 @@
+import { Tabs } from "@ark-ui/react/tabs"
 import clsx from "clsx"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
 import {
   Button,
-  Collection,
   Dialog,
   Header,
   Label,
@@ -17,10 +17,6 @@ import {
   Select,
   SelectValue,
   Switch,
-  Tab,
-  TabList,
-  TabPanel,
-  Tabs,
   ToggleButton,
   Toolbar,
 } from "react-aria-components"
@@ -37,6 +33,7 @@ import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
@@ -121,9 +118,7 @@ const Player = ({ params }: { params: Params }) => {
   const [grouping, setGrouping] = useState<
     "current_version" | "category" | "version" | "level"
   >("current_version")
-  const [selectedGroup, setSelectedGroup] = useState<string | number | null>(
-    null,
-  )
+  const [selectedGroup, setSelectedGroup] = useState(0)
   const [ordering, setOrdering] = useState<
     | "index"
     | "level"
@@ -254,7 +249,7 @@ const Player = ({ params }: { params: Params }) => {
   })
   const { currentGroupEntry, scoreStatsTargets, scoreStats } = useMemo(() => {
     const currentGroupEntry = [...table.groupedData.entries()][
-      parseInt(`${selectedGroup}`, 10)
+      selectedGroup ?? 0
     ] ?? ["", []]
     const scoreStatsTargets = (
       statFolder ? currentGroupEntry[1] : scoreTable
@@ -449,57 +444,44 @@ const Player = ({ params }: { params: Params }) => {
             </ul>
           </div>
         </div>
-        <Tabs
-          slot="grouping"
-          selectedKey={grouping}
-          onSelectionChange={(v) => {
-            setGrouping(v as typeof grouping)
+        <Tabs.Root
+          value={grouping}
+          onValueChange={({ value }) => {
+            setGrouping(value as typeof grouping)
             setSelectedGroup(0)
           }}
         >
           <div className={layoutClasses["sticky-header"]}>
-            <TabList
-              items={Object.entries(groupKeyOptions).map(([key], index) => ({
-                key,
-                index,
-              }))}
-              className={({ defaultClassName }) =>
-                clsx(defaultClassName, layoutClasses["grouping-tablist"])
-              }
-            >
-              {({ key }) => (
-                <Tab
+            <Tabs.List className={layoutClasses["grouping-tablist"]}>
+              {Object.entries(groupKeyOptions).map(([key]) => (
+                <Tabs.Trigger
                   key={key}
-                  id={key}
+                  value={key}
                   style={key === "current_version" ? { flex: 2 } : undefined}
                 >
                   {groupKeyOptions[key as typeof grouping]}
-                </Tab>
-              )}
-            </TabList>
+                </Tabs.Trigger>
+              ))}
+            </Tabs.List>
           </div>
-          <TabPanel id={grouping}>
-            <Tabs
-              slot="group"
-              selectedKey={selectedGroup}
-              onSelectionChange={setSelectedGroup}
+          <Tabs.Content value={grouping}>
+            <Tabs.Root
+              value={`${selectedGroup}`}
+              onValueChange={({ value }) => {
+                setSelectedGroup(parseInt(value, 10))
+              }}
             >
               <div
                 className={layoutClasses["sticky-header"]}
                 style={{ top: "87.5px" }}
               >
-                <ScrollableTabList
-                  items={[...table.groupedData.keys()].map((key, index) => ({
-                    key,
-                    index,
-                  }))}
-                >
-                  {({ key, index }) => (
-                    <Tab key={index} id={index}>
+                <ScrollableTabList>
+                  {[...table.groupedData.keys()].map((key, index) => (
+                    <Tabs.Trigger key={index} value={index.toString()}>
                       {getGroupTitle(grouping, key)} (
                       {table.groupedData.get(key)?.length})
-                    </Tab>
-                  )}
+                    </Tabs.Trigger>
+                  ))}
                 </ScrollableTabList>
               </div>
               {grouping === "category" || grouping === "version" ? (
@@ -527,27 +509,17 @@ const Player = ({ params }: { params: Params }) => {
               ) : (
                 <></>
               )}
-              <Collection
-                items={[...table.groupedData.entries()].map(
-                  ([key, table], index) => ({
-                    key,
-                    table,
-                    index,
-                  }),
-                )}
-              >
-                {({ table, index }) => (
-                  <TabPanel id={index}>
-                    <PlayerScoreTable
-                      table={table}
-                      handleNotePopupOpen={handleNotePopupOpen}
-                    />
-                  </TabPanel>
-                )}
-              </Collection>
-            </Tabs>
-          </TabPanel>
-        </Tabs>
+              {[...table.groupedData.values()].map((table, index) => (
+                <Tabs.Content key={index} value={index.toString()}>
+                  <PlayerScoreTable
+                    table={table}
+                    handleNotePopupOpen={handleNotePopupOpen}
+                  />
+                </Tabs.Content>
+              ))}
+            </Tabs.Root>
+          </Tabs.Content>
+        </Tabs.Root>
       </div>
       <Popover
         triggerRef={notePopupRef}

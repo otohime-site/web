@@ -151,7 +151,7 @@ a.btn {
 [data-scope="tabs"] {
   [data-part="trigger"] {
     /* Clear open-props button style */
-    all: inherit;
+    all: unset;
   }
   [data-part="list"] {
     display: flex;

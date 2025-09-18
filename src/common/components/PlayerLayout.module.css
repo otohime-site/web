@@ -53,6 +53,12 @@
 }
 
 .grouping-tablist {
+  & [data-part="trigger"] {
+    flex: 1;
+  }
+  & [data-part="trigger"][data-selected] {
+    --border-color: var(--blue-8);
+  }
   & :global(.react-aria-Tab) {
     flex: 1;
   }

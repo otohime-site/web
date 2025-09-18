@@ -2,22 +2,32 @@
   display: flex;
   flex-direction: row;
 
-  & button {
+  & button:not([data-part="trigger"]) {
     background: transparent;
     border: none;
     box-shadow: none;
     &:hover {
       background: transparent;
     }
-    &[data-disabled] {
+    &:disabled {
       display: none;
     }
-    &[data-focused] {
+    &:focus {
       outline: none;
     }
   }
 
   & :global(.react-aria-TabList) {
+    flex: 1;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  & [data-part="list"] {
     flex: 1;
     overflow-x: scroll;
     scrollbar-width: none;

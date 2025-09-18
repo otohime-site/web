@@ -1,12 +1,11 @@
-import { scrollIntoView } from "@react-aria/utils"
+import { TabListProps, Tabs } from "@ark-ui/react/tabs"
 import { useCallback, useState } from "react"
-import { TabList, TabListProps } from "react-aria-components"
 import classes from "./ScrollableTabList.module.css"
 
-export const ScrollableTabList = <T extends object>({
+export const ScrollableTabList = ({
   children,
   ...props
-}: TabListProps<T> & React.RefAttributes<HTMLDivElement>) => {
+}: TabListProps & React.RefAttributes<HTMLDivElement>) => {
   const [tabList, setTabList] = useState<HTMLDivElement | null>(null)
   const [scrollDisabled, setScrollDisabled] = useState<[boolean, boolean]>([
     false,
@@ -30,6 +29,8 @@ export const ScrollableTabList = <T extends object>({
       if (node == null) {
         return
       }
+      const buttonSize =
+        node.parentNode?.querySelector("button")?.clientWidth ?? 0
       const rob = new ResizeObserver(() => {
         updateScroll()
       })
@@ -41,10 +42,32 @@ export const ScrollableTabList = <T extends object>({
         const selected = mutations.filter(
           (m) =>
             m.type == "attributes" &&
-            (m.target as HTMLDivElement).getAttribute("aria-selected") ==
+            (m.target as HTMLButtonElement).getAttribute("aria-selected") ==
               "true",
-        )[0].target
-        scrollIntoView(node, selected as HTMLDivElement)
+        )[0].target as HTMLButtonElement
+
+        const scrollLeft = node.scrollLeft
+        if (selected.offsetLeft - buttonSize < scrollLeft) {
+          node.scrollTo({
+            left: selected.offsetLeft - buttonSize,
+            top: 0,
+            behavior: "smooth",
+          })
+        }
+        if (
+          selected.offsetLeft + selected.clientWidth + buttonSize >
+          scrollLeft + node.clientWidth
+        ) {
+          node.scrollTo({
+            left:
+              selected.offsetLeft +
+              selected.clientWidth -
+              node.clientWidth -
+              buttonSize,
+            top: 0,
+            behavior: "smooth",
+          })
+        }
       })
       rob.observe(node)
       mob.observe(node, {
@@ -62,7 +85,10 @@ export const ScrollableTabList = <T extends object>({
   )
   const scrollBy = (amount: number) => () => {
     if (tabList) {
-      tabList.scrollLeft += amount
+      tabList.scrollTo({
+        left: tabList.scrollLeft + amount,
+        behavior: "smooth",
+      })
     }
   }
   return (
@@ -70,9 +96,9 @@ export const ScrollableTabList = <T extends object>({
       <button disabled={scrollDisabled[0]} onClick={scrollBy(-200)}>
         &lt;
       </button>
-      <TabList {...props} ref={scrollableTabRef}>
+      <Tabs.List {...props} ref={scrollableTabRef}>
         {children}
-      </TabList>
+      </Tabs.List>
       <button disabled={scrollDisabled[1]} onClick={scrollBy(200)}>
         &gt;
       </button>
