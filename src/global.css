@@ -170,6 +170,7 @@ a.btn {
 }
 
 /* Reset Open Props nornamlize styles */
+a:where([data-scope="listbox"]),
 a:where(.react-aria-ListBoxItem),
 a:where(.react-aria-Tab) {
   display: block;

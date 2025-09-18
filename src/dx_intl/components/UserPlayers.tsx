@@ -1,6 +1,6 @@
-import { ListBox, ListBoxItem } from "react-aria-components"
+import { createListCollection, Listbox } from "@ark-ui/react/listbox"
 import { useQuery } from "urql"
-import { navigate } from "wouter/use-browser-location"
+import { Link } from "wouter"
 import IconAdd from "~icons/mdi/add"
 import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -43,40 +43,31 @@ const UserPlayers = () => {
   if (user == null) {
     return <></>
   }
+
+  const collection = createListCollection({
+    items: [
+      ...players.map((p) => ({ ...p, type: "dxi" as const })),
+      ...finalePlayers.map((p) => ({ ...p, type: "fin" as const })),
+    ],
+    itemToValue: (item) => `${item.type}-${item.nickname}`,
+  })
+
   return (
     <QueryResult result={playersResult}>
       {players.length + finalePlayers.length > 0 ? (
-        <ListBox
-          selectionMode="single"
-          onSelectionChange={(keys) => {
-            if (keys !== "all") {
-              const nickname = keys.values().next().value
-              if (nickname) {
-                navigate(`~/dxi/p/${nickname}`)
-              }
-            }
-          }}
-        >
-          {players.map((player) => (
-            <ListBoxItem
-              href={`/dxi/p/${player.nickname}`}
-              key={`dxi-${player.id}`}
-              id={`dxi-${player.nickname}`}
-            >
-              <PlayerItem player={player} />
-            </ListBoxItem>
-          ))}
-
-          {finalePlayers.map((player) => (
-            <ListBoxItem
-              href={`/fin/p/${player.nickname}`}
-              key={`fin-${player.id}`}
-              id={`fin-${player.nickname}`}
-            >
-              <PlayerItem player={player} />
-            </ListBoxItem>
-          ))}
-        </ListBox>
+        <Listbox.Root collection={collection}>
+          <Listbox.Content>
+            {collection.items.map((item) => (
+              <Listbox.Item key={`${item.type}-${item.id}`} item={item}>
+                <Listbox.ItemText asChild>
+                  <Link href={`~/${item.type}/p/${item.nickname}`}>
+                    <PlayerItem player={item} />
+                  </Link>
+                </Listbox.ItemText>
+              </Listbox.Item>
+            ))}
+          </Listbox.Content>
+        </Listbox.Root>
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
