@@ -1,5 +1,6 @@
+import { Dialog } from "@ark-ui/react/dialog"
+import { Portal } from "@ark-ui/react/portal"
 import { useState } from "react"
-import { Dialog, DialogTrigger, Modal } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
@@ -52,7 +53,6 @@ const User = () => {
     regenerateTokenDocument,
   )
   const [bookDialogOpen, setBookDialogOpen] = useState(false)
-  const handleClose = (): void => setBookDialogOpen(false)
   const generateToken = async (): Promise<void> => {
     if (confirm("您舊的 Bookmarklet 連結將會失效。確定要重新產生權杖？")) {
       await regenerateToken({})
@@ -90,11 +90,17 @@ const User = () => {
   return (
     <div>
       {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
-      <DialogTrigger isOpen={bookDialogOpen} onOpenChange={setBookDialogOpen}>
-        <Modal isDismissable>
-          <Dialog role="alertdialog">
-            <div>
-              <h3>Bookmarklet 操作說明</h3>
+      <Dialog.Root
+        open={bookDialogOpen}
+        onOpenChange={(e) => {
+          setBookDialogOpen(e.open)
+        }}
+      >
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.Title>Bookmarklet 操作說明</Dialog.Title>
               <div>
                 <p>連結已經複製到剪貼簿！接下來的步驟大致如下：</p>
                 <ol>
@@ -109,12 +115,14 @@ const User = () => {
                   成績」即可。 但如果你使用 Android 的
                   Chrome，您需要在網址列輸入「Otohime」找到並點擊書籤才能成功觸發！
                 </p>
-                <button onClick={handleClose}>關閉</button>
+                <Dialog.CloseTrigger asChild>
+                  <button>關閉</button>
+                </Dialog.CloseTrigger>
               </div>
-            </div>
-          </Dialog>
-        </Modal>
-      </DialogTrigger>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
       <QueryResult
         result={tokensResult}
         skeletonVariant="rectangular"

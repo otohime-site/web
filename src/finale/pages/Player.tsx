@@ -31,7 +31,6 @@ import IconArrowUp from "~icons/mdi/arrow-up"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
-import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
@@ -223,9 +222,9 @@ const Player = ({ params }: { params: Params }) => {
           />
           {editableResult.error == null &&
           (editableResult.data?.finale_players?.length ?? 0) > 0 ? (
-            <LinkButton onPress={handleDeletePlayer}>
+            <button onClick={handleDeletePlayer}>
               <MdiDeleteAlert /> 刪除
-            </LinkButton>
+            </button>
           ) : null}
           <div className={layoutClasses.line}>
             <Select

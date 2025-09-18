@@ -69,6 +69,11 @@ a.btn {
     text-decoration: none;
   }
 }
+
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none !important;
+}
+
 [data-scope="dialog"] {
   &[data-part="backdrop"] {
     position: fixed;
