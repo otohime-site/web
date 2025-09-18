@@ -148,6 +148,31 @@ a.btn {
   }
 }
 
+[data-scope="tabs"] {
+  [data-part="trigger"] {
+    /* Clear open-props button style */
+    all: inherit;
+  }
+  [data-part="list"] {
+    display: flex;
+    gap: 1rem;
+    [data-part="trigger"] {
+      border-bottom: 3px solid var(--border-color);
+    }
+  }
+
+  [data-part="trigger"] {
+    flex-shrink: 0;
+    padding: var(--size-2);
+    cursor: pointer;
+    outline: none;
+    --border-color: transparent;
+    &[data-selected] {
+      --border-color: var(--violet-6);
+    }
+  }
+}
+
 .react-aria-Section:not(:first-child) {
   margin-top: var(--size-2);
 }

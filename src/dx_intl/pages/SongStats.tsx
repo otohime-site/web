@@ -1,7 +1,8 @@
-import { Tab, TabList, TabPanel, Tabs } from "react-aria-components"
+import { Tabs } from "@ark-ui/react/tabs"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
+import { navigate } from "wouter/use-browser-location"
 import { QueryResult } from "../../common/components/QueryResult"
 import { graphql } from "../../graphql"
 import { flatSongsResult, getCoverUrl } from "../models/aggregation"
@@ -95,36 +96,44 @@ const SongStats = ({ params }: { params: Params }) => {
               <p>{song.artist}</p>
             </div>
           </section>
-          <Tabs slot="deluxe" selectedKey={deluxe ? "dx" : "std"}>
-            <TabList>
+          <Tabs.Root
+            value={deluxe ? "dx" : "std"}
+            onValueChange={({ value }) => {
+              navigate(`/dxi/s/${params.songId}/${value}/`)
+            }}
+          >
+            <Tabs.List>
               {variants[0] ? (
-                <Tab id="std" href={`/dxi/s/${params.songId}/std/`}>
-                  STANDARD
-                </Tab>
+                <Tabs.Trigger value="std">STANDARD</Tabs.Trigger>
               ) : null}
               {variants[1] ? (
-                <Tab id="dx" href={`/dxi/s/${params.songId}/dx/`}>
-                  DELUXE
-                </Tab>
+                <Tabs.Trigger value="dx">DELUXE</Tabs.Trigger>
               ) : null}
-            </TabList>
-            <TabPanel id={deluxe ? "dx" : "std"}>
-              <Tabs slot="difficulty" selectedKey={difficulty ?? ""}>
-                <TabList items={variantEntries.map((entry) => ({ entry }))}>
-                  {({ entry }) => (
-                    <Tab
-                      href={`/dxi/s/${params.songId}/${params.variant ?? ""}/${entry.difficulty}`}
+            </Tabs.List>
+            <Tabs.Content value={deluxe ? "dx" : "std"}>
+              <Tabs.Root
+                value={`${difficulty}`}
+                onValueChange={({ value }) => {
+                  console.log(value)
+                  navigate(
+                    `/dxi/s/${params.songId}/${params.variant ?? ""}/${value}`,
+                  )
+                }}
+              >
+                <Tabs.List>
+                  {variantEntries.map((entry) => (
+                    <Tabs.Trigger
+                      value={`${entry.difficulty}`}
                       key={entry.difficulty}
-                      id={entry.difficulty}
                     >
                       {difficulties[entry.difficulty]}{" "}
                       {entry.internal_lv
                         ? entry.internal_lv.toFixed(1)
                         : entry.level}
-                    </Tab>
-                  )}
-                </TabList>
-                <TabPanel id={difficulty ?? ""}>
+                    </Tabs.Trigger>
+                  ))}
+                </Tabs.List>
+                <Tabs.Content value={`${difficulty}`}>
                   <ul className={classes.rates}>
                     <li>
                       <span>Play</span>
@@ -168,10 +177,10 @@ const SongStats = ({ params }: { params: Params }) => {
                       </tbody>
                     </table>
                   </QueryResult>
-                </TabPanel>
-              </Tabs>
-            </TabPanel>
-          </Tabs>
+                </Tabs.Content>
+              </Tabs.Root>
+            </Tabs.Content>
+          </Tabs.Root>
         </>
       ) : null}
     </QueryResult>
