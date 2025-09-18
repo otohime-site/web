@@ -59,12 +59,6 @@
   & [data-part="trigger"][data-selected] {
     --border-color: var(--blue-8);
   }
-  & :global(.react-aria-Tab) {
-    flex: 1;
-  }
-  & :global(.react-aria-Tab[data-selected]) {
-    --border-color: var(--blue-8);
-  }
 }
 
 .tab-like-radio-group {

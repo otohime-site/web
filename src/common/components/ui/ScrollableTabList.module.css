@@ -17,16 +17,6 @@
     }
   }
 
-  & :global(.react-aria-TabList) {
-    flex: 1;
-    overflow-x: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
   & [data-part="list"] {
     flex: 1;
     overflow-x: scroll;

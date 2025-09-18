@@ -149,11 +149,11 @@ a.btn {
 }
 
 [data-scope="tabs"] {
-  [data-part="trigger"] {
+  &[data-part="trigger"] {
     /* Clear open-props button style */
     all: unset;
   }
-  [data-part="list"] {
+  &[data-part="list"] {
     display: flex;
     gap: 1rem;
     [data-part="trigger"] {
@@ -161,7 +161,7 @@ a.btn {
     }
   }
 
-  [data-part="trigger"] {
+  &[data-part="trigger"] {
     flex-shrink: 0;
     padding: var(--size-2);
     cursor: pointer;
@@ -170,6 +170,10 @@ a.btn {
     &[data-selected] {
       --border-color: var(--violet-6);
     }
+  }
+  &[data-part="content"] {
+    /* override tabindex in Open props normalize */
+    cursor: default;
   }
 }
 
@@ -201,8 +205,7 @@ a.btn {
 
 /* Reset Open Props nornamlize styles */
 a:where([data-scope="listbox"]),
-a:where(.react-aria-ListBoxItem),
-a:where(.react-aria-Tab) {
+a:where(.react-aria-ListBoxItem) {
   display: block;
   color: inherit;
   text-decoration: inherit;
@@ -317,28 +320,4 @@ button[data-focused] {
       transform: translateX(100%);
     }
   }
-}
-
-.react-aria-TabList {
-  display: flex;
-  gap: 1rem;
-  .react-aria-Tab {
-    border-bottom: 3px solid var(--border-color);
-  }
-}
-
-.react-aria-Tab {
-  flex-shrink: 0;
-  padding: var(--size-2);
-  cursor: pointer;
-  outline: none;
-  --border-color: transparent;
-  &[data-selected] {
-    --border-color: var(--violet-6);
-  }
-}
-
-.react-aria-TabPanel {
-  /* override tabindex in Open props normalize */
-  cursor: default;
 }
