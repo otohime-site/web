@@ -46,7 +46,7 @@ If you have the server Docker Compose Project running at the same machine, the w
 
 - [urql](https://github.com/urql-graphql/urql) and [gql.tada](https://gql-tada.0no.co/) for GraphQL
   The gql.tada TypeScript generation should work when server Docker Compose is running.
-- [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html) - Providing Headless React Components
+- [Ark UI](https://ark-ui.com/) - Providing Headless React Components
 - [Open Props](https://open-props.style/) for CSS Styling
 
 ##### Bookmarklet
