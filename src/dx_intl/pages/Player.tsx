@@ -1,3 +1,4 @@
+import { Popover, usePopover } from "@ark-ui/react/popover"
 import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import clsx from "clsx"
@@ -6,13 +7,12 @@ import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
 import {
   Button,
-  Dialog,
   Header,
   Label,
   ListBox,
   ListBoxItem,
   ListBoxSection,
-  Popover,
+  Popover as RACPopover,
   Radio,
   RadioGroup,
   Select,
@@ -140,6 +140,17 @@ const Player = ({ params }: { params: Params }) => {
   const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
     null,
   )
+  const popover = usePopover({
+    autoFocus: true,
+    positioning: {
+      placement: "bottom-start",
+      getAnchorRect: () => {
+        console.log("getAnchorRect")
+        const ref = notePopupRef.current
+        return ref ? ref.getBoundingClientRect() : null
+      },
+    },
+  })
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!recordResult.data) {
@@ -300,6 +311,8 @@ const Player = ({ params }: { params: Params }) => {
   ) => {
     notePopupRef.current = event.currentTarget
     setNotePopupEntry(entry)
+    popover.reposition()
+    popover.setOpen(true)
   }
 
   if (recordResult.error != null || songsResult.error != null) {
@@ -375,7 +388,7 @@ const Player = ({ params }: { params: Params }) => {
                   <IconArrowDropDown />
                 </span>
               </Button>
-              <Popover>
+              <RACPopover>
                 <ListBox>
                   <ListBoxSection>
                     <Header>譜面</Header>
@@ -397,7 +410,7 @@ const Player = ({ params }: { params: Params }) => {
                     <ListBoxItem id="ap_rate">AP Rate</ListBoxItem>
                   </ListBoxSection>
                 </ListBox>
-              </Popover>
+              </RACPopover>
             </Select>
             <Toggle.Root
               pressed={orderingDesc}
@@ -533,20 +546,20 @@ const Player = ({ params }: { params: Params }) => {
           </Tabs.Content>
         </Tabs.Root>
       </div>
-      <Popover
-        triggerRef={notePopupRef}
-        isOpen={!!notePopupEntry}
-        onOpenChange={(o) => {
-          if (!o) {
-            notePopupRef.current = null
-            setNotePopupEntry(null)
-          }
-        }}
-      >
-        <Dialog>
-          {notePopupEntry ? <NotePopup entry={notePopupEntry} /> : null}
-        </Dialog>
-      </Popover>
+      <Popover.RootProvider value={popover}>
+        <Popover.Positioner>
+          <Popover.Content>
+            <Popover.Content>
+              <Popover.Arrow>
+                <Popover.ArrowTip />
+              </Popover.Arrow>
+              <div>
+                {notePopupEntry ? <NotePopup entry={notePopupEntry} /> : null}
+              </div>
+            </Popover.Content>
+          </Popover.Content>
+        </Popover.Positioner>
+      </Popover.RootProvider>
     </>
   )
 }
