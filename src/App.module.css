@@ -10,7 +10,10 @@
   background: var(--stone-0);
   [data-scope="combobox"][data-part="root"] {
     padding-left: var(--size-4);
-    width: 28rem;
+  }
+  [data-scope="combobox"][data-part="positioner"] {
+    width: var(--available-width);
+    max-width: 28rem;
   }
 
   .space {
