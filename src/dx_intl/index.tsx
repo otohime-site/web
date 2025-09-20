@@ -1,9 +1,11 @@
+import { lazy } from "react"
 import { Route, Switch } from "wouter"
 import Overview from "./pages/Overview"
 import Player from "./pages/Player"
 import PlayerForm from "./pages/PlayerForm"
-import PlayerHistory from "./pages/PlayerHistory"
 import SongStats from "./pages/SongStats"
+
+const PlayerHistory = lazy(async () => await import("./pages/PlayerHistory"))
 
 const DxIntl = () => (
   <>
