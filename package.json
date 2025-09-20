@@ -28,7 +28,6 @@
     "open-props": "^1.6.12",
     "papaparse": "^5.3.1",
     "react": "^19.0.0",
-    "react-aria-components": "^1.7.0",
     "react-dom": "^19.0.0",
     "react-titled": "^2.1.0",
     "unplugin-icons": "^22.0.0",
