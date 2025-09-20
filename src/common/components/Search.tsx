@@ -109,6 +109,9 @@ const Search = () => {
         onInputValueChange={(e) => {
           setKeyword(e.inputValue)
         }}
+        positioning={{
+          sameWidth: false,
+        }}
       >
         <Combobox.Control>
           <Combobox.Input placeholder="搜尋玩家暱稱..."></Combobox.Input>
