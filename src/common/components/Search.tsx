@@ -1,16 +1,8 @@
+import { Combobox, createListCollection } from "@ark-ui/react/combobox"
+import { Field } from "@ark-ui/react/field"
 import { useState } from "react"
-import {
-  Collection,
-  ComboBox,
-  FieldError,
-  Header,
-  Input,
-  ListBox,
-  ListBoxItem,
-  ListBoxSection,
-  Popover,
-} from "react-aria-components"
 import { useQuery } from "urql"
+import { Link } from "wouter"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import { useUser } from "../contexts"
@@ -94,59 +86,56 @@ const Search = () => {
     user == null
       ? keywordAnonResult.data?.other_players
       : keywordUserResult.data?.other_players
-  const options =
-    keyword.length === 0 ||
-    (userPlayers ?? []).length + (otherPlayers ?? []).length === 0
-      ? []
-      : [
-          {
-            name: "你的成績單",
-            id: "user",
-            children: readFragment(dxIntlPlayersFields, userPlayers ?? []),
-          },
 
-          {
-            name: "大家的成績單",
-            id: "others",
-            children: readFragment(dxIntlPlayersFields, otherPlayers ?? []),
-          },
-        ]
+  const collection = createListCollection({
+    items: [
+      ...readFragment(dxIntlPlayersFields, userPlayers ?? []).map((p) => ({
+        ...p,
+        type: "user",
+      })),
+      ...readFragment(dxIntlPlayersFields, otherPlayers ?? []).map((p) => ({
+        ...p,
+        type: "others",
+      })),
+    ],
+    itemToValue: (p) => p.nickname,
+    groupBy: (p) => p.type,
+  })
 
   return (
-    <ComboBox
-      items={options}
-      inputValue={keyword}
-      onInputChange={setKeyword}
-      allowsCustomValue
-    >
-      <div>
-        <Input placeholder="搜尋玩家暱稱..." />
-      </div>
-      <FieldError>{hasError ? "搜尋發生錯誤。" : undefined}</FieldError>
-      <Popover>
-        <ListBox>
-          {(section: (typeof options)[number]) => (
-            <ListBoxSection id={section.id}>
-              {section.children.length > 0 ? (
-                <>
-                  <Header>{section.name}</Header>
-                  <Collection items={section.children}>
-                    {(item) => (
-                      <ListBoxItem
-                        id={item.id}
-                        href={`/dxi/p/${item.nickname}`}
-                      >
-                        <PlayerItem player={item} />
-                      </ListBoxItem>
-                    )}
-                  </Collection>
-                </>
-              ) : null}
-            </ListBoxSection>
-          )}
-        </ListBox>
-      </Popover>
-    </ComboBox>
+    <Field.Root invalid={hasError}>
+      <Combobox.Root
+        collection={collection}
+        onInputValueChange={(e) => {
+          setKeyword(e.inputValue)
+        }}
+      >
+        <Combobox.Control>
+          <Combobox.Input placeholder="搜尋玩家暱稱..."></Combobox.Input>
+        </Combobox.Control>
+        <Combobox.Positioner>
+          <Combobox.Content>
+            {collection.group().map(([type, group]) => (
+              <Combobox.ItemGroup key={type}>
+                <Combobox.ItemGroupLabel>
+                  {type == "user" ? "你的成績單" : "大家的成績單"}
+                </Combobox.ItemGroupLabel>
+                {group.map((item) => (
+                  <Combobox.Item key={item.nickname} item={item} asChild>
+                    <Link href={`/dxi/p/${item.nickname}`}>
+                      <PlayerItem player={item} />
+                    </Link>
+                  </Combobox.Item>
+                ))}
+              </Combobox.ItemGroup>
+            ))}
+          </Combobox.Content>
+        </Combobox.Positioner>
+      </Combobox.Root>
+      <Field.ErrorText>
+        {hasError ? "搜尋發生錯誤。" : undefined}
+      </Field.ErrorText>
+    </Field.Root>
   )
 }
 

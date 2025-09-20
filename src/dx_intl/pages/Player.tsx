@@ -1,27 +1,15 @@
 import { Popover, usePopover } from "@ark-ui/react/popover"
 import { RadioGroup } from "@ark-ui/react/radio-group"
+import { Select, createListCollection } from "@ark-ui/react/select"
 import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
-import {
-  Button,
-  Header,
-  Label,
-  ListBox,
-  ListBoxItem,
-  ListBoxSection,
-  Popover as RACPopover,
-  Select,
-  SelectValue,
-  Toolbar,
-} from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
-import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconHistory from "~icons/mdi/history"
@@ -34,6 +22,7 @@ import { LinkButton } from "../../common/components/ui/Button"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 
+import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
@@ -332,6 +321,21 @@ const Player = ({ params }: { params: Params }) => {
       <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
     )
   }
+  const collection = createListCollection({
+    items: [
+      { group: "譜面", value: "index", label: "預設" },
+      { group: "譜面", value: "level", label: "樂曲等級" },
+      { group: "譜面", value: "internal_lv", label: "譜面定數" },
+      { group: "成績單", value: "score", label: "成績" },
+      { group: "成績單", value: "rating", label: "Rating 分數" },
+      { group: "成績單", value: "combo_flag", label: "Combo 標記" },
+      { group: "成績單", value: "sync_flag", label: "Sync 標記" },
+      { group: "玩家統計", value: "sss_rate", label: "SSS Rate" },
+      { group: "玩家統計", value: "fc_rate", label: "FC Rate" },
+      { group: "玩家統計", value: "ap_rate", label: "AP Rate" },
+    ],
+    groupBy: (item) => item.group,
+  })
 
   return (
     <>
@@ -350,7 +354,7 @@ const Player = ({ params }: { params: Params }) => {
             updatedAt={player.updated_at}
             isPrivate={player.private}
           />
-          <Toolbar aria-label="成績單選項" className={layoutClasses.toolbar}>
+          <div aria-label="成績單選項" className={layoutClasses.toolbar}>
             {editableResult.error == null &&
             (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
               <LinkButton href={`~/dxi/p/${params.nickname}/edit`}>
@@ -363,13 +367,15 @@ const Player = ({ params }: { params: Params }) => {
             <button onClick={downloadCSV}>
               <IconFileDownload /> 下載 CSV
             </button>
-          </Toolbar>
+          </div>
           <div className={layoutClasses.line}>
-            <Select
-              selectedKey={ordering}
-              onSelectionChange={(selected) =>
+            <SelectContainer
+              label="排序"
+              collection={collection}
+              value={[ordering]}
+              onValueChange={(e) =>
                 setOrdering(
-                  selected as
+                  e.items[0].value as
                     | "index"
                     | "level"
                     | "internal_lv"
@@ -380,37 +386,17 @@ const Player = ({ params }: { params: Params }) => {
                 )
               }
             >
-              <Label>排序</Label>
-              <Button style={{ width: "10em" }}>
-                <SelectValue />
-                <span aria-hidden="true">
-                  <IconArrowDropDown />
-                </span>
-              </Button>
-              <RACPopover>
-                <ListBox>
-                  <ListBoxSection>
-                    <Header>譜面</Header>
-                    <ListBoxItem id="index">預設</ListBoxItem>
-                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                    <ListBoxItem id="internal_lv">譜面定數</ListBoxItem>
-                  </ListBoxSection>
-                  <ListBoxSection>
-                    <Header>成績單</Header>
-                    <ListBoxItem id="score">成績</ListBoxItem>
-                    <ListBoxItem id="rating">Rating 分數</ListBoxItem>
-                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                  </ListBoxSection>
-                  <ListBoxSection>
-                    <Header>玩家統計</Header>
-                    <ListBoxItem id="sss_rate">SSS Rate</ListBoxItem>
-                    <ListBoxItem id="fc_rate">FC Rate</ListBoxItem>
-                    <ListBoxItem id="ap_rate">AP Rate</ListBoxItem>
-                  </ListBoxSection>
-                </ListBox>
-              </RACPopover>
-            </Select>
+              {collection.group().map(([type, group]) => (
+                <Select.ItemGroup key={type}>
+                  <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
+                  {group.map((item) => (
+                    <Select.Item key={item.value} item={item}>
+                      <Select.ItemText>{item.label}</Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </Select.ItemGroup>
+              ))}
+            </SelectContainer>
             <Toggle.Root
               pressed={orderingDesc}
               onPressedChange={setOrderingDesc}

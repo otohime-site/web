@@ -123,13 +123,31 @@ a.btn {
   }
 }
 
-[data-scope="listbox"] {
-  &[data-part="root"] {
+[data-scope="listbox"],
+[data-scope="select"],
+[data-scope="combobox"] {
+  &[data-part="positioner"] {
+    /* Although listbox should not have this... */
+    display: block;
+    background: var(--surface-1);
+    width: var(--reference-width);
+    max-height: var(--available-height);
+    overflow: auto;
+    box-shadow: var(--shadow-3);
+  }
+  &[data-part="item-group"]:not(:first-child) {
+    margin-top: var(--size-2);
+  }
+
+  &[data-part="item-group-label"] {
+    margin: var(--size-2);
+    font-weight: bold;
+    color: var(--text-2);
+  }
+  &[data-part="content"] {
     padding: var(--size-1) 0;
     border-radius: var(--radius-2);
     border: var(--border-size-1) solid var(--surface-4);
-  }
-  &[data-part="content"] {
     outline: none;
   }
   &[data-part="item"] {
@@ -148,64 +166,14 @@ a.btn {
   }
 }
 
-[data-scope="tabs"] {
-  &[data-part="trigger"] {
-    /* Clear open-props button style */
-    all: unset;
-  }
-  &[data-part="list"] {
-    display: flex;
-    gap: 1rem;
-    [data-part="trigger"] {
-      border-bottom: 3px solid var(--border-color);
-    }
-  }
-
-  &[data-part="trigger"] {
-    flex-shrink: 0;
-    padding: var(--size-2);
-    cursor: pointer;
-    outline: none;
-    --border-color: transparent;
-    &[data-selected] {
-      --border-color: var(--violet-6);
-    }
-  }
-  &[data-part="content"] {
-    /* override tabindex in Open props normalize */
-    cursor: default;
-  }
-}
-
-.react-aria-Section:not(:first-child) {
-  margin-top: var(--size-2);
-}
-
-.react-aria-Header {
-  margin: var(--size-2);
-  font-weight: bold;
-  color: var(--text-2);
-}
-
-.react-aria-ListBoxItem {
-  outline: none;
-  margin: var(--size-1) var(--size-2);
-  padding: var(--size-2);
-  border-radius: var(--radius-2);
-  color: var(--text-1);
-
-  &[data-hovered],
-  &[data-focused] {
-    background-color: var(--surface-2);
-  }
-  &[data-selected] {
-    background-color: var(--surface-3);
-  }
+[data-scope="select"][data-part="trigger"] {
+  text-align: left;
 }
 
 /* Reset Open Props nornamlize styles */
 a:where([data-scope="listbox"]),
-a:where(.react-aria-ListBoxItem) {
+a:where([data-scope="combobox"]),
+a:where([data-scope="select"]) {
   display: block;
   color: inherit;
   text-decoration: inherit;
@@ -214,10 +182,6 @@ a:where(.react-aria-ListBoxItem) {
   margin-inline: 0;
   padding-block: 0;
   padding-inline: 0;
-
-  &[href]:visited .react-aria-ListBoxItem {
-    text-decoration: inherit;
-  }
 }
 
 [data-scope="radio-group"] {
@@ -247,30 +211,8 @@ a:where(.react-aria-ListBoxItem) {
     }
   }
 }
-
-.react-aria-Popover {
-  min-width: var(--trigger-width);
-  .react-aria-ListBox {
-    display: block;
-    background: var(--surface-1);
-    width: unset;
-    max-height: inherit;
-    min-height: unset;
-    overflow: auto;
-    box-shadow: var(--shadow-3);
-  }
-}
-
 button[data-focused] {
   outline: none;
-}
-
-.react-aria-Select {
-  .react-aria-Button {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
 }
 
 [data-scope="switch"] {
@@ -305,5 +247,34 @@ button[data-focused] {
       background-color: var(--violet-1);
       transform: translateX(100%);
     }
+  }
+}
+
+[data-scope="tabs"] {
+  &[data-part="trigger"] {
+    /* Clear open-props button style */
+    all: unset;
+  }
+  &[data-part="list"] {
+    display: flex;
+    gap: 1rem;
+    [data-part="trigger"] {
+      border-bottom: 3px solid var(--border-color);
+    }
+  }
+
+  &[data-part="trigger"] {
+    flex-shrink: 0;
+    padding: var(--size-2);
+    cursor: pointer;
+    outline: none;
+    --border-color: transparent;
+    &[data-selected] {
+      --border-color: var(--violet-6);
+    }
+  }
+  &[data-part="content"] {
+    /* override tabindex in Open props normalize */
+    cursor: default;
   }
 }

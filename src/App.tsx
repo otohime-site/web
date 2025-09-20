@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react"
-import { RouterProvider } from "react-aria-components"
-import { Link, Route, Router, useLocation } from "wouter"
+import { Link, Route, Router } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
@@ -16,7 +15,6 @@ const DxIntl = lazy(async () => await import("./dx_intl/index"))
 const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
-  const [, navigate] = useLocation()
   return (
     <>
       <div className={classes.top}>
@@ -30,19 +28,17 @@ const App = () => {
       <div className={classes.container}>
         <AuthMigrate />
         <Suspense fallback={<></>}>
-          <RouterProvider navigate={navigate}>
-            <Router>
-              <Route path="/" component={Home} />
-              <Route path="/transfer" component={Transfer} />
-              <Route path="/forget" component={Forget} />
-              <Route path="/dxi" nest>
-                <DxIntl />
-              </Route>
-              <Route path="/fin" nest>
-                <Finale />
-              </Route>
-            </Router>
-          </RouterProvider>
+          <Router>
+            <Route path="/" component={Home} />
+            <Route path="/transfer" component={Transfer} />
+            <Route path="/forget" component={Forget} />
+            <Route path="/dxi" nest>
+              <DxIntl />
+            </Route>
+            <Route path="/fin" nest>
+              <Finale />
+            </Route>
+          </Router>
         </Suspense>
       </div>
       <div className={classes.footer}>

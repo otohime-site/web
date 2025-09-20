@@ -8,8 +8,9 @@
   position: sticky;
   top: 0;
   background: var(--stone-0);
-  :global(.react-aria-ComboBox) {
+  [data-scope="combobox"][data-part="root"] {
     padding-left: var(--size-4);
+    width: 28rem;
   }
 
   .space {

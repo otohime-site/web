@@ -1,20 +1,9 @@
-import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
-
+import { createListCollection } from "@ark-ui/react/collection"
 import { RadioGroup } from "@ark-ui/react/radio-group"
+import { Select } from "@ark-ui/react/select"
 import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import { useMemo, useState } from "react"
-import {
-  Button,
-  Header,
-  Label,
-  ListBox,
-  ListBoxItem,
-  ListBoxSection,
-  Popover,
-  Select,
-  SelectValue,
-} from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import { Params } from "wouter"
@@ -26,6 +15,7 @@ import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
@@ -198,6 +188,17 @@ const Player = ({ params }: { params: Params }) => {
       <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
     )
   }
+  const collection = createListCollection({
+    items: [
+      { group: "譜面", value: "index", label: "預設" },
+      { group: "譜面", value: "level", label: "樂曲等級" },
+      { group: "成績單", value: "score", label: "成績" },
+      { group: "成績單", value: "combo_flag", label: "Combo 標記" },
+      { group: "成績單", value: "sync_flag", label: "Sync 標記" },
+    ],
+    groupBy: (item) => item.group,
+  })
+
   return (
     <>
       <Titled
@@ -220,11 +221,13 @@ const Player = ({ params }: { params: Params }) => {
             </button>
           ) : null}
           <div className={layoutClasses.line}>
-            <Select
-              selectedKey={ordering}
-              onSelectionChange={(selected) =>
+            <SelectContainer
+              label="排序"
+              collection={collection}
+              value={[ordering]}
+              onValueChange={(e) =>
                 setOrdering(
-                  selected as
+                  e.items[0].value as
                     | "index"
                     | "level"
                     | "score"
@@ -233,29 +236,17 @@ const Player = ({ params }: { params: Params }) => {
                 )
               }
             >
-              <Label>排序</Label>
-              <Button style={{ width: "10em" }}>
-                <SelectValue />
-                <span aria-hidden="true">
-                  <IconArrowDropDown />
-                </span>
-              </Button>
-              <Popover>
-                <ListBox>
-                  <ListBoxSection>
-                    <Header>譜面</Header>
-                    <ListBoxItem id="index">預設</ListBoxItem>
-                    <ListBoxItem id="level">樂曲等級</ListBoxItem>
-                  </ListBoxSection>
-                  <ListBoxSection>
-                    <Header>成績單</Header>
-                    <ListBoxItem id="score">成績</ListBoxItem>
-                    <ListBoxItem id="combo_flag">Combo 標記</ListBoxItem>
-                    <ListBoxItem id="sync_flag">Sync 標記</ListBoxItem>
-                  </ListBoxSection>
-                </ListBox>
-              </Popover>
-            </Select>
+              {collection.group().map(([type, group]) => (
+                <Select.ItemGroup key={type}>
+                  <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
+                  {group.map((item) => (
+                    <Select.Item key={item.value} item={item}>
+                      <Select.ItemText>{item.label}</Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </Select.ItemGroup>
+              ))}
+            </SelectContainer>
             <Toggle.Root
               pressed={orderingDesc}
               onPressedChange={setOrderingDesc}
