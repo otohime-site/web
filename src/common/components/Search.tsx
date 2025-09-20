@@ -122,7 +122,7 @@ const Search = () => {
                 </Combobox.ItemGroupLabel>
                 {group.map((item) => (
                   <Combobox.Item key={item.nickname} item={item} asChild>
-                    <Link href={`/dxi/p/${item.nickname}`}>
+                    <Link href={`~/dxi/p/${item.nickname}`}>
                       <PlayerItem player={item} />
                     </Link>
                   </Combobox.Item>
