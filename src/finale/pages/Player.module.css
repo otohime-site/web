@@ -1,41 +1,41 @@
 .radio-difficulty-0 {
   color: var(--blue-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     color: var(--blue-10);
     background: var(--blue-1);
   }
 }
 .radio-difficulty-1 {
   color: var(--green-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     color: var(--green-10);
     background: var(--green-1);
   }
 }
 .radio-difficulty-2 {
   color: var(--orange-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     color: var(--orange-10);
     background: var(--orange-1);
   }
 }
 .radio-difficulty-3 {
   color: var(--red-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     color: var(--red-10);
     background: var(--red-1);
   }
 }
 .radio-difficulty-4 {
   color: var(--violet-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     color: var(--violet-10);
     background: var(--violet-1);
   }
 }
 .radio-difficulty-5 {
   color: var(--purple-8);
-  &[data-selected] {
+  &[data-state="checked"] {
     background: var(--purple-1);
   }
 }

@@ -4,15 +4,15 @@
 }
 
 .radio-group {
-  label:global(.react-aria-Radio) {
+  [data-part="item"] {
     padding: var(--size-2) var(--size-5);
     border: 1px solid var(--surface-3);
     border-radius: var(--radius-2);
-    &[data-selected] {
+    &[data-state="checked"] {
       background: var(--surface-2);
       border-color: var(--violet-6);
     }
-    div {
+    [data-part="item-text"] {
       margin-left: var(--size-3);
       display: flex;
       flex-direction: column;

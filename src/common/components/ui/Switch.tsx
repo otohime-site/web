@@ -1,4 +1,4 @@
-import { Switch as ArkSwitch } from "@ark-ui/react"
+import { Switch as ArkSwitch } from "@ark-ui/react/switch"
 import { forwardRef } from "react"
 
 interface SwitchProps extends ArkSwitch.LabelBaseProps, ArkSwitch.RootProps {}

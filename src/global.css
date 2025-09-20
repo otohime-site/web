@@ -220,20 +220,19 @@ a:where(.react-aria-ListBoxItem) {
   }
 }
 
-.react-aria-RadioGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--size-2);
-}
-
-.react-aria-Radio {
-  display: flex;
-  align-items: center;
-  gap: var(--size-1);
-  cursor: pointer;
-
-  &:before {
-    content: "";
+[data-scope="radio-group"] {
+  &[data-part="root"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+  }
+  &[data-part="item"] {
+    display: flex;
+    align-items: center;
+    gap: var(--size-1);
+    cursor: pointer;
+  }
+  &[data-part="item-control"] {
     display: block;
     width: 1.286rem;
     height: 1.286rem;
@@ -241,23 +240,11 @@ a:where(.react-aria-ListBoxItem) {
     padding: 0 0.286rem;
     border-radius: var(--radius-round);
     transition: all 200ms;
-  }
-
-  &[data-pressed]:before {
-    border-color: var(--violet-8);
-  }
-
-  &[data-selected] {
-    &:before {
+    &[data-state="checked"] {
       border-color: var(--violet-9);
       border-width: 0.429rem;
       padding: 0;
     }
-  }
-  &[data-focus-visible]:before {
-    box-shadow:
-      0 0 0 2px var(--violet-3),
-      0 0 0 4px var(--violet-8);
   }
 }
 

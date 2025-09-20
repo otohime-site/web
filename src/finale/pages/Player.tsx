@@ -1,8 +1,8 @@
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 
+import { RadioGroup } from "@ark-ui/react/radio-group"
 import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
-import clsx from "clsx"
 import { useMemo, useState } from "react"
 import {
   Button,
@@ -12,8 +12,6 @@ import {
   ListBoxItem,
   ListBoxSection,
   Popover,
-  Radio,
-  RadioGroup,
   Select,
   SelectValue,
 } from "react-aria-components"
@@ -26,6 +24,7 @@ import IconArrowUp from "~icons/mdi/arrow-up"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
+import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 import { Switch } from "../../common/components/ui/Switch"
 import { useUser } from "../../common/contexts"
@@ -310,27 +309,25 @@ const Player = ({ params }: { params: Params }) => {
                 </ScrollableTabList>
               </div>
               {grouping === "category" || grouping === "version" ? (
-                <RadioGroup
-                  orientation="horizontal"
+                <RadioGroup.Root
                   value={difficulty.toString()}
-                  onChange={(v) => {
-                    if (v) setDifficulty(parseInt(v, 10))
+                  onValueChange={(v) => {
+                    if (v.value) setDifficulty(parseInt(v.value, 10))
                   }}
                   className={layoutClasses["tab-like-radio-group"]}
                 >
                   {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                    <Radio
+                    <RadioGroupItem
                       key={i}
                       value={i.toString()}
-                      className={clsx(
-                        layoutClasses["tab-like-radio"],
-                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`],
-                      )}
+                      className={
+                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                      }
                     >
                       {d}
-                    </Radio>
+                    </RadioGroupItem>
                   ))}
-                </RadioGroup>
+                </RadioGroup.Root>
               ) : (
                 <></>
               )}

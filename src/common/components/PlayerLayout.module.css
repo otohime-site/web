@@ -61,18 +61,18 @@
   }
 }
 
-.tab-like-radio-group {
+.tab-like-radio-group[data-scope="radio-group"][data-part="root"] {
   display: flex;
   flex-direction: row;
   border-radius: var(--radius-3);
   gap: var(--size-3);
 
-  & .tab-like-radio {
-    padding: var(--size-2);
-    cursor: pointer;
-    flex: 1;
+  & [data-part="item-control"] {
+    display: none;
   }
-  & .tab-like-radio {
+  & [data-part="item"] {
+    padding: var(--size-2);
+    flex: 1;
     text-transform: uppercase;
   }
 }

@@ -2,21 +2,20 @@ import IconArrowBack from "~icons/mdi/arrow-back"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
+import { RadioGroup } from "@ark-ui/react/radio-group"
 import {
   FieldError,
   Form,
   Input,
   Label,
-  Radio,
-  RadioGroup,
   TextField,
 } from "react-aria-components"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
+import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { useUser } from "../../common/contexts"
 
-import clsx from "clsx"
 import { useState } from "react"
 import { Params, useLocation } from "wouter"
 import { graphql } from "../../graphql"
@@ -170,18 +169,16 @@ const PlayerForm = ({ params }: { params: Params }) => {
           <FieldError />
         </TextField>
         隱私設定
-        <RadioGroup
+        <RadioGroup.Root
           name="private"
           defaultValue={
             playerResult.data?.dx_intl_players[0]?.private
               ? "private"
               : "public"
           }
-          className={({ defaultClassName }) =>
-            clsx(defaultClassName, classes["radio-group"])
-          }
+          className={classes["radio-group"]}
         >
-          <Radio value="public">
+          <RadioGroupItem value="public" asChild>
             <div>
               <dt>
                 <IconPublic /> 公開
@@ -193,8 +190,8 @@ const PlayerForm = ({ params }: { params: Params }) => {
                 </ul>
               </dd>
             </div>
-          </Radio>
-          <Radio value="private">
+          </RadioGroupItem>
+          <RadioGroupItem value="private" asChild>
             <div>
               <dt>
                 <IconLock />
@@ -207,8 +204,8 @@ const PlayerForm = ({ params }: { params: Params }) => {
                 </ul>
               </dd>
             </div>
-          </Radio>
-        </RadioGroup>
+          </RadioGroupItem>
+        </RadioGroup.Root>
         <div className={classes.notes}>
           <p>
             Otohime 會記錄的東西如下，也建議您詳閱我們的
