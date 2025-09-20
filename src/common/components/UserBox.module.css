@@ -1,4 +1,4 @@
-.dialog {
+.popover {
   padding: var(--size-5);
   border: 1px solid var(--stone-5);
   border-radius: var(--radius-2);

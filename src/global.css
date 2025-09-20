@@ -286,36 +286,35 @@ button[data-focused] {
   }
 }
 
-.react-aria-Switch {
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
+[data-scope="switch"] {
+  &[data-part="root"] {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+  }
 
-  .indicator {
+  &[data-part="control"] {
     width: 2em;
     height: 1.2em;
     border: var(--border-size-2) solid var(--stone-3);
     background: var(--stone-4);
     border-radius: 1.2em;
     transition: all 200ms;
-
-    &:before {
-      content: "";
-      display: block;
-      margin: 0.1em;
-      width: 0.8em;
-      height: 0.8em;
-      background-color: var(--stone-1);
-      border-radius: 0.4em;
-      transition: all 200ms;
+    &[data-state="checked"] {
+      border-color: var(--violet-6);
+      background: var(--violet-8);
     }
   }
-  &[data-pressed] .indicator,
-  &[data-selected] .indicator {
-    border-color: var(--violet-6);
-    background: var(--violet-8);
-
-    &:before {
+  &[data-part="thumb"] {
+    content: "";
+    display: block;
+    margin: 0.1em;
+    width: 0.8em;
+    height: 0.8em;
+    background-color: var(--stone-1);
+    border-radius: 0.4em;
+    transition: all 200ms;
+    &[data-state="checked"] {
       background-color: var(--violet-1);
       transform: translateX(100%);
     }

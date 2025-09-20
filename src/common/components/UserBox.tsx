@@ -1,12 +1,11 @@
-import clsx from "clsx"
+import { Popover } from "@ark-ui/react/popover"
 import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   signOut,
 } from "firebase/auth"
-import { Fragment, useCallback } from "react"
-import { Button, Dialog, DialogTrigger, Popover } from "react-aria-components"
+import { useCallback } from "react"
 import IconGoogle from "~icons/mdi/google"
 import { firebaseAuth, useUser } from "../contexts"
 
@@ -54,38 +53,36 @@ const UserBoxComponent = () => {
     )
   }
   return (
-    <Fragment>
-      <DialogTrigger>
-        <Button>登入</Button>
-        <Popover>
-          <Dialog className={clsx("react-aria-Dialog", classes["dialog"])}>
+    <Popover.Root>
+      <Popover.Trigger>登入</Popover.Trigger>
+      <Popover.Positioner>
+        <Popover.Content className={classes["popover"]}>
+          <p>
+            <button onClick={handleLoginGoogle}>
+              <IconGoogle /> 以 Google 帳號登入
+            </button>
+          </p>
+          <Alert severity="warning">
+            <p>Facebook 登入已於 7/15 停止運作。</p>
             <p>
-              <button onClick={handleLoginGoogle}>
-                <IconGoogle /> 以 Google 帳號登入
-              </button>
+              如果您還沒重新綁定，您可以登入後透過既有的 Bookmarklet
+              連結進行成績單帳號轉移。
             </p>
-            <Alert severity="warning">
-              <p>Facebook 登入已於 7/15 停止運作。</p>
-              <p>
-                如果您還沒重新綁定，您可以登入後透過既有的 Bookmarklet
-                連結進行成績單帳號轉移。
-              </p>
-              <p>
-                請參考{" "}
-                <a
-                  href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  隱私權與資料使用政策
-                </a>
-                了解個人資料的取回、刪除等詳情。
-              </p>
-            </Alert>
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
-    </Fragment>
+            <p>
+              請參考{" "}
+              <a
+                href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                隱私權與資料使用政策
+              </a>
+              了解個人資料的取回、刪除等詳情。
+            </p>
+          </Alert>
+        </Popover.Content>
+      </Popover.Positioner>
+    </Popover.Root>
   )
 }
 
