@@ -15,7 +15,6 @@ import {
   RadioGroup,
   Select,
   SelectValue,
-  Switch,
   ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
@@ -28,6 +27,7 @@ import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+import { Switch } from "../../common/components/ui/Switch"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { levels } from "../../dx_intl/models/constants"
@@ -262,8 +262,13 @@ const Player = ({ params }: { params: Params }) => {
                 isSelected ? <IconArrowDown /> : <IconArrowUp />
               }
             </ToggleButton>
-            <Switch isSelected={includeInactive} onChange={setIncludeInactive}>
-              <div className="indicator" /> 顯示刪除曲
+            <Switch
+              checked={includeInactive}
+              onCheckedChange={(e) => {
+                setIncludeInactive(e.checked)
+              }}
+            >
+              顯示刪除曲
             </Switch>
           </div>
         </div>

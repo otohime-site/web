@@ -16,7 +16,6 @@ import {
   RadioGroup,
   Select,
   SelectValue,
-  Switch,
   ToggleButton,
   Toolbar,
 } from "react-aria-components"
@@ -31,6 +30,8 @@ import IconHistory from "~icons/mdi/history"
 import IconPencil from "~icons/mdi/pencil"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
+import { Switch } from "../../common/components/ui/Switch"
+
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
 
@@ -403,8 +404,13 @@ const Player = ({ params }: { params: Params }) => {
                 isSelected ? <IconArrowDown /> : <IconArrowUp />
               }
             </ToggleButton>
-            <Switch isSelected={includeInactive} onChange={setIncludeInactive}>
-              <div className="indicator" /> 顯示刪除曲
+            <Switch
+              checked={includeInactive}
+              onCheckedChange={(e) => {
+                setIncludeInactive(e.checked)
+              }}
+            >
+              顯示刪除曲
             </Switch>
           </div>
           <div className={classes["score-stats-block"]}>
@@ -415,8 +421,13 @@ const Player = ({ params }: { params: Params }) => {
                   : "全曲"}{" "}
                 ({scoreStatsTargets.length})
               </strong>
-              <Switch isSelected={statFolder} onChange={setStatFolder}>
-                <div className="indicator" /> 限資料夾
+              <Switch
+                checked={statFolder}
+                onCheckedChange={(e) => {
+                  setStatFolder(e.checked)
+                }}
+              >
+                限資料夾
               </Switch>
             </div>
             <ul>
