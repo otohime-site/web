@@ -1,4 +1,5 @@
 import { Tabs } from "@ark-ui/react/tabs"
+import { Toggle } from "@ark-ui/react/toggle"
 import clsx from "clsx"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
@@ -16,7 +17,6 @@ import {
   RadioGroup,
   Select,
   SelectValue,
-  ToggleButton,
   Toolbar,
 } from "react-aria-components"
 import { Titled } from "react-titled"
@@ -399,11 +399,12 @@ const Player = ({ params }: { params: Params }) => {
                 </ListBox>
               </Popover>
             </Select>
-            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
-              {({ isSelected }) =>
-                isSelected ? <IconArrowDown /> : <IconArrowUp />
-              }
-            </ToggleButton>
+            <Toggle.Root
+              pressed={orderingDesc}
+              onPressedChange={setOrderingDesc}
+            >
+              {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
+            </Toggle.Root>
             <Switch
               checked={includeInactive}
               onCheckedChange={(e) => {

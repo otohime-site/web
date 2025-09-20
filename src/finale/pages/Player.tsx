@@ -1,6 +1,7 @@
 import IconArrowDropDown from "~icons/mdi/arrow-drop-down"
 
 import { Tabs } from "@ark-ui/react/tabs"
+import { Toggle } from "@ark-ui/react/toggle"
 import clsx from "clsx"
 import { useMemo, useState } from "react"
 import {
@@ -15,7 +16,6 @@ import {
   RadioGroup,
   Select,
   SelectValue,
-  ToggleButton,
 } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
@@ -257,11 +257,12 @@ const Player = ({ params }: { params: Params }) => {
                 </ListBox>
               </Popover>
             </Select>
-            <ToggleButton isSelected={orderingDesc} onChange={setOrderingDesc}>
-              {({ isSelected }) =>
-                isSelected ? <IconArrowDown /> : <IconArrowUp />
-              }
-            </ToggleButton>
+            <Toggle.Root
+              pressed={orderingDesc}
+              onPressedChange={setOrderingDesc}
+            >
+              {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
+            </Toggle.Root>
             <Switch
               checked={includeInactive}
               onCheckedChange={(e) => {

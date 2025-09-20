@@ -38,7 +38,7 @@
     border-start-end-radius: 0;
     border-end-end-radius: 0;
   }
-  & :global(.react-aria-ToggleButton) {
+  & :global[data-scope="toggle"][data-part="root"] {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
   }
