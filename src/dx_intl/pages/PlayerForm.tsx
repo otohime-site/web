@@ -2,14 +2,8 @@ import IconArrowBack from "~icons/mdi/arrow-back"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 
+import { Field } from "@ark-ui/react/field"
 import { RadioGroup } from "@ark-ui/react/radio-group"
-import {
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "react-aria-components"
 import { useMutation, useQuery } from "urql"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -157,17 +151,17 @@ const PlayerForm = ({ params }: { params: Params }) => {
         )}
         <h4>{params.nickname == null ? "新增成績單" : "編輯成績單"}</h4>
       </div>
-      <Form onSubmit={onSubmit} validationErrors={serverErrors}>
-        <TextField
-          name="nickname"
-          pattern="^[0-9a-z\-_]{2,20}$"
-          isRequired
-          defaultValue={params.nickname ?? ""}
-        >
-          <Label>暱稱（作為網址的一部分）</Label>
-          <Input />
-          <FieldError />
-        </TextField>
+      <form onSubmit={onSubmit}>
+        <Field.Root invalid={serverErrors.nickname != null}>
+          <label>暱稱（作為網址的一部分）</label>
+          <Field.Input
+            name="nickname"
+            pattern="^[0-9a-z\-_]{2,20}$"
+            required
+            defaultValue={params.nickname ?? ""}
+          />
+          <Field.ErrorText>{serverErrors.nickname}</Field.ErrorText>
+        </Field.Root>
         隱私設定
         <RadioGroup.Root
           name="private"
@@ -231,7 +225,7 @@ const PlayerForm = ({ params }: { params: Params }) => {
             <button onClick={handleDeletePlayer}>刪除成績單</button>
           </div>
         )}
-      </Form>
+      </form>
     </main>
   )
 }
