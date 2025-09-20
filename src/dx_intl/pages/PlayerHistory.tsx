@@ -1,13 +1,14 @@
+import { Tabs } from "@ark-ui/react/tabs"
 import { ResponsiveLine } from "@nivo/line"
 import clsx from "clsx"
 import { useMemo } from "react"
-import { Tab, TabPanel, Tabs } from "react-aria-components"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 
+import { navigate } from "wouter/use-browser-location"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
@@ -406,21 +407,20 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <LinkButton href={`~/dxi/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>
-      <Tabs selectedKey={params.hash ?? ""}>
-        <ScrollableTabList
-          items={outerTimelines.timelines.map((time) => ({ time }))}
-        >
-          {({ time }) => (
-            <Tab
-              href={`/dxi/p/${params.nickname}/history/${dateStringToHash(time)}`}
-              key={time}
-              id={dateStringToHash(time)}
-            >
+      <Tabs.Root
+        value={params.hash ?? ""}
+        onValueChange={({ value }) => {
+          navigate(`/dxi/p/${params.nickname}/history/${value}`)
+        }}
+      >
+        <ScrollableTabList>
+          {outerTimelines.timelines.map((time) => (
+            <Tabs.Trigger key={time} value={dateStringToHash(time)}>
               {formatDateTime(new Date(time))}
-            </Tab>
-          )}
+            </Tabs.Trigger>
+          ))}
         </ScrollableTabList>
-        <TabPanel id={params.hash ?? ""}>
+        <Tabs.Content value={params.hash ?? ""}>
           {params.hash == null ? (
             <div>
               請選擇一個時間檢視該時間的歷程。
@@ -456,8 +456,8 @@ const PlayerHistory = ({ params }: { params: Params }) => {
           ) : (
             showTimelineResult(timelineResult.data)
           )}
-        </TabPanel>
-      </Tabs>
+        </Tabs.Content>
+      </Tabs.Root>
     </>
   )
 }
