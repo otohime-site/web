@@ -1,9 +1,10 @@
-import { Tabs } from "@ark-ui/react/tabs"
+import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import { navigate } from "wouter/use-browser-location"
 import { QueryResult } from "../../common/components/QueryResult"
+import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
 import { flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { difficulties } from "../models/constants"
@@ -96,91 +97,81 @@ const SongStats = ({ params }: { params: Params }) => {
               <p>{song.artist}</p>
             </div>
           </section>
-          <Tabs.Root
+          <SegmentGroup.Root
             value={deluxe ? "dx" : "std"}
             onValueChange={({ value }) => {
               navigate(`/dxi/s/${params.songId}/${value}/`)
             }}
           >
-            <Tabs.List>
-              {variants[0] ? (
-                <Tabs.Trigger value="std">STANDARD</Tabs.Trigger>
-              ) : null}
-              {variants[1] ? (
-                <Tabs.Trigger value="dx">DELUXE</Tabs.Trigger>
-              ) : null}
-            </Tabs.List>
-            <Tabs.Content value={deluxe ? "dx" : "std"}>
-              <Tabs.Root
-                value={`${difficulty}`}
-                onValueChange={({ value }) => {
-                  console.log(value)
-                  navigate(
-                    `/dxi/s/${params.songId}/${params.variant ?? ""}/${value}`,
-                  )
-                }}
+            {variants[0] ? (
+              <SegmentGroupItem value="std">STANDARD</SegmentGroupItem>
+            ) : null}
+            {variants[1] ? (
+              <SegmentGroupItem value="dx">DELUXE</SegmentGroupItem>
+            ) : null}
+          </SegmentGroup.Root>
+          <SegmentGroup.Root
+            value={`${difficulty}`}
+            onValueChange={({ value }) => {
+              console.log(value)
+              navigate(
+                `/dxi/s/${params.songId}/${params.variant ?? ""}/${value}`,
+              )
+            }}
+          >
+            {variantEntries.map((entry) => (
+              <SegmentGroupItem
+                value={`${entry.difficulty}`}
+                key={entry.difficulty}
               >
-                <Tabs.List>
-                  {variantEntries.map((entry) => (
-                    <Tabs.Trigger
-                      value={`${entry.difficulty}`}
-                      key={entry.difficulty}
-                    >
-                      {difficulties[entry.difficulty]}{" "}
-                      {entry.internal_lv
-                        ? entry.internal_lv.toFixed(1)
-                        : entry.level}
-                    </Tabs.Trigger>
-                  ))}
-                </Tabs.List>
-                <Tabs.Content value={`${difficulty}`}>
-                  <ul className={classes.rates}>
-                    <li>
-                      <span>Play</span>
-                      <span>{note?.play ?? 0}</span>
-                    </li>
-                    <li>
-                      <span>SSS Rate</span>
-                      <span>{((note?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
-                    </li>
-                    <li>
-                      <span>FC Rate</span>
-                      <span>{((note?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
-                    </li>
-                    <li>
-                      <span>AP Rate</span>
-                      <span>{((note?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>數字來自 Otohime 系統中所有登錄且公開的成績單。</li>
-                    <li>每十分鐘更新。</li>
-                  </ul>
-                  <h5>分數別玩家統計</h5>
-                  <QueryResult result={statsResult}>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>評等</th>
-                          <th>玩家數</th>
-                          <th>累計</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {statsAccumulated.map((s) => (
-                          <tr key={s.range}>
-                            <td>{s.range ?? ""}</td>
-                            <td>{s.count ?? "0"}</td>
-                            <td>{s.accumulated}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </QueryResult>
-                </Tabs.Content>
-              </Tabs.Root>
-            </Tabs.Content>
-          </Tabs.Root>
+                {difficulties[entry.difficulty]}{" "}
+                {entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}
+              </SegmentGroupItem>
+            ))}
+          </SegmentGroup.Root>
+          <ul className={classes.rates}>
+            <li>
+              <span>Play</span>
+              <span>{note?.play ?? 0}</span>
+            </li>
+            <li>
+              <span>SSS Rate</span>
+              <span>{((note?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
+            </li>
+            <li>
+              <span>FC Rate</span>
+              <span>{((note?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
+            </li>
+            <li>
+              <span>AP Rate</span>
+              <span>{((note?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
+            </li>
+          </ul>
+          <ul>
+            <li>數字來自 Otohime 系統中所有登錄且公開的成績單。</li>
+            <li>每十分鐘更新。</li>
+          </ul>
+          <h5>分數別玩家統計</h5>
+          <QueryResult result={statsResult}>
+            <table>
+              <thead>
+                <tr>
+                  <th>評等</th>
+                  <th>玩家數</th>
+                  <th>累計</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statsAccumulated.map((s) => (
+                  <tr key={s.range}>
+                    <td>{s.range ?? ""}</td>
+                    <td>{s.count ?? "0"}</td>
+                    <td>{s.accumulated}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </QueryResult>
         </>
       ) : null}
     </QueryResult>

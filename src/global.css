@@ -255,26 +255,28 @@ button[data-focused] {
     /* Clear open-props button style */
     all: unset;
   }
-  &[data-part="list"] {
-    display: flex;
-    gap: 1rem;
-    [data-part="trigger"] {
-      border-bottom: 3px solid var(--border-color);
-    }
-  }
-
-  &[data-part="trigger"] {
-    flex-shrink: 0;
-    padding: var(--size-2);
-    cursor: pointer;
-    outline: none;
-    --border-color: transparent;
-    &[data-selected] {
-      --border-color: var(--violet-6);
-    }
-  }
   &[data-part="content"] {
     /* override tabindex in Open props normalize */
     cursor: default;
+  }
+}
+
+[data-scope="tabs"][data-part="list"],
+[data-scope="segment-group"][data-part="root"] {
+  display: flex;
+  gap: 1rem;
+}
+
+&[data-part="trigger"],
+[data-scope="segment-group"][data-part="item"] {
+  flex-shrink: 0;
+  padding: var(--size-2);
+  cursor: pointer;
+  outline: none;
+  border-bottom: 3px solid var(--border-color);
+  --border-color: transparent;
+  &[data-selected],
+  &[data-state="checked"] {
+    --border-color: var(--violet-6);
   }
 }
