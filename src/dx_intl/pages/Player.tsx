@@ -1,7 +1,7 @@
 import { Popover, usePopover } from "@ark-ui/react/popover"
 import { RadioGroup } from "@ark-ui/react/radio-group"
+import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
-import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import { format } from "date-fns/format"
 import saveAs from "file-saver"
@@ -19,9 +19,10 @@ import { Alert } from "../../common/components/ui/Alert"
 import { Switch } from "../../common/components/ui/Switch"
 
 import { LinkButton } from "../../common/components/ui/Button"
-import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
-import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
+import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 
+import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
@@ -133,7 +134,6 @@ const Player = ({ params }: { params: Params }) => {
     positioning: {
       placement: "bottom-start",
       getAnchorRect: () => {
-        console.log("getAnchorRect")
         const ref = notePopupRef.current
         return ref ? ref.getBoundingClientRect() : null
       },
@@ -454,80 +454,69 @@ const Player = ({ params }: { params: Params }) => {
             </ul>
           </div>
         </div>
-        <Tabs.Root
-          value={grouping}
-          onValueChange={({ value }) => {
-            setGrouping(value as typeof grouping)
-            setSelectedGroup(0)
-          }}
-        >
+        <div>
           <div className={layoutClasses["sticky-header"]}>
-            <Tabs.List className={layoutClasses["grouping-tablist"]}>
+            <SegmentGroup.Root
+              value={grouping}
+              onValueChange={({ value }) => {
+                if (!value) return
+                setGrouping(value as typeof grouping)
+                setSelectedGroup(0)
+              }}
+              className={layoutClasses["grouping-tablist"]}
+            >
               {Object.entries(groupKeyOptions).map(([key]) => (
-                <Tabs.Trigger
+                <SegmentGroupItem
                   key={key}
                   value={key}
                   style={key === "current_version" ? { flex: 2 } : undefined}
                 >
                   {groupKeyOptions[key as typeof grouping]}
-                </Tabs.Trigger>
+                </SegmentGroupItem>
               ))}
-            </Tabs.List>
-          </div>
-          <Tabs.Content value={grouping}>
-            <Tabs.Root
+            </SegmentGroup.Root>
+            <ScrollableSegmentGroupRoot
               value={`${selectedGroup}`}
               onValueChange={({ value }) => {
-                setSelectedGroup(parseInt(value, 10))
+                if (value) setSelectedGroup(parseInt(value, 10))
               }}
             >
-              <div
-                className={layoutClasses["sticky-header"]}
-                style={{ top: "87.5px" }}
-              >
-                <ScrollableTabList>
-                  {[...table.groupedData.keys()].map((key, index) => (
-                    <Tabs.Trigger key={index} value={index.toString()}>
-                      {getGroupTitle(grouping, key)} (
-                      {table.groupedData.get(key)?.length})
-                    </Tabs.Trigger>
-                  ))}
-                </ScrollableTabList>
-              </div>
-              {grouping === "category" || grouping === "version" ? (
-                <RadioGroup.Root
-                  value={difficulty.toString()}
-                  onValueChange={(v) => {
-                    if (v.value) setDifficulty(parseInt(v.value, 10))
-                  }}
-                  className={layoutClasses["tab-like-radio-group"]}
-                >
-                  {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                    <RadioGroupItem
-                      key={i}
-                      value={i.toString()}
-                      className={
-                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                      }
-                    >
-                      {d}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup.Root>
-              ) : (
-                <></>
-              )}
-              {[...table.groupedData.values()].map((table, index) => (
-                <Tabs.Content key={index} value={index.toString()}>
-                  <PlayerScoreTable
-                    table={table}
-                    handleNotePopupOpen={handleNotePopupOpen}
-                  />
-                </Tabs.Content>
+              {[...table.groupedData.keys()].map((key, index) => (
+                <SegmentGroupItem key={index} value={index.toString()}>
+                  {getGroupTitle(grouping, key)} (
+                  {table.groupedData.get(key)?.length})
+                </SegmentGroupItem>
               ))}
-            </Tabs.Root>
-          </Tabs.Content>
-        </Tabs.Root>
+            </ScrollableSegmentGroupRoot>
+            {grouping === "category" || grouping === "version" ? (
+              <RadioGroup.Root
+                value={difficulty.toString()}
+                onValueChange={(v) => {
+                  if (v.value) setDifficulty(parseInt(v.value, 10))
+                }}
+                className={layoutClasses["tab-like-radio-group"]}
+              >
+                {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
+                  <RadioGroupItem
+                    key={i}
+                    value={i.toString()}
+                    className={
+                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                    }
+                  >
+                    {d}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup.Root>
+            ) : (
+              <></>
+            )}
+          </div>
+          <PlayerScoreTable
+            table={[...table.groupedData.values()][selectedGroup]}
+            handleNotePopupOpen={handleNotePopupOpen}
+          />
+        </div>
       </div>
       <Popover.RootProvider value={popover}>
         <Popover.Positioner>

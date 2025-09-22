@@ -1,4 +1,3 @@
-import { Tabs } from "@ark-ui/react/tabs"
 import { ResponsiveLine } from "@nivo/line"
 import clsx from "clsx"
 import { useMemo } from "react"
@@ -11,7 +10,8 @@ import IconNavigateNext from "~icons/mdi/navigate-next"
 import { navigate } from "wouter/use-browser-location"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
-import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
+import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
@@ -407,57 +407,53 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <LinkButton href={`~/dxi/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>
-      <Tabs.Root
+      <ScrollableSegmentGroupRoot
         value={params.hash ?? ""}
         onValueChange={({ value }) => {
           navigate(`/dxi/p/${params.nickname}/history/${value}`)
         }}
       >
-        <ScrollableTabList>
-          {outerTimelines.timelines.map((time) => (
-            <Tabs.Trigger key={time} value={dateStringToHash(time)}>
-              {formatDateTime(new Date(time))}
-            </Tabs.Trigger>
-          ))}
-        </ScrollableTabList>
-        <Tabs.Content value={params.hash ?? ""}>
-          {params.hash == null ? (
-            <div>
-              請選擇一個時間檢視該時間的歷程。
-              {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
-                <div style={{ height: "40vh" }}>
-                  <ResponsiveLine
-                    colors={{ scheme: "category10" }}
-                    margin={{ top: 20, right: 20, bottom: 60, left: 50 }}
-                    data={[
-                      {
-                        id: "Rating",
-                        data: ratingGraphResult.data.dx_intl_records_with_history.map(
-                          (record) => ({
-                            x: record.start,
-                            y: record.rating,
-                          }),
-                        ),
-                      },
-                    ]}
-                    xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%f%Z" }}
-                    yScale={{ type: "linear", min: "auto", max: 16500 }}
-                    xFormat={"time:%Y-%m-%d"}
-                    axisBottom={{
-                      format: "%Y-%m-%d",
-                    }}
-                    useMesh={true}
-                  />
-                </div>
-              ) : null}
+        {outerTimelines.timelines.map((time) => (
+          <SegmentGroupItem key={time} value={dateStringToHash(time)}>
+            {formatDateTime(new Date(time))}
+          </SegmentGroupItem>
+        ))}
+      </ScrollableSegmentGroupRoot>
+      {params.hash == null ? (
+        <div>
+          請選擇一個時間檢視該時間的歷程。
+          {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
+            <div style={{ height: "40vh" }}>
+              <ResponsiveLine
+                colors={{ scheme: "category10" }}
+                margin={{ top: 20, right: 20, bottom: 60, left: 50 }}
+                data={[
+                  {
+                    id: "Rating",
+                    data: ratingGraphResult.data.dx_intl_records_with_history.map(
+                      (record) => ({
+                        x: record.start,
+                        y: record.rating,
+                      }),
+                    ),
+                  },
+                ]}
+                xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%f%Z" }}
+                yScale={{ type: "linear", min: "auto", max: 16500 }}
+                xFormat={"time:%Y-%m-%d"}
+                axisBottom={{
+                  format: "%Y-%m-%d",
+                }}
+                useMesh={true}
+              />
             </div>
-          ) : timelineResult.data == null ? (
-            <></>
-          ) : (
-            showTimelineResult(timelineResult.data)
-          )}
-        </Tabs.Content>
-      </Tabs.Root>
+          ) : null}
+        </div>
+      ) : timelineResult.data == null ? (
+        <></>
+      ) : (
+        showTimelineResult(timelineResult.data)
+      )}
     </>
   )
 }

@@ -267,7 +267,7 @@ button[data-focused] {
   gap: 1rem;
 }
 
-&[data-part="trigger"],
+[data-scope="tabs"][data-part="trigger"],
 [data-scope="segment-group"][data-part="item"] {
   flex-shrink: 0;
   padding: var(--size-2);

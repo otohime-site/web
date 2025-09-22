@@ -56,10 +56,10 @@
 }
 
 .grouping-tablist {
-  & [data-part="trigger"] {
+  & [data-part="item"] {
     flex: 1;
   }
-  & [data-part="trigger"][data-selected] {
+  & [data-part="item"][data-state="checked"] {
     --border-color: var(--blue-8);
   }
 }

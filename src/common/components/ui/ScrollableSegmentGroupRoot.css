@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
 
-  & button:not([data-part="trigger"]) {
+  & button {
     background: transparent;
     border: none;
     box-shadow: none;
@@ -17,7 +17,7 @@
     }
   }
 
-  & [data-part="list"] {
+  & [data-part="root"] {
     flex: 1;
     overflow-x: scroll;
     scrollbar-width: none;

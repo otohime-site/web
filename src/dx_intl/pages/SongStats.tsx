@@ -113,7 +113,6 @@ const SongStats = ({ params }: { params: Params }) => {
           <SegmentGroup.Root
             value={`${difficulty}`}
             onValueChange={({ value }) => {
-              console.log(value)
               navigate(
                 `/dxi/s/${params.songId}/${params.variant ?? ""}/${value}`,
               )

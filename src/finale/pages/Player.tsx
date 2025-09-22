@@ -1,7 +1,7 @@
 import { createListCollection } from "@ark-ui/react/collection"
 import { RadioGroup } from "@ark-ui/react/radio-group"
+import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Select } from "@ark-ui/react/select"
-import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import { useMemo, useState } from "react"
 import { Titled } from "react-titled"
@@ -14,7 +14,8 @@ import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
-import { ScrollableTabList } from "../../common/components/ui/ScrollableTabList"
+import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
+import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
 import { useUser } from "../../common/contexts"
@@ -263,74 +264,65 @@ const Player = ({ params }: { params: Params }) => {
             </Switch>
           </div>
         </div>
-        <Tabs.Root
-          value={grouping}
-          onValueChange={({ value }) => {
-            setGrouping(value as typeof grouping)
-            setSelectedGroup(0)
-          }}
-        >
+        <div>
           <div className={layoutClasses["sticky-header"]}>
-            <Tabs.List className={layoutClasses["grouping-tablist"]}>
-              {Object.entries(groupKeyOptions).map(([key]) => (
-                <Tabs.Trigger key={key} value={key}>
-                  {groupKeyOptions[key as typeof grouping]}
-                </Tabs.Trigger>
-              ))}
-            </Tabs.List>
-          </div>
-          <Tabs.Content value={grouping}>
-            <Tabs.Root
-              value={`${selectedGroup}`}
-              onValueChange={({ value }) =>
-                setSelectedGroup(parseInt(value, 10))
-              }
+            <SegmentGroup.Root
+              value={grouping}
+              onValueChange={({ value }) => {
+                if (!value) return
+                setGrouping(value as typeof grouping)
+                setSelectedGroup(0)
+              }}
+              className={layoutClasses["grouping-tablist"]}
             >
-              <div
-                className={layoutClasses["sticky-header"]}
-                style={{ top: "87.5px" }}
-              >
-                <ScrollableTabList>
-                  {[...table.groupedData.keys()].map((key, index) => (
-                    <Tabs.Trigger key={index} value={`${index}`}>
-                      {getGroupTitle(grouping, key)} (
-                      {table.groupedData.get(key)?.length})
-                    </Tabs.Trigger>
-                  ))}
-                </ScrollableTabList>
-              </div>
-              {grouping === "category" || grouping === "version" ? (
-                <RadioGroup.Root
-                  value={difficulty.toString()}
-                  onValueChange={(v) => {
-                    if (v.value) setDifficulty(parseInt(v.value, 10))
-                  }}
-                  className={layoutClasses["tab-like-radio-group"]}
-                >
-                  {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                    <RadioGroupItem
-                      key={i}
-                      value={i.toString()}
-                      className={
-                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                      }
-                    >
-                      {d}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup.Root>
-              ) : (
-                <></>
-              )}
-
-              {[...table.groupedData.values()].map((table, index) => (
-                <Tabs.Content key={index} value={index.toString()}>
-                  <PlayerScoreTable table={table} />
-                </Tabs.Content>
+              {Object.entries(groupKeyOptions).map(([key]) => (
+                <SegmentGroupItem key={key} value={key}>
+                  {groupKeyOptions[key as typeof grouping]}
+                </SegmentGroupItem>
               ))}
-            </Tabs.Root>
-          </Tabs.Content>
-        </Tabs.Root>
+            </SegmentGroup.Root>
+            <ScrollableSegmentGroupRoot
+              value={`${selectedGroup}`}
+              onValueChange={({ value }) => {
+                if (value) setSelectedGroup(parseInt(value, 10))
+              }}
+            >
+              {[...table.groupedData.keys()].map((key, index) => (
+                <SegmentGroupItem key={index} value={`${index}`}>
+                  {getGroupTitle(grouping, key)} (
+                  {table.groupedData.get(key)?.length})
+                </SegmentGroupItem>
+              ))}
+            </ScrollableSegmentGroupRoot>
+            {grouping === "category" || grouping === "version" ? (
+              <RadioGroup.Root
+                value={difficulty.toString()}
+                onValueChange={(v) => {
+                  if (v.value) setDifficulty(parseInt(v.value, 10))
+                }}
+                className={layoutClasses["tab-like-radio-group"]}
+              >
+                {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
+                  <RadioGroupItem
+                    key={i}
+                    value={i.toString()}
+                    className={
+                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                    }
+                  >
+                    {d}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup.Root>
+            ) : (
+              <></>
+            )}
+          </div>
+
+          <PlayerScoreTable
+            table={[...table.groupedData.values()][selectedGroup]}
+          />
+        </div>
       </div>
     </>
   )
