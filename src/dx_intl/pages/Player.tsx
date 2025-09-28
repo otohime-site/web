@@ -3,7 +3,6 @@ import { RadioGroup } from "@ark-ui/react/radio-group"
 import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
-import { format } from "date-fns/format"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Titled } from "react-titled"
@@ -262,7 +261,7 @@ const Player = ({ params }: { params: Params }) => {
     const papa = await import("papaparse")
     const updatedAt = recordResult.data?.dx_intl_players[0]?.updated_at
     const updatedAtStr =
-      updatedAt != null ? format(new Date(updatedAt), "yyyy-MM-dd") : ""
+      updatedAt != null ? new Date(updatedAt).toISOString().split("T")[0] : ""
     const filename = `${params.nickname} - ${updatedAtStr}.csv`
     const data = scoreTable.map((entry) => ({
       category: entry.category,

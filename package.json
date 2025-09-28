@@ -20,7 +20,6 @@
     "@urql/exchange-auth": "^3.0.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "clsx": "^2.0.0",
-    "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "firebase": "^12.0.0",
     "gql.tada": "^1.6.2",

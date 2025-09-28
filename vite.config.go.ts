@@ -5,7 +5,6 @@ import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins: [
     react(),
     icons({ compiler: "jsx", jsx: "react" }),

@@ -14,6 +14,7 @@ export default defineConfig({
     visualizer(),
   ],
   build: {
+    assetsInlineLimit: 0,
     emptyOutDir: false, // as the library will empty it
   },
   server: {

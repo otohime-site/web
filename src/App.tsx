@@ -5,13 +5,13 @@ import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
+import DxIntl from "./dx_intl/index"
 import "./global.css"
 import Logo from "./logo/favicon.svg"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
 const Forget = lazy(async () => await import("./common/pages/Forget"))
 const Transfer = lazy(async () => await import("./common/pages/Transfer"))
-const DxIntl = lazy(async () => await import("./dx_intl/index"))
 const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
