@@ -77,3 +77,13 @@ const App = () => {
 }
 
 export default App
+
+export const Skeleton = () => (
+  <>
+    <div className={classes.top}>
+      <Link href="~/" className={classes.title}>
+        <img src={Logo} /> <p>Otohime</p>
+      </Link>
+    </div>
+  </>
+)
