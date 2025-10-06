@@ -12,6 +12,7 @@ export default defineConfig(
   tseslint.configs.recommended,
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat["jsx-runtime"],
+  // @ts-expect-error https://github.com/facebook/react/issues/34745
   reactHooks.configs["recommended-latest"],
   prettier,
 )
