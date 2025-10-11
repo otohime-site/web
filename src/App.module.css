@@ -7,15 +7,30 @@
   height: 48px;
   position: sticky;
   top: 0;
-  background: var(--stone-0);
+  background: var(--violet-0);
   [data-scope="combobox"][data-part="root"] {
     padding-left: var(--size-4);
+  }
+  [data-scope="combobox"][data-part="input"] {
+    background-color: var(--violet-1);
+    color: var(--violet-6);
+    &::placeholder {
+      color: var(--violet-6);
+      opacity: 0.9;
+    }
   }
   .space {
     flex: 1;
   }
   @media (prefers-color-scheme: dark) {
-    background: var(--stone-11);
+    background: #201a4a;
+    [data-scope="combobox"][data-part="input"] {
+      background-color: var(--violet-12);
+      color: var(--violet-3);
+      &::placeholder {
+        color: var(--violet-3);
+      }
+    }
   }
 }
 @media (max-width: 960px) {
