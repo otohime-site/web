@@ -95,19 +95,35 @@ td.col-difficulty.non-plus {
 
 .difficulty-0 {
   color: var(--green-8);
+  @media (prefers-color-scheme: dark) {
+    color: var(--green-3);
+  }
 }
 .difficulty-1 {
   color: var(--yellow-8);
+  @media (prefers-color-scheme: dark) {
+    color: var(--yellow-3);
+  }
 }
 .difficulty-2 {
   color: var(--red-8);
+  @media (prefers-color-scheme: dark) {
+    color: var(--red-3);
+  }
 }
 .difficulty-3 {
   color: var(--violet-8);
+  @media (prefers-color-scheme: dark) {
+    color: var(--violet-3);
+  }
 }
 .difficulty-4 {
-  color: var(--purple-2);
-  -webkit-text-stroke: 0.07rem var(--purple-6);
+  color: var(--purple-7);
+  -webkit-text-stroke: 0.15rem var(--purple-1);
+  @media (prefers-color-scheme: dark) {
+    color: var(--purple-2);
+    -webkit-text-stroke: 0.15rem var(--purple-8);
+  }
   paint-order: stroke fill;
 }
 
