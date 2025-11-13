@@ -6,10 +6,18 @@ import { navigate } from "wouter/use-browser-location"
 import { QueryResult } from "../../common/components/QueryResult"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
-import { flatSongsResult, getCoverUrl } from "../models/aggregation"
+import {
+  flatSongsResult,
+  getCoverUrl,
+  getMojibake,
+} from "../models/aggregation"
 import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./SongStats.module.css"
+
+// Generated with https://png-pixel.com/
+export const BLUE =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwIAMCbHYQAAAABJRU5ErkJggg=="
 
 const dxIntlScoresStatsDocument = graphql(`
   query dxIntlScoresStats(
@@ -81,6 +89,7 @@ const SongStats = ({ params }: { params: Params }) => {
     ],
     [],
   )
+  const mojibake = note ? getMojibake(note) : undefined
   return (
     <QueryResult result={songsResult}>
       {song != null ? (
@@ -91,10 +100,10 @@ const SongStats = ({ params }: { params: Params }) => {
             }
           />
           <section className={classes.intro}>
-            <img src={getCoverUrl(song.id)} />
+            <img src={mojibake ? BLUE : getCoverUrl(song.id)} />
             <div>
-              <h4 className={classes.title}>{song.title}</h4>
-              <p>{song.artist}</p>
+              <h4 className={classes.title}>{mojibake ?? song.title}</h4>
+              {mojibake ? <></> : <p>{song.artist}</p>}
             </div>
           </section>
           <SegmentGroup.Root

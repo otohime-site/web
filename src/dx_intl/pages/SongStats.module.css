@@ -1,6 +1,9 @@
 .title {
   font-family: "M PLUS 1p";
   font-weight: 700;
+  :where(h3, h4, h5, h6, dt) {
+    max-width: unset;
+  }
 }
 
 .rates {

@@ -1,7 +1,12 @@
 import clsx from "clsx"
-import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
+import {
+  ScoreTableEntry,
+  getMojibake,
+  getNoteHash,
+} from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
+import Long from "./Long"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
@@ -35,9 +40,12 @@ export const PlayerScoreTable = ({
             )}
             onClick={(event) => handleNotePopupOpen(event, entry)}
           >
-            <td className={classes["col-title"]}>{entry.title}</td>
+            <td className={classes["col-title"]}>
+              {getMojibake(entry) ?? entry.title}{" "}
+              <Long long={!getMojibake(entry) && entry.long} />
+            </td>
             <td className={classes["col-deluxe"]}>
-              <Variant deluxe={entry.deluxe} />
+              {getMojibake(entry) ? <></> : <Variant deluxe={entry.deluxe} />}
             </td>
             <td
               className={clsx(
@@ -50,7 +58,11 @@ export const PlayerScoreTable = ({
                     : classes["non-plus"],
               )}
             >
-              {entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}
+              {getMojibake(entry)
+                ? ""
+                : entry.internal_lv
+                  ? entry.internal_lv.toFixed(1)
+                  : entry.level}
             </td>
             <td className={classes["col-score"]}>
               {entry.score ? entry.score.toFixed(4) + "%" : ""}
@@ -65,7 +77,7 @@ export const PlayerScoreTable = ({
                 !entry.internal_lv && classes.estimated,
               )}
             >
-              {entry.rating}
+              {getMojibake(entry) ? "" : entry.rating}
             </td>
           </tr>
         ))}

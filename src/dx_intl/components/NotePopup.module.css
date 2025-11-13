@@ -61,3 +61,26 @@
     width: 100%;
   }
 }
+
+.bsod {
+  td {
+    background: #0077dd;
+    height: 15rem;
+    a:hover {
+      text-decoration: none;
+    }
+
+    p {
+      color: white;
+      font-size: 0.8rem;
+    }
+    h6 {
+      color: white;
+      font-weight: 700;
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      margin-left: 1.2rem;
+    }
+  }
+}
