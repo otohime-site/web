@@ -6,11 +6,7 @@ import { navigate } from "wouter/use-browser-location"
 import { QueryResult } from "../../common/components/QueryResult"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
-import {
-  flatSongsResult,
-  getCoverUrl,
-  getMojibake,
-} from "../models/aggregation"
+import { flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./SongStats.module.css"
@@ -89,7 +85,6 @@ const SongStats = ({ params }: { params: Params }) => {
     ],
     [],
   )
-  const mojibake = note ? getMojibake(note) : undefined
   return (
     <QueryResult result={songsResult}>
       {song != null ? (
@@ -100,10 +95,10 @@ const SongStats = ({ params }: { params: Params }) => {
             }
           />
           <section className={classes.intro}>
-            <img src={mojibake ? BLUE : getCoverUrl(song.id)} />
+            <img src={getCoverUrl(song.id)} />
             <div>
-              <h4 className={classes.title}>{mojibake ?? song.title}</h4>
-              {mojibake ? <></> : <p>{song.artist}</p>}
+              <h4 className={classes.title}>{song.title}</h4>
+              <p>{song.artist}</p>
             </div>
           </section>
           <SegmentGroup.Root

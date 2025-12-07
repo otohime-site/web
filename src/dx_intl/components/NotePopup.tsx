@@ -1,4 +1,3 @@
-import clsx from "clsx"
 import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
@@ -6,7 +5,6 @@ import { Progress } from "../../common/components/ui/Progress"
 import {
   ESTIMATED_INTERNAL_LV,
   getCoverUrl,
-  getMojibake,
   getRankScoreIndex,
   getRating,
   ScoreTableEntry,
@@ -38,30 +36,7 @@ const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
   if (internalLv == null) {
     return <></>
   }
-  const mojibake = getMojibake(entry)
-  if (mojibake) {
-    return (
-      <table className={clsx(classes.popup, classes.bsod)}>
-        <thead>
-          <tr>
-            <td>
-              <Link
-                href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                  entry.deluxe ? "dx" : "std"
-                }/${entry.difficulty}`}
-              >
-                <h6>:(</h6>
-                <p>
-                  This content is corrupted. <br />
-                  You may need some HOPE...!?
-                </p>
-              </Link>
-            </td>
-          </tr>
-        </thead>
-      </table>
-    )
-  }
+
   return (
     <table className={classes.popup}>
       <thead>
