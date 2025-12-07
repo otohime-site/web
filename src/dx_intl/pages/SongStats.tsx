@@ -11,10 +11,6 @@ import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./SongStats.module.css"
 
-// Generated with https://png-pixel.com/
-export const BLUE =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwIAMCbHYQAAAABJRU5ErkJggg=="
-
 const dxIntlScoresStatsDocument = graphql(`
   query dxIntlScoresStats(
     $songId: String!
