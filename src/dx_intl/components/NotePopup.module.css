@@ -11,6 +11,9 @@
     font-family: "M PLUS 1p";
     text-align: left;
 
+    a {
+      outline: none;
+    }
     h6 {
       font-family: "M PLUS 1p";
       font-weight: 700;
