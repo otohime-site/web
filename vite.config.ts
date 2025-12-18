@@ -1,5 +1,5 @@
 import basicSsl from "@vitejs/plugin-basic-ssl"
-import react from "@vitejs/plugin-react-swc"
+import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"
