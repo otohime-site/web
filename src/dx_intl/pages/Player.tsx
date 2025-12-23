@@ -103,6 +103,7 @@ const Player = ({ params }: { params: Params }) => {
     () => Math.max(...flattedEntries.map((entry) => entry.version)),
     [flattedEntries],
   )
+  const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
   const [grouping, setGrouping] = useState<
     "current_version" | "category" | "version" | "level"
@@ -165,8 +166,10 @@ const Player = ({ params }: { params: Params }) => {
         current_version: entry.version == maxVersion,
         rating: score?.score
           ? getRating(
-              score.score ?? 0,
               entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
+              score.score ?? 0,
+              afterCircle &&
+                (score.combo_flag === "ap" || score.combo_flag === "ap+"),
             )
           : 0,
         rating_listed: false,
@@ -199,7 +202,7 @@ const Player = ({ params }: { params: Params }) => {
     })
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
-  }, [flattedEntries, recordResult])
+  }, [flattedEntries, recordResult, afterCircle])
 
   const table = useTable({
     data: scoreTable,
@@ -525,7 +528,9 @@ const Player = ({ params }: { params: Params }) => {
                 <Popover.ArrowTip />
               </Popover.Arrow>
               <div>
-                {notePopupEntry ? <NotePopup entry={notePopupEntry} /> : null}
+                {notePopupEntry ? (
+                  <NotePopup entry={notePopupEntry} afterCircle={afterCircle} />
+                ) : null}
               </div>
             </Popover.Content>
           </Popover.Content>

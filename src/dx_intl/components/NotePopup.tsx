@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
 import { Progress } from "../../common/components/ui/Progress"
+import { comboFlags } from "../../finale/models/constants"
 import {
   ESTIMATED_INTERNAL_LV,
   getCoverUrl,
@@ -17,21 +18,31 @@ import {
 } from "../models/constants"
 import classes from "./NotePopup.module.css"
 
-const NoteRating = ({ entry }: { entry: ScoreTableEntry }) => {
+const NoteRating = ({
+  entry,
+  afterCircle,
+}: {
+  entry: ScoreTableEntry
+  afterCircle: boolean
+}) => {
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const [rating, maxRating, targets] = useMemo(() => {
     if (internalLv == null) {
       return [0, 0, []]
     }
     const index = getRankScoreIndex(entry.score ?? 0)
-    const rating = getRating(entry.score ?? 0, internalLv)
-    const maxRating = getRating(100.5, internalLv)
+    const rating = getRating(
+      internalLv,
+      entry.score ?? 0,
+      afterCircle && entry.combo_flag >= comboFlags.indexOf("ap"),
+    )
+    const maxRating = getRating(internalLv, 100.5, afterCircle)
     const targets = RANK_SCORES.slice(index + 1, index + 4).map(
-      ([minScore, rankName]) => [rankName, getRating(minScore, internalLv)],
+      ([minScore, rankName]) => [rankName, getRating(internalLv, minScore)],
     )
 
     return [rating, maxRating, targets]
-  }, [internalLv, entry])
+  }, [internalLv, entry, afterCircle])
 
   if (internalLv == null) {
     return <></>

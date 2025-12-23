@@ -84,13 +84,19 @@ export const levelCompareKey: Record<(typeof levels)[number], number> = {
   "14+": 14.7 - 0.01,
   "15": 15.0 - 0.01,
 }
-export const getRating = (score: number, internalLv: number): number => {
+export const getRating = (
+  internalLv: number,
+  score: number,
+  ap?: boolean,
+): number => {
+  // AP bounus will be applied in CiRCLE.
+  // Before the version upgrade, other logic will ensure `ap` will always be `false`.
   const rankScore = RANK_CONST_BORDERS[getRankConstIndex(score)]
   return rankScore != null
     ? Math.floor(
         (rankScore[1] * Math.min(1005000, score * 10000) * (internalLv * 10)) /
           100000000,
-      )
+      ) + (ap ? 1 : 0)
     : 0
 }
 
