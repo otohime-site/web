@@ -37,6 +37,7 @@ export const versions = [
   "BUDDiES PLUS",
   "PRiSM",
   "PRiSM PLUS",
+  "CiRCLE",
 ] as const
 
 export const levels = [
@@ -272,6 +273,7 @@ export const versionTitles = [
   "双",
   "宴",
   "鏡",
+  "彩",
 ]
 
 export const versionTitleExcludes = [
