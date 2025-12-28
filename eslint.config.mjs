@@ -5,6 +5,7 @@ import prettier from "eslint-config-prettier/flat"
 import reactPlugin from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
 import { defineConfig } from "eslint/config"
+import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default defineConfig(
@@ -14,4 +15,11 @@ export default defineConfig(
   reactPlugin.configs.flat["jsx-runtime"],
   reactHooks.configs.flat["recommended-latest"],
   prettier,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
 )
