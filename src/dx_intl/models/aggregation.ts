@@ -139,7 +139,7 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   combo_flag: number
   sync_flag: number
   updated_at?: string
-  current_version: boolean
+  rating_latest: boolean
   rating: number
   // Record the ranking for the rating in old/new songs
   old_rank?: number
@@ -217,7 +217,7 @@ export const getGroupTitle = (
   group: string | number | boolean | null | undefined,
 ): string => {
   switch (grouping) {
-    case "current_version":
+    case "rating_latest":
       return group ? "新曲" : "舊曲"
     case "category":
       return categories[group as number] ?? ""

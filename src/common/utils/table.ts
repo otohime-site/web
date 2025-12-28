@@ -33,7 +33,7 @@ export const useTable = <T extends TableEntry>({
     ]
     const orderingWithGroup = [
       ...(!ordering.find((o) => o.key == grouping)
-        ? [{ key: grouping, desc: grouping === "current_version" }]
+        ? [{ key: grouping, desc: grouping === "rating_latest" }]
         : []),
       ...ordering,
     ]

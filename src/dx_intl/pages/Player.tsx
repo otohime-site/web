@@ -76,7 +76,7 @@ const dxIntlRecordWithScoresDocument = graphql(
   [dxIntlRecordsFields, dxIntlScoresFields],
 )
 const groupKeyOptions = {
-  current_version: "Rating 組成",
+  rating_latest: "Rating 組成",
   category: "分類",
   version: "版本",
   level: "等級",
@@ -103,11 +103,14 @@ const Player = ({ params }: { params: Params }) => {
     () => Math.max(...flattedEntries.map((entry) => entry.version)),
     [flattedEntries],
   )
+  // CiRCLE had two rating differences:
+  // * "Latest songs" will include song in recent 2 versions instead of 1.
+  // * All perfect will add 1 point to rating.
   const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
   const [grouping, setGrouping] = useState<
-    "current_version" | "category" | "version" | "level"
-  >("current_version")
+    "rating_latest" | "category" | "version" | "level"
+  >("rating_latest")
   const [selectedGroup, setSelectedGroup] = useState(0)
   const [ordering, setOrdering] = useState<
     | "index"
@@ -163,7 +166,9 @@ const Player = ({ params }: { params: Params }) => {
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
-        current_version: entry.version == maxVersion,
+        rating_latest: afterCircle
+          ? entry.version >= maxVersion - 1
+          : entry.version == maxVersion,
         rating: score?.score
           ? getRating(
               entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
@@ -178,13 +183,13 @@ const Player = ({ params }: { params: Params }) => {
     })
     const oldRanks = new Map(
       scoreTable
-        .filter((entry) => !entry.current_version && entry.active)
+        .filter((entry) => !entry.rating_latest && entry.active)
         .sort((a, b) => b.rating - a.rating)
         .map((entry, index) => [entry.hash, index + 1]),
     )
     const newRanks = new Map(
       scoreTable
-        .filter((entry) => entry.current_version && entry.active)
+        .filter((entry) => entry.rating_latest && entry.active)
         .sort((a, b) => b.rating - a.rating)
         .map((entry, index) => [entry.hash, index + 1]),
     )
@@ -208,7 +213,7 @@ const Player = ({ params }: { params: Params }) => {
     data: scoreTable,
     grouping,
     ordering:
-      grouping === "current_version"
+      grouping === "rating_latest"
         ? [
             { key: "old_rank", desc: false },
             { key: "new_rank", desc: false },
@@ -240,7 +245,7 @@ const Player = ({ params }: { params: Params }) => {
     },
     filterFn: (entry, options) => {
       switch (options.grouping) {
-        case "current_version":
+        case "rating_latest":
           return entry.rating_listed
         case "level":
           return true
@@ -471,7 +476,7 @@ const Player = ({ params }: { params: Params }) => {
                 <SegmentGroupItem
                   key={key}
                   value={key}
-                  style={key === "current_version" ? { flex: 2 } : undefined}
+                  style={key === "rating_latest" ? { flex: 2 } : undefined}
                 >
                   {groupKeyOptions[key as typeof grouping]}
                 </SegmentGroupItem>
