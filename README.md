@@ -57,7 +57,7 @@ Bookmarklet is a long story, basically, it will use the `src/go.js` as the entry
 
 ### License
 
-Copyright (c) 2018 - 2025 Otohime Team (Hsiao-Ting Yu and others)
+Copyright (c) 2018 - 2026 Otohime Team (Hsiao-Ting Yu and others)
 
 Licensed under MIT license, see LICENSE.md.
 
