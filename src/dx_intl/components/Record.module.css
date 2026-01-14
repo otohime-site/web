@@ -32,9 +32,6 @@
 .title {
   width: 20em;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   border-radius: 0.4em;
   border: 0.1em solid;
   color: white;
@@ -43,6 +40,25 @@
   font-weight: 800;
   font-family: "M PLUS Rounded 1c";
   margin-bottom: 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+
+  & span {
+    display: inline-block;
+  }
+
+  &.title-overflow span {
+    animation: marquee 10s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(22em);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .title.normal {
@@ -86,7 +102,8 @@
   box-shadow: 0 0.2em #bb3e00;
 }
 .title.rainbow {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to right,
       #fdc9aa 0%,
       #fdc9aa 5%,
