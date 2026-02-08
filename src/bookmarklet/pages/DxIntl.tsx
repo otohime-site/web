@@ -116,6 +116,7 @@ const Book = () => {
       return
     }
     if (netPlayerResult.error || dxIntlPlayersResult.error) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPageState("error")
       return
     }
