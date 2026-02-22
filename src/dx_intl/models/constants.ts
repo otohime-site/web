@@ -12,6 +12,7 @@ export const categories = [
 ] as const
 
 export const versions = [
+  // start from zero
   "maimai",
   "maimai PLUS",
   "GreeN",
@@ -41,6 +42,7 @@ export const versions = [
 ] as const
 
 export const levels = [
+  // Used as lookups
   "1",
   "2",
   "3",
