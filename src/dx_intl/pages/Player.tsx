@@ -27,7 +27,7 @@ import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
-import Folder from "../components/Folders"
+import Folders from "../components/Folders"
 import NotePopup from "../components/NotePopup"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
@@ -520,7 +520,7 @@ const Player = ({ params }: { params: Params }) => {
               <></>
             )}
           </div>
-          <Folder />
+          <Folders />
           <PlayerScoreTable
             table={[...table.groupedData.values()][selectedGroup]}
             handleNotePopupOpen={handleNotePopupOpen}

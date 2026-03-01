@@ -1,17 +1,18 @@
 import { RadioGroup } from "@ark-ui/react/radio-group"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { categories, levels, versions } from "../models/constants"
+import styles from "./Folders.module.css"
 
 const Folder = () => {
   return (
     <div>
       <h4>Rating 組成</h4>
-      <RadioGroup.Root>
+      <RadioGroup.Root className={styles.group}>
         <RadioGroupItem value="true">新曲</RadioGroupItem>
         <RadioGroupItem value="false">舊曲</RadioGroupItem>
       </RadioGroup.Root>
       <h4>分類</h4>
-      <RadioGroup.Root>
+      <RadioGroup.Root className={styles.group}>
         {categories.map((category, index) =>
           category ? (
             <RadioGroupItem key={index} value={`${index}`}>
@@ -21,7 +22,7 @@ const Folder = () => {
         )}
       </RadioGroup.Root>
       <h4>版本</h4>
-      <RadioGroup.Root>
+      <RadioGroup.Root className={styles.group}>
         {versions.map((version, index) => (
           <RadioGroupItem key={index} value={`${index}`}>
             {version}
@@ -29,10 +30,10 @@ const Folder = () => {
         ))}
       </RadioGroup.Root>
       <h4>等級</h4>
-      <RadioGroup.Root>
+      <RadioGroup.Root className={styles.group}>
         {levels.map((level, index) => (
           <RadioGroupItem key={index} value={`${index}`}>
-            Level {level}
+            {level}
           </RadioGroupItem>
         ))}
       </RadioGroup.Root>
