@@ -82,6 +82,10 @@
 td.col-rating {
   text-align: right;
 }
+.col-stats {
+  width: 3rem;
+  text-align: right;
+}
 td.col-difficulty {
   text-align: right;
   font-weight: 400;

@@ -3,6 +3,7 @@ import { Route, Switch } from "wouter"
 import Overview from "./pages/Overview"
 import Player from "./pages/Player"
 import PlayerForm from "./pages/PlayerForm"
+import RatingTarget from "./pages/RatingTarget"
 import SongStats from "./pages/SongStats"
 
 const PlayerHistory = lazy(async () => await import("./pages/PlayerHistory"))
@@ -20,6 +21,7 @@ const DxIntl = () => (
       <Route path="/p/:nickname" component={Player} />
       <Route path="/p/:nickname/image" component={PlayerRatingImage} />
     </Switch>
+    <Route path="/rt/:rating" component={RatingTarget} />
     <Route path="/s/:songId" component={SongStats} />
     <Route path="/s/:songId/:variant" component={SongStats} />
     <Route path="/s/:songId/:variant/:difficulty" component={SongStats} />
