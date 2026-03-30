@@ -7,6 +7,7 @@ import {
   getRedirectResult,
   onAuthStateChanged,
 } from "firebase/auth"
+import { NuqsAdapter, enableHistorySync } from "nuqs/adapters/react"
 import {
   PropsWithChildren,
   ReactNode,
@@ -24,6 +25,11 @@ const firebaseApp = initializeApp(firebaseConfig)
 export const firebaseAuth = getAuth(firebaseApp)
 
 export const UserContext = createContext<User | null>(null)
+
+// After running migration plan and testing with Claude Opus 4.6,
+// it seems that using nuqs with wouter is simple: use React SPA Adapter and `enableHistorySync()`.
+// See https://github.com/littlebtc/nuqs/tree/feat/wouter for more details.
+enableHistorySync()
 
 export const AppProvider = ({
   children,
@@ -93,9 +99,11 @@ export const AppProvider = ({
   }
 
   return (
-    <UserContext.Provider value={user}>
-      <UrqlProvider value={client}>{children}</UrqlProvider>
-    </UserContext.Provider>
+    <NuqsAdapter>
+      <UserContext.Provider value={user}>
+        <UrqlProvider value={client}>{children}</UrqlProvider>
+      </UserContext.Provider>
+    </NuqsAdapter>
   )
 }
 
