@@ -26,7 +26,7 @@ export const firebaseAuth = getAuth(firebaseApp)
 
 export const UserContext = createContext<User | null>(null)
 
-// After running migration plan and testing with Claude Opus 4.6,
+// After trying to write a wouter adapter with Claude Opus 4.6,
 // it seems that using nuqs with wouter is simple: use React SPA Adapter and `enableHistorySync()`.
 // See https://github.com/littlebtc/nuqs/tree/feat/wouter for more details.
 enableHistorySync()
