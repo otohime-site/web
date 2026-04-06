@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useLayoutEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef } from "react"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
 import { formatRelative } from "../../common/utils/datetime"
@@ -20,21 +20,21 @@ const Record = ({
   isPrivate: boolean
 }) => {
   const titleRef = useRef<HTMLDivElement>(null)
-  const [isOverflowing, setIsOverflowing] = useState(false)
 
   useLayoutEffect(() => {
     if (titleRef.current) {
       const content = titleRef.current.querySelector("span") as HTMLElement
       if (content) {
-        setIsOverflowing(content.clientWidth > titleRef.current.clientWidth)
-        // I have to do this to avoid eslint complaining setting state in useEffect
-        // It will if the state itself is not a boolean
-        content.style.animationDuration = `${Math.round(
-          (content.clientWidth / titleRef.current.clientWidth) * 5,
-        )}s`
+        content.style.animationDuration = `${
+          content.clientWidth > titleRef.current.clientWidth
+            ? Math.round(
+                (content.clientWidth / titleRef.current.clientWidth) * 5,
+              )
+            : 0
+        }s`
       }
     }
-  }, [record.title, isOverflowing])
+  }, [record.title])
 
   return (
     <div>
@@ -61,11 +61,7 @@ const Record = ({
       </div>
       <div
         ref={titleRef}
-        className={clsx(
-          classes.title,
-          classes[record.trophy],
-          isOverflowing && classes["title-overflow"],
-        )}
+        className={clsx(classes.title, classes[record.trophy])}
         title={record.title}
       >
         <span>{record.title}</span>

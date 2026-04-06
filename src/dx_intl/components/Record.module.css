@@ -45,9 +45,6 @@
 
   & span {
     display: inline-block;
-  }
-
-  &.title-overflow span {
     animation: marquee 10s linear infinite;
   }
 }
