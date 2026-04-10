@@ -57,23 +57,24 @@ export const ScrollableSegmentGroupRoot = ({
     },
     [updateScroll],
   )
-  const scrollBy = (amount: number) => () => {
-    if (rootElem) {
-      rootElem.scrollTo({
+  const handleScroll = useCallback(
+    (amount: number) => {
+      rootElem?.scrollTo({
         left: rootElem.scrollLeft + amount,
         behavior: "smooth",
       })
-    }
-  }
+    },
+    [rootElem],
+  )
   return (
     <div className={classes["scrollable-tab"]}>
-      <button disabled={scrollDisabled[0]} onClick={scrollBy(-200)}>
+      <button disabled={scrollDisabled[0]} onClick={() => handleScroll(-200)}>
         &lt;
       </button>
       <SegmentGroup.Root {...props} ref={rootElemRef}>
         {children}
       </SegmentGroup.Root>
-      <button disabled={scrollDisabled[1]} onClick={scrollBy(200)}>
+      <button disabled={scrollDisabled[1]} onClick={() => handleScroll(200)}>
         &gt;
       </button>
     </div>

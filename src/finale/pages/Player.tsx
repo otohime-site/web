@@ -288,7 +288,7 @@ const Player = ({ params }: { params: Params }) => {
               }}
             >
               {[...table.groupedData.keys()].map((key, index) => (
-                <SegmentGroupItem key={index} value={`${index}`}>
+                <SegmentGroupItem key={key} value={`${index}`}>
                   {getGroupTitle(grouping, key)} (
                   {table.groupedData.get(key)?.length})
                 </SegmentGroupItem>
@@ -304,7 +304,7 @@ const Player = ({ params }: { params: Params }) => {
               >
                 {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
                   <RadioGroupItem
-                    key={i}
+                    key={d}
                     value={i.toString()}
                     className={
                       classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]

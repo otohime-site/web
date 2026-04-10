@@ -58,8 +58,8 @@ const RatingTargetTable = ({ rows }: { rows: AggregatedRow[] }) => (
       </tr>
     </thead>
     <tbody>
-      {rows.map((row, i) => (
-        <tr key={i}>
+      {rows.map((row) => (
+        <tr key={getNoteHash(row.note)}>
           <td className={tableClasses["col-title"]}>{row.note.title}</td>
           <td className={tableClasses["col-deluxe"]}>
             <Variant deluxe={row.note.deluxe} />

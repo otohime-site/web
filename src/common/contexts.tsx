@@ -12,7 +12,7 @@ import {
   PropsWithChildren,
   ReactNode,
   createContext,
-  useContext,
+  use,
   useEffect,
   useMemo,
   useState,
@@ -100,13 +100,13 @@ export const AppProvider = ({
 
   return (
     <NuqsAdapter>
-      <UserContext.Provider value={user}>
+      <UserContext value={user}>
         <UrqlProvider value={client}>{children}</UrqlProvider>
-      </UserContext.Provider>
+      </UserContext>
     </NuqsAdapter>
   )
 }
 
 export const useUser = (): User | null => {
-  return useContext(UserContext)
+  return use(UserContext)
 }

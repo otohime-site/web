@@ -15,7 +15,7 @@ const Folder = () => {
       <RadioGroup.Root className={styles.group}>
         {categories.map((category, index) =>
           category ? (
-            <RadioGroupItem key={index} value={`${index}`}>
+            <RadioGroupItem key={category} value={`${index}`}>
               {category}
             </RadioGroupItem>
           ) : undefined,
@@ -24,7 +24,7 @@ const Folder = () => {
       <h4>版本</h4>
       <RadioGroup.Root className={styles.group}>
         {versions.map((version, index) => (
-          <RadioGroupItem key={index} value={`${index}`}>
+          <RadioGroupItem key={version} value={`${index}`}>
             {version}
           </RadioGroupItem>
         ))}
@@ -32,7 +32,7 @@ const Folder = () => {
       <h4>等級</h4>
       <RadioGroup.Root className={styles.group}>
         {levels.map((level, index) => (
-          <RadioGroupItem key={index} value={`${index}`}>
+          <RadioGroupItem key={level} value={`${index}`}>
             {level}
           </RadioGroupItem>
         ))}
