@@ -288,7 +288,7 @@ const Player = ({ params }: { params: Params }) => {
               }}
             >
               {[...table.groupedData.keys()].map((key, index) => (
-                <SegmentGroupItem key={key} value={`${index}`}>
+                <SegmentGroupItem key={`${key}`} value={`${index}`}>
                   {getGroupTitle(grouping, key)} (
                   {table.groupedData.get(key)?.length})
                 </SegmentGroupItem>
