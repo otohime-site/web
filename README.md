@@ -30,13 +30,13 @@ export default {
 Install the dependencies:
 
 ```
-npm install
+pnpm install
 ```
 
 Run the dev server with:
 
 ```
-npm start
+pnpm start
 ```
 
 Firebase Auth requires HTTPS, so the dev server is set to use HTTPS by default.
