@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -16,8 +17,8 @@ jobs:
         run: 'echo "$FIREBASE" > src/firebase.ts'
         env:
           FIREBASE: ${{secrets.FIREBASE}}
-      - run: npm install
-      - run: npm run build
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
       - run: cp go.js dist/
       - uses: FirebaseExtended/action-hosting-deploy@e2eda2e106cfa35cdbcf4ac9ddaf6c4756df2c8c
         with:
