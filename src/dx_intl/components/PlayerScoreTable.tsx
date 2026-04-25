@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
+import { getDifficultyClassName } from "../utils/styling"
 import { ComboFlag, SyncFlag } from "./Flags"
 import Long from "./Long"
 import classes from "./PlayerScoreTable.module.css"
@@ -43,17 +44,7 @@ export const PlayerScoreTable = ({
             <td className={classes["col-deluxe"]}>
               <Variant deluxe={entry.deluxe} />
             </td>
-            <td
-              className={clsx(
-                classes["col-difficulty"],
-                classes[`difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`],
-                entry.internal_lv
-                  ? ""
-                  : entry.level.includes("+")
-                    ? classes["plus"]
-                    : classes["non-plus"],
-              )}
-            >
+            <td className={getDifficultyClassName(classes, entry)}>
               {entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}
             </td>
             <td className={classes["col-score"]}>

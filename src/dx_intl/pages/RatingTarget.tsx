@@ -10,6 +10,7 @@ import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import { dxIntlSongsDocument } from "../models/queries"
+import { getDifficultyClassName } from "../utils/styling"
 import classes from "./RatingTarget.module.css"
 
 const dxIntlRatingTargetStatsDocument = graphql(`
@@ -64,14 +65,7 @@ const RatingTargetTable = ({ rows }: { rows: AggregatedRow[] }) => (
           <td className={tableClasses["col-deluxe"]}>
             <Variant deluxe={row.note.deluxe} />
           </td>
-          <td
-            className={[
-              tableClasses["col-difficulty"],
-              tableClasses[
-                `difficulty-${row.note.difficulty as 0 | 1 | 2 | 3 | 4}`
-              ],
-            ].join(" ")}
-          >
+          <td className={getDifficultyClassName(tableClasses, row.note)}>
             {row.note.internal_lv ? row.note.internal_lv.toFixed(1) : ""}
           </td>
           <td className={tableClasses["col-score"]}>

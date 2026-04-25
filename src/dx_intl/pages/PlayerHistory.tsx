@@ -31,6 +31,7 @@ import {
   dxIntlScoresWithHistoryFields,
 } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
+import { getDifficultyClassName } from "../utils/styling"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`
@@ -354,16 +355,10 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                     <span>
                       <Variant deluxe={entry.deluxe} />
                       <span
-                        className={clsx(
+                        className={getDifficultyClassName(
+                          tableClasses,
+                          entry,
                           classes["col-level-diff"],
-                          tableClasses[
-                            `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
-                          ],
-                          entry.internal_lv
-                            ? ""
-                            : entry.level.includes("+")
-                              ? tableClasses["plus"]
-                              : tableClasses["non-plus"],
                         )}
                       >
                         {difficulties[entry.difficulty].slice(0, 3)}{" "}
