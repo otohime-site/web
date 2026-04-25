@@ -16,35 +16,32 @@ import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import tableClasses from "../components/PlayerScoreTable.module.css"
-import Variant from "../components/Variant"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
-  classRankNames,
+  classNames,
   comboFlags,
   difficulties,
-  gradeNames,
-  legacyCourseRankNames,
   syncFlags,
 } from "../models/constants"
 import {
-  dxIntlRecordsWithHistoryFields,
-  dxIntlScoresWithHistoryFields,
+  finaleRecordsWithHistoryFields,
+  finaleScoresWithHistoryFields,
 } from "../models/fragments"
-import { dxIntlSongsDocument } from "../models/queries"
+import { finaleSongsDocument } from "../models/queries"
 import classes from "./PlayerHistory.module.css"
 
-const dxIntlPlayersTimelinesDocument = graphql(`
-  query dxIntlPlayersTimelines($nickname: String!) {
-    dx_intl_players_timelines(where: { nickname: { _eq: $nickname } }) {
+const finalePlayersTimelinesDocument = graphql(`
+  query finalePlayersTimelines($nickname: String!) {
+    finale_players_timelines(where: { nickname: { _eq: $nickname } }) {
       timelines
     }
   }
 `)
 
-const dxIntlPlayerRatingGraphDocument = graphql(`
-  query dxIntlPlayerRatingGraph($nickname: String!) {
-    dx_intl_records_with_history(
-      where: { dx_intl_player: { nickname: { _eq: $nickname } } }
+const finalePlayerRatingGraphDocument = graphql(`
+  query finalePlayerRatingGraph($nickname: String!) {
+    finale_records_with_history(
+      where: { finale_player: { nickname: { _eq: $nickname } } }
       order_by: { start: asc }
     ) {
       start
@@ -53,44 +50,44 @@ const dxIntlPlayerRatingGraphDocument = graphql(`
   }
 `)
 
-const dxIntlPlayerWithTimelineDocument = graphql(
+const finalePlayerWithTimelineDocument = graphql(
   `
-    query dxIntlPlayerWithTimeline($nickname: String!, $time: timestamptz!) {
-      beforeRecord: dx_intl_records_with_history(
+    query finalePlayerWithTimeline($nickname: String!, $time: timestamptz!) {
+      beforeRecord: finale_records_with_history(
         where: {
-          dx_intl_player: { nickname: { _eq: $nickname } }
+          finale_player: { nickname: { _eq: $nickname } }
           end: { _eq: $time }
         }
       ) {
-        ...dxIntlRecordsWithHistoryFields
+        ...finaleRecordsWithHistoryFields
       }
-      afterRecord: dx_intl_records_with_history(
+      afterRecord: finale_records_with_history(
         where: {
-          dx_intl_player: { nickname: { _eq: $nickname } }
+          finale_player: { nickname: { _eq: $nickname } }
           start: { _eq: $time }
         }
       ) {
-        ...dxIntlRecordsWithHistoryFields
+        ...finaleRecordsWithHistoryFields
       }
-      beforeScores: dx_intl_scores_with_history(
+      beforeScores: finale_scores_with_history(
         where: {
-          dx_intl_player: { nickname: { _eq: $nickname } }
+          finale_player: { nickname: { _eq: $nickname } }
           end: { _eq: $time }
         }
       ) {
-        ...dxIntlScoresWithHistoryFields
+        ...finaleScoresWithHistoryFields
       }
-      afterScores: dx_intl_scores_with_history(
+      afterScores: finale_scores_with_history(
         where: {
-          dx_intl_player: { nickname: { _eq: $nickname } }
+          finale_player: { nickname: { _eq: $nickname } }
           start: { _eq: $time }
         }
       ) {
-        ...dxIntlScoresWithHistoryFields
+        ...finaleScoresWithHistoryFields
       }
     }
   `,
-  [dxIntlRecordsWithHistoryFields, dxIntlScoresWithHistoryFields],
+  [finaleRecordsWithHistoryFields, finaleScoresWithHistoryFields],
 )
 
 interface HistoryEntry {
@@ -127,19 +124,19 @@ const hashToDateString = (hash: string): string => {
 
 const PlayerHistory = ({ params }: { params: Params }) => {
   const [songsResult] = useQuery({
-    query: dxIntlSongsDocument,
+    query: finaleSongsDocument,
     pause: params.hash === null,
   })
   const [timelinesResult] = useQuery({
-    query: dxIntlPlayersTimelinesDocument,
+    query: finalePlayersTimelinesDocument,
     variables: { nickname: params.nickname ?? "" },
   })
   const [ratingGraphResult] = useQuery({
-    query: dxIntlPlayerRatingGraphDocument,
+    query: finalePlayerRatingGraphDocument,
     variables: { nickname: params.nickname ?? "" },
   })
   const [timelineResult] = useQuery({
-    query: dxIntlPlayerWithTimelineDocument,
+    query: finalePlayerWithTimelineDocument,
     variables: {
       nickname: params.nickname ?? "",
       time: hashToDateString(params.hash ?? ""),
@@ -154,18 +151,17 @@ const PlayerHistory = ({ params }: { params: Params }) => {
 
   const { beforeMap, afterMap } = useMemo(() => {
     const beforeScores = readFragment(
-      dxIntlScoresWithHistoryFields,
+      finaleScoresWithHistoryFields,
       timelineResult.data?.beforeScores ?? [],
     )
     const afterScores = readFragment(
-      dxIntlScoresWithHistoryFields,
+      finaleScoresWithHistoryFields,
       timelineResult.data?.afterScores ?? [],
     )
     const beforeMap: Map<string, HistoryEntry> = new Map(
       beforeScores.map((score) => [
         getNoteHash({
-          song_id: score.song_id ?? "",
-          deluxe: score.deluxe ?? false,
+          song_id: score.song_id ?? -1,
           difficulty: score.difficulty ?? -1,
         }),
         {
@@ -178,8 +174,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     const afterMap: Map<string, HistoryEntry> = new Map(
       afterScores.map((score) => [
         getNoteHash({
-          song_id: score.song_id ?? "",
-          deluxe: score.deluxe ?? false,
+          song_id: score.song_id ?? -1,
           difficulty: score.difficulty ?? -1,
         }),
         {
@@ -202,7 +197,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   if (timelinesResult.data == null) {
     return <></>
   }
-  const outerTimelines = timelinesResult.data.dx_intl_players_timelines[0]
+  const outerTimelines = timelinesResult.data.finale_players_timelines[0]
   if (outerTimelines == null || outerTimelines.timelines == null) {
     return (
       <Alert severity="warning">
@@ -212,8 +207,8 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   }
 
   const recordDiffs = (
-    before?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
-    after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
+    before?: ResultOf<typeof finaleRecordsWithHistoryFields>,
+    after?: ResultOf<typeof finaleRecordsWithHistoryFields>,
   ): { item: string; before: string; after: string }[] => {
     const results = []
     if (before?.card_name !== after?.card_name) {
@@ -249,47 +244,18 @@ const PlayerHistory = ({ params }: { params: Params }) => {
           (after?.max_rating ?? 0) >= 0 ? `${after?.max_rating ?? ""}` : "",
       })
     }
-    if (before?.grade !== after?.grade && after?.grade != null) {
-      results.push({
-        item: "舊版段位",
-        before: before?.grade != null ? (gradeNames[before?.grade] ?? "") : "",
-        after: after?.grade != null ? (gradeNames[after?.grade] ?? "") : "",
-      })
-    }
-    if (
-      before?.course_rank !== after?.course_rank &&
-      after?.course_rank != null
-    ) {
+    if (before?.class !== after?.class && after?.class != null) {
       results.push({
         item: "段位",
-        before:
-          before?.course_rank != null
-            ? (legacyCourseRankNames[before?.course_rank] ?? "")
-            : "",
-        after:
-          after?.course_rank != null
-            ? (legacyCourseRankNames[after?.course_rank] ?? "")
-            : "",
-      })
-    }
-    if (before?.class_rank !== after?.class_rank && after?.class_rank != null) {
-      results.push({
-        item: "對戰階級",
-        before:
-          before?.class_rank != null
-            ? (classRankNames[before.class_rank] ?? "")
-            : "",
-        after:
-          after?.class_rank != null
-            ? (classRankNames[after.class_rank] ?? "")
-            : "",
+        before: before?.class != null ? (classNames[before.class] ?? "") : "",
+        after: after?.class != null ? (classNames[after.class] ?? "") : "",
       })
     }
     return results
   }
 
   const showTimelineResult = (
-    data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>,
+    data: ResultOf<typeof finalePlayerWithTimelineDocument>,
   ): React.ReactNode => (
     <table className={clsx(classes.table)}>
       <colgroup>
@@ -311,8 +277,8 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <tbody>
         {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
           recordDiffs(
-            readFragment(dxIntlRecordsWithHistoryFields, data.beforeRecord[0]),
-            readFragment(dxIntlRecordsWithHistoryFields, data.afterRecord[0]),
+            readFragment(finaleRecordsWithHistoryFields, data.beforeRecord[0]),
+            readFragment(finaleRecordsWithHistoryFields, data.afterRecord[0]),
           ).map((entry) => (
             <tr key={entry.item}>
               <td
@@ -352,18 +318,15 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                   <div>
                     <span>{entry.title}</span>
                     <span>
-                      <Variant deluxe={entry.deluxe} />
                       <span
                         className={clsx(
                           classes["col-level-diff"],
                           tableClasses[
-                            `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`
+                            `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4 | 5}`
                           ],
-                          entry.internal_lv
-                            ? ""
-                            : entry.level.includes("+")
-                              ? tableClasses["plus"]
-                              : tableClasses["non-plus"],
+                          entry.level.includes("+")
+                            ? tableClasses["plus"]
+                            : tableClasses["non-plus"],
                         )}
                       >
                         {difficulties[entry.difficulty].slice(0, 3)}{" "}
@@ -373,7 +336,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                   </div>
                 </td>
                 <td className={tableClasses["col-score"]}>
-                  {before ? `${before.score.toFixed(4)}%` : ""}
+                  {before ? `${before.score.toFixed(2)}%` : ""}
                 </td>
                 <td className={tableClasses["col-flags"]}>
                   {before ? (
@@ -387,7 +350,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                   <IconNavigateNext />
                 </td>
                 <td className={tableClasses["col-score"]}>
-                  {after ? `${after.score.toFixed(4)}%` : ""}
+                  {after ? `${after.score.toFixed(2)}%` : ""}
                 </td>
                 <td className={tableClasses["col-flags"]}>
                   {after ? (
@@ -406,13 +369,13 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <LinkButton href={`~/dxi/p/${params.nickname}`}>
+      <LinkButton href={`~/fin/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>
       <ScrollableSegmentGroupRoot
         value={params.hash ?? ""}
         onValueChange={({ value }) => {
-          navigate(`/dxi/p/${params.nickname}/history/${value}`)
+          navigate(`/fin/p/${params.nickname}/history/${value}`)
         }}
       >
         {outerTimelines.timelines.map((time) => (
@@ -424,7 +387,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       {params.hash == null ? (
         <div>
           請選擇一個時間檢視該時間的歷程。
-          {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
+          {ratingGraphResult.data?.finale_records_with_history != null ? (
             <div style={{ height: "40vh" }}>
               <ResponsiveLine
                 colors={{ scheme: "category10" }}
@@ -432,7 +395,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                 data={[
                   {
                     id: "Rating",
-                    data: ratingGraphResult.data.dx_intl_records_with_history.map(
+                    data: ratingGraphResult.data.finale_records_with_history.map(
                       (record) => ({
                         x: record.start,
                         y: record.rating,
@@ -441,7 +404,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                   },
                 ]}
                 xScale={{ type: "time", format: "%Y-%m-%dT%H:%M:%S.%f%Z" }}
-                yScale={{ type: "linear", min: "auto", max: 16750 }}
+                yScale={{ type: "linear", min: "auto", max: 20 }}
                 xFormat={"time:%Y-%m-%d"}
                 axisBottom={{
                   format: "%Y-%m-%d",

@@ -11,8 +11,10 @@ import { navigate } from "wouter/use-browser-location"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
+import IconHistory from "~icons/mdi/history"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
+import { LinkButton } from "../../common/components/ui/Button"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
@@ -215,12 +217,17 @@ const Player = ({ params }: { params: Params }) => {
             updatedAt={player.updated_at}
             isPrivate={player.private}
           />
-          {editableResult.error == null &&
-          (editableResult.data?.finale_players?.length ?? 0) > 0 ? (
-            <button onClick={handleDeletePlayer}>
-              <MdiDeleteAlert /> 刪除
-            </button>
-          ) : null}
+          <div aria-label="成績單選項" className={layoutClasses.toolbar}>
+            {editableResult.error == null &&
+            (editableResult.data?.finale_players?.length ?? 0) > 0 ? (
+              <button onClick={handleDeletePlayer}>
+                <MdiDeleteAlert /> 刪除
+              </button>
+            ) : null}
+            <LinkButton href={`~/fin/p/${params.nickname}/history`}>
+              <IconHistory /> 歷史紀錄
+            </LinkButton>
+          </div>
           <div className={layoutClasses.line}>
             <SelectContainer
               label="排序"

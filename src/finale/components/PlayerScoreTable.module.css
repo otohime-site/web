@@ -54,7 +54,7 @@
       text-decoration-color: var(--stone-6);
     }
   }
-  & span {
+  & > span {
     margin-left: var(--size-2);
     color: var(--stone-6);
     font-size: 75%;
