@@ -1,13 +1,28 @@
-import { useMemo } from "react"
+import { SegmentGroup } from "@ark-ui/react/segment-group"
+import { useMemo, useState } from "react"
 import { useQuery } from "urql"
 import { Link } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
+import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
+import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
 import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
 import { flatSongsResult } from "../models/aggregation"
+import { versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import { getDifficultyClassName } from "../utils/styling"
+
+type RateKey = "sss" | "fc" | "ap"
+
+const rateOptions: Record<
+  RateKey,
+  { label: string; field: "sss_rate" | "fc_rate" | "ap_rate" }
+> = {
+  sss: { label: "SSS", field: "sss_rate" },
+  fc: { label: "FC", field: "fc_rate" },
+  ap: { label: "AP", field: "ap_rate" },
+}
 
 const dxIntlNewRatingStatsDocument = graphql(`
   query dxIntlNewRatingStats {
@@ -39,6 +54,45 @@ const Overview = () => {
         .slice(0, 20),
     [flattedEntries],
   )
+
+  const availableVersions = useMemo(() => {
+    const set = new Set<number>()
+    for (const entry of flattedEntries) {
+      if (entry.difficulty >= 3 && entry.play != null && entry.play > 0) {
+        set.add(entry.version)
+      }
+    }
+    return [...set].sort((a, b) => a - b)
+  }, [flattedEntries])
+
+  const [selectedVersion, setSelectedVersion] = useState<number | null>(null)
+  const [selectedRate, setSelectedRate] = useState<RateKey>("sss")
+
+  const activeVersion =
+    selectedVersion != null && availableVersions.includes(selectedVersion)
+      ? selectedVersion
+      : (availableVersions[availableVersions.length - 1] ?? null)
+
+  const leastRateEntries = useMemo(() => {
+    if (activeVersion == null) return []
+    const field = rateOptions[selectedRate].field
+    return [...flattedEntries]
+      .filter(
+        (entry) =>
+          entry.version === activeVersion &&
+          entry.difficulty >= 3 &&
+          entry.play != null &&
+          entry.play > 0,
+      )
+      .sort((a, b) => {
+        const ra = a[field] ?? 0
+        const rb = b[field] ?? 0
+        if (ra !== rb) return ra - rb
+        if (a.order !== b.order) return a.order - b.order
+        return a.difficulty - b.difficulty
+      })
+      .slice(0, 15)
+  }, [flattedEntries, activeVersion, selectedRate])
 
   const baseRatingAccumulated = (
     baseRatingResult.data?.dx_intl_new_rating_stats ?? []
@@ -128,6 +182,87 @@ const Overview = () => {
                     : entry.level}
                 </td>
                 <td className={tableClasses["col-stats"]}>{entry.play ?? 0}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </QueryResult>
+      <h5>各版本 SSS / FC / AP 率最低 15 譜面</h5>
+      <p>
+        僅統計 MASTER 與 Re:MASTER 難度,依照公開成績單中的對應達成率排序,
+        僅計算有玩家遊玩過的譜面。
+      </p>
+      <QueryResult result={songsResult}>
+        <ScrollableSegmentGroupRoot
+          value={activeVersion != null ? `${activeVersion}` : ""}
+          onValueChange={({ value }) => {
+            if (value) setSelectedVersion(parseInt(value, 10))
+          }}
+        >
+          {availableVersions.map((ver) => (
+            <SegmentGroupItem key={ver} value={`${ver}`}>
+              {versions[ver] ?? `v${ver}`}
+            </SegmentGroupItem>
+          ))}
+        </ScrollableSegmentGroupRoot>
+        <SegmentGroup.Root
+          value={selectedRate}
+          onValueChange={({ value }) => {
+            if (value) setSelectedRate(value as RateKey)
+          }}
+        >
+          {(Object.keys(rateOptions) as RateKey[]).map((key) => (
+            <SegmentGroupItem key={key} value={key}>
+              {rateOptions[key].label}
+            </SegmentGroupItem>
+          ))}
+        </SegmentGroup.Root>
+        <table className={tableClasses.table}>
+          <colgroup>
+            <col className={tableClasses["col-rating"]} />
+            <col className={tableClasses["col-title"]} />
+            <col className={tableClasses["col-deluxe"]} />
+            <col className={tableClasses["col-difficulty"]} />
+            <col className={tableClasses["col-stats"]} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className={tableClasses["col-rating"]}>#</th>
+              <th className={tableClasses["col-title"]}>曲目</th>
+              <th className={tableClasses["col-deluxe"]}></th>
+              <th className={tableClasses["col-difficulty"]}></th>
+              <th className={tableClasses["col-stats"]}>
+                {rateOptions[selectedRate].label} Rate
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {leastRateEntries.map((entry, index) => (
+              <tr key={entry.hash}>
+                <td className={tableClasses["col-rating"]}>{index + 1}</td>
+                <td className={tableClasses["col-title"]}>
+                  <Link
+                    href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
+                      entry.deluxe ? "dx" : "std"
+                    }/${entry.difficulty}`}
+                  >
+                    {entry.title}
+                  </Link>
+                </td>
+                <td className={tableClasses["col-deluxe"]}>
+                  <Variant deluxe={entry.deluxe} />
+                </td>
+                <td className={getDifficultyClassName(tableClasses, entry)}>
+                  {entry.internal_lv
+                    ? entry.internal_lv.toFixed(1)
+                    : entry.level}
+                </td>
+                <td className={tableClasses["col-stats"]}>
+                  {(
+                    (entry[rateOptions[selectedRate].field] ?? 0) * 100
+                  ).toFixed(1)}
+                  %
+                </td>
               </tr>
             ))}
           </tbody>
