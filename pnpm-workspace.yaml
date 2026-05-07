@@ -1,0 +1,4 @@
+allowBuilds:
+  '@firebase/util': false
+  '@parcel/watcher': false
+  protobufjs: false
