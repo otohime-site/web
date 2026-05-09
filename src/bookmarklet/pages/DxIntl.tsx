@@ -83,10 +83,12 @@ const sha256Sum = async (text: string): Promise<string> => {
 }
 
 const Book = () => {
-  const [pageState, setPageState] = useState<
-    "loading" | "ready" | "fetching" | "error" | "done"
-  >("loading")
-  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([])
+  const [uploadState, setUploadState] = useState<
+    "idle" | "fetching" | "error" | "done"
+  >("idle")
+  const [userSelectedPlayerIds, setUserSelectedPlayerIds] = useState<
+    string[] | undefined
+  >()
   const client = useClient()
   const [dxIntlPlayersResult] = useQuery({ query: dxIntlPlayersDocument })
   const players = readFragment(
@@ -107,34 +109,23 @@ const Book = () => {
       .catch(() => setNetPlayerResult({ fetching: false, error: true }))
   }, [])
 
-  useEffect(() => {
-    if (
-      pageState !== "loading" ||
-      netPlayerResult.fetching ||
-      dxIntlPlayersResult.fetching
-    ) {
-      return
-    }
-    if (netPlayerResult.error || dxIntlPlayersResult.error) {
-      // eslint-disable-next-line @eslint-react/set-state-in-effect
-      setPageState("error")
-      return
-    }
-    const firstMatchPlayer = readFragment(
-      dxIntlPlayersFields,
-      dxIntlPlayersResult.data?.dx_intl_players ?? [],
-    ).find(
-      (player) =>
-        player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
-    )
-    if (firstMatchPlayer != null) {
-      setSelectedPlayerIds([`${firstMatchPlayer.id}`])
-    }
-    setPageState("ready")
-  }, [netPlayerResult, dxIntlPlayersResult, pageState])
-
   const parsedPlayer = netPlayerResult.data
   const [fetchProgress, setFetchProgress] = useState(0)
+  const firstMatchPlayer = players.find(
+    (player) =>
+      player.dx_intl_record?.card_name == netPlayerResult.data?.card_name,
+  )
+  const selectedPlayerIds =
+    userSelectedPlayerIds ??
+    (firstMatchPlayer == null ? [] : [`${firstMatchPlayer.id}`])
+  const getPageState = () => {
+    if (uploadState !== "idle") return uploadState
+    if (netPlayerResult.fetching || dxIntlPlayersResult.fetching)
+      return "loading"
+    if (netPlayerResult.error || dxIntlPlayersResult.error) return "error"
+    return "ready"
+  }
+  const pageState = getPageState()
 
   const selectedPlayerId = selectedPlayerIds[0]
     ? parseInt(selectedPlayerIds[0], 10)
@@ -150,7 +141,7 @@ const Book = () => {
     ) {
       return
     }
-    setPageState("fetching")
+    setUploadState("fetching")
     const entries = await DIFFICULTIES.reduce<Promise<ScoresParseEntry[]>>(
       async (prevPromise, _, difficulty) => {
         const prev = await prevPromise
@@ -194,7 +185,7 @@ const Book = () => {
     if (mutation.error != null) {
       throw new Error("Mutation error")
     }
-    setPageState("done")
+    setUploadState("done")
   }
 
   const handleFetchWithCatch = async (): Promise<void> => {
@@ -202,7 +193,7 @@ const Book = () => {
       await handleFetch()
     } catch (e) {
       console.error(e)
-      setPageState("error")
+      setUploadState("error")
     }
   }
 
@@ -291,7 +282,7 @@ const Book = () => {
                     <div>請選擇要更新的成績單：</div>
                     <Listbox.Root
                       value={selectedPlayerIds}
-                      onValueChange={(e) => setSelectedPlayerIds(e.value)}
+                      onValueChange={(e) => setUserSelectedPlayerIds(e.value)}
                       collection={collection}
                     >
                       <Listbox.Content>
