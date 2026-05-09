@@ -17,6 +17,9 @@ importers:
       '@otohime-site/parser':
         specifier: ^26.4.0
         version: 26.4.0
+      '@urql/core':
+        specifier: ^6.0.1
+        version: 6.0.1(graphql@16.14.0)
       '@urql/exchange-auth':
         specifier: ^3.0.0
         version: 3.0.0(@urql/core@6.0.1(graphql@16.14.0))

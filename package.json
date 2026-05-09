@@ -4,7 +4,6 @@
   "repository": "git@github.com:otohime-site/web.git",
   "author": "Hsiao-Ting Yu <sst.dreams@gmail.com>",
   "license": "MIT",
-  "packageManager": "pnpm@11.0.8",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -18,6 +17,7 @@
     "@ark-ui/react": "^5.36.2",
     "@nivo/line": "^0.99.0",
     "@otohime-site/parser": "^26.4.0",
+    "@urql/core": "^6.0.1",
     "@urql/exchange-auth": "^3.0.0",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
     "clsx": "^2.1.1",
