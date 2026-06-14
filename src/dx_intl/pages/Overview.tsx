@@ -16,8 +16,8 @@ import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
 import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
-import { flatSongsResult } from "../models/aggregation"
-import { versions } from "../models/constants"
+import { flatSongsResult, getCoverUrl } from "../models/aggregation"
+import { difficulties, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import { getDifficultyClassName } from "../utils/styling"
 import classes from "./Overview.module.css"
@@ -88,7 +88,7 @@ const Overview = () => {
               ? a.order - b.order
               : a.difficulty - b.difficulty,
         )
-        .slice(0, 20),
+        .slice(0, 50),
     [flattedEntries],
   )
 
@@ -140,12 +140,12 @@ const Overview = () => {
   return (
     <main>
       <h4>maimai DX 國際版玩家統計</h4>
-      <h5>Rating</h5>
       <p>只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。</p>
+      <p>
+        公開成績單玩家總數:<strong>{totalPlayers}</strong>
+      </p>
+      <h5>Rating</h5>
       <QueryResult result={baseRatingResult}>
-        <p>
-          公開成績單玩家總數:<strong>{totalPlayers}</strong>
-        </p>
         <div style={{ height: "8rem" }}>
           <Bar
             data={{
@@ -186,49 +186,49 @@ const Overview = () => {
       <h5>Most Played Charts</h5>
       <p>依照公開成績單中的遊玩人數排序。</p>
       <QueryResult result={songsResult}>
-        <table className={tableClasses.table}>
-          <colgroup>
-            <col className={tableClasses["col-ranking"]} />
-            <col className={tableClasses["col-title"]} />
-            <col className={tableClasses["col-deluxe"]} />
-            <col className={tableClasses["col-difficulty"]} />
-            <col className={tableClasses["col-stats"]} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th className={tableClasses["col-ranking"]}>#</th>
-              <th className={tableClasses["col-title"]}>曲目</th>
-              <th className={tableClasses["col-deluxe"]}></th>
-              <th className={tableClasses["col-difficulty"]}></th>
-              <th className={tableClasses["col-stats"]}>Play</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mostPlayedEntries.map((entry, index) => (
-              <tr key={entry.hash}>
-                <td className={tableClasses["col-ranking"]}>{index + 1}</td>
-                <td className={tableClasses["col-title"]}>
-                  <Link
-                    href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                      entry.deluxe ? "dx" : "std"
-                    }/${entry.difficulty}`}
-                  >
-                    {entry.title}
-                  </Link>
-                </td>
-                <td className={tableClasses["col-deluxe"]}>
-                  <Variant deluxe={entry.deluxe} />
-                </td>
-                <td className={getDifficultyClassName(tableClasses, entry)}>
-                  {entry.internal_lv
-                    ? entry.internal_lv.toFixed(1)
-                    : entry.level}
-                </td>
-                <td className={tableClasses["col-stats"]}>{entry.play ?? 0}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ol className={classes["chart-blocks"]}>
+          {mostPlayedEntries.map((entry, index) => (
+            <li key={entry.hash}>
+              <Link
+                className={classes["chart-block"]}
+                href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
+                  entry.deluxe ? "dx" : "std"
+                }/${entry.difficulty}`}
+              >
+                <img
+                  className={classes["chart-cover"]}
+                  src={getCoverUrl(entry.song_id)}
+                  alt=""
+                />
+                <span className={classes["chart-rank"]}>{index + 1}</span>
+                <span className={classes["chart-info"]}>
+                  <span className={classes["chart-title"]}>{entry.title}</span>
+                  <span className={classes["chart-meta"]}>
+                    <Variant deluxe={entry.deluxe} />
+                    <span
+                      className={
+                        tableClasses[
+                          `difficulty-${entry.difficulty}` as
+                            | "difficulty-0"
+                            | "difficulty-1"
+                            | "difficulty-2"
+                            | "difficulty-3"
+                            | "difficulty-4"
+                        ]
+                      }
+                    >
+                      {difficulties[entry.difficulty]}{" "}
+                      {entry.internal_lv
+                        ? entry.internal_lv.toFixed(1)
+                        : entry.level}
+                    </span>
+                  </span>
+                </span>
+                <span className={classes["chart-play"]}>{entry.play ?? 0}</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </QueryResult>
       <h5>各版本 SSS / FC / AP 率最低 15 譜面</h5>
       <p>
