@@ -71,6 +71,13 @@
   width: 1.6rem;
   font-size: var(--font-size-0);
 }
+.col-ranking {
+  width: 3.2rem;
+  color: var(--text-2);
+}
+.table tbody tr td.col-ranking {
+  padding-right: 1.5rem;
+}
 .col-flags {
   width: 3.3rem;
   height: 2rem;
@@ -80,6 +87,9 @@
   }
 }
 td.col-rating {
+  text-align: right;
+}
+td.col-ranking {
   text-align: right;
 }
 .col-stats {

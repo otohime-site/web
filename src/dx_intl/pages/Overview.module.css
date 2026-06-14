@@ -1,0 +1,6 @@
+.rating-target-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--size-1) var(--size-2);
+}

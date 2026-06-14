@@ -1,5 +1,13 @@
 import { SegmentGroup } from "@ark-ui/react/segment-group"
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  Tooltip,
+} from "chart.js"
 import { useMemo, useState } from "react"
+import { Bar } from "react-chartjs-2"
 import { useQuery } from "urql"
 import { Link } from "wouter"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -12,6 +20,35 @@ import { flatSongsResult } from "../models/aggregation"
 import { versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import { getDifficultyClassName } from "../utils/styling"
+import classes from "./Overview.module.css"
+import { RATING_TARGETS } from "./RatingTarget"
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
+
+// Solid colors representing each maimai DX rating frame tier. Mirrors the
+// (non-legacy) thresholds in components/Rating.tsx so the rating distribution
+// chart reads like the in-game rating frames (normal → rainbow).
+const ratingTiers: Array<{ max: number; color: string }> = [
+  { max: 1000, color: "#9aa0a6" }, // normal (white/grey)
+  { max: 2000, color: "#4f8edc" }, // blue
+  { max: 4000, color: "#4caf50" }, // green
+  { max: 7000, color: "#ff9800" }, // orange
+  { max: 10000, color: "#e53935" }, // red
+  { max: 12000, color: "#9c27b0" }, // purple
+  { max: 13000, color: "#cd7f5a" }, // bronze
+  { max: 14000, color: "#9fb6c0" }, // silver
+  { max: 14500, color: "#ffc107" }, // gold
+  { max: 15000, color: "#b0c4de" }, // platinum
+  { max: Infinity, color: "#e040fb" }, // rainbow
+]
+
+// Map a rating range string (e.g. "10000-10999") to its frame tier color by
+// the numeric value parsed from the start of the label.
+const rangeColor = (range?: string | null): string => {
+  const value = parseInt(range ?? "", 10)
+  if (Number.isNaN(value)) return ratingTiers[0].color
+  return (ratingTiers.find((tier) => value < tier.max) ?? ratingTiers[0]).color
+}
 
 type RateKey = "sss" | "fc" | "ap"
 
@@ -94,25 +131,10 @@ const Overview = () => {
       .slice(0, 15)
   }, [flattedEntries, activeVersion, selectedRate])
 
-  const baseRatingAccumulated = (
-    baseRatingResult.data?.dx_intl_new_rating_stats ?? []
-  ).reduce<
-    Array<{
-      range?: string | null
-      count?: number | null
-      accumulated: number
-    }>
-  >(
-    (accr, curr) => [
-      ...accr,
-      {
-        range: curr.range,
-        count: curr.count,
-        accumulated:
-          (accr[accr.length - 1]?.accumulated ?? 0) + (curr.count ?? 0),
-      },
-    ],
-    [],
+  const baseRatingStats = baseRatingResult.data?.dx_intl_new_rating_stats ?? []
+  const totalPlayers = baseRatingStats.reduce(
+    (sum, curr) => sum + (curr.count ?? 0),
+    0,
   )
 
   return (
@@ -121,31 +143,52 @@ const Overview = () => {
       <h5>Rating</h5>
       <p>只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。</p>
       <QueryResult result={baseRatingResult}>
-        <table>
-          <thead>
-            <tr>
-              <th>範圍</th>
-              <th>玩家數</th>
-              <th>累計</th>
-            </tr>
-          </thead>
-          <tbody>
-            {baseRatingAccumulated.map((br) => (
-              <tr key={br.range}>
-                <td>{br.range ?? ""}</td>
-                <td>{br.count ?? "0"}</td>
-                <td>{br.accumulated}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <p>
+          公開成績單玩家總數:<strong>{totalPlayers}</strong>
+        </p>
+        <div style={{ height: "8rem" }}>
+          <Bar
+            data={{
+              labels: ["Rating"],
+              datasets: baseRatingStats.map((stat) => ({
+                label: stat.range ?? "",
+                backgroundColor: rangeColor(stat.range),
+                data: [stat.count ?? 0],
+              })),
+            }}
+            options={{
+              indexAxis: "y",
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: (item) => `${item.dataset.label}: ${item.parsed.x}`,
+                  },
+                },
+              },
+              scales: {
+                x: { stacked: true, beginAtZero: true },
+                y: { stacked: true },
+              },
+            }}
+          />
+        </div>
+        <p className={classes["rating-target-nav"]}>
+          <span>各 Rating 目標的 Best 50 組成曲:</span>
+          {RATING_TARGETS.map((target) => (
+            <Link key={target} href={`~/dxi/rt/${target}`}>
+              {target}
+            </Link>
+          ))}
+        </p>
       </QueryResult>
       <h5>Most Played Charts</h5>
       <p>依照公開成績單中的遊玩人數排序。</p>
       <QueryResult result={songsResult}>
         <table className={tableClasses.table}>
           <colgroup>
-            <col className={tableClasses["col-rating"]} />
+            <col className={tableClasses["col-ranking"]} />
             <col className={tableClasses["col-title"]} />
             <col className={tableClasses["col-deluxe"]} />
             <col className={tableClasses["col-difficulty"]} />
@@ -153,7 +196,7 @@ const Overview = () => {
           </colgroup>
           <thead>
             <tr>
-              <th className={tableClasses["col-rating"]}>#</th>
+              <th className={tableClasses["col-ranking"]}>#</th>
               <th className={tableClasses["col-title"]}>曲目</th>
               <th className={tableClasses["col-deluxe"]}></th>
               <th className={tableClasses["col-difficulty"]}></th>
@@ -163,7 +206,7 @@ const Overview = () => {
           <tbody>
             {mostPlayedEntries.map((entry, index) => (
               <tr key={entry.hash}>
-                <td className={tableClasses["col-rating"]}>{index + 1}</td>
+                <td className={tableClasses["col-ranking"]}>{index + 1}</td>
                 <td className={tableClasses["col-title"]}>
                   <Link
                     href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
@@ -219,7 +262,7 @@ const Overview = () => {
         </SegmentGroup.Root>
         <table className={tableClasses.table}>
           <colgroup>
-            <col className={tableClasses["col-rating"]} />
+            <col className={tableClasses["col-ranking"]} />
             <col className={tableClasses["col-title"]} />
             <col className={tableClasses["col-deluxe"]} />
             <col className={tableClasses["col-difficulty"]} />
@@ -227,7 +270,7 @@ const Overview = () => {
           </colgroup>
           <thead>
             <tr>
-              <th className={tableClasses["col-rating"]}>#</th>
+              <th className={tableClasses["col-ranking"]}>#</th>
               <th className={tableClasses["col-title"]}>曲目</th>
               <th className={tableClasses["col-deluxe"]}></th>
               <th className={tableClasses["col-difficulty"]}></th>
@@ -239,7 +282,7 @@ const Overview = () => {
           <tbody>
             {leastRateEntries.map((entry, index) => (
               <tr key={entry.hash}>
-                <td className={tableClasses["col-rating"]}>{index + 1}</td>
+                <td className={tableClasses["col-ranking"]}>{index + 1}</td>
                 <td className={tableClasses["col-title"]}>
                   <Link
                     href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
