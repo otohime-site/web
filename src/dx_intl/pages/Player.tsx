@@ -12,6 +12,7 @@ import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconHistory from "~icons/mdi/history"
+import IconImage from "~icons/mdi/image"
 import IconPencil from "~icons/mdi/pencil"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
@@ -29,6 +30,7 @@ import { graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders from "../components/Folders"
 import NotePopup from "../components/NotePopup"
+import PlayerRatingImage from "../components/PlayerRatingImage"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
@@ -129,6 +131,7 @@ const Player = ({ params }: { params: Params }) => {
   const [difficulty, setDifficulty] = useState<number>(2)
   const [includeInactive, setIncludeInactive] = useState(false)
   const [statFolder, setStatFolder] = useState(true)
+  const [showRatingImage, setShowRatingImage] = useState(false)
   const notePopupRef = useRef<HTMLElement | null>(null)
   const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
     null,
@@ -375,7 +378,16 @@ const Player = ({ params }: { params: Params }) => {
             <button onClick={downloadCSV}>
               <IconFileDownload /> 下載 CSV
             </button>
+            <button onClick={() => setShowRatingImage(true)}>
+              <IconImage /> Rating 圖片
+            </button>
           </div>
+          <PlayerRatingImage
+            open={showRatingImage}
+            onOpenChange={setShowRatingImage}
+            scoreTable={scoreTable}
+            cardName={record.card_name}
+          />
           <div className={layoutClasses.line}>
             <SelectContainer
               label="排序"

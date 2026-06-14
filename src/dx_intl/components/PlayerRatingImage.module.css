@@ -1,0 +1,31 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  /* Shrink-wrap the canvas instead of filling the viewport. */
+  width: 80vw;
+  height: 80vh;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+  & h2 {
+    flex: 1;
+    margin-bottom: 0;
+  }
+}
+
+.canvas {
+  overflow: auto;
+  /* Konva renders a fixed 1200px-wide canvas at its intrinsic size; cap the
+     displayed height to the viewport and let the width scale proportionally. */
+  & canvas {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+}
