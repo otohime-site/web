@@ -39,14 +39,29 @@ const ratingTiers: Array<{ max: number; color: string }> = [
   { max: 14000, color: "#9fb6c0" }, // silver
   { max: 14500, color: "#ffc107" }, // gold
   { max: 15000, color: "#b0c4de" }, // platinum
-  { max: Infinity, color: "#e040fb" }, // rainbow
 ]
+
+// The rainbow frame (>= 15000) covers a wide rating span up to the ~16000 cap.
+// A single flat color makes adjacent buckets blur together in the stacked bar,
+// so map each bucket to a distinct hue across the spectrum (a real rainbow).
+const RAINBOW_MIN = 15000
+const RAINBOW_MAX = 16000
+const rainbowColor = (value: number): string => {
+  const t = Math.min(
+    1,
+    Math.max(0, (value - RAINBOW_MIN) / (RAINBOW_MAX - RAINBOW_MIN)),
+  )
+  // 0 -> red (0deg) through to violet (~300deg).
+  const hue = t * 300
+  return `hsl(${hue.toFixed(0)}, 85%, 60%)`
+}
 
 // Map a rating range string (e.g. "10000-10999") to its frame tier color by
 // the numeric value parsed from the start of the label.
 const rangeColor = (range?: string | null): string => {
   const value = parseInt(range ?? "", 10)
   if (Number.isNaN(value)) return ratingTiers[0].color
+  if (value >= RAINBOW_MIN) return rainbowColor(value)
   return (ratingTiers.find((tier) => value < tier.max) ?? ratingTiers[0]).color
 }
 
