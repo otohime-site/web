@@ -9,6 +9,7 @@ import {
 } from "react-konva"
 import { ScoreTableEntry, getCoverUrl } from "../models/aggregation"
 import { RATING_NEW_COUNT, RATING_OLD_COUNT } from "../models/constants"
+import { getRatingImage } from "./Rating"
 
 // Concrete colors for difficulty borders (Konva can't read CSS variables).
 const difficultyColors = [
@@ -47,6 +48,49 @@ const useImage = (url: string): HTMLImageElement | undefined => {
     return () => img.removeEventListener("load", onLoad)
   }, [url])
   return image
+}
+
+// Mirror of <Rating>: an SVG plate chosen by rating tier, with the number
+// overlaid in gold right-aligned text. The plate art is 296x86; sizes below
+// are derived from Rating.module.css where 1em maps to PLATE_EM px.
+const PLATE_EM = 25
+const PLATE_WIDTH = 7.56 * PLATE_EM
+const PLATE_HEIGHT = 2.2 * PLATE_EM
+
+const RatingPlate = ({
+  rating,
+  legacy,
+  x,
+  y,
+}: {
+  rating: number
+  legacy: boolean
+  x: number
+  y: number
+}) => {
+  const plate = useImage(getRatingImage(rating, legacy) as string)
+  return (
+    <Group x={x} y={y}>
+      {plate ? (
+        <KonvaImage image={plate} width={PLATE_WIDTH} height={PLATE_HEIGHT} />
+      ) : null}
+      <Text
+        x={0}
+        y={0.6 * PLATE_EM}
+        width={PLATE_WIDTH - 0.34 * PLATE_EM}
+        align="right"
+        text={`${rating}`}
+        fontSize={PLATE_EM}
+        fontStyle="900"
+        fontFamily="M PLUS 1p"
+        letterSpacing={0.125 * PLATE_EM}
+        fill="#e5c100"
+        stroke="#393939"
+        strokeWidth={0.03 * PLATE_EM}
+        fillAfterStrokeEnabled={true}
+      />
+    </Group>
+  )
 }
 
 const ChartTile = ({
@@ -221,16 +265,11 @@ const PlayerRatingCanvas = ({
           fontFamily="M PLUS Rounded 1c"
           fill="#ffffff"
         />
-        <Text
-          x={PADDING}
-          y={24}
-          width={WIDTH - PADDING * 2}
-          align="right"
-          text={`Rating ${totalRating}`}
-          fontSize={40}
-          fontStyle="bold"
-          fontFamily="M PLUS Rounded 1c"
-          fill="#ffd54f"
+        <RatingPlate
+          rating={totalRating}
+          legacy={false}
+          x={WIDTH - PADDING - PLATE_WIDTH}
+          y={24 + (40 - PLATE_HEIGHT) / 2}
         />
         <Section title="新曲 (Best 15)" entries={newEntries} y={newSectionY} />
         <Section title="舊曲 (Best 35)" entries={oldEntries} y={oldSectionY} />
