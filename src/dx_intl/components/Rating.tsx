@@ -13,7 +13,7 @@ import Red from "../images/ratings/red.svg"
 import Silver from "../images/ratings/silver.svg"
 import classes from "./Rating.module.css"
 
-const getRatingImage = (rating: number, legacy: boolean): any => {
+export const getRatingImage = (rating: number, legacy: boolean): any => {
   if (legacy) {
     switch (true) {
       case rating < 1000:
