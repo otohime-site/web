@@ -51,7 +51,7 @@ input:is([type="button"], [type="submit"], [type="reset"]) {
     outline: 2px solid var(--stone-6);
     outline-offset: -1px;
   }
-  &input:is[type="submit"] {
+  &:is(input[type="submit"]) {
     border-color: var(--_accent);
   }
   outline: none;
