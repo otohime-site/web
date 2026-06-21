@@ -14,10 +14,9 @@ import { ScrollableSegmentGroupRoot } from "../../common/components/ui/Scrollabl
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { Switch } from "../../common/components/ui/Switch"
 import { graphql } from "../../graphql"
-import tableClasses from "../components/PlayerScoreTable.module.css"
-import Variant from "../components/Variant"
-import { flatSongsResult, getCoverUrl } from "../models/aggregation"
-import { difficulties, versions } from "../models/constants"
+import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
+import { flatSongsResult } from "../models/aggregation"
+import { versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./Overview.module.css"
 import { RATING_TARGETS } from "./RatingTarget"
@@ -224,46 +223,14 @@ const Overview = () => {
       <h5>Most Played Charts</h5>
       <p>依照公開成績單中的遊玩人數排序。</p>
       <QueryResult result={songsResult}>
-        <ol className={classes["chart-blocks"]}>
+        <ol className={chartBlockClasses["chart-blocks"]}>
           {mostPlayedEntries.map((entry, index) => (
             <li key={entry.hash}>
-              <Link
-                className={classes["chart-block"]}
-                href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                  entry.deluxe ? "dx" : "std"
-                }/${entry.difficulty}`}
-              >
-                <img
-                  className={classes["chart-cover"]}
-                  src={getCoverUrl(entry.song_id)}
-                  alt=""
-                />
-                <span className={classes["chart-rank"]}>{index + 1}</span>
-                <span className={classes["chart-info"]}>
-                  <span className={classes["chart-title"]}>{entry.title}</span>
-                  <span className={classes["chart-meta"]}>
-                    <Variant deluxe={entry.deluxe} />
-                    <span
-                      className={
-                        tableClasses[
-                          `difficulty-${entry.difficulty}` as
-                            | "difficulty-0"
-                            | "difficulty-1"
-                            | "difficulty-2"
-                            | "difficulty-3"
-                            | "difficulty-4"
-                        ]
-                      }
-                    >
-                      {difficulties[entry.difficulty]}{" "}
-                      {entry.internal_lv
-                        ? entry.internal_lv.toFixed(1)
-                        : entry.level}
-                    </span>
-                  </span>
-                </span>
-                <span className={classes["chart-play"]}>{entry.play ?? 0}</span>
-              </Link>
+              <ChartBlock
+                entry={entry}
+                rank={index + 1}
+                value={entry.play ?? 0}
+              />
             </li>
           ))}
         </ol>
@@ -300,53 +267,18 @@ const Overview = () => {
           {rateKeys.map((key) => (
             <section key={key} className={classes["least-rate-column"]}>
               <h6>{rateOptions[key].label} Rate</h6>
-              <ol className={classes["chart-blocks"]}>
+              <ol
+                className={`${chartBlockClasses["chart-blocks"]} ${chartBlockClasses["chart-blocks-single"]}`}
+              >
                 {leastRateEntriesByRate[key].map((entry, index) => (
                   <li key={entry.hash}>
-                    <Link
-                      className={classes["chart-block"]}
-                      href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                        entry.deluxe ? "dx" : "std"
-                      }/${entry.difficulty}`}
-                    >
-                      <img
-                        className={classes["chart-cover"]}
-                        src={getCoverUrl(entry.song_id)}
-                        alt=""
-                      />
-                      <span className={classes["chart-rank"]}>{index + 1}</span>
-                      <span className={classes["chart-info"]}>
-                        <span className={classes["chart-title"]}>
-                          {entry.title}
-                        </span>
-                        <span className={classes["chart-meta"]}>
-                          <Variant deluxe={entry.deluxe} />
-                          <span
-                            className={
-                              tableClasses[
-                                `difficulty-${entry.difficulty}` as
-                                  | "difficulty-0"
-                                  | "difficulty-1"
-                                  | "difficulty-2"
-                                  | "difficulty-3"
-                                  | "difficulty-4"
-                              ]
-                            }
-                          >
-                            {difficulties[entry.difficulty]}{" "}
-                            {entry.internal_lv
-                              ? entry.internal_lv.toFixed(1)
-                              : entry.level}
-                          </span>
-                        </span>
-                      </span>
-                      <span className={classes["chart-play"]}>
-                        {((entry[rateOptions[key].field] ?? 0) * 100).toFixed(
-                          1,
-                        )}
-                        %
-                      </span>
-                    </Link>
+                    <ChartBlock
+                      entry={entry}
+                      rank={index + 1}
+                      value={`${(
+                        (entry[rateOptions[key].field] ?? 0) * 100
+                      ).toFixed(1)}%`}
+                    />
                   </li>
                 ))}
               </ol>

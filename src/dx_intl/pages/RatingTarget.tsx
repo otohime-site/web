@@ -6,12 +6,9 @@ import { QueryResult } from "../../common/components/QueryResult"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
-import tableClasses from "../components/PlayerScoreTable.module.css"
-import Variant from "../components/Variant"
+import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import { dxIntlSongsDocument } from "../models/queries"
-import { getDifficultyClassName } from "../utils/styling"
-import classes from "./RatingTarget.module.css"
 
 const dxIntlRatingTargetStatsDocument = graphql(`
   query dxIntlRatingTargetStats($rating_target: Int!) {
@@ -40,42 +37,25 @@ type AggregatedRow = {
   count: number
 }
 
-const RatingTargetTable = ({ rows }: { rows: AggregatedRow[] }) => (
-  <table className={tableClasses.table}>
-    <colgroup>
-      <col className={tableClasses["col-title"]} />
-      <col className={tableClasses["col-deluxe"]} />
-      <col className={tableClasses["col-difficulty"]} />
-      <col className={tableClasses["col-score"]} />
-      <col className={tableClasses["col-stats"]} />
-    </colgroup>
-    <thead>
-      <tr>
-        <th className={tableClasses["col-title"]}></th>
-        <th className={tableClasses["col-deluxe"]}></th>
-        <th className={tableClasses["col-difficulty"]}></th>
-        <th className={tableClasses["col-score"]}>平均成績</th>
-        <th className={tableClasses["col-stats"]}>人數</th>
-      </tr>
-    </thead>
-    <tbody>
-      {rows.map((row) => (
-        <tr key={getNoteHash(row.note)}>
-          <td className={tableClasses["col-title"]}>{row.note.title}</td>
-          <td className={tableClasses["col-deluxe"]}>
-            <Variant deluxe={row.note.deluxe} />
-          </td>
-          <td className={getDifficultyClassName(tableClasses, row.note)}>
-            {row.note.internal_lv ? row.note.internal_lv.toFixed(1) : ""}
-          </td>
-          <td className={tableClasses["col-score"]}>
-            {`${row.average_score.toFixed(4)}%`}
-          </td>
-          <td className={tableClasses["col-stats"]}>{row.count}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+const RatingTargetList = ({ rows }: { rows: AggregatedRow[] }) => (
+  <ol className={chartBlockClasses["chart-blocks"]}>
+    {rows.map((row, index) => (
+      <li key={getNoteHash(row.note)}>
+        <ChartBlock
+          entry={row.note}
+          rank={index + 1}
+          value={
+            <span className={chartBlockClasses["chart-value-group"]}>
+              <span>{`${row.count}`}</span>
+              <span className={chartBlockClasses["chart-value-sub"]}>
+                {`${row.average_score.toFixed(4)}%`}
+              </span>
+            </span>
+          }
+        />
+      </li>
+    ))}
+  </ol>
 )
 
 const RatingTarget = ({ params }: { params: Params }) => {
@@ -136,6 +116,7 @@ const RatingTarget = ({ params }: { params: Params }) => {
           列出最新一次改版後，每個 Rating 目標玩家（取正負125分）最常出現的 Best
           50 組成曲。
         </p>
+        <p>※下面的數字分別為「納入組成玩家數」與「納入玩家的平均成績」。</p>
         <ScrollableSegmentGroupRoot
           value={String(rating)}
           onValueChange={({ value }) => {
@@ -149,16 +130,10 @@ const RatingTarget = ({ params }: { params: Params }) => {
           ))}
         </ScrollableSegmentGroupRoot>
         <QueryResult result={ratingTargetStatsResult}>
-          <div className={classes["rating-target-grid"]}>
-            <div>
-              <h5>新曲</h5>
-              <RatingTargetTable rows={newStats} />
-            </div>
-            <div>
-              <h5>舊曲</h5>
-              <RatingTargetTable rows={oldStats} />
-            </div>
-          </div>
+          <h5>新曲</h5>
+          <RatingTargetList rows={newStats} />
+          <h5>舊曲</h5>
+          <RatingTargetList rows={oldStats} />
         </QueryResult>
       </main>
     </>
