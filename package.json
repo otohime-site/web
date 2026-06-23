@@ -16,7 +16,7 @@
   "dependencies": {
     "@ark-ui/react": "^5.37.2",
     "@otohime-site/parser": "^26.4.0",
-    "@urql/core": "^6.0.2",
+    "@urql/core": "^6.0.3",
     "@urql/exchange-auth": "^3.0.0",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
     "chart.js": "^4.5.1",
@@ -58,7 +58,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.6.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.7",
+    "lint-staged": "^17.0.8",
     "postcss-jit-props": "^1.0.16",
     "postcss-nesting": "^14.0.0",
     "postcss-preset-env": "^11.3.1",
