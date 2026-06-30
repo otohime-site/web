@@ -276,7 +276,26 @@ export const versionTitles = [
   "宴",
   "鏡",
   "彩",
+  "丸",
 ]
+
+const rewardSuffixes = {
+  sss: "将",
+  fc: "極",
+  ap: "神",
+} as const
+
+// The per-version reward title is the version title char followed by the
+// rate-specific suffix (e.g. v2 "超" -> 超将 / 超極 / 超神). Versions without a
+// title (e.g. the merged maimai / maimai PLUS at index 0) have no reward.
+export const versionRewardTitle = (
+  version: number,
+  rate: keyof typeof rewardSuffixes,
+): string | null => {
+  const title = versionTitles[version]
+  if (title == null || title === "") return null
+  return `${title}${rewardSuffixes[rate]}`
+}
 
 export const versionTitleExcludes = [
   "c6257734b2ef0d743c5a8f46582afaee46bc80d8ed2ec662105a500f313e322d", // 前前前世

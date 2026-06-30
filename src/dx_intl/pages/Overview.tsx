@@ -16,7 +16,7 @@ import { Switch } from "../../common/components/ui/Switch"
 import { graphql } from "../../graphql"
 import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
-import { versions } from "../models/constants"
+import { versionRewardTitle, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./Overview.module.css"
 import { RATING_TARGETS } from "./RatingTarget"
@@ -264,26 +264,35 @@ const Overview = () => {
           </Switch>
         </div>
         <div className={classes["least-rate-grid"]}>
-          {rateKeys.map((key) => (
-            <section key={key} className={classes["least-rate-column"]}>
-              <h6>{rateOptions[key].label} Rate</h6>
-              <ol
-                className={`${chartBlockClasses["chart-blocks"]} ${chartBlockClasses["chart-blocks-single"]}`}
-              >
-                {leastRateEntriesByRate[key].map((entry, index) => (
-                  <li key={entry.hash}>
-                    <ChartBlock
-                      entry={entry}
-                      rank={index + 1}
-                      value={`${(
-                        (entry[rateOptions[key].field] ?? 0) * 100
-                      ).toFixed(1)}%`}
-                    />
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ))}
+          {rateKeys.map((key) => {
+            const reward =
+              !includeReMaster && activeVersion != null
+                ? versionRewardTitle(activeVersion, key)
+                : null
+            return (
+              <section key={key} className={classes["least-rate-column"]}>
+                <h6>
+                  {rateOptions[key].label} Rate
+                  {reward != null ? ` (${reward})` : null}
+                </h6>
+                <ol
+                  className={`${chartBlockClasses["chart-blocks"]} ${chartBlockClasses["chart-blocks-single"]}`}
+                >
+                  {leastRateEntriesByRate[key].map((entry, index) => (
+                    <li key={entry.hash}>
+                      <ChartBlock
+                        entry={entry}
+                        rank={index + 1}
+                        value={`${(
+                          (entry[rateOptions[key].field] ?? 0) * 100
+                        ).toFixed(1)}%`}
+                      />
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )
+          })}
         </div>
       </QueryResult>
     </main>
