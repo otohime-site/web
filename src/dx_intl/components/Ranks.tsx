@@ -50,7 +50,7 @@ import courseUraKaiden from "../images/course_ranks/urakaiden.svg"
 import { classRankNames, legacyCourseRankNames } from "../models/constants"
 import classes from "./Ranks.module.css"
 
-const courseRankImages = [
+export const courseRankImages = [
   course0,
   course1,
   course2,
@@ -77,7 +77,7 @@ const courseRankImages = [
   courseUraKaiden,
 ]
 
-const classRankImages = [
+export const classRankImages = [
   classB5,
   classB4,
   classB3,

@@ -347,6 +347,9 @@ const Player = ({ params }: { params: Params }) => {
     ],
     groupBy: (item) => item.group,
   })
+  const ownsScoreTable =
+    editableResult.error == null &&
+    (editableResult.data?.dx_intl_players?.length ?? 0) > 0
 
   return (
     <>
@@ -366,8 +369,7 @@ const Player = ({ params }: { params: Params }) => {
             isPrivate={player.private}
           />
           <div aria-label="成績單選項" className={layoutClasses.toolbar}>
-            {editableResult.error == null &&
-            (editableResult.data?.dx_intl_players?.length ?? 0) > 0 ? (
+            {ownsScoreTable ? (
               <LinkButton href={`~/dxi/p/${params.nickname}/edit`}>
                 <IconPencil /> 編輯
               </LinkButton>
@@ -378,16 +380,24 @@ const Player = ({ params }: { params: Params }) => {
             <button onClick={downloadCSV}>
               <IconFileDownload /> 下載 CSV
             </button>
-            <button onClick={() => setShowRatingImage(true)}>
-              <IconImage /> Rating 圖片
-            </button>
+            {ownsScoreTable ? (
+              <button onClick={() => setShowRatingImage(true)}>
+                <IconImage /> Rating 圖片
+              </button>
+            ) : null}
           </div>
-          <PlayerRatingImage
-            open={showRatingImage}
-            onOpenChange={setShowRatingImage}
-            scoreTable={scoreTable}
-            cardName={record.card_name}
-          />
+          {ownsScoreTable ? (
+            <PlayerRatingImage
+              open={showRatingImage}
+              onOpenChange={setShowRatingImage}
+              scoreTable={scoreTable}
+              cardName={record.card_name}
+              nickname={params.nickname ?? ""}
+              isPrivate={player.private}
+              courseRank={record.course_rank}
+              classRank={record.class_rank}
+            />
+          ) : null}
           <div className={layoutClasses.line}>
             <SelectContainer
               label="排序"
