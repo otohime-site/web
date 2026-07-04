@@ -8,14 +8,14 @@
     flex-direction: row;
     align-items: center;
     gap: var(--size-2);
-    font-family: "M PLUS 1p";
+    font-family: "M PLUS 2";
     text-align: left;
 
     a {
       outline: none;
     }
     h6 {
-      font-family: "M PLUS 1p";
+      font-family: "M PLUS 2";
       font-weight: 700;
       font-size: 1rem;
     }
@@ -32,7 +32,7 @@
     }
   }
   .rates {
-    font-family: "M PLUS 1p";
+    font-family: "M PLUS 2";
     padding: 0;
     display: flex;
     flex-direction: row;

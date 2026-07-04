@@ -1,5 +1,5 @@
 .title {
-  font-family: "M PLUS 1p";
+  font-family: "M PLUS 2";
   font-weight: 700;
   &:where(h3, h4, h5, h6, dt) {
     max-width: unset;
@@ -38,7 +38,7 @@
   flex-direction: row;
   align-items: center;
   gap: var(--size-2);
-  font-family: "M PLUS 1p";
+  font-family: "M PLUS 2";
 
   img {
     height: 4em;

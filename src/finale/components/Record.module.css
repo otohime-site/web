@@ -19,7 +19,7 @@
   border-radius: 0.2em;
   font-size: 120%;
   font-weight: 800;
-  font-family: "M PLUS Rounded 1c";
+  font-family: "M PLUS 2";
 }
 
 .title {
@@ -34,7 +34,7 @@
   -webkit-text-stroke: 0.04em #000000;
   text-shadow: 0.06em 0.06em #000000;
   font-weight: 800;
-  font-family: "M PLUS Rounded 1c";
+  font-family: "M PLUS 2";
   margin-bottom: 0.5em;
 
   background: #dadada;

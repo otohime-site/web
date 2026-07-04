@@ -18,7 +18,7 @@
     height: 0.8em;
   }
   tbody {
-    font-family: "M PLUS 1p";
+    font-family: "M PLUS 2";
   }
   tbody tr {
     height: 2em;
@@ -104,7 +104,7 @@ td.col-difficulty.plus {
   padding-right: 0.165em;
 }
 td.col-difficulty.non-plus {
-  padding-right: 0.9em;
+  padding-right: 0.868em;
 }
 
 .difficulty-0 {

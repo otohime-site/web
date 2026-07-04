@@ -24,7 +24,7 @@
   border: 1px solid var(--surface-3);
   border-radius: var(--radius-2);
   background-color: var(--surface-1);
-  font-family: "M PLUS 1p";
+  font-family: "M PLUS 2";
   color: inherit;
   text-decoration: none;
   &:hover {

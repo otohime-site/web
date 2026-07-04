@@ -96,7 +96,7 @@ const RatingPlate = ({
         text={`${rating}`}
         fontSize={PLATE_EM}
         fontStyle="900"
-        fontFamily="M PLUS 1p"
+        fontFamily="M PLUS 2"
         letterSpacing={0.125 * PLATE_EM}
         fill="#e5c100"
         stroke="#393939"
@@ -201,7 +201,7 @@ const ChartTile = ({
         verticalAlign="top"
         text={entry.title}
         fontSize={13}
-        fontFamily="M PLUS Rounded 1c"
+        fontFamily="M PLUS 2"
         fill="#d8d8d8"
         wrap="none"
         ellipsis={true}
@@ -214,7 +214,7 @@ const ChartTile = ({
         text={`${entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}  →  ${entry.rating}`}
         fontSize={16}
         fontStyle="bold"
-        fontFamily="M PLUS Rounded 1c"
+        fontFamily="M PLUS 2"
         fill="#f5f5f5"
       />
     </Group>
@@ -239,7 +239,7 @@ const Section = ({
         text={`${title}  (${entries.length})  —  ${total}`}
         fontSize={30}
         fontStyle="bold"
-        fontFamily="M PLUS Rounded 1c"
+        fontFamily="M PLUS 2"
         fill="#ffd54f"
       />
       {entries.map((entry, i) => {
@@ -310,7 +310,7 @@ const PlayerRatingCanvas = ({
       ...oldEntries.map((entry) => entry.title),
     ].join("")
     document.fonts
-      .load(`800 30px "M PLUS Rounded 1c"`, text)
+      .load(`800 30px "M PLUS 2"`, text)
       .then(() => setFontsLoaded(true))
       .catch(() => setFontsLoaded(true))
   }, [cardName, newEntries, oldEntries])
@@ -350,7 +350,7 @@ const PlayerRatingCanvas = ({
           text={cardName}
           fontSize={40}
           fontStyle="bold"
-          fontFamily="M PLUS Rounded 1c"
+          fontFamily="M PLUS 2"
           fill="#ffffff"
         />
         {showRating ? (
@@ -388,7 +388,7 @@ const PlayerRatingCanvas = ({
               width={WIDTH - PADDING * 2 - QR_SIZE - RANK_GAP}
               text={scoreUrl}
               fontSize={24}
-              fontFamily="M PLUS Rounded 1c"
+              fontFamily="M PLUS 2"
               fill="#c8c8c8"
               wrap="none"
               ellipsis={true}
