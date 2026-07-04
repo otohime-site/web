@@ -25,8 +25,8 @@
   border: 0.1em solid #cccccc;
   border-radius: 0.2em;
   font-size: 120%;
-  font-weight: 800;
-  font-family: "M PLUS 2";
+  font-weight: 700;
+  font-family: "M PLUS Rounded 1c";
 }
 
 .title {
@@ -35,10 +35,11 @@
   border-radius: 0.4em;
   border: 0.1em solid;
   color: white;
-  -webkit-text-stroke: 0.04em #000000;
-  text-shadow: 0.06em 0.06em #000000;
-  font-weight: 800;
-  font-family: "M PLUS 2";
+  -webkit-text-stroke: 0.1em #000000;
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.06em #666666;
+  font-weight: 700;
+  font-family: "M PLUS Rounded 1c";
   margin-bottom: 0.5em;
   overflow: hidden;
   white-space: nowrap;

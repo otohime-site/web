@@ -91,7 +91,7 @@ const RatingPlate = ({
       <Text
         x={0}
         y={0.6 * PLATE_EM}
-        width={PLATE_WIDTH - 0.34 * PLATE_EM}
+        width={PLATE_WIDTH - 0.4 * PLATE_EM}
         align="right"
         text={`${rating}`}
         fontSize={PLATE_EM}
