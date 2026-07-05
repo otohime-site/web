@@ -71,7 +71,7 @@ const PlayerRatingImage = ({
                 checked={showRanks}
                 onCheckedChange={(e) => setShowRanks(e.checked)}
               >
-                段位／課題
+                段位／對戰階級
               </Switch>
               <Switch
                 checked={showUrl}

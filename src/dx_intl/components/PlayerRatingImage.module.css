@@ -19,9 +19,12 @@
 
 .canvas {
   overflow: auto;
-  /* Konva renders a fixed 1200px-wide canvas at its intrinsic size; cap the
-     displayed height to the viewport and let the width scale proportionally. */
+  /* Konva renders a fixed 2100x3750 canvas at its intrinsic size. Fit it to the
+     viewport, but never below 50% of intrinsic — at that floor the box scrolls
+     rather than shrinking the image further, keeping text legible. */
   & canvas {
+    min-width: 1050px;
+    min-height: 1875px;
     max-width: 100%;
     max-height: 80vh;
     width: auto !important;

@@ -9,12 +9,29 @@ import {
 } from "react-konva"
 import { encode } from "uqr"
 import logoUrl from "../../logo/favicon.svg"
-import { ScoreTableEntry, getCoverUrl } from "../models/aggregation"
+import apFlagUrl from "../images/flags/ap.svg"
+import appFlagUrl from "../images/flags/app.svg"
+import blankFlagUrl from "../images/flags/blank.svg"
+import fcFlagUrl from "../images/flags/fc.svg"
+import fcpFlagUrl from "../images/flags/fcp.svg"
+import fsFlagUrl from "../images/flags/fs.svg"
+import fsdFlagUrl from "../images/flags/fsd.svg"
+import fsdpFlagUrl from "../images/flags/fsdp.svg"
+import fspFlagUrl from "../images/flags/fsp.svg"
+import sFlagUrl from "../images/flags/s.svg"
+import dxVariantUrl from "../images/variants/dx.svg"
+import stdVariantUrl from "../images/variants/std.svg"
+import {
+  ESTIMATED_INTERNAL_LV,
+  ScoreTableEntry,
+  getCoverUrl,
+  getRating,
+} from "../models/aggregation"
 import { RATING_NEW_COUNT, RATING_OLD_COUNT } from "../models/constants"
 import { classRankImages, courseRankImages } from "./Ranks"
 import { getRatingImage } from "./Rating"
 
-// Concrete colors for difficulty borders (Konva can't read CSS variables).
+// Concrete colors for difficulty accents (Konva can't read CSS variables).
 const difficultyColors = [
   "#22aa5d", // Basic
   "#f0b400", // Advanced
@@ -22,34 +39,72 @@ const difficultyColors = [
   "#9b5de5", // Master
   "#c84bff", // Re:Master
 ]
+// Re:Master shares the purple family with Master, so it gets an extra white
+// outer border to tell the two apart at a glance.
+const REMASTER_DIFFICULTY = 4
 
-// Canvas geometry. The image is a fixed 1080x1350 portrait frame (Instagram
-// 4:5). The cover size is derived from the width, then everything below is laid
-// out to fit the fixed height — see the layout assertions in the component.
-const WIDTH = 1080
-const HEIGHT = 1350
-const PADDING = 32
-const COLUMNS = 10
-const TILE_GAP = 8
-const COVER_SIZE = Math.floor(
+// Combo / sync flag badge SVGs indexed by combo_flag / sync_flag. Index 0 is
+// "no flag" — the blank placeholder keeps the badge slots aligned across blocks.
+const comboFlagImages: string[] = [
+  blankFlagUrl,
+  fcFlagUrl,
+  fcpFlagUrl,
+  apFlagUrl,
+  appFlagUrl,
+]
+const syncFlagImages: string[] = [
+  blankFlagUrl,
+  sFlagUrl,
+  fsFlagUrl,
+  fspFlagUrl,
+  fsdFlagUrl,
+  fsdpFlagUrl,
+]
+
+// Canvas geometry. The image is a fixed 2100x3750 portrait frame. The header
+// eats a fixed band at the top, the footer a fixed band at the bottom, and the
+// remaining middle is laid out as a 5-column grid of cover-backed blocks — see
+// the layout math in the component.
+const WIDTH = 2100
+const HEIGHT = 3750
+const HEADER_HEIGHT = 600
+const FOOTER_HEIGHT = 100
+const PADDING = 64
+const COLUMNS = 5
+const TILE_GAP = 20
+const SECTION_TITLE_HEIGHT = 72
+const SECTION_GAP = 32
+// Each block is a rounded rectangle filled by the cover art, with rank / title /
+// score text drawn over difficulty-tinted scrims. The width comes from the
+// 5-column grid; the height is sized so both sections (10 rows total) fit the
+// content band between header and footer — so blocks are slightly landscape and
+// the square cover is center-cropped to fill.
+const BLOCK_W = Math.floor(
   (WIDTH - PADDING * 2 - TILE_GAP * (COLUMNS - 1)) / COLUMNS,
 )
-const TILE_LABEL_HEIGHT = 40
-const TILE_HEIGHT = COVER_SIZE + TILE_LABEL_HEIGHT
-const SECTION_TITLE_HEIGHT = 44
+const NEW_ROWS = Math.ceil(RATING_NEW_COUNT / COLUMNS)
+const OLD_ROWS = Math.ceil(RATING_OLD_COUNT / COLUMNS)
+const TOTAL_ROWS = NEW_ROWS + OLD_ROWS
+const CONTENT_BAND = HEIGHT - HEADER_HEIGHT - FOOTER_HEIGHT
+// Solve for the block height that packs every row into the band, accounting for
+// the two section titles, the inter-section gap, and the inter-row gaps.
+const BLOCK_H = Math.floor(
+  (CONTENT_BAND -
+    2 * SECTION_TITLE_HEIGHT -
+    SECTION_GAP -
+    (TOTAL_ROWS - 2) * TILE_GAP) /
+    TOTAL_ROWS,
+)
+const BLOCK_RADIUS = 20
 const BG_COLOR = "#1b1d22"
-const SECTION_GAP = 20
-const RANK_GAP = 12
+const RANK_GAP = 16
 
-// Header holds three stacked left-aligned lines: (1) the rating plate + class
-// rank name, (2) the card-name plate + course rank name, (3) the trophy title
-// bar. Heights are tuned so the block clears the top-right URL/QR corner.
-const HEADER_LINE_GAP = 12
-// The QR code lives in the top-right corner with the score URL above it and the
-// site logo badged in its center. Kept small so it never crowds the header.
-const QR_SIZE = 132
-const CORNER_URL_HEIGHT = 22
-const LOGO_BADGE = 34
+// The QR code lives in the header's top-right corner with the score URL above
+// it and the site logo badged in its center. Sized generously for the larger
+// canvas so it stays scannable at export resolution.
+const QR_SIZE = 240
+const CORNER_URL_HEIGHT = 40
+const LOGO_BADGE = 60
 
 // Load an image element for use in Konva, requesting CORS so the resulting
 // canvas stays exportable (covers are served from Cloudflare R2 / covers.otohi.me).
@@ -69,7 +124,7 @@ const useImage = (url: string): HTMLImageElement | undefined => {
 // Mirror of <Rating>: an SVG plate chosen by rating tier, with the number
 // overlaid in gold right-aligned text. The plate art is 296x86; sizes below
 // are derived from Rating.module.css where 1em maps to PLATE_EM px.
-const PLATE_EM = 25
+const PLATE_EM = 46
 const PLATE_WIDTH = 7.56 * PLATE_EM
 const PLATE_HEIGHT = 2.2 * PLATE_EM
 
@@ -265,12 +320,12 @@ const QrCode = ({ url, x, y }: { url: string; x: number; y: number }) => {
   const matrix = useMemo(() => encode(url, { border: 2, ecc: "H" }).data, [url])
   const logo = useImage(logoUrl)
   const module = QR_SIZE / matrix.length
-  const badgePad = 2
+  const badgePad = 4
   const badge = LOGO_BADGE + badgePad * 2
   const badgeXY = (QR_SIZE - badge) / 2
   return (
     <Group x={x} y={y}>
-      <Rect width={QR_SIZE} height={QR_SIZE} fill="#ffffff" cornerRadius={4} />
+      <Rect width={QR_SIZE} height={QR_SIZE} fill="#ffffff" cornerRadius={8} />
       {/* The matrix is fixed-size, so grid coordinates are stable keys. */}
       {/* eslint-disable @eslint-react/no-array-index-key */}
       {matrix.map((row, r) =>
@@ -294,7 +349,7 @@ const QrCode = ({ url, x, y }: { url: string; x: number; y: number }) => {
         width={badge}
         height={badge}
         fill="#ffffff"
-        cornerRadius={6}
+        cornerRadius={12}
       />
       {logo ? (
         <KonvaImage
@@ -309,7 +364,39 @@ const QrCode = ({ url, x, y }: { url: string; x: number; y: number }) => {
   )
 }
 
-const ChartTile = ({
+// One chart rendered as a cover-backed block: the square cover art is
+// center-cropped to fill the landscape block, with a difficulty-tinted scrim at
+// the top (variant + difficulty on the left, rating score on the right) and
+// bottom (song title, level, and a rating progress bar), plus a
+// difficulty-colored frame.
+const TITLE_BAND_H = Math.round(BLOCK_H * 0.4)
+const SCORE_BAND_H = Math.round(BLOCK_H * 0.44)
+// The variant badge SVGs are 2:1; drawn at the top-left header height.
+const HEADER_FONT = Math.round(BLOCK_H * 0.07)
+const VARIANT_H = Math.round(HEADER_FONT * 1.15)
+// A thin white progress bar showing this chart's rating against the theoretical
+// max for its internal level (SSS+/AP at 101%).
+const BAR_H = Math.max(3, Math.round(BLOCK_H * 0.02))
+// Combo / sync flag badges on the score line; the source SVGs are square.
+const FLAG_SIZE = Math.round(BLOCK_H * 0.13)
+
+// Center-crop the square source cover to the block's aspect ratio. The source
+// is square (side = naturalWidth), so we keep the full width and trim the
+// height, or vice-versa, whichever fills the landscape block.
+const coverCrop = (img: HTMLImageElement) => {
+  const side = Math.min(img.naturalWidth, img.naturalHeight)
+  const cropH = (side * BLOCK_H) / BLOCK_W
+  if (cropH <= side) {
+    return { x: 0, y: (side - cropH) / 2, width: side, height: cropH }
+  }
+  const cropW = (side * BLOCK_W) / BLOCK_H
+  return { x: (side - cropW) / 2, y: 0, width: cropW, height: side }
+}
+
+// Konva can't tint with a CSS color string on a gradient, so build vertical
+// scrim stops from a difficulty color faded to transparent. Colors are hex, so
+// append alpha bytes for the translucent stops.
+const ChartBlock = ({
   entry,
   x,
   y,
@@ -319,56 +406,192 @@ const ChartTile = ({
   y: number
 }) => {
   const cover = useImage(getCoverUrl(entry.song_id))
-  const borderColor = difficultyColors[entry.difficulty] ?? "#888"
+  const variant = useImage(entry.deluxe ? dxVariantUrl : stdVariantUrl)
+  const comboFlag = useImage(comboFlagImages[entry.combo_flag] ?? blankFlagUrl)
+  const syncFlag = useImage(syncFlagImages[entry.sync_flag] ?? blankFlagUrl)
+  const accent = difficultyColors[entry.difficulty] ?? "#888888"
+  // Re:Master shares Master's purple family; give its bottom scrim a lighter
+  // purple tint (paired with the white border) so the two read apart.
+  const isReMaster = entry.difficulty === REMASTER_DIFFICULTY
+  const scrimTint = isReMaster ? "#e6a8ff" : accent
+  const level = entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level
+  // Max rating this chart can yield: SSS+/AP (101%) at its internal level. When
+  // the exact internal level is unknown, fall back to the estimated one for the
+  // displayed level so the bar stays meaningful; guard against a zero denominator.
+  const effectiveLv =
+    entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level] ?? 0
+  const maxRating = effectiveLv > 0 ? getRating(effectiveLv, 101, true) : 0
+  const progress = maxRating > 0 ? Math.min(1, entry.rating / maxRating) : 0
+  const pad = Math.round(BLOCK_W * 0.03)
+  // Bottom band: two lines above the progress bar. Line 2 (score % + rating)
+  // sits just above the bar; line 1 (title + flags) sits above line 2.
+  const BOTTOM_LINE2_H = Math.round(BLOCK_H * 0.16)
+  const BOTTOM_LINE2_Y = BLOCK_H - BAR_H - pad - BOTTOM_LINE2_H
+  const BOTTOM_LINE1_Y = BOTTOM_LINE2_Y - FLAG_SIZE - Math.round(BLOCK_H * 0.02)
   return (
     <Group x={x} y={y}>
+      {/* Cover art (center-cropped) or a placeholder, clipped to the block. */}
       {cover ? (
         <KonvaImage
           image={cover}
-          width={COVER_SIZE}
-          height={COVER_SIZE}
-          cornerRadius={8}
+          width={BLOCK_W}
+          height={BLOCK_H}
+          crop={coverCrop(cover)}
+          cornerRadius={BLOCK_RADIUS}
         />
       ) : (
         <Rect
-          width={COVER_SIZE}
-          height={COVER_SIZE}
-          cornerRadius={8}
+          width={BLOCK_W}
+          height={BLOCK_H}
+          cornerRadius={BLOCK_RADIUS}
           fill="#2c2f36"
         />
       )}
-      {/* Difficulty-colored frame */}
+
+      {/* Lighten the cover so the darker scrims and white text pop against it. */}
       <Rect
-        width={COVER_SIZE}
-        height={COVER_SIZE}
-        cornerRadius={8}
-        stroke={borderColor}
-        strokeWidth={4}
+        width={BLOCK_W}
+        height={BLOCK_H}
+        cornerRadius={BLOCK_RADIUS}
+        fill="#ffffff"
+        opacity={0.18}
       />
+
+      {/* Top scrim: black-to-transparent so the header reads over any cover. */}
+      <Rect
+        width={BLOCK_W}
+        height={TITLE_BAND_H}
+        cornerRadius={[BLOCK_RADIUS, BLOCK_RADIUS, 0, 0]}
+        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+        fillLinearGradientEndPoint={{ x: 0, y: TITLE_BAND_H }}
+        fillLinearGradientColorStops={[0, "#000000d8", 1, "#00000000"]}
+      />
+      {/* Bottom scrim behind the title/level, tinted with the difficulty accent. */}
+      <Rect
+        y={BLOCK_H - SCORE_BAND_H}
+        width={BLOCK_W}
+        height={SCORE_BAND_H}
+        cornerRadius={[0, 0, BLOCK_RADIUS, BLOCK_RADIUS]}
+        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+        fillLinearGradientEndPoint={{ x: 0, y: SCORE_BAND_H }}
+        fillLinearGradientColorStops={[0, "#00000000", 1, `${scrimTint}f0`]}
+      />
+
+      {/* Difficulty-colored frame. Re:Master (index 4) uses a white border to
+          set it apart from the plain-purple Master charts. */}
+      <Rect
+        width={BLOCK_W}
+        height={BLOCK_H}
+        cornerRadius={BLOCK_RADIUS}
+        stroke={isReMaster ? "#ffffff" : accent}
+        strokeWidth={5}
+      />
+
+      {/* Top-left: variant (DX/STD) badge. */}
+      {variant ? (
+        <KonvaImage
+          image={variant}
+          x={pad}
+          y={pad}
+          width={VARIANT_H * 2}
+          height={VARIANT_H}
+        />
+      ) : null}
+
+      {/* Top-right: the (internal) level, larger. */}
       <Text
         x={0}
-        y={COVER_SIZE + 2}
-        width={COVER_SIZE}
-        height={18}
-        align="center"
-        verticalAlign="top"
-        text={entry.title}
-        fontSize={13}
+        y={pad}
+        width={BLOCK_W - pad}
+        align="right"
+        text={`${level}`}
+        fontSize={Math.round(BLOCK_H * 0.15)}
+        fontStyle="bold"
         fontFamily="M PLUS 2"
-        fill="#d8d8d8"
+        fill="#ffffff"
+        stroke="#00000080"
+        strokeWidth={Math.round(BLOCK_H * 0.008)}
+        fillAfterStrokeEnabled={true}
+      />
+
+      {/* Bottom band, two lines stacked above the progress bar:
+          line 1 — song title (left) + combo/sync flags (right);
+          line 2 — score % (left) + rating (right). */}
+      {/* Line 1: title (left) + flags (right). */}
+      <Text
+        x={pad}
+        y={BOTTOM_LINE1_Y}
+        width={BLOCK_W - pad * 2 - FLAG_SIZE * 2 - 12}
+        height={FLAG_SIZE}
+        verticalAlign="middle"
+        text={entry.title}
+        fontSize={Math.round(BLOCK_H * 0.11)}
+        fontStyle="700"
+        fontFamily="M PLUS 2"
+        fill="#ffffff"
         wrap="none"
         ellipsis={true}
       />
+      <KonvaImage
+        image={comboFlag}
+        x={BLOCK_W - pad - FLAG_SIZE * 2 - 6}
+        y={BOTTOM_LINE1_Y}
+        width={FLAG_SIZE}
+        height={FLAG_SIZE}
+      />
+      <KonvaImage
+        image={syncFlag}
+        x={BLOCK_W - pad - FLAG_SIZE}
+        y={BOTTOM_LINE1_Y}
+        width={FLAG_SIZE}
+        height={FLAG_SIZE}
+      />
+
+      {/* Line 2: score % (left) + rating (right). */}
       <Text
-        x={0}
-        y={COVER_SIZE + 21}
-        width={COVER_SIZE}
-        align="center"
-        text={`${entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level}  →  ${entry.rating}`}
-        fontSize={16}
+        x={pad}
+        y={BOTTOM_LINE2_Y}
+        height={BOTTOM_LINE2_H}
+        verticalAlign="middle"
+        text={entry.score ? `${entry.score.toFixed(4)}%` : "―"}
+        fontSize={Math.round(BLOCK_H * 0.1)}
         fontStyle="bold"
         fontFamily="M PLUS 2"
-        fill="#f5f5f5"
+        fill="#ffffff"
+      />
+      <Text
+        x={0}
+        y={BOTTOM_LINE2_Y}
+        width={BLOCK_W - pad}
+        height={BOTTOM_LINE2_H}
+        align="right"
+        verticalAlign="middle"
+        text={`${entry.rating}`}
+        fontSize={BOTTOM_LINE2_H}
+        fontStyle="bold"
+        fontFamily="M PLUS 2"
+        fill="#ffffff"
+        stroke="#00000070"
+        strokeWidth={Math.round(BLOCK_H * 0.009)}
+        fillAfterStrokeEnabled={true}
+      />
+
+      {/* Rating progress bar along the bottom edge. */}
+      <Rect
+        x={pad}
+        y={BLOCK_H - BAR_H - pad}
+        width={BLOCK_W - pad * 2}
+        height={BAR_H}
+        cornerRadius={BAR_H / 2}
+        fill="#00000070"
+      />
+      <Rect
+        x={pad}
+        y={BLOCK_H - BAR_H - pad}
+        width={(BLOCK_W - pad * 2) * progress}
+        height={BAR_H}
+        cornerRadius={BAR_H / 2}
+        fill="#ffffff"
       />
     </Group>
   )
@@ -388,9 +611,9 @@ const Section = ({
     <Group y={y}>
       <Text
         x={PADDING}
-        y={8}
+        y={12}
         text={`${title}  (${entries.length})  —  ${total}`}
-        fontSize={30}
+        fontSize={52}
         fontStyle="bold"
         fontFamily="M PLUS 2"
         fill="#ffd54f"
@@ -399,11 +622,11 @@ const Section = ({
         const col = i % COLUMNS
         const row = Math.floor(i / COLUMNS)
         return (
-          <ChartTile
+          <ChartBlock
             key={entry.hash}
             entry={entry}
-            x={PADDING + col * (COVER_SIZE + TILE_GAP)}
-            y={SECTION_TITLE_HEIGHT + row * (TILE_HEIGHT + TILE_GAP)}
+            x={PADDING + col * (BLOCK_W + TILE_GAP)}
+            y={SECTION_TITLE_HEIGHT + row * (BLOCK_H + TILE_GAP)}
           />
         )
       })}
@@ -413,17 +636,18 @@ const Section = ({
 
 const sectionHeight = (count: number) => {
   const rows = Math.ceil(count / COLUMNS)
-  return SECTION_TITLE_HEIGHT + rows * (TILE_HEIGHT + TILE_GAP)
+  return SECTION_TITLE_HEIGHT + rows * (BLOCK_H + TILE_GAP) - TILE_GAP
 }
 
 // Header line geometry. The rating plate sets the height of line 1; the card
 // name plate mirrors it on line 2; the trophy title bar is line 3. Rank badges
 // are drawn as SVGs to the right of the plate on their respective line.
-const CARD_PLATE_HEIGHT = 52
-const CARD_PLATE_WIDTH = 300
-const TITLE_BAR_HEIGHT = 52
-const TITLE_BAR_WIDTH = 460
-const RANK_BADGE_HEIGHT = 46
+const CARD_PLATE_HEIGHT = 96
+const CARD_PLATE_WIDTH = 560
+const TITLE_BAR_HEIGHT = 96
+const TITLE_BAR_WIDTH = 840
+const RANK_BADGE_HEIGHT = 84
+const HEADER_LINE_GAP = 20
 
 const PlayerRatingCanvas = ({
   scoreTable,
@@ -495,26 +719,35 @@ const PlayerRatingCanvas = ({
   )
 
   // The header stacks three left-aligned lines: rating + class rank, card name
-  // + course rank, then the trophy title bar. Compute each line's top so we can
-  // measure the whole header and center the section block in the leftover space.
-  const line1Y = PADDING
-  const line2Y = line1Y + PLATE_HEIGHT + HEADER_LINE_GAP
-  const line3Y = line2Y + CARD_PLATE_HEIGHT + HEADER_LINE_GAP
-  const headerHeight =
-    (hasTitle ? line3Y + TITLE_BAR_HEIGHT : line2Y + CARD_PLATE_HEIGHT) +
-    SECTION_GAP
+  // + course rank, then the trophy title bar, vertically centered in the fixed
+  // header band.
+  const line1H = PLATE_HEIGHT
+  const line2H = CARD_PLATE_HEIGHT
+  const line3H = hasTitle ? TITLE_BAR_HEIGHT : 0
+  const linesH =
+    line1H +
+    HEADER_LINE_GAP +
+    line2H +
+    (hasTitle ? HEADER_LINE_GAP + line3H : 0)
+  const line1Y = Math.round((HEADER_HEIGHT - linesH) / 2)
+  const line2Y = line1Y + line1H + HEADER_LINE_GAP
+  const line3Y = line2Y + line2H + HEADER_LINE_GAP
 
+  // Content sits between the header and footer bands, vertically centered in the
+  // slack so the grid floats evenly regardless of exact block sizing.
   const newSectionH = sectionHeight(newEntries.length)
   const oldSectionH = sectionHeight(oldEntries.length)
   const contentH = newSectionH + SECTION_GAP + oldSectionH
-  const slack = Math.max(0, HEIGHT - headerHeight - contentH - PADDING)
-  const newSectionY = headerHeight + slack / 2
+  const contentTop = HEADER_HEIGHT
+  const contentBottom = HEIGHT - FOOTER_HEIGHT
+  const slack = Math.max(0, contentBottom - contentTop - contentH)
+  const newSectionY = contentTop + slack / 2
   const oldSectionY = newSectionY + newSectionH + SECTION_GAP
 
-  // Top-right corner: score URL above the QR code, right-aligned to the padding.
+  // Header's top-right corner: score URL above the QR code, right-aligned.
   const cornerX = WIDTH - PADDING - QR_SIZE
-  const cornerUrlY = PADDING
-  const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 6
+  const cornerUrlY = line1Y
+  const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 12
 
   return (
     <Stage width={WIDTH} height={HEIGHT}>
@@ -585,21 +818,18 @@ const PlayerRatingCanvas = ({
           />
         ) : null}
 
-        <Section title="新曲 (Best 15)" entries={newEntries} y={newSectionY} />
-        <Section title="舊曲 (Best 35)" entries={oldEntries} y={oldSectionY} />
-
         {/* Top-right corner: score URL + QR code with logo badge */}
         {hasUrl ? (
           <>
             <Text
-              x={cornerX - 40}
+              x={cornerX - 200}
               y={cornerUrlY}
-              width={QR_SIZE + 40}
+              width={QR_SIZE + 200}
               height={CORNER_URL_HEIGHT}
               align="right"
               verticalAlign="middle"
               text={scoreUrl}
-              fontSize={16}
+              fontSize={32}
               fontFamily="M PLUS 2"
               fill="#c8c8c8"
               wrap="none"
@@ -608,6 +838,24 @@ const PlayerRatingCanvas = ({
             <QrCode url={scoreUrl} x={cornerX} y={cornerQrY} />
           </>
         ) : null}
+
+        <Section title="新曲 (Best 15)" entries={newEntries} y={newSectionY} />
+        <Section title="舊曲 (Best 35)" entries={oldEntries} y={oldSectionY} />
+
+        {/* Footer band: site attribution centered along the bottom. */}
+        <Text
+          x={0}
+          y={HEIGHT - FOOTER_HEIGHT}
+          width={WIDTH}
+          height={FOOTER_HEIGHT}
+          align="center"
+          verticalAlign="middle"
+          text="otohi.me"
+          fontSize={40}
+          fontStyle="bold"
+          fontFamily="M PLUS 2"
+          fill="#8a8f99"
+        />
       </Layer>
     </Stage>
   )
