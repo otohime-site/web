@@ -11,6 +11,8 @@ import { firebaseAuth, useUser } from "../contexts"
 
 import classes from "./UserBox.module.css"
 import { Alert } from "./ui/Alert"
+import { Avatar } from "./ui/Avatar"
+import { Menu } from "./ui/Menu"
 
 const googleProvider = new GoogleAuthProvider()
 
@@ -46,10 +48,27 @@ const UserBoxComponent = () => {
     await signOut(firebaseAuth)
   }
   if (user !== null) {
+    // Facebook login is abandoned but its provider can't be removed yet for
+    // compatibility, so its profile data (which can be stale/empty) is skipped.
+    // providerData is ordered oldest-first, so the last non-FB entry is the
+    // latest usable profile; fall back to the aggregated top-level fields.
+    const profile =
+      [...user.providerData]
+        .reverse()
+        .find((pd) => pd.providerId !== "facebook.com") ?? user
     return (
-      <>
-        <button onClick={handleLogout}>登出</button>
-      </>
+      <Menu
+        trigger={
+          <Avatar
+            src={profile.photoURL ?? undefined}
+            name={profile.displayName ?? undefined}
+          />
+        }
+        items={[
+          { value: "settings", label: "設定", onSelect: () => {} },
+          { value: "signout", label: "登出", onSelect: handleLogout },
+        ]}
+      />
     )
   }
   return (

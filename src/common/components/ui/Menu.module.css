@@ -1,0 +1,44 @@
+.trigger {
+  display: inline-flex;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 8rem;
+  padding: var(--size-1);
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-2);
+  background: var(--surface-1);
+  color: var(--text-1);
+  box-shadow: var(--shadow-3);
+  z-index: 1;
+}
+
+.item {
+  --_highlight: var(--stone-3);
+  padding: var(--size-2) var(--size-3);
+  border-radius: var(--radius-2);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  &[data-highlighted] {
+    background: var(--_highlight);
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .item {
+    --_highlight: var(--stone-10);
+  }
+}
