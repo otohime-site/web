@@ -19,6 +19,8 @@ const PlayerRatingImage = ({
   onOpenChange,
   scoreTable,
   cardName,
+  title,
+  trophy,
   nickname,
   isPrivate,
   courseRank,
@@ -28,6 +30,8 @@ const PlayerRatingImage = ({
   onOpenChange: (open: boolean) => void
   scoreTable: ScoreTableEntry[]
   cardName: string
+  title: string
+  trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
   nickname: string
   isPrivate: boolean
   courseRank?: number | null
@@ -91,6 +95,8 @@ const PlayerRatingImage = ({
                   <PlayerRatingCanvas
                     scoreTable={scoreTable}
                     cardName={cardName}
+                    title={title}
+                    trophy={trophy}
                     courseRank={courseRank}
                     classRank={classRank}
                     scoreUrl={scoreUrl}

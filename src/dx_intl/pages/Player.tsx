@@ -392,6 +392,8 @@ const Player = ({ params }: { params: Params }) => {
               onOpenChange={setShowRatingImage}
               scoreTable={scoreTable}
               cardName={record.card_name}
+              title={record.title}
+              trophy={record.trophy}
               nickname={params.nickname ?? ""}
               isPrivate={player.private}
               courseRank={record.course_rank}
