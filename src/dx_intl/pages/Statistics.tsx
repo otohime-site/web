@@ -18,8 +18,8 @@ import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
 import { versionRewardTitle, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
-import classes from "./Overview.module.css"
 import { RATING_TARGETS } from "./RatingTarget"
+import classes from "./Statistics.module.css"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
@@ -87,7 +87,7 @@ const dxIntlNewRatingStatsDocument = graphql(`
   }
 `)
 
-const Overview = () => {
+const Statistics = () => {
   const [baseRatingResult] = useQuery({ query: dxIntlNewRatingStatsDocument })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
   const flattedEntries = useMemo(
@@ -214,7 +214,7 @@ const Overview = () => {
         <p className={classes["rating-target-nav"]}>
           <span>各 Rating 目標的 Best 50 組成曲:</span>
           {RATING_TARGETS.map((target) => (
-            <Link key={target} href={`~/dxi/rt/${target}`}>
+            <Link key={target} href={`~/dxi/s/rt/${target}`}>
               {target}
             </Link>
           ))}
@@ -299,4 +299,4 @@ const Overview = () => {
   )
 }
 
-export default Overview
+export default Statistics

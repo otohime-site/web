@@ -1,10 +1,10 @@
 import { lazy } from "react"
-import { Route, Switch } from "wouter"
-import Overview from "./pages/Overview"
+import { Redirect, Route, Switch } from "wouter"
 import Player from "./pages/Player"
 import PlayerForm from "./pages/PlayerForm"
 import RatingTarget from "./pages/RatingTarget"
 import SongStats from "./pages/SongStats"
+import Statistics from "./pages/Statistics"
 
 const PlayerHistory = lazy(async () => await import("./pages/PlayerHistory"))
 
@@ -17,11 +17,16 @@ const DxIntl = () => (
       <Route path="/p/:nickname/history/:hash" component={PlayerHistory} />
       <Route path="/p/:nickname" component={Player} />
     </Switch>
-    <Route path="/rt/:rating" component={RatingTarget} />
-    <Route path="/s/:songId" component={SongStats} />
-    <Route path="/s/:songId/:variant" component={SongStats} />
-    <Route path="/s/:songId/:variant/:difficulty" component={SongStats} />
-    <Route path="/" component={Overview} />
+    <Switch>
+      <Route path="/s" component={Statistics} />
+      <Route path="/s/rt/:rating" component={RatingTarget} />
+      <Route path="/s/:songId" component={SongStats} />
+      <Route path="/s/:songId/:variant" component={SongStats} />
+      <Route path="/s/:songId/:variant/:difficulty" component={SongStats} />
+      <Route path="/">
+        <Redirect to="/s" replace />
+      </Route>
+    </Switch>
   </>
 )
 export default DxIntl

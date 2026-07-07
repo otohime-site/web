@@ -24,7 +24,7 @@ const HomeComponent = () => {
           <li>目前採用 Google 登入</li>
           <li>適用桌面與可使用 Bookmarklet 的手機瀏覽器</li>
         </ul>
-        <LinkButton href="~/dxi">DX 公開玩家統計</LinkButton>
+        <LinkButton href="~/dxi/s">DX 公開玩家統計</LinkButton>
       </>
     )
   }
@@ -57,7 +57,7 @@ const HomeComponent = () => {
         <div>
           <h5>暫時放這裡</h5>
           <p>
-            <LinkButton href="~/dxi">DX 公開玩家統計</LinkButton>
+            <LinkButton href="~/dxi/s">DX 公開玩家統計</LinkButton>
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { Link, Route, Router } from "wouter"
+import { Link, Route, Router, useRoute } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
@@ -15,6 +15,7 @@ const Transfer = lazy(async () => await import("./common/pages/Transfer"))
 const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
+  const [onStats] = useRoute("/dxi/s/*?")
   return (
     <>
       <div className={classes.top}>
@@ -22,6 +23,11 @@ const App = () => {
           <img src={Logo} /> <p>Otohime</p>
         </Link>
         <Search />
+        <nav className={classes.nav}>
+          <Link href="~/dxi/s" className={onStats ? classes.active : undefined}>
+            統計
+          </Link>
+        </nav>
         <div className={classes.space} />
         <UserBox />
       </div>

@@ -40,6 +40,9 @@
     input {
       width: 10rem;
     }
+    .nav {
+      margin-left: 0.75rem;
+    }
   }
 
   .container {
@@ -64,6 +67,30 @@
   height: 1.7rem;
   vertical-align: middle;
   margin-right: 0.2em;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 1.5rem;
+  a {
+    text-decoration: none;
+    color: var(--violet-10);
+    font-size: var(--font-size-1);
+    padding: 0.1em 0.75em;
+    border-radius: var(--radius-round);
+    &.active {
+      background: var(--violet-3);
+      font-weight: var(--font-weight-7);
+    }
+    @media (prefers-color-scheme: dark) {
+      color: var(--violet-2);
+      &.active {
+        background: var(--violet-10);
+      }
+    }
+  }
 }
 
 .container {

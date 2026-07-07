@@ -102,7 +102,7 @@ const RatingTarget = ({ params }: { params: Params }) => {
   }, [ratingTargetStatsResult, noteMap])
 
   if (!RATING_TARGETS.includes(rating)) {
-    return <Redirect to="~/dxi/rt/14000" />
+    return <Redirect to="~/dxi/s/rt/14000" />
   }
 
   const newStats = aggregatedStats.filter((r) => r.current_version)
@@ -120,7 +120,7 @@ const RatingTarget = ({ params }: { params: Params }) => {
         <ScrollableSegmentGroupRoot
           value={String(rating)}
           onValueChange={({ value }) => {
-            navigate(`/dxi/rt/${value}`)
+            navigate(`/dxi/s/rt/${value}`)
           }}
         >
           {RATING_TARGETS.map((target) => (
