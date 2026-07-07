@@ -12,7 +12,9 @@ if (document.getElementById("otohime-root") != null) {
 } else if (
   token !== null &&
   window.parent.location.host === (host as string) &&
-  window.parent.location.pathname === "/transfer"
+  // Transfer moved from /transfer to /settings; accept both so stale
+  // pages keep working during the transition.
+  ["/transfer", "/settings"].includes(window.parent.location.pathname)
 ) {
   window.parent.postMessage({ token: token })
 } else if (window.parent.location.host !== "maimaidx-eng.com") {

@@ -2,9 +2,13 @@ import { useState } from "react"
 import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
+import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import { graphql } from "../../graphql"
+import TransferSection from "../components/TransferSection"
 import { Alert } from "../components/ui/Alert"
 import { useUser } from "../contexts"
+
+import classes from "./Settings.module.css"
 
 const deleteUserDocument = graphql(`
   mutation deleteUser {
@@ -14,7 +18,7 @@ const deleteUserDocument = graphql(`
   }
 `)
 
-const Forget = () => {
+const Settings = () => {
   const [, navigate] = useLocation()
   const user = useUser()
   const [, deleteUser] = useMutation(deleteUserDocument)
@@ -38,10 +42,16 @@ const Forget = () => {
   }
 
   return (
-    <div>
-      <Titled title={(title) => `刪除帳號 - ${title}`} />
-      <h3>刪除帳號</h3>
-      <Alert severity="error">
+    <div className={classes.container}>
+      <Titled title={(title) => `使用者設定 - ${title}`} />
+      <h3>使用者設定</h3>
+      <section className={classes.section}>
+        <h4>成績單帳號轉移</h4>
+        <TransferSection />
+      </section>
+      <section className={classes["danger-zone"]}>
+        <h4>危險區域</h4>
+        <h6>刪除帳號（忘記我）</h6>
         <p>這個功能將會移除您在本站的所有個人資料，包含：</p>
         <ul>
           <li>Firebase 的帳號與其儲存的 Facebook / Google 帳號公開資料</li>
@@ -49,23 +59,27 @@ const Forget = () => {
         </ul>
         <p>
           <strong>此動作無法復原。</strong>
+          請確定您是為了完全清除您在 Otohime 的個人資料才執行這個功能。
         </p>
         <p>
-          <strong>
-            請確定您是為了完全清除您在 Otohime 的個人資料才執行這個功能。
-          </strong>
+          <label>
+            <input
+              type="checkbox"
+              onClick={(e) => setConfirmed(e.currentTarget.checked)}
+            />
+            是的，請完全清除我在 Otohime 的個人資料。
+          </label>
         </p>
-        <p>
-          <input
-            type="checkbox"
-            onClick={(e) => setConfirmed(e.currentTarget.checked)}
-          />
-          是的，請完全清除我在 Otohime 的個人資料。
-        </p>
-        <p>
+        <button
+          className={classes["danger-button"]}
+          disabled={!confirmed}
+          onClick={bye}
+        >
+          <MdiDeleteAlert />
+          刪除帳號
+        </button>
+        <p className={classes.notes}>
           如果執行失敗，可能是您登入太久了，請您嘗試登出、再登入、再重新執行一次。
-        </p>
-        <p>
           如果您因為 Facebook 登入被停用等理由無法重新登入，請您參考{" "}
           <a
             href="https://littlebtc.gitbook.io/otohime-docs/data-policy"
@@ -76,12 +90,9 @@ const Forget = () => {
           </a>
           中「關於您的權利」一段，填寫請求表單請求刪除。
         </p>
-        <button disabled={!confirmed} onClick={bye}>
-          Bye :)
-        </button>
-      </Alert>
+      </section>
     </div>
   )
 }
 
-export default Forget
+export default Settings

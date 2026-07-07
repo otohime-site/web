@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
-import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
 import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
 import { graphql } from "../../graphql"
-import { Alert } from "../components/ui/Alert"
-import { useUser } from "../contexts"
+import { Alert } from "./ui/Alert"
 
 const tokenTransferDocument = graphql(`
   mutation tokenTransfer($token: String!) {
@@ -16,9 +14,8 @@ const tokenTransferDocument = graphql(`
   }
 `)
 
-const Transfer = () => {
+const TransferSection = () => {
   const [, navigate] = useLocation()
-  const user = useUser()
   const [, tokenTransfer] = useMutation(tokenTransferDocument)
   const [token, setToken] = useState("")
 
@@ -65,14 +62,8 @@ const Transfer = () => {
       alert("發生錯誤，請重試。")
     }
   }
-  if (user == null) {
-    return <Alert severity="info">請先登入。</Alert>
-  }
-
   return (
     <div>
-      <Titled title={(title) => `成績單資料轉移 - ${title}`} />
-      <h3>成績單資料轉移</h3>
       <div>
         <p>
           您可以在這個頁面，透過觸發另外一個帳號的
@@ -133,4 +124,4 @@ const Transfer = () => {
   )
 }
 
-export default Transfer
+export default TransferSection

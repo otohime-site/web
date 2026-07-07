@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { Link, Route, Router, useRoute } from "wouter"
+import { Link, Redirect, Route, Router, useRoute } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import { AuthMigrate } from "./common/components/AuthMigrate"
@@ -10,8 +10,7 @@ import "./global.css"
 import Logo from "./logo/favicon.svg"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
-const Forget = lazy(async () => await import("./common/pages/Forget"))
-const Transfer = lazy(async () => await import("./common/pages/Transfer"))
+const Settings = lazy(async () => await import("./common/pages/Settings"))
 const Finale = lazy(async () => await import("./finale/index"))
 
 const App = () => {
@@ -36,8 +35,13 @@ const App = () => {
         <Suspense fallback={<></>}>
           <Router>
             <Route path="/" component={Home} />
-            <Route path="/transfer" component={Transfer} />
-            <Route path="/forget" component={Forget} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/transfer">
+              <Redirect to="/settings" replace />
+            </Route>
+            <Route path="/forget">
+              <Redirect to="/settings" replace />
+            </Route>
             <Route path="/dxi" nest>
               <DxIntl />
             </Route>

@@ -5,13 +5,22 @@ import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
 import MdiCloudDownloadOutline from "~icons/mdi/cloud-download-outline"
+import MdiContentCopy from "~icons/mdi/content-copy"
 import IconRefresh from "~icons/mdi/refresh"
 import { graphql } from "../../graphql"
 import host from "../../host"
 import { useUser } from "../contexts"
 import { QueryResult } from "./QueryResult"
+import classes from "./Token.module.css"
 import { Alert } from "./ui/Alert"
 import { LinkButton } from "./ui/Button"
+
+// Phones and tablets cannot drag the bookmarklet link to a bookmark bar, so
+// they get the copy-and-edit-bookmark flow instead. iPadOS 13+ reports itself
+// as Macintosh, hence the extra touch-points check.
+const isMobile =
+  /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+  (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1)
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -43,7 +52,7 @@ const regenerateTokenDocument = graphql(`
   }
 `)
 
-const User = () => {
+const User = ({ onNavigate }: { onNavigate?: () => void }) => {
   const user = useUser()
   const [tokensResult, refetchTokens] = useQuery({
     query: tokensDocument,
@@ -89,7 +98,11 @@ const User = () => {
       : tokensResult.data.tokens[0].id
   return (
     <div>
-      {bookDialogOpen ? <Titled title="更新 Otohime 成績" /> : <></>}
+      {isMobile && token.length > 0 ? (
+        <Titled title="更新 Otohime 成績單" />
+      ) : (
+        <></>
+      )}
       <Dialog.Root
         open={bookDialogOpen}
         onOpenChange={(e) => {
@@ -147,46 +160,82 @@ const User = () => {
               觸發書籤留著，您可以使用這個功能將原本帳號的成績單轉移。
             </p>
             <p>
-              <LinkButton href="~/transfer">
+              <LinkButton href="~/settings" onClick={onNavigate}>
                 <MdiBriefcaseTransfer />
                 成績單帳號轉移
               </LinkButton>
             </p>
           </div>
         ) : (
-          <div>
-            <p>新增好成績單後，您需要透過書籤從瀏覽器將成績匯入到 Otohime。</p>
+          <div className={classes["body"]}>
+            {isMobile ? (
+              <>
+                <p>
+                  由於您使用手機或平板瀏覽器，您需要透過加入書籤後更改書籤網址的方法新增更新連結。
+                </p>
+                <p>
+                  請閱覽
+                  <a
+                    href="https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    詳細圖文說明
+                  </a>
+                  後，將本頁加入書籤，並按照指示進行。
+                </p>
+                <p>
+                  <button
+                    onClick={async (e) => await copyBookmarklet(e, token)}
+                  >
+                    <MdiContentCopy />
+                    複製 Bookmarklet 連結
+                  </button>
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  您看起來是使用桌面瀏覽器，請將下面的按鈕拖曳到書籤列即可使用：
+                </p>
+                <p>
+                  <a
+                    className="btn"
+                    ref={(node) => {
+                      // Fix React 19 blocking `javascript:` URLs
+                      // https://github.com/facebook/react/issues/16382#issuecomment-607252694
+                      if (node) {
+                        node.setAttribute("href", bookmarkletContent(token))
+                      }
+                    }}
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MdiCloudDownloadOutline />
+                    更新 Otohime 成績單
+                  </a>
+                </p>
+              </>
+            )}
+            <p>以下提供 Bookmarklet 的原內容，方便您自行檢閱與複製。</p>
+            <textarea
+              className={classes["content"]}
+              readOnly
+              rows={5}
+              value={bookmarkletContent(token)}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+            <p>這個連結可以：</p>
+            <ul>
+              <li>更新您已經建立的成績單</li>
+              <li>轉移所有成績單到其他帳號</li>
+            </ul>
             <p>
-              如果您使用桌面瀏覽器，請將下面的按鈕拖曳到書籤列。如果您使用手機瀏覽器，請按下下方按鈕。{" "}
-              <a
-                href="https://littlebtc.gitbook.io/otohime-docs/bookmarklet-help"
-                target="_blank"
-                rel="noreferrer"
-              >
-                詳細圖文說明
-              </a>
-              。
+              因此請您<strong>妥善保管</strong>！
             </p>
+            <h6>重新產生權杖</h6>
             <p>
-              <a
-                className="btn"
-                ref={(node) => {
-                  // Fix React 19 blocking `javascript:` URLs
-                  // https://github.com/facebook/react/issues/16382#issuecomment-607252694
-                  if (node) {
-                    node.setAttribute("href", bookmarkletContent(token))
-                  }
-                }}
-                onClick={async (e) => await copyBookmarklet(e, token)}
-              >
-                <MdiCloudDownloadOutline />
-                更新 Otohime 成績
-              </a>
+              假如因為任何理由連結不小心外流了，您可以在此重新產生權杖來更換連結。
             </p>
-            <p>
-              請妥善保管好您的連結，取得這個連結的人除了可以更新成績單，也能將您已上傳的成績單跟歷史紀錄轉移到其他帳號。
-            </p>
-            <p>如果您有需要可以重新產生權杖，或者使用成績單帳號轉移。</p>
             <p>
               <button
                 disabled={regenerateTokenResult.fetching}
@@ -194,10 +243,6 @@ const User = () => {
               >
                 <IconRefresh /> 重新產生權杖
               </button>
-              <LinkButton href="~/transfer">
-                <MdiBriefcaseTransfer />
-                成績單帳號轉移
-              </LinkButton>
             </p>
           </div>
         )}

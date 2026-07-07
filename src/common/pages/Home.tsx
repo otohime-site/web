@@ -1,7 +1,5 @@
 import { Titled } from "react-titled"
-import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import DxUserPlayers from "../../dx_intl/components/UserPlayers"
-import Token from "../components/Token"
 import { LinkButton } from "../components/ui/Button"
 import { useUser } from "../contexts"
 
@@ -13,54 +11,63 @@ const HomeComponent = () => {
     return (
       <>
         <Titled title="Otohime: 音 Game 成績單網站" />
-        <p>
-          Otohime
-          可以把您遊戲機台的成績整理至單一的成績單頁面，將其設為公開或自己才能閱覽。
-          目前支援 maimai DX 國際版，並將過去 Semiquaver 的 maimai
-          舊版成績單整合到本站中。
-        </p>
-
-        <ul>
-          <li>目前採用 Google 登入</li>
-          <li>適用桌面與可使用 Bookmarklet 的手機瀏覽器</li>
-        </ul>
-        <LinkButton href="~/dxi/s">DX 公開玩家統計</LinkButton>
+        <div className={classes.hero}>
+          <h2>Otohime 是適用於 maimai 國際版的成績單系統。</h2>
+          <p>
+            打完機台之後，成績不必只留在官方網站。把成績匯入
+            Otohime，整理成一份可以公開分享、也可以自己私藏的成績單，記下每一次的進步。
+          </p>
+          <p className={classes.actions}>
+            <LinkButton href="~/dxi/p/koinu">成績單範例</LinkButton>
+            <LinkButton href="~/dxi/s">玩家統計</LinkButton>
+          </p>
+        </div>
+        <div className={classes.features}>
+          <section>
+            <h5>方便更新</h5>
+            <p>
+              採用可複製的 Bookmarklet
+              連結，可在電腦與手機、平板瀏覽器上使用，隨時更新。
+            </p>
+          </section>
+          <section>
+            <h5>紀錄點滴</h5>
+            <p>
+              提供完整的成績單資料夾篩選、B50
+              圖片匯出、歷史成績等功能，一路陪伴你的遊玩歷程。
+            </p>
+          </section>
+          <section>
+            <h5>完整統計</h5>
+            <p>
+              根據公開成績單分析，提供各曲目的 Clear 狀況統計、各 Rating
+              的熱門採計曲、各版本難易度別的最難達成排名等項目，方便攻略特定成就。
+            </p>
+          </section>
+        </div>
+        <section className={classes["getting-started"]}>
+          <h5>如何開始？</h5>
+          <ol>
+            <li>點右上角的「登入」，用 Google 帳號登入就完成註冊了。</li>
+            <li>
+              點上方的「取得更新連結」，照著說明把 Bookmarklet 加入瀏覽器書籤。
+            </li>
+            <li>
+              之後每次打完機台，登入官方成績單網站、點一下書籤，成績就會同步到
+              Otohime。
+            </li>
+          </ol>
+        </section>
       </>
     )
   }
   return (
     <div>
       <Titled title={(title) => `首頁 - ${title}`} />
-      <div className={classes["home-container"]}>
-        <div>
-          <article>
-            <h4>我的帳號與成績單</h4>
-            <DxUserPlayers />
-          </article>
-          <article>
-            <h5>權杖與 Bookmarklet</h5>
-            <Token />
-          </article>
-          <article>
-            <h5>刪除帳號（忘記我）</h5>
-            <p>
-              您可以刪除在本網站儲存的所有帳號、第三方登入紀錄的個人資料與成績單。
-            </p>
-            <p>
-              <LinkButton href="~/forget">
-                <MdiDeleteAlert />
-                刪除帳號
-              </LinkButton>
-            </p>
-          </article>
-        </div>
-        <div>
-          <h5>暫時放這裡</h5>
-          <p>
-            <LinkButton href="~/dxi/s">DX 公開玩家統計</LinkButton>
-          </p>
-        </div>
-      </div>
+      <article>
+        <h4>我的帳號與成績單</h4>
+        <DxUserPlayers />
+      </article>
     </div>
   )
 }

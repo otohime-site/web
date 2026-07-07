@@ -1,0 +1,24 @@
+.body {
+  p {
+    margin-block: var(--size-2);
+  }
+  ul {
+    margin-block: var(--size-1);
+    padding-inline-start: var(--size-6);
+    li {
+      margin-block: var(--size-1);
+    }
+  }
+  h6 {
+    margin-top: var(--size-4);
+    padding-top: var(--size-3);
+    border-top: var(--border-size-1) solid var(--surface-3);
+  }
+}
+
+.content {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-0);
+  resize: vertical;
+}
