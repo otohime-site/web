@@ -60,7 +60,7 @@
     flex: 1;
   }
   & [data-part="item"][data-state="checked"] {
-    --border-color: var(--blue-8);
+    --border-color: var(--otohime-6);
   }
 }
 

@@ -1,6 +1,7 @@
 import { Dialog } from "@ark-ui/react/dialog"
 import { Popover } from "@ark-ui/react/popover"
 import { Portal } from "@ark-ui/react/portal"
+import clsx from "clsx"
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -65,7 +66,7 @@ const UserBoxComponent = () => {
     return (
       <div className={classes["user-box"]}>
         <button
-          className={classes["token-button"]}
+          className={clsx("accent", classes["token-button"])}
           onClick={() => setTokenDialogOpen(true)}
         >
           <MdiCloudDownloadOutline />
@@ -117,7 +118,7 @@ const UserBoxComponent = () => {
       <Popover.Positioner>
         <Popover.Content className={classes["popover"]}>
           <p>
-            <button onClick={handleLoginGoogle}>
+            <button className="primary" onClick={handleLoginGoogle}>
               <IconGoogle /> 以 Google 帳號登入
             </button>
           </p>

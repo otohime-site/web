@@ -18,7 +18,9 @@ const HomeComponent = () => {
             Otohime，整理成一份可以公開分享、也可以自己私藏的成績單，記下每一次的進步。
           </p>
           <p className={classes.actions}>
-            <LinkButton href="~/dxi/p/koinu">成績單範例</LinkButton>
+            <LinkButton href="~/dxi/p/koinu" className="primary">
+              成績單範例
+            </LinkButton>
             <LinkButton href="~/dxi/s">玩家統計</LinkButton>
           </p>
         </div>
@@ -62,12 +64,20 @@ const HomeComponent = () => {
     )
   }
   return (
-    <div>
+    <div className={classes.my}>
       <Titled title={(title) => `首頁 - ${title}`} />
-      <article>
-        <h4>我的帳號與成績單</h4>
+      <article className={classes["my-players"]}>
+        <h4>我的成績單</h4>
         <DxUserPlayers />
       </article>
+      <aside className={classes["my-tips"]}>
+        <h6>小提醒</h6>
+        <ul>
+          <li>點右上角的「取得更新連結」設定 Bookmarklet，隨時同步成績。</li>
+          <li>設為公開的成績單會納入玩家統計，也可以分享給朋友。</li>
+          <li>帳號轉移與刪除帳號請到頭像選單中的「設定」。</li>
+        </ul>
+      </aside>
     </div>
   )
 }

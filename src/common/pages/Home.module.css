@@ -6,6 +6,16 @@
     max-width: initial;
     font-size: var(--font-size-4);
     font-weight: var(--font-weight-7);
+    background: linear-gradient(100deg, var(--otohime-7), var(--otohime-pink));
+    background-clip: text;
+    color: transparent;
+    @media (prefers-color-scheme: dark) {
+      background-image: linear-gradient(
+        100deg,
+        var(--otohime-4),
+        var(--otohime-pink-light)
+      );
+    }
   }
   p {
     margin: var(--size-4) auto 0;
@@ -61,5 +71,48 @@
   }
   .features {
     grid-template-columns: 1fr;
+  }
+}
+
+.my {
+  display: grid;
+  grid-template-columns: 1fr 22rem;
+  gap: var(--size-5);
+  align-items: start;
+  max-width: 64rem;
+  margin: var(--size-4) auto 0;
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.my-players {
+  border: var(--border-size-1) solid var(--surface-3);
+  border-radius: var(--radius-3);
+  padding: var(--size-4);
+  h4 {
+    font-size: var(--font-size-3);
+    margin-bottom: var(--size-3);
+  }
+  [data-scope="listbox"][data-part="content"] {
+    margin-bottom: var(--size-3);
+  }
+}
+
+.my-tips {
+  padding: var(--size-4);
+  border-radius: var(--radius-3);
+  background: var(--surface-2);
+  color: var(--text-2);
+  h6 {
+    color: var(--text-1);
+    margin-bottom: var(--size-2);
+  }
+  ul {
+    margin: 0;
+    padding-inline-start: var(--size-5);
+    li {
+      margin-block: var(--size-1);
+    }
   }
 }

@@ -116,7 +116,7 @@ const TransferSection = () => {
             <p>書籤觸發後才能繼續。</p>
           </div>
         )}
-        <button disabled={!token} onClick={handleTransfer}>
+        <button className="danger" disabled={!token} onClick={handleTransfer}>
           <MdiBriefcaseTransfer /> 進行轉移
         </button>
       </div>

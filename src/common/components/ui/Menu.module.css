@@ -4,12 +4,17 @@
   border: none;
   background: none;
   cursor: pointer;
+  border-radius: var(--radius-round);
+  &:focus-visible {
+    outline: 2px solid var(--otohime-5);
+    outline-offset: 2px;
+  }
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  min-width: 8rem;
+  min-width: 9rem;
   padding: var(--size-1);
   border: 1px solid var(--surface-3);
   border-radius: var(--radius-2);
@@ -20,12 +25,13 @@
 }
 
 .item {
-  --_highlight: var(--stone-3);
+  --_highlight: var(--otohime-1);
   padding: var(--size-2) var(--size-3);
   border-radius: var(--radius-2);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+  transition: background-color 100ms;
 
   &[data-highlighted] {
     background: var(--_highlight);
@@ -39,6 +45,6 @@
 
 @media (prefers-color-scheme: dark) {
   .item {
-    --_highlight: var(--stone-10);
+    --_highlight: var(--otohime-11);
   }
 }

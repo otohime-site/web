@@ -10,7 +10,7 @@
     border-radius: var(--radius-2);
     &[data-state="checked"] {
       background: var(--surface-2);
-      border-color: var(--violet-6);
+      border-color: var(--otohime-6);
     }
     [data-part="item-text"] {
       margin-left: var(--size-3);

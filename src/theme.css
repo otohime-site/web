@@ -1,0 +1,38 @@
+/*
+ * Otohime brand palette: an open-props-compatible 13-step scale.
+ * Light steps lean pink (hue ~340), dark steps settle into violet (~298),
+ * with chroma peaking around steps 7-8 for the vivid mid-range.
+ * Game-semantic colors (difficulty green/orange/red/violet/purple, rank and
+ * combo badges) intentionally keep using the stock open-props scales.
+ */
+:root {
+  --otohime-0: oklch(98.2% 0.012 340);
+  --otohime-1: oklch(95.5% 0.03 338);
+  --otohime-2: oklch(91.5% 0.055 336);
+  --otohime-3: oklch(86% 0.095 333);
+  --otohime-4: oklch(79% 0.14 330);
+  --otohime-5: oklch(71.5% 0.185 326);
+  --otohime-6: oklch(64% 0.22 322);
+  --otohime-7: oklch(57% 0.24 318);
+  --otohime-8: oklch(50.5% 0.245 314);
+  --otohime-9: oklch(44.5% 0.23 310);
+  --otohime-10: oklch(39% 0.2 306);
+  --otohime-11: oklch(33% 0.16 302);
+  --otohime-12: oklch(26.5% 0.11 298);
+
+  /* A pink counterpart for the few gradient accents. */
+  --otohime-pink: oklch(63% 0.24 355);
+  --otohime-pink-light: oklch(78% 0.17 350);
+}
+
+/* Re-point open-props normalize semantic hooks at the brand scale. */
+:root {
+  --link: var(--otohime-8);
+  --link-visited: var(--otohime-10);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --link: var(--otohime-3);
+    --link-visited: var(--otohime-5);
+  }
+}

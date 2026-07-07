@@ -7,15 +7,15 @@
   height: 48px;
   position: sticky;
   top: 0;
-  background: var(--violet-0);
+  background: var(--otohime-0);
   [data-scope="combobox"][data-part="root"] {
     padding-left: var(--size-4);
   }
   [data-scope="combobox"][data-part="input"] {
-    background-color: var(--violet-1);
-    color: var(--violet-6);
+    background-color: var(--otohime-1);
+    color: var(--otohime-6);
     &::placeholder {
-      color: var(--violet-6);
+      color: var(--otohime-6);
       opacity: 0.9;
     }
   }
@@ -23,12 +23,12 @@
     flex: 1;
   }
   @media (prefers-color-scheme: dark) {
-    background: #201a4a;
+    background: var(--otohime-12);
     [data-scope="combobox"][data-part="input"] {
-      background-color: var(--violet-12);
-      color: var(--violet-3);
+      background-color: var(--otohime-11);
+      color: var(--otohime-2);
       &::placeholder {
-        color: var(--violet-3);
+        color: var(--otohime-3);
       }
     }
   }
@@ -52,9 +52,9 @@
 
 .title {
   text-decoration: none;
-  color: var(--violet-10);
+  color: var(--otohime-10);
   @media (prefers-color-scheme: dark) {
-    color: var(--violet-2);
+    color: var(--otohime-2);
   }
   font-family: "McLaren", cursive;
   display: inline-flex;
@@ -76,18 +76,18 @@
   margin-left: 1.5rem;
   a {
     text-decoration: none;
-    color: var(--violet-10);
+    color: var(--otohime-10);
     font-size: var(--font-size-1);
     padding: 0.1em 0.75em;
     border-radius: var(--radius-round);
     &.active {
-      background: var(--violet-3);
+      background: var(--otohime-3);
       font-weight: var(--font-weight-7);
     }
     @media (prefers-color-scheme: dark) {
-      color: var(--violet-2);
+      color: var(--otohime-2);
       &.active {
-        background: var(--violet-10);
+        background: var(--otohime-10);
       }
     }
   }

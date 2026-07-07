@@ -1,9 +1,13 @@
+import clsx from "clsx"
 import { Link, LinkProps } from "wouter"
 
-export const LinkButton = (props: LinkProps) => {
+export const LinkButton = ({
+  className,
+  ...props
+}: LinkProps & { className?: string }) => {
   return (
     <Link {...props} asChild>
-      <a className="btn">{props.children}</a>
+      <a className={clsx("btn", className)}>{props.children}</a>
     </Link>
   )
 }

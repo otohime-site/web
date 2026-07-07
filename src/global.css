@@ -1,5 +1,6 @@
 @import "open-props/normalize";
 @import "open-props/buttons";
+@import "./theme.css";
 
 html {
   font-size: 14px;
@@ -36,19 +37,32 @@ input {
 .btn,
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {
-  --_accent: var(--violet-10);
+  --_accent: var(--otohime-8);
+  --_text: var(--otohime-9);
+  --_border: var(--otohime-2);
   @media (prefers-color-scheme: dark) {
-    --_accent: var(--violet-2);
+    --_accent: var(--otohime-3);
+    --_text: var(--otohime-1);
+    --_border: var(--otohime-10);
+    --_bg-dark: color-mix(in oklab, var(--surface-3), var(--otohime-11) 35%);
   }
   border: var(--border-size-1) solid var(--_border);
   box-shadow: 0 1px 0 var(--surface-3);
   --_ink-shadow: none;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
 
-  &:where(:not(:active):hover) {
+  &:where(:not(:active, :disabled):hover) {
     --_highlight-size: 0;
+    --_border: var(--otohime-4);
+    @media (prefers-color-scheme: dark) {
+      --_border: var(--otohime-8);
+    }
   }
-  &[data-focused] {
-    outline: 2px solid var(--stone-6);
+  &[data-focused],
+  &:focus-visible {
+    outline: 2px solid var(--otohime-5);
     outline-offset: -1px;
   }
   &:is(input[type="submit"], button[type="submit"]) {
@@ -60,6 +74,63 @@ input:is([type="button"], [type="submit"], [type="reset"]) {
     width: 2ch;
     height: 2ch;
     margin: calc(0.75em - 1ch) 0;
+  }
+
+  /* Color variants: filled brand, pink accent, destructive red. */
+  &.primary {
+    --_bg-light: var(--otohime-7);
+    --_bg-dark: var(--otohime-5);
+    --_text: #fff;
+    --_border: var(--otohime-7);
+    --_icon-color: #fff;
+    @media (prefers-color-scheme: dark) {
+      --_text: var(--otohime-12);
+      --_border: var(--otohime-5);
+      --_icon-color: var(--otohime-12);
+    }
+    &:where(:not(:active, :disabled):hover) {
+      --_bg: var(--otohime-8);
+      --_border: var(--otohime-8);
+      @media (prefers-color-scheme: dark) {
+        --_bg: var(--otohime-4);
+        --_border: var(--otohime-4);
+      }
+    }
+  }
+  &.accent {
+    --_text: var(--pink-9);
+    --_border: var(--pink-4);
+    --_accent: var(--pink-8);
+    @media (prefers-color-scheme: dark) {
+      --_text: var(--pink-3);
+      --_border: var(--pink-9);
+      --_accent: var(--pink-3);
+    }
+    &:where(:not(:active, :disabled):hover) {
+      --_border: var(--pink-6);
+    }
+  }
+  &.danger {
+    --_text: var(--red-9);
+    --_border: var(--red-5);
+    --_accent: var(--red-8);
+    @media (prefers-color-scheme: dark) {
+      --_text: var(--red-3);
+      --_border: var(--red-9);
+      --_accent: var(--red-3);
+    }
+    &:where(:not(:active, :disabled):hover) {
+      --_border: var(--red-7);
+    }
+  }
+  &:is(.primary, .accent, .danger):disabled {
+    --_bg: none;
+    --_text: var(--gray-6);
+    --_border: var(--surface-3);
+    --_icon-color: var(--gray-6);
+    @media (prefers-color-scheme: dark) {
+      --_text: var(--gray-5);
+    }
   }
 }
 
@@ -81,8 +152,11 @@ a.btn {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(255 255 255 / 0.3);
+    background: rgb(255 255 255 / 0.3);
     backdrop-filter: blur(3px);
+    @media (prefers-color-scheme: dark) {
+      background: rgb(0 0 0 / 0.45);
+    }
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,6 +183,9 @@ a.btn {
     outline: none;
     padding: var(--size-4);
     background: var(--surface-1);
+    border: var(--border-size-1) solid var(--surface-3);
+    border-radius: var(--radius-3);
+    box-shadow: var(--shadow-4);
     &[data-state="open"] {
       animation: var(--animation-fade-in);
     }
@@ -140,8 +217,9 @@ a.btn {
   }
 
   &[data-part="item-group-label"] {
-    margin: var(--size-2);
+    margin: var(--size-2) var(--size-2) var(--size-1);
     font-weight: bold;
+    font-size: var(--font-size-0);
     color: var(--text-2);
   }
   &[data-part="content"] {
@@ -155,13 +233,28 @@ a.btn {
     padding: var(--size-2);
     border-radius: var(--radius-2);
     color: var(--text-1);
+    transition: background-color 100ms;
 
     &:hover,
-    &:focus {
-      background-color: var(--surface-2);
+    &:focus,
+    &[data-highlighted] {
+      background-color: var(--otohime-1);
     }
     &[data-state="checked"] {
-      background-color: var(--surface-3);
+      background-color: var(--otohime-2);
+      color: var(--otohime-12);
+      font-weight: var(--font-weight-6);
+    }
+    @media (prefers-color-scheme: dark) {
+      &:hover,
+      &:focus,
+      &[data-highlighted] {
+        background-color: var(--otohime-11);
+      }
+      &[data-state="checked"] {
+        background-color: var(--otohime-10);
+        color: var(--otohime-0);
+      }
     }
   }
 }
@@ -204,10 +297,23 @@ a:where([data-scope="select"]) {
     padding: 0 0.286rem;
     border-radius: var(--radius-round);
     transition: all 200ms;
+    @media (prefers-color-scheme: dark) {
+      border-color: var(--stone-6);
+    }
+    &[data-hover] {
+      border-color: var(--otohime-6);
+    }
+    &[data-focus-visible] {
+      outline: 2px solid var(--otohime-5);
+      outline-offset: 2px;
+    }
     &[data-state="checked"] {
-      border-color: var(--violet-9);
+      border-color: var(--otohime-7);
       border-width: 0.429rem;
       padding: 0;
+      @media (prefers-color-scheme: dark) {
+        border-color: var(--otohime-5);
+      }
     }
   }
 }
@@ -230,8 +336,8 @@ button[data-focused] {
     border-radius: 1.2em;
     transition: all 200ms;
     &[data-state="checked"] {
-      border-color: var(--violet-6);
-      background: var(--violet-8);
+      border-color: var(--otohime-5);
+      background: var(--otohime-7);
     }
   }
   &[data-part="thumb"] {
@@ -244,7 +350,7 @@ button[data-focused] {
     border-radius: 0.4em;
     transition: all 200ms;
     &[data-state="checked"] {
-      background-color: var(--violet-1);
+      background-color: var(--otohime-1);
       transform: translateX(100%);
     }
   }
@@ -277,6 +383,6 @@ button[data-focused] {
   --border-color: transparent;
   &[data-selected],
   &[data-state="checked"] {
-    --border-color: var(--violet-6);
+    --border-color: var(--otohime-6);
   }
 }

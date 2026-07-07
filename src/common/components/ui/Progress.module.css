@@ -9,12 +9,12 @@
   [data-part="track"] {
     grid-area: bar;
     border-radius: var(--radius-2);
-    border: 1px solid var(--violet-8);
+    border: 1px solid var(--otohime-8);
     will-change: transfor;
     height: 0.5rem;
   }
   [data-part="range"] {
-    background-color: var(--violet-3);
+    background-color: var(--otohime-3);
     height: 100%;
   }
 }

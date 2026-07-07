@@ -44,19 +44,6 @@
   }
 }
 
-.danger-button {
-  color: var(--red-9);
-  border-color: var(--red-6);
-  @media (prefers-color-scheme: dark) {
-    color: var(--red-4);
-    border-color: var(--red-9);
-  }
-  &:disabled {
-    color: var(--text-2);
-    border-color: var(--surface-4);
-  }
-}
-
 .notes {
   margin-top: var(--size-3);
   color: var(--text-2);

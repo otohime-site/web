@@ -25,9 +25,9 @@
   }
 
   [data-part="item"][data-state="checked"] {
-    border-color: var(--blue-7);
-    background: var(--blue-2);
-    color: var(--blue-11);
+    border-color: var(--otohime-6);
+    background: var(--otohime-1);
+    color: var(--otohime-11);
   }
 
   [data-scope="radio-group"][data-part="item-control"] {
@@ -42,8 +42,8 @@
   }
 
   .group [data-part="item"][data-state="checked"] {
-    border-color: var(--blue-8);
-    background: var(--blue-11);
-    color: var(--blue-1);
+    border-color: var(--otohime-7);
+    background: var(--otohime-11);
+    color: var(--otohime-1);
   }
 }

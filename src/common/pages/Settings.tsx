@@ -70,11 +70,7 @@ const Settings = () => {
             是的，請完全清除我在 Otohime 的個人資料。
           </label>
         </p>
-        <button
-          className={classes["danger-button"]}
-          disabled={!confirmed}
-          onClick={bye}
-        >
+        <button className="danger" disabled={!confirmed} onClick={bye}>
           <MdiDeleteAlert />
           刪除帳號
         </button>

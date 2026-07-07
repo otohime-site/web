@@ -71,7 +71,7 @@ const UserPlayers = () => {
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
-      <LinkButton href="~/dxi/p/new">
+      <LinkButton href="~/dxi/p/new" className="primary">
         <IconAdd />
         新增成績單
       </LinkButton>

@@ -186,6 +186,7 @@ const User = ({ onNavigate }: { onNavigate?: () => void }) => {
                 </p>
                 <p>
                   <button
+                    className="primary"
                     onClick={async (e) => await copyBookmarklet(e, token)}
                   >
                     <MdiContentCopy />
@@ -200,7 +201,7 @@ const User = ({ onNavigate }: { onNavigate?: () => void }) => {
                 </p>
                 <p>
                   <a
-                    className="btn"
+                    className="btn primary"
                     ref={(node) => {
                       // Fix React 19 blocking `javascript:` URLs
                       // https://github.com/facebook/react/issues/16382#issuecomment-607252694
@@ -238,6 +239,7 @@ const User = ({ onNavigate }: { onNavigate?: () => void }) => {
             </p>
             <p>
               <button
+                className="danger"
                 disabled={regenerateTokenResult.fetching}
                 onClick={generateToken}
               >
