@@ -31,10 +31,7 @@ export const PlayerScoreTable = ({
         {table.map((entry) => (
           <tr
             key={getNoteHash(entry)}
-            className={clsx(
-              !entry.active && classes["inactive"],
-              entry.rating_used && classes["rating-used"],
-            )}
+            className={clsx(!entry.active && classes["inactive"])}
             onClick={(event) => handleNotePopupOpen(event, entry)}
           >
             <td className={classes["col-title"]}>
@@ -60,7 +57,14 @@ export const PlayerScoreTable = ({
                 !entry.internal_lv && classes.estimated,
               )}
             >
-              {entry.rating}
+              <span
+                className={clsx(
+                  classes["rating-value"],
+                  entry.rating_used && classes["rating-used"],
+                )}
+              >
+                {entry.rating}
+              </span>
             </td>
           </tr>
         ))}

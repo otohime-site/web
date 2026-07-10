@@ -41,8 +41,21 @@
   }
 }
 
-.rating-used td {
-  background: var(--surface-2);
+.rating-value {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-2);
+}
+
+.rating-used {
+  background: var(--otohime-2);
+  color: var(--otohime-9);
+  font-weight: 700;
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--otohime-10);
+    color: var(--otohime-2);
+  }
 }
 
 .col-title {
@@ -68,7 +81,7 @@
   font-size: var(--font-size-0);
 }
 .col-rating {
-  width: 1.6rem;
+  width: 2.4rem;
   font-size: var(--font-size-0);
 }
 .col-ranking {
