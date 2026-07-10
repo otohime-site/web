@@ -22,7 +22,7 @@ import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
   classRankNames,
   comboFlags,
-  difficulties,
+  difficultyShortNames,
   gradeNames,
   legacyCourseRankNames,
   syncFlags,
@@ -362,8 +362,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                           classes["col-level-diff"],
                         )}
                       >
-                        {difficulties[entry.difficulty].slice(0, 3)}{" "}
-                        {entry.level}
+                        {difficultyShortNames[entry.difficulty]} {entry.level}
                       </span>
                     </span>
                   </div>

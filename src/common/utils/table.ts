@@ -1,45 +1,30 @@
 import { useMemo } from "react"
-import { groupByKey } from "./grouping"
 interface TableEntry {
   active: boolean
-  difficulty: number
 }
 // A simple Table hook inspired by Tanstack table.
-// Grouping, sorting can be applied here.
+// Sorting and filtering can be applied here.
 // Some share settings between score tables will be added here.
 export const useTable = <T extends TableEntry>({
   data,
-  grouping,
   ordering,
-  difficulty,
   includeInactive,
   sortingFns,
   filterFn,
 }: {
   data: T[]
-  grouping: keyof T
   ordering: Array<{ key: keyof T; desc: boolean }>
-  difficulty: number
   includeInactive: boolean
   sortingFns?: { [k in keyof T]?: (a: T, b: T) => number }
-  filterFn: (
-    entry: T,
-    options: { grouping: keyof T; difficulty: number },
-  ) => boolean
+  filterFn: (entry: T) => boolean
 }) => {
-  const groupedData = useMemo(() => {
+  const entries = useMemo(() => {
     const sortedData = [
       ...(includeInactive ? data : data.filter((e) => e.active)),
     ]
-    const orderingWithGroup = [
-      ...(!ordering.find((o) => o.key == grouping)
-        ? [{ key: grouping, desc: grouping === "rating_latest" }]
-        : []),
-      ...ordering,
-    ]
     const fn = (a: T, b: T) => {
-      for (let i = 0; i < orderingWithGroup.length; i++) {
-        const { key, desc } = orderingWithGroup[i]
+      for (let i = 0; i < ordering.length; i++) {
+        const { key, desc } = ordering[i]
         const custom = sortingFns?.[key]
         const compare = custom
           ? custom(a, b)
@@ -56,18 +41,7 @@ export const useTable = <T extends TableEntry>({
     }
 
     sortedData.sort(fn)
-    const ungroupedData = sortedData.filter((entry) =>
-      filterFn(entry, { grouping, difficulty }),
-    )
-    return groupByKey(ungroupedData, grouping)
-  }, [
-    data,
-    grouping,
-    ordering,
-    difficulty,
-    includeInactive,
-    sortingFns,
-    filterFn,
-  ])
-  return { groupedData }
+    return sortedData.filter(filterFn)
+  }, [data, ordering, includeInactive, sortingFns, filterFn])
+  return { entries }
 }

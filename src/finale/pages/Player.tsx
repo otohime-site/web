@@ -21,6 +21,7 @@ import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
 import { useUser } from "../../common/contexts"
+import { groupByKey } from "../../common/utils/grouping"
 import { useTable } from "../../common/utils/table"
 import { levels } from "../../dx_intl/models/constants"
 import { graphql, readFragment } from "../../graphql"
@@ -32,7 +33,11 @@ import {
   getNoteHash,
   ScoreTableEntry,
 } from "../models/aggregation"
-import { comboFlags, syncFlags } from "../models/constants"
+import {
+  comboFlags,
+  difficultyShortNames,
+  syncFlags,
+} from "../models/constants"
 import { finaleRecordsFields, finaleScoresFields } from "../models/fragments"
 import {
   finalePlayersEditableDocument,
@@ -130,9 +135,14 @@ const Player = ({ params }: { params: Params }) => {
 
   const table = useTable({
     data: scoreTable,
-    grouping,
-    ordering: [{ key: ordering, desc: orderingDesc }],
-    difficulty,
+    // Sort by the grouping key first to keep folders in order
+    ordering:
+      grouping === ordering
+        ? [{ key: ordering, desc: orderingDesc }]
+        : [
+            { key: grouping, desc: false },
+            { key: ordering, desc: orderingDesc },
+          ],
     includeInactive,
     sortingFns: {
       // Ensure difficulty is also considered
@@ -143,15 +153,13 @@ const Player = ({ params }: { params: Params }) => {
           : a.index - b.index,
       level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
     },
-    filterFn: (entry, options) => {
-      switch (options.grouping) {
-        case "level":
-          return true
-        default:
-          return entry.difficulty === options.difficulty
-      }
-    },
+    filterFn: (entry) =>
+      grouping === "level" ? true : entry.difficulty === difficulty,
   })
+  const groupedData = useMemo(
+    () => groupByKey(table.entries, grouping),
+    [table, grouping],
+  )
 
   const handleDeletePlayer = async (): Promise<void> => {
     if (
@@ -236,11 +244,7 @@ const Player = ({ params }: { params: Params }) => {
               onValueChange={(e) =>
                 setOrdering(
                   e.items[0].value as
-                    | "index"
-                    | "level"
-                    | "score"
-                    | "combo_flag"
-                    | "sync_flag",
+                    "index" | "level" | "score" | "combo_flag" | "sync_flag",
                 )
               }
             >
@@ -294,10 +298,10 @@ const Player = ({ params }: { params: Params }) => {
                 if (value) setSelectedGroup(parseInt(value, 10))
               }}
             >
-              {[...table.groupedData.keys()].map((key, index) => (
+              {[...groupedData.keys()].map((key, index) => (
                 <SegmentGroupItem key={`${key}`} value={`${index}`}>
-                  {getGroupTitle(grouping, key)} (
-                  {table.groupedData.get(key)?.length})
+                  {getGroupTitle(grouping, key)} ({groupedData.get(key)?.length}
+                  )
                 </SegmentGroupItem>
               ))}
             </ScrollableSegmentGroupRoot>
@@ -309,7 +313,7 @@ const Player = ({ params }: { params: Params }) => {
                 }}
                 className={layoutClasses["tab-like-radio-group"]}
               >
-                {["EAS", "BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
+                {difficultyShortNames.map((d, i) => (
                   <RadioGroupItem
                     key={d}
                     value={i.toString()}
@@ -327,7 +331,7 @@ const Player = ({ params }: { params: Params }) => {
           </div>
 
           <PlayerScoreTable
-            table={[...table.groupedData.values()][selectedGroup]}
+            table={[...groupedData.values()][selectedGroup] ?? []}
           />
         </div>
       </div>

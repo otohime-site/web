@@ -21,7 +21,7 @@ import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
   classNames,
   comboFlags,
-  difficulties,
+  difficultyShortNames,
   syncFlags,
 } from "../models/constants"
 import {
@@ -330,8 +330,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                             : tableClasses["non-plus"],
                         )}
                       >
-                        {difficulties[entry.difficulty].slice(0, 3)}{" "}
-                        {entry.level}
+                        {difficultyShortNames[entry.difficulty]} {entry.level}
                       </span>
                     </span>
                   </div>

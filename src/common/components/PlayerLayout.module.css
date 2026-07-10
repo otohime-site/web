@@ -64,7 +64,8 @@
   }
 }
 
-.tab-like-radio-group[data-scope="radio-group"][data-part="root"] {
+/* Shared by the radio group and the multi-select toggle group */
+.tab-like-radio-group[data-part="root"] {
   display: flex;
   flex-direction: row;
   border-radius: var(--radius-3);
@@ -77,5 +78,11 @@
     padding: var(--size-2);
     flex: 1;
     text-transform: uppercase;
+    border: 0;
+    box-shadow: none;
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
   }
 }

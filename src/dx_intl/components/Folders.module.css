@@ -1,30 +1,48 @@
+.folders {
+  padding: 0 var(--size-2) var(--size-2);
+  h4 {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+    margin: var(--size-2) 0 var(--size-1);
+    font-size: var(--font-size-1);
+    button {
+      font-size: var(--font-size-0);
+      padding: 0 var(--size-1);
+    }
+  }
+}
+
 .group {
-  &[data-scope="radio-group"][data-part="root"] {
+  &[data-part="root"] {
     flex-direction: row;
   }
   display: flex;
   flex-wrap: wrap;
-  gap: var(--size-2);
-  margin-bottom: var(--size-2);
+  gap: var(--size-1);
   [data-part="item"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 12em;
-    height: 4em;
+    min-width: 2.5em;
+    min-height: 2rem;
     border: var(--border-size-1) solid var(--gray-6);
     border-radius: var(--radius-2);
+    box-shadow: none;
+    background: none;
     cursor: pointer;
+    font-family: inherit;
     font-size: var(--font-size-1);
+    font-weight: var(--font-weight-4);
     text-align: center;
-    padding: var(--size-1);
+    padding: var(--size-1) var(--size-2);
     transition:
       background 0.1s,
       border-color 0.1s;
     user-select: none;
   }
 
-  [data-part="item"][data-state="checked"] {
+  [data-part="item"]:is([data-state="checked"], [data-state="on"]) {
     border-color: var(--otohime-6);
     background: var(--otohime-1);
     color: var(--otohime-11);
@@ -41,7 +59,7 @@
     color: var(--gray-2);
   }
 
-  .group [data-part="item"][data-state="checked"] {
+  .group [data-part="item"]:is([data-state="checked"], [data-state="on"]) {
     border-color: var(--otohime-7);
     background: var(--otohime-11);
     color: var(--otohime-1);

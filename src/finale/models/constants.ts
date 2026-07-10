@@ -32,6 +32,15 @@ export const difficulties = [
   "Re:Master",
 ] as const
 
+export const difficultyShortNames = [
+  "EAS",
+  "BSC",
+  "ADV",
+  "EXP",
+  "MAS",
+  "RE:M",
+] as const
+
 // Make typescript-plugin-css-modules happy
 export const difficultyClasses = [
   "diff0",

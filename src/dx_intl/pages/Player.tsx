@@ -1,8 +1,9 @@
+import { Collapsible } from "@ark-ui/react/collapsible"
 import { Popover, usePopover } from "@ark-ui/react/popover"
 import { RadioGroup } from "@ark-ui/react/radio-group"
-import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
+import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Titled } from "react-titled"
@@ -10,6 +11,7 @@ import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
+import IconChevronDown from "~icons/mdi/chevron-down"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
@@ -19,8 +21,6 @@ import { Alert } from "../../common/components/ui/Alert"
 import { Switch } from "../../common/components/ui/Switch"
 
 import { LinkButton } from "../../common/components/ui/Button"
-import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
-import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
@@ -37,7 +37,6 @@ import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
   flatSongsResult,
-  getGroupTitle,
   getNoteHash,
   getRating,
   getScoreStats,
@@ -49,11 +48,19 @@ import {
   categories,
   comboFlags,
   difficulties,
+  difficultyShortNames,
   levelCompareKey,
   levels,
   syncFlags,
   versions,
 } from "../models/constants"
+import {
+  DEFAULT_FILTER,
+  ScoreFilter,
+  filterEntry,
+  getFilterTitle,
+  toFolderFilter,
+} from "../models/filter"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import {
   dxIntlPlayersEditableDocument,
@@ -78,13 +85,6 @@ const dxIntlRecordWithScoresDocument = graphql(
   `,
   [dxIntlRecordsFields, dxIntlScoresFields],
 )
-const groupKeyOptions = {
-  rating_latest: "Rating 組成",
-  category: "分類",
-  version: "版本",
-  level: "等級",
-} as const
-
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
   const [editableResult] = useQuery({
@@ -111,10 +111,12 @@ const Player = ({ params }: { params: Params }) => {
   // * All perfect will add 1 point to rating.
   const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
-  const [grouping, setGrouping] = useState<
-    "rating_latest" | "category" | "version" | "level"
-  >("rating_latest")
-  const [selectedGroup, setSelectedGroup] = useState(0)
+  const [filter, setFilter] = useState<ScoreFilter>(DEFAULT_FILTER)
+  const [advanced, setAdvanced] = useState(false)
+  // Expanded by default on desktop where the left column is sticky
+  const [foldersOpen, setFoldersOpen] = useState(
+    () => window.matchMedia("(min-width: 961px)").matches,
+  )
   const [ordering, setOrdering] = useState<
     | "index"
     | "level"
@@ -128,7 +130,6 @@ const Player = ({ params }: { params: Params }) => {
     | "ap_rate"
   >("index")
   const [orderingDesc, setOrderingDesc] = useState(false)
-  const [difficulty, setDifficulty] = useState<number>(2)
   const [includeInactive, setIncludeInactive] = useState(false)
   const [statFolder, setStatFolder] = useState(true)
   const [showRatingImage, setShowRatingImage] = useState(false)
@@ -213,25 +214,28 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult, afterCircle])
 
+  // The rating folders keep their own ordering by the rating ranks
+  const ratingFolder = !advanced && filter.rating_latest != null
+  const filterFn = useCallback(
+    (entry: ScoreTableEntry) => filterEntry(entry, filter, advanced),
+    [filter, advanced],
+  )
   const table = useTable({
     data: scoreTable,
-    grouping,
-    ordering:
-      grouping === "rating_latest"
-        ? [
-            { key: "old_rank", desc: false },
-            { key: "new_rank", desc: false },
-          ]
-        : [{ key: ordering, desc: orderingDesc }],
-    difficulty,
+    ordering: ratingFolder
+      ? [
+          { key: "old_rank", desc: false },
+          { key: "new_rank", desc: false },
+        ]
+      : [{ key: ordering, desc: orderingDesc }],
     includeInactive,
     sortingFns: {
       // Ensure difficulty is also considered
-      // In case like group with level
-      // Also, when grouping with level, also consider internal lv.
+      // In case like filtering by level
+      // Also, when filtering by level, also consider internal lv.
       // (we may have better solution on this.)
       index: (a, b) => {
-        if (grouping === "level") {
+        if (filter.level.length > 0) {
           const internalLvA = a.internal_lv ?? levelCompareKey[a.level]
           const internalLvB = b.internal_lv ?? levelCompareKey[b.level]
           return internalLvA !== internalLvB
@@ -247,27 +251,22 @@ const Player = ({ params }: { params: Params }) => {
         (a.internal_lv ?? levelCompareKey[a.level]) -
         (b.internal_lv ?? levelCompareKey[b.level]),
     },
-    filterFn: (entry, options) => {
-      switch (options.grouping) {
-        case "rating_latest":
-          return entry.rating_listed
-        case "level":
-          return true
-        default:
-          return entry.difficulty === options.difficulty
-      }
-    },
+    filterFn,
   })
-  const { currentGroupEntry, scoreStatsTargets, scoreStats } = useMemo(() => {
-    const currentGroupEntry = [...table.groupedData.entries()][
-      selectedGroup ?? 0
-    ] ?? ["", []]
-    const scoreStatsTargets = (
-      statFolder ? currentGroupEntry[1] : scoreTable
-    )?.filter((s) => includeInactive || s.active)
+  const { scoreStatsTargets, scoreStats } = useMemo(() => {
+    const scoreStatsTargets = (statFolder ? table.entries : scoreTable).filter(
+      (s) => includeInactive || s.active,
+    )
     const scoreStats = getScoreStats(scoreStatsTargets)
-    return { currentGroupEntry, scoreStatsTargets, scoreStats }
-  }, [scoreTable, table, includeInactive, selectedGroup, statFolder])
+    return { scoreStatsTargets, scoreStats }
+  }, [scoreTable, table, includeInactive, statFolder])
+
+  const handleAdvancedChange = (newAdvanced: boolean) => {
+    setAdvanced(newAdvanced)
+    if (!newAdvanced) {
+      setFilter(toFolderFilter(filter))
+    }
+  }
 
   const downloadCSV = useCallback(async (): Promise<void> => {
     const papa = await import("papaparse")
@@ -444,13 +443,30 @@ const Player = ({ params }: { params: Params }) => {
               顯示刪除曲
             </Switch>
           </div>
+          <div className={classes["folders-block"]}>
+            <Collapsible.Root
+              open={foldersOpen}
+              onOpenChange={({ open }) => setFoldersOpen(open)}
+            >
+              <Collapsible.Trigger className={classes["folders-trigger"]}>
+                <IconChevronDown />
+                {getFilterTitle(filter)}（{table.entries.length}）
+              </Collapsible.Trigger>
+              <Collapsible.Content>
+                <Folders
+                  filter={filter}
+                  advanced={advanced}
+                  onFilterChange={setFilter}
+                  onAdvancedChange={handleAdvancedChange}
+                />
+              </Collapsible.Content>
+            </Collapsible.Root>
+          </div>
           <div className={classes["score-stats-block"]}>
             <div>
               <strong>
-                {statFolder
-                  ? `${getGroupTitle(grouping, currentGroupEntry[0])}`
-                  : "全曲"}{" "}
-                ({scoreStatsTargets.length})
+                {statFolder ? getFilterTitle(filter) : "全曲"} (
+                {scoreStatsTargets.length})
               </strong>
               <Switch
                 checked={statFolder}
@@ -487,66 +503,68 @@ const Player = ({ params }: { params: Params }) => {
           </div>
         </div>
         <div>
-          <div className={layoutClasses["sticky-header"]}>
-            <SegmentGroup.Root
-              value={grouping}
-              onValueChange={({ value }) => {
-                if (!value) return
-                setGrouping(value as typeof grouping)
-                setSelectedGroup(0)
-              }}
-              className={layoutClasses["grouping-tablist"]}
-            >
-              {Object.entries(groupKeyOptions).map(([key]) => (
-                <SegmentGroupItem
-                  key={key}
-                  value={key}
-                  style={key === "rating_latest" ? { flex: 2 } : undefined}
+          {advanced ||
+          filter.category.length > 0 ||
+          filter.version.length > 0 ? (
+            <div className={layoutClasses["sticky-header"]}>
+              {advanced ? (
+                // Multiple difficulties can be selected, none = all
+                <ToggleGroup.Root
+                  multiple
+                  value={filter.difficulty.map((d) => `${d}`)}
+                  onValueChange={({ value }) => {
+                    setFilter({
+                      ...filter,
+                      difficulty: value.map((v) => parseInt(v, 10)),
+                    })
+                  }}
+                  className={layoutClasses["tab-like-radio-group"]}
                 >
-                  {groupKeyOptions[key as typeof grouping]}
-                </SegmentGroupItem>
-              ))}
-            </SegmentGroup.Root>
-            <ScrollableSegmentGroupRoot
-              value={`${selectedGroup}`}
-              onValueChange={({ value }) => {
-                if (value) setSelectedGroup(parseInt(value, 10))
-              }}
-            >
-              {[...table.groupedData.keys()].map((key, index) => (
-                <SegmentGroupItem key={`${key}`} value={index.toString()}>
-                  {getGroupTitle(grouping, key)} (
-                  {table.groupedData.get(key)?.length})
-                </SegmentGroupItem>
-              ))}
-            </ScrollableSegmentGroupRoot>
-            {grouping === "category" || grouping === "version" ? (
-              <RadioGroup.Root
-                value={difficulty.toString()}
-                onValueChange={(v) => {
-                  if (v.value) setDifficulty(parseInt(v.value, 10))
-                }}
-                className={layoutClasses["tab-like-radio-group"]}
-              >
-                {["BSC", "ADV", "EXP", "MAS", "RE:M"].map((d, i) => (
-                  <RadioGroupItem
-                    key={d}
-                    value={i.toString()}
-                    className={
-                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                    }
-                  >
-                    {d}
-                  </RadioGroupItem>
-                ))}
-              </RadioGroup.Root>
-            ) : (
-              <></>
-            )}
-          </div>
-          <Folders />
+                  {difficultyShortNames.map((d, i) => (
+                    <ToggleGroup.Item
+                      key={d}
+                      value={i.toString()}
+                      className={
+                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                      }
+                    >
+                      {d}
+                    </ToggleGroup.Item>
+                  ))}
+                </ToggleGroup.Root>
+              ) : (
+                <RadioGroup.Root
+                  value={
+                    filter.difficulty.length > 0
+                      ? `${filter.difficulty[0]}`
+                      : null
+                  }
+                  onValueChange={(v) => {
+                    if (!v.value) return
+                    setFilter({
+                      ...filter,
+                      difficulty: [parseInt(v.value, 10)],
+                    })
+                  }}
+                  className={layoutClasses["tab-like-radio-group"]}
+                >
+                  {difficultyShortNames.map((d, i) => (
+                    <RadioGroupItem
+                      key={d}
+                      value={i.toString()}
+                      className={
+                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                      }
+                    >
+                      {d}
+                    </RadioGroupItem>
+                  ))}
+                </RadioGroup.Root>
+              )}
+            </div>
+          ) : null}
           <PlayerScoreTable
-            table={[...table.groupedData.values()][selectedGroup]}
+            table={table.entries}
             handleNotePopupOpen={handleNotePopupOpen}
           />
         </div>
