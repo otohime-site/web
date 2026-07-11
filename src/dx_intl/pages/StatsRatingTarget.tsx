@@ -58,7 +58,7 @@ const RatingTargetList = ({ rows }: { rows: AggregatedRow[] }) => (
   </ol>
 )
 
-const RatingTarget = ({ params }: { params: Params }) => {
+const StatsRatingTarget = ({ params }: { params: Params }) => {
   const rating = parseInt(params.rating ?? "", 10)
   const [ratingTargetStatsResult] = useQuery({
     query: dxIntlRatingTargetStatsDocument,
@@ -140,4 +140,4 @@ const RatingTarget = ({ params }: { params: Params }) => {
   )
 }
 
-export default RatingTarget
+export default StatsRatingTarget

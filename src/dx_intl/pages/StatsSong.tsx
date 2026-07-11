@@ -9,7 +9,7 @@ import { graphql } from "../../graphql"
 import { flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
-import classes from "./SongStats.module.css"
+import classes from "./StatsSong.module.css"
 
 const dxIntlScoresStatsDocument = graphql(`
   query dxIntlScoresStats(
@@ -31,7 +31,7 @@ const dxIntlScoresStatsDocument = graphql(`
   }
 `)
 
-const SongStats = ({ params }: { params: Params }) => {
+const StatsSong = ({ params }: { params: Params }) => {
   const { variant } = params
   const songId = params.songId ?? ""
   const deluxe = variant != null ? variant === "dx" : null
@@ -86,9 +86,7 @@ const SongStats = ({ params }: { params: Params }) => {
       {song != null ? (
         <>
           <Titled
-            title={(title) =>
-              `${song.title} - maimai DX 曲目成績統計 - ${title}`
-            }
+            title={(title) => `${song.title} - maimai DX 樂曲統計 - ${title}`}
           />
           <section className={classes.intro}>
             <img src={getCoverUrl(song.id)} />
@@ -177,4 +175,4 @@ const SongStats = ({ params }: { params: Params }) => {
   )
 }
 
-export default SongStats
+export default StatsSong

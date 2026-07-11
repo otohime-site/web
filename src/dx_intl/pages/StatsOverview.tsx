@@ -18,8 +18,8 @@ import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
 import { versionRewardTitle, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
-import { RATING_TARGETS } from "./RatingTarget"
-import classes from "./Statistics.module.css"
+import classes from "./StatsOverview.module.css"
+import { RATING_TARGETS } from "./StatsRatingTarget"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
@@ -87,7 +87,7 @@ const dxIntlNewRatingStatsDocument = graphql(`
   }
 `)
 
-const Statistics = () => {
+const StatsOverview = () => {
   const [baseRatingResult] = useQuery({ query: dxIntlNewRatingStatsDocument })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
   const flattedEntries = useMemo(
@@ -299,4 +299,4 @@ const Statistics = () => {
   )
 }
 
-export default Statistics
+export default StatsOverview
