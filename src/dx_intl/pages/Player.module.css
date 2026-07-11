@@ -79,11 +79,26 @@
   gap: var(--size-1);
   padding: var(--size-2);
   font-family: "M PLUS 2";
-  svg {
-    transition: transform 0.2s;
-  }
-  &[data-state="open"] svg {
-    transform: rotate(-180deg);
+}
+
+.folders-dialog {
+  width: min(42rem, calc(100vw - 2 * var(--size-4)));
+  max-height: calc(100vh - 2 * var(--size-4));
+  overflow: auto;
+}
+
+.folders-dialog-header {
+  position: sticky;
+  top: calc(-1 * var(--size-4));
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: calc(-1 * var(--size-4)) calc(-1 * var(--size-4)) 0;
+  padding: var(--size-4) var(--size-4) var(--size-2);
+  background: var(--surface-1);
+  h2 {
+    margin: 0;
   }
 }
 

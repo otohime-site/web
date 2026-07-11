@@ -1,5 +1,6 @@
-import { Collapsible } from "@ark-ui/react/collapsible"
+import { Dialog } from "@ark-ui/react/dialog"
 import { Popover, usePopover } from "@ark-ui/react/popover"
+import { Portal } from "@ark-ui/react/portal"
 import { RadioGroup } from "@ark-ui/react/radio-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
@@ -11,8 +12,9 @@ import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
-import IconChevronDown from "~icons/mdi/chevron-down"
+import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
+import IconFilterVariant from "~icons/mdi/filter-variant"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
 import IconPencil from "~icons/mdi/pencil"
@@ -113,10 +115,6 @@ const Player = ({ params }: { params: Params }) => {
 
   const [filter, setFilter] = useState<ScoreFilter>(DEFAULT_FILTER)
   const [advanced, setAdvanced] = useState(false)
-  // Expanded by default on desktop where the left column is sticky
-  const [foldersOpen, setFoldersOpen] = useState(
-    () => window.matchMedia("(min-width: 961px)").matches,
-  )
   const [ordering, setOrdering] = useState<
     | "index"
     | "level"
@@ -444,23 +442,35 @@ const Player = ({ params }: { params: Params }) => {
             </Switch>
           </div>
           <div className={classes["folders-block"]}>
-            <Collapsible.Root
-              open={foldersOpen}
-              onOpenChange={({ open }) => setFoldersOpen(open)}
-            >
-              <Collapsible.Trigger className={classes["folders-trigger"]}>
-                <IconChevronDown />
-                {getFilterTitle(filter)}（{table.entries.length}）
-              </Collapsible.Trigger>
-              <Collapsible.Content>
-                <Folders
-                  filter={filter}
-                  advanced={advanced}
-                  onFilterChange={setFilter}
-                  onAdvancedChange={handleAdvancedChange}
-                />
-              </Collapsible.Content>
-            </Collapsible.Root>
+            <Dialog.Root lazyMount unmountOnExit>
+              <Dialog.Trigger asChild>
+                <button className={classes["folders-trigger"]}>
+                  <IconFilterVariant />
+                  {getFilterTitle(filter)}（{table.entries.length}）
+                </button>
+              </Dialog.Trigger>
+              <Portal>
+                <Dialog.Backdrop />
+                <Dialog.Positioner>
+                  <Dialog.Content className={classes["folders-dialog"]}>
+                    <div className={classes["folders-dialog-header"]}>
+                      <Dialog.Title>資料夾篩選</Dialog.Title>
+                      <Dialog.CloseTrigger asChild>
+                        <button aria-label="關閉">
+                          <IconClose />
+                        </button>
+                      </Dialog.CloseTrigger>
+                    </div>
+                    <Folders
+                      filter={filter}
+                      advanced={advanced}
+                      onFilterChange={setFilter}
+                      onAdvancedChange={handleAdvancedChange}
+                    />
+                  </Dialog.Content>
+                </Dialog.Positioner>
+              </Portal>
+            </Dialog.Root>
           </div>
           <div className={classes["score-stats-block"]}>
             <div>
