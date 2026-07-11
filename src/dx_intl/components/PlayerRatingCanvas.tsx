@@ -96,7 +96,9 @@ const BLOCK_H = Math.floor(
     TOTAL_ROWS,
 )
 const BLOCK_RADIUS = 20
-const BG_COLOR = "#1b1d22"
+// Concrete equivalent of --otohime-0. Keeping this fixed makes exported images
+// use the light brand canvas even when the browser is in dark mode.
+const BG_COLOR = "oklch(98.2% 0.012 340)"
 const RANK_GAP = 16
 
 // The QR code lives in the header's top-right corner with the score URL above
