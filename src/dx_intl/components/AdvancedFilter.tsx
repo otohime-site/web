@@ -5,47 +5,19 @@ import IconPlus from "~icons/mdi/plus"
 import { Menu } from "../../common/components/ui/Menu"
 import { Slider } from "../../common/components/ui/Slider"
 import { Switch } from "../../common/components/ui/Switch"
-import {
-  categories,
-  difficultyShortNames,
-  levels,
-  versions,
-} from "../models/constants"
+import { levels } from "../models/constants"
 import {
   Condition,
   ConditionKey,
   INTERNAL_LV_MAX,
   INTERNAL_LV_MIN,
-  ValuesConditionKey,
-  comboFlagLabels,
   conditionLabels,
   defaultCondition,
-  isEffectiveCondition,
-  syncFlagLabels,
+  valueOptions,
 } from "../models/filter"
 import styles from "./AdvancedFilter.module.css"
 
 const conditionKeys = Object.keys(conditionLabels) as ConditionKey[]
-
-const valueOptions: Record<
-  ValuesConditionKey,
-  Array<{ value: number; label: string }>
-> = {
-  category: categories.flatMap((category, index) =>
-    category != null ? [{ value: index, label: category }] : [],
-  ),
-  version: versions.map((version, index) => ({ value: index, label: version })),
-  deluxe: [
-    { value: 0, label: "標準譜面" },
-    { value: 1, label: "DX 譜面" },
-  ],
-  difficulty: difficultyShortNames.map((difficulty, index) => ({
-    value: index,
-    label: difficulty,
-  })),
-  combo_flag: comboFlagLabels.map((label, index) => ({ value: index, label })),
-  sync_flag: syncFlagLabels.map((label, index) => ({ value: index, label })),
-}
 
 // Values inside a condition are OR-ed; nothing selected means no restriction.
 const ValueChips = ({
@@ -131,17 +103,19 @@ const ConditionEditor = ({
 // effect or the show-all switch is explicitly turned on.
 const AdvancedFilter = ({
   conditions,
+  hasEffectiveConditions,
   showAll,
   onConditionsChange,
   onShowAllChange,
 }: {
   conditions: Condition[]
+  hasEffectiveConditions: boolean
   showAll: boolean
   onConditionsChange: (conditions: Condition[]) => void
   onShowAllChange: (showAll: boolean) => void
 }) => (
   <div className={styles.advanced}>
-    {conditions.some(isEffectiveCondition) ? null : (
+    {hasEffectiveConditions ? null : (
       <div className={styles.showAll}>
         <p className={styles.hint}>
           還沒有生效的條件。加入條件，或是直接顯示全部譜面：

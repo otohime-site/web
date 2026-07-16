@@ -2,14 +2,13 @@ import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { useMemo } from "react"
 import { ScoreTableEntry } from "../models/aggregation"
 import {
-  categories,
+  displayVersionTitle,
   levels,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   versions,
-  versionTitles,
 } from "../models/constants"
-import { EMPTY_FILTER, ScoreFilter } from "../models/filter"
+import { EMPTY_FILTER, ScoreFilter, valueOptions } from "../models/filter"
 import styles from "./Folders.module.css"
 
 type ArrayFolderKey = "category" | "version" | "level"
@@ -76,7 +75,9 @@ const Folders = ({
   // rating composition counts.
   const { categoryOptions, versionOptions, levelOptions, ratingOptions } =
     useMemo(() => {
-      const categoryCounts = new Array<number>(categories.length).fill(0)
+      const categoryCounts = new Map<number, number>(
+        valueOptions.category.map(({ value }) => [value, 0]),
+      )
       const versionCounts = new Array<number>(versions.length).fill(0)
       const levelCounts = new Array<number>(levels.length).fill(0)
       const ratingCounts = [0, 0] // [old, latest]
@@ -84,28 +85,24 @@ const Folders = ({
         const levelIndex = levels.indexOf(entry.level)
         if (levelIndex >= 0) levelCounts[levelIndex]++
         if (entry.difficulty !== 3) continue
-        if (entry.category in categoryCounts) categoryCounts[entry.category]++
-        if (entry.version in versionCounts) versionCounts[entry.version]++
+        const categoryCount = categoryCounts.get(entry.category)
+        if (categoryCount != null)
+          categoryCounts.set(entry.category, categoryCount + 1)
+        if (entry.version >= 0 && entry.version < versionCounts.length)
+          versionCounts[entry.version]++
         ratingCounts[entry.rating_latest ? 1 : 0]++
       }
       return {
-        categoryOptions: categories.flatMap((category, index) =>
-          category != null
-            ? [
-                {
-                  value: `${index}`,
-                  label: category,
-                  tag: `${categoryCounts[index]}`,
-                },
-              ]
-            : [],
-        ),
-        versionOptions: versions.map((version, index) => ({
-          value: `${index}`,
-          label: version,
-          title:
-            index === 0 ? versionTitles[1] : versionTitles[index] || undefined,
-          tag: `${versionCounts[index]}`,
+        categoryOptions: valueOptions.category.map(({ value, label }) => ({
+          value: `${value}`,
+          label,
+          tag: `${categoryCounts.get(value)}`,
+        })),
+        versionOptions: valueOptions.version.map(({ value, label }) => ({
+          value: `${value}`,
+          label,
+          title: displayVersionTitle(value),
+          tag: `${versionCounts[value]}`,
         })),
         levelOptions: levels.map((level, index) => ({
           value: `${index}`,

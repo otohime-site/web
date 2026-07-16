@@ -85,6 +85,28 @@ export const syncFlagLabels = syncFlags.map((flag) =>
   flag === "" ? "無" : flag === "s" ? "SYNC" : flag.toUpperCase(),
 )
 
+// The single source for each values dimension's {value, label} options,
+// shared by the advanced-filter chips, the folder chips and the titles.
+export const valueOptions: Record<
+  ValuesConditionKey,
+  Array<{ value: number; label: string }>
+> = {
+  category: categories.flatMap((category, index) =>
+    category != null ? [{ value: index, label: category }] : [],
+  ),
+  version: versions.map((version, index) => ({ value: index, label: version })),
+  deluxe: [
+    { value: 0, label: "標準譜面" },
+    { value: 1, label: "DX 譜面" },
+  ],
+  difficulty: difficultyShortNames.map((difficulty, index) => ({
+    value: index,
+    label: difficulty,
+  })),
+  combo_flag: comboFlagLabels.map((label, index) => ({ value: index, label })),
+  sync_flag: syncFlagLabels.map((label, index) => ({ value: index, label })),
+}
+
 // Range conditions start on a narrow, already-effective band so a
 // freshly added condition does not list the whole table.
 export const defaultCondition = (key: ConditionKey): Condition =>
@@ -213,6 +235,9 @@ const getRangeTitle = (
       ? `${label} ${getName(range[0])}`
       : `${label} ${getName(range[0])}〜${getName(range[1])}`
 
+const optionLabel = (key: ValuesConditionKey, value: number): string =>
+  valueOptions[key].find((option) => option.value === value)?.label ?? ""
+
 const getConditionTitle = (condition: Condition): string | null => {
   switch (condition.key) {
     case "level":
@@ -229,35 +254,25 @@ const getConditionTitle = (condition: Condition): string | null => {
         "定數",
         (v) => v.toFixed(1),
       )
-    case "category":
-      return getDimensionTitle(
-        condition.values,
-        "分類",
-        (v) => categories[v] ?? "",
-      )
-    case "version":
-      return getDimensionTitle(condition.values, "版本", (v) => versions[v])
-    case "deluxe":
-      return getDimensionTitle(condition.values, "譜面類型", (v) =>
-        v === 1 ? "DX 譜面" : "標準譜面",
-      )
-    case "difficulty":
-      return getDimensionTitle(
-        condition.values,
-        "難易度",
-        (v) => difficultyShortNames[v],
-      )
+    // The flag names alone (無, FC, …) are ambiguous between the two
+    // flag dimensions, so single values keep a Combo/Sync prefix.
     case "combo_flag":
       return getDimensionTitle(
         condition.values,
         "Combo",
-        (v) => `Combo ${comboFlagLabels[v]}`,
+        (v) => `Combo ${optionLabel(condition.key, v)}`,
       )
     case "sync_flag":
       return getDimensionTitle(
         condition.values,
         "Sync",
-        (v) => `Sync ${syncFlagLabels[v]}`,
+        (v) => `Sync ${optionLabel(condition.key, v)}`,
+      )
+    default:
+      return getDimensionTitle(
+        condition.values,
+        conditionLabels[condition.key],
+        (v) => optionLabel(condition.key, v),
       )
   }
 }

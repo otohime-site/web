@@ -287,6 +287,10 @@ export const versionTitles = [
   "丸",
 ]
 
+// The merged maimai / maimai PLUS at index 0 shares maimai PLUS's 真 title.
+export const displayVersionTitle = (version: number): string | undefined =>
+  (version === 0 ? versionTitles[1] : versionTitles[version]) || undefined
+
 const rewardSuffixes = {
   sss: "将",
   fc: "極",

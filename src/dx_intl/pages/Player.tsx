@@ -231,13 +231,15 @@ const Player = ({ params }: { params: Params }) => {
   // The rating folders keep their own ordering by the rating ranks
   const ratingFolder = !advanced && filter.rating_latest != null
   const hasEffectiveConditions = conditions.some(isEffectiveCondition)
+  // The single gate for whether advanced mode lists anything at all;
+  // the filter and the title must agree on it.
+  const conditionsActive = hasEffectiveConditions || showAll
   const filterFn = useCallback(
     (entry: ScoreTableEntry) =>
       advanced
-        ? (hasEffectiveConditions || showAll) &&
-          filterEntryConditions(entry, conditions)
+        ? conditionsActive && filterEntryConditions(entry, conditions)
         : filterEntry(entry, filter),
-    [filter, conditions, advanced, hasEffectiveConditions, showAll],
+    [filter, conditions, advanced, conditionsActive],
   )
   // When filtering revolves around levels, the default ordering
   // considers internal lv as well.
@@ -247,21 +249,27 @@ const Player = ({ params }: { params: Params }) => {
           condition.key === "level" || condition.key === "internal_lv",
       )
     : filter.level.length > 0
-  const table = useTable({
-    data: scoreTable,
-    ordering: ratingFolder
-      ? [
-          { key: "old_rank", desc: false },
-          { key: "new_rank", desc: false },
-        ]
-      : [{ key: ordering, desc: orderingDesc }],
-    includeInactive,
-    sortingFns: {
+  // Ordering and sortingFns are deps of useTable's internal memo, so
+  // they must keep their identity or every render re-sorts the table.
+  const tableOrdering = useMemo<
+    Array<{ key: keyof ScoreTableEntry; desc: boolean }>
+  >(
+    () =>
+      ratingFolder
+        ? [
+            { key: "old_rank", desc: false },
+            { key: "new_rank", desc: false },
+          ]
+        : [{ key: ordering, desc: orderingDesc }],
+    [ratingFolder, ordering, orderingDesc],
+  )
+  const sortingFns = useMemo(
+    () => ({
       // Ensure difficulty is also considered
       // In case like filtering by level
       // Also, when filtering by level, also consider internal lv.
       // (we may have better solution on this.)
-      index: (a, b) => {
+      index: (a: ScoreTableEntry, b: ScoreTableEntry) => {
         if (levelFiltered) {
           const internalLvA = a.internal_lv ?? levelCompareKey[a.level]
           const internalLvB = b.internal_lv ?? levelCompareKey[b.level]
@@ -273,11 +281,19 @@ const Player = ({ params }: { params: Params }) => {
         }
         return a.index - b.index
       },
-      level: (a, b) => levels.indexOf(a.level) - levels.indexOf(b.level),
-      internal_lv: (a, b) =>
+      level: (a: ScoreTableEntry, b: ScoreTableEntry) =>
+        levels.indexOf(a.level) - levels.indexOf(b.level),
+      internal_lv: (a: ScoreTableEntry, b: ScoreTableEntry) =>
         (a.internal_lv ?? levelCompareKey[a.level]) -
         (b.internal_lv ?? levelCompareKey[b.level]),
-    },
+    }),
+    [levelFiltered],
+  )
+  const table = useTable({
+    data: scoreTable,
+    ordering: tableOrdering,
+    includeInactive,
+    sortingFns,
     filterFn,
   })
   const { scoreStatsTargets, scoreStats } = useMemo(() => {
@@ -289,7 +305,7 @@ const Player = ({ params }: { params: Params }) => {
   }, [scoreTable, table, includeInactive, statFolder])
 
   const filterTitle = advanced
-    ? hasEffectiveConditions || showAll
+    ? conditionsActive
       ? getConditionsTitle(conditions)
       : "未指定條件"
     : getFilterTitle(filter)
@@ -500,6 +516,7 @@ const Player = ({ params }: { params: Params }) => {
                     {advanced ? (
                       <AdvancedFilter
                         conditions={conditions}
+                        hasEffectiveConditions={hasEffectiveConditions}
                         showAll={showAll}
                         onConditionsChange={setConditions}
                         onShowAllChange={setShowAll}
