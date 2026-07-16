@@ -82,7 +82,10 @@
 }
 
 .folders-dialog {
-  width: min(42rem, calc(100vw - 2 * var(--size-4)));
+  width: min(67.5rem, calc(100vw - 2 * var(--size-4)));
+  /* Keep the dialog from collapsing when switching to the sparser
+     advanced-filter view. */
+  min-height: min(30rem, calc(100vh - 2 * var(--size-4)));
   max-height: calc(100vh - 2 * var(--size-4));
   overflow: auto;
 }
@@ -93,12 +96,16 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--size-4);
   margin: calc(-1 * var(--size-4)) calc(-1 * var(--size-4)) 0;
   padding: var(--size-4) var(--size-4) var(--size-2);
   background: var(--surface-1);
   h2 {
     margin: 0;
+  }
+  /* The close trigger keeps to the right edge. */
+  > button:last-child {
+    margin-left: auto;
   }
 }
 

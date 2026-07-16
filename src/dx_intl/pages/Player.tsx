@@ -4,7 +4,6 @@ import { Portal } from "@ark-ui/react/portal"
 import { RadioGroup } from "@ark-ui/react/radio-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
-import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import saveAs from "file-saver"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { Titled } from "react-titled"
@@ -29,6 +28,7 @@ import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
+import AdvancedFilter from "../components/AdvancedFilter"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders from "../components/Folders"
 import NotePopup from "../components/NotePopup"
@@ -57,11 +57,14 @@ import {
   versions,
 } from "../models/constants"
 import {
+  Condition,
   DEFAULT_FILTER,
   ScoreFilter,
   filterEntry,
+  filterEntryConditions,
+  getConditionsTitle,
   getFilterTitle,
-  toFolderFilter,
+  isEffectiveCondition,
 } from "../models/filter"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import {
@@ -114,6 +117,12 @@ const Player = ({ params }: { params: Params }) => {
   const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
   const [filter, setFilter] = useState<ScoreFilter>(DEFAULT_FILTER)
+  // Advanced mode keeps its own condition list so toggling the mode
+  // switches between the two filters without converting them.
+  const [conditions, setConditions] = useState<Condition[]>([])
+  // Listing every chart is heavy, so without an effective condition
+  // advanced mode shows nothing until this is explicitly turned on.
+  const [showAll, setShowAll] = useState(false)
   const [advanced, setAdvanced] = useState(false)
   const [ordering, setOrdering] = useState<
     | "index"
@@ -212,12 +221,32 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, recordResult, afterCircle])
 
+  // Song counts on the folder chips follow the 顯示刪除曲 toggle,
+  // matching the entry counts shown elsewhere.
+  const folderEntries = useMemo(
+    () => scoreTable.filter((entry) => includeInactive || entry.active),
+    [scoreTable, includeInactive],
+  )
+
   // The rating folders keep their own ordering by the rating ranks
   const ratingFolder = !advanced && filter.rating_latest != null
+  const hasEffectiveConditions = conditions.some(isEffectiveCondition)
   const filterFn = useCallback(
-    (entry: ScoreTableEntry) => filterEntry(entry, filter, advanced),
-    [filter, advanced],
+    (entry: ScoreTableEntry) =>
+      advanced
+        ? (hasEffectiveConditions || showAll) &&
+          filterEntryConditions(entry, conditions)
+        : filterEntry(entry, filter),
+    [filter, conditions, advanced, hasEffectiveConditions, showAll],
   )
+  // When filtering revolves around levels, the default ordering
+  // considers internal lv as well.
+  const levelFiltered = advanced
+    ? conditions.some(
+        (condition) =>
+          condition.key === "level" || condition.key === "internal_lv",
+      )
+    : filter.level.length > 0
   const table = useTable({
     data: scoreTable,
     ordering: ratingFolder
@@ -233,7 +262,7 @@ const Player = ({ params }: { params: Params }) => {
       // Also, when filtering by level, also consider internal lv.
       // (we may have better solution on this.)
       index: (a, b) => {
-        if (filter.level.length > 0) {
+        if (levelFiltered) {
           const internalLvA = a.internal_lv ?? levelCompareKey[a.level]
           const internalLvB = b.internal_lv ?? levelCompareKey[b.level]
           return internalLvA !== internalLvB
@@ -259,12 +288,11 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreStatsTargets, scoreStats }
   }, [scoreTable, table, includeInactive, statFolder])
 
-  const handleAdvancedChange = (newAdvanced: boolean) => {
-    setAdvanced(newAdvanced)
-    if (!newAdvanced) {
-      setFilter(toFolderFilter(filter))
-    }
-  }
+  const filterTitle = advanced
+    ? hasEffectiveConditions || showAll
+      ? getConditionsTitle(conditions)
+      : "未指定條件"
+    : getFilterTitle(filter)
 
   const downloadCSV = useCallback(async (): Promise<void> => {
     const papa = await import("papaparse")
@@ -446,7 +474,7 @@ const Player = ({ params }: { params: Params }) => {
               <Dialog.Trigger asChild>
                 <button className={classes["folders-trigger"]}>
                   <IconFilterVariant />
-                  {getFilterTitle(filter)}（{table.entries.length}）
+                  {filterTitle}（{table.entries.length}）
                 </button>
               </Dialog.Trigger>
               <Portal>
@@ -454,19 +482,35 @@ const Player = ({ params }: { params: Params }) => {
                 <Dialog.Positioner>
                   <Dialog.Content className={classes["folders-dialog"]}>
                     <div className={classes["folders-dialog-header"]}>
-                      <Dialog.Title>資料夾篩選</Dialog.Title>
+                      <Dialog.Title>
+                        {advanced ? "進階篩選" : "資料夾篩選"}
+                      </Dialog.Title>
+                      <Switch
+                        checked={advanced}
+                        onCheckedChange={({ checked }) => setAdvanced(checked)}
+                      >
+                        進階模式
+                      </Switch>
                       <Dialog.CloseTrigger asChild>
                         <button aria-label="關閉">
                           <IconClose />
                         </button>
                       </Dialog.CloseTrigger>
                     </div>
-                    <Folders
-                      filter={filter}
-                      advanced={advanced}
-                      onFilterChange={setFilter}
-                      onAdvancedChange={handleAdvancedChange}
-                    />
+                    {advanced ? (
+                      <AdvancedFilter
+                        conditions={conditions}
+                        showAll={showAll}
+                        onConditionsChange={setConditions}
+                        onShowAllChange={setShowAll}
+                      />
+                    ) : (
+                      <Folders
+                        entries={folderEntries}
+                        filter={filter}
+                        onFilterChange={setFilter}
+                      />
+                    )}
                   </Dialog.Content>
                 </Dialog.Positioner>
               </Portal>
@@ -475,8 +519,7 @@ const Player = ({ params }: { params: Params }) => {
           <div className={classes["score-stats-block"]}>
             <div>
               <strong>
-                {statFolder ? getFilterTitle(filter) : "全曲"} (
-                {scoreStatsTargets.length})
+                {statFolder ? filterTitle : "全曲"} ({scoreStatsTargets.length})
               </strong>
               <Switch
                 checked={statFolder}
@@ -513,64 +556,37 @@ const Player = ({ params }: { params: Params }) => {
           </div>
         </div>
         <div>
-          {advanced ||
-          filter.category.length > 0 ||
-          filter.version.length > 0 ? (
+          {!advanced &&
+          (filter.category.length > 0 || filter.version.length > 0) ? (
+            // Advanced mode covers difficulty with its own condition
             <div className={layoutClasses["sticky-header"]}>
-              {advanced ? (
-                // Multiple difficulties can be selected, none = all
-                <ToggleGroup.Root
-                  multiple
-                  value={filter.difficulty.map((d) => `${d}`)}
-                  onValueChange={({ value }) => {
-                    setFilter({
-                      ...filter,
-                      difficulty: value.map((v) => parseInt(v, 10)),
-                    })
-                  }}
-                  className={layoutClasses["tab-like-radio-group"]}
-                >
-                  {difficultyShortNames.map((d, i) => (
-                    <ToggleGroup.Item
-                      key={d}
-                      value={i.toString()}
-                      className={
-                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                      }
-                    >
-                      {d}
-                    </ToggleGroup.Item>
-                  ))}
-                </ToggleGroup.Root>
-              ) : (
-                <RadioGroup.Root
-                  value={
-                    filter.difficulty.length > 0
-                      ? `${filter.difficulty[0]}`
-                      : null
-                  }
-                  onValueChange={(v) => {
-                    if (!v.value) return
-                    setFilter({
-                      ...filter,
-                      difficulty: [parseInt(v.value, 10)],
-                    })
-                  }}
-                  className={layoutClasses["tab-like-radio-group"]}
-                >
-                  {difficultyShortNames.map((d, i) => (
-                    <RadioGroupItem
-                      key={d}
-                      value={i.toString()}
-                      className={
-                        classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                      }
-                    >
-                      {d}
-                    </RadioGroupItem>
-                  ))}
-                </RadioGroup.Root>
-              )}
+              <RadioGroup.Root
+                value={
+                  filter.difficulty.length > 0
+                    ? `${filter.difficulty[0]}`
+                    : null
+                }
+                onValueChange={(v) => {
+                  if (!v.value) return
+                  setFilter({
+                    ...filter,
+                    difficulty: [parseInt(v.value, 10)],
+                  })
+                }}
+                className={layoutClasses["tab-like-radio-group"]}
+              >
+                {difficultyShortNames.map((d, i) => (
+                  <RadioGroupItem
+                    key={d}
+                    value={i.toString()}
+                    className={
+                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
+                    }
+                  >
+                    {d}
+                  </RadioGroupItem>
+                ))}
+              </RadioGroup.Root>
             </div>
           ) : null}
           <PlayerScoreTable

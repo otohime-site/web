@@ -2,15 +2,8 @@
   padding: 0 var(--size-2) var(--size-2);
   font-family: "M PLUS 2";
   h4 {
-    display: flex;
-    align-items: center;
-    gap: var(--size-2);
     margin: var(--size-2) 0 var(--size-1);
     font-size: var(--font-size-1);
-    button {
-      font-size: var(--font-size-0);
-      padding: 0 var(--size-1);
-    }
   }
 }
 
@@ -30,8 +23,10 @@
   gap: var(--size-1);
   [data-part="item"] {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 2px;
     min-width: 2.5em;
     min-height: 2rem;
     border: var(--border-size-1) solid var(--_border);
@@ -52,7 +47,7 @@
 
   &[data-scope="toggle-group"] {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
   }
 
   /* Selected item reads as a filled brand button (mirrors global .btn.primary). */
@@ -67,13 +62,56 @@
   }
 }
 
+/* The label fills the space above the bottom bar so rows with mixed
+   one/two-line labels keep the bar pinned to the chip's bottom edge. */
+.label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bottom bar holding the version title kanji and the song count,
+   bleeding into the chip edges below the label. */
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-1);
+  line-height: 1;
+  align-self: stretch;
+  margin: 0 calc(-1 * var(--size-2)) calc(-1 * var(--size-1));
+  padding: 2px var(--size-1) 3px;
+  border-radius: 0 0 calc(var(--radius-2) - var(--border-size-1))
+    calc(var(--radius-2) - var(--border-size-1));
+  background: var(--otohime-0);
+  color: var(--otohime-9);
+}
+
+.versionTitle {
+  font-size: 0.7em;
+  font-weight: var(--font-weight-6);
+  opacity: 0.75;
+}
+
+.tag {
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-4);
+  line-height: 1;
+}
+
+.group [data-part="item"]:is([data-state="checked"], [data-state="on"]) .meta {
+  background: var(--otohime-8);
+  color: var(--otohime-0);
+}
+
 .group.levelGroup {
   [data-part="item"] {
     min-width: 0;
     min-height: 1.75rem;
   }
   &[data-scope="toggle-group"] {
-    grid-template-columns: repeat(auto-fit, minmax(3.5rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));
   }
 }
 
@@ -87,5 +125,17 @@
     border-color: var(--otohime-5);
     background: var(--otohime-5);
     color: var(--otohime-12);
+  }
+
+  .meta {
+    background: var(--otohime-12);
+    color: var(--otohime-3);
+  }
+
+  .group
+    [data-part="item"]:is([data-state="checked"], [data-state="on"])
+    .meta {
+    background: var(--otohime-11);
+    color: var(--otohime-1);
   }
 }

@@ -1,0 +1,143 @@
+.advanced {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-2);
+  padding: 0 var(--size-2) var(--size-2);
+  font-family: "M PLUS 2";
+}
+
+.showAll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-1);
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--font-size-1);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: var(--size-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each condition reads as a checklist card; the 且 pill between the
+   cards spells out that all of them are AND-ed. */
+.condition {
+  padding: var(--size-2) var(--size-3);
+  border: var(--border-size-1) solid var(--surface-3);
+  border-left: var(--border-size-3) solid var(--otohime-7);
+  border-radius: var(--radius-2);
+  background: var(--surface-2);
+}
+
+.and {
+  align-self: flex-start;
+  margin-left: var(--size-3);
+  padding: 0 var(--size-2);
+  border-radius: var(--radius-round);
+  background: var(--otohime-7);
+  color: #fff;
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-6);
+  line-height: 1.5;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--size-1);
+  button {
+    padding: 0 var(--size-1);
+    font-size: var(--font-size-0);
+  }
+}
+
+.name {
+  font-weight: var(--font-weight-6);
+}
+
+.note {
+  margin: var(--size-1) 0 0;
+  color: var(--text-2);
+  font-size: var(--font-size-0);
+}
+
+/* Small checkbox-like pills, deliberately lighter than the folder chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-1);
+  &[data-part="root"] {
+    flex-direction: row;
+  }
+  [data-part="item"] {
+    min-height: 1.6rem;
+    padding: 0 var(--size-3);
+    border: var(--border-size-1) solid var(--_border);
+    border-radius: var(--radius-round);
+    background: none;
+    box-shadow: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-4);
+    transition:
+      background 0.1s,
+      border-color 0.1s;
+    user-select: none;
+  }
+  [data-part="item"][data-state="on"] {
+    border-color: var(--otohime-7);
+    background: var(--otohime-7);
+    color: #fff;
+  }
+}
+
+.addTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-1);
+  padding: var(--size-1) var(--size-3);
+  border: var(--border-size-1) dashed var(--otohime-7);
+  border-radius: var(--radius-round);
+  color: var(--otohime-8);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-6);
+}
+
+@media (prefers-color-scheme: dark) {
+  .condition {
+    border-left-color: var(--otohime-5);
+  }
+
+  .and {
+    background: var(--otohime-5);
+    color: var(--otohime-12);
+  }
+
+  .chips [data-part="item"] {
+    border-color: var(--gray-7);
+    color: var(--gray-2);
+  }
+
+  .chips [data-part="item"][data-state="on"] {
+    border-color: var(--otohime-5);
+    background: var(--otohime-5);
+    color: var(--otohime-12);
+  }
+
+  .addTrigger {
+    border-color: var(--otohime-5);
+    color: var(--otohime-4);
+  }
+}
