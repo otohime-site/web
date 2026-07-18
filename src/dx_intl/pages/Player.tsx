@@ -1,29 +1,35 @@
 import { Dialog } from "@ark-ui/react/dialog"
 import { Popover, usePopover } from "@ark-ui/react/popover"
 import { Portal } from "@ark-ui/react/portal"
-import { RadioGroup } from "@ark-ui/react/radio-group"
 import { Select, createListCollection } from "@ark-ui/react/select"
+import { Tabs } from "@ark-ui/react/tabs"
 import { Toggle } from "@ark-ui/react/toggle"
 import saveAs from "file-saver"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { Suspense, lazy, useCallback, useMemo, useRef, useState } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { Params } from "wouter"
+import {
+  Params,
+  Redirect,
+  Route,
+  Switch as RouteSwitch,
+  useLocation,
+} from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
+import IconChartLine from "~icons/mdi/chart-line"
+import IconClipboardText from "~icons/mdi/clipboard-text-outline"
 import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconFilterVariant from "~icons/mdi/filter-variant"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
 import IconPencil from "~icons/mdi/pencil"
+import IconSortVariant from "~icons/mdi/sort-variant"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { Switch } from "../../common/components/ui/Switch"
 
-import { LinkButton } from "../../common/components/ui/Button"
-
-import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
 import { useTable } from "../../common/utils/table"
@@ -50,7 +56,6 @@ import {
   categories,
   comboFlags,
   difficulties,
-  difficultyShortNames,
   levelCompareKey,
   levels,
   syncFlags,
@@ -72,36 +77,77 @@ import {
   dxIntlSongsDocument,
 } from "../models/queries"
 import classes from "./Player.module.css"
+import PlayerForm from "./PlayerForm"
 
-const dxIntlRecordWithScoresDocument = graphql(
+// History pulls in chart.js; keep it in its own chunk like before.
+const PlayerHistory = lazy(async () => await import("./PlayerHistory"))
+
+const playerTabRoutes = {
+  scores: "/",
+  edit: "/edit",
+  history: "/history",
+  image: "/image",
+} as const
+type PlayerTab = keyof typeof playerTabRoutes
+
+// The record (top bar) and the scores are fetched separately so the
+// edit/history tabs don't block on (or transfer) the heavy score rows.
+const dxIntlRecordDocument = graphql(
   `
-    query dxIntlRecordWithScores($nickname: String!) {
+    query dxIntlRecord($nickname: String!) {
       dx_intl_players(where: { nickname: { _eq: $nickname } }) {
         updated_at
         private
         dx_intl_record {
           ...dxIntlRecordsFields
         }
+      }
+    }
+  `,
+  [dxIntlRecordsFields],
+)
+const dxIntlScoresDocument = graphql(
+  `
+    query dxIntlScores($nickname: String!) {
+      dx_intl_players(where: { nickname: { _eq: $nickname } }) {
         dx_intl_scores {
           ...dxIntlScoresFields
         }
       }
     }
   `,
-  [dxIntlRecordsFields, dxIntlScoresFields],
+  [dxIntlScoresFields],
 )
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
+  // Tab routes nested under /p/:nickname. The nested location is the
+  // single source of truth for the active tab; the RouteSwitch below
+  // renders the matching content.
+  const [location, navigate] = useLocation()
+  const activeTab = (Object.entries(playerTabRoutes).find(
+    ([, path]) =>
+      path !== "/" && (location === path || location.startsWith(`${path}/`)),
+  )?.[0] ?? "scores") as PlayerTab
+  // The score rows are heavy; only the scores and image tabs need them.
+  const needScores = activeTab === "scores" || activeTab === "image"
   const [editableResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: user == null,
   })
   const [recordResult] = useQuery({
-    query: dxIntlRecordWithScoresDocument,
+    query: dxIntlRecordDocument,
     variables: { nickname: params.nickname ?? "" },
   })
-  const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const [scoresResult] = useQuery({
+    query: dxIntlScoresDocument,
+    variables: { nickname: params.nickname ?? "" },
+    pause: !needScores,
+  })
+  const [songsResult] = useQuery({
+    query: dxIntlSongsDocument,
+    pause: !needScores,
+  })
   const flattedEntries = useMemo(
     () => flatSongsResult(songsResult.data),
     [songsResult],
@@ -124,6 +170,11 @@ const Player = ({ params }: { params: Params }) => {
   // advanced mode shows nothing until this is explicitly turned on.
   const [showAll, setShowAll] = useState(false)
   const [advanced, setAdvanced] = useState(false)
+  // Category/version folders default to EXP. Keep this preference separate
+  // so Rating and level folders are not accidentally difficulty-filtered.
+  const [folderDifficulty, setFolderDifficulty] = useState<number | null>(
+    difficulties.indexOf("Expert"),
+  )
   const [ordering, setOrdering] = useState<
     | "index"
     | "level"
@@ -139,7 +190,63 @@ const Player = ({ params }: { params: Params }) => {
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [includeInactive, setIncludeInactive] = useState(false)
   const [statFolder, setStatFolder] = useState(true)
-  const [showRatingImage, setShowRatingImage] = useState(false)
+  const handleFolderDifficultyChange = useCallback(
+    (difficulty: number | null) => {
+      setFolderDifficulty(difficulty)
+      setFilter((current) =>
+        current.category.length > 0 || current.version.length > 0
+          ? {
+              ...current,
+              difficulty: difficulty == null ? [] : [difficulty],
+            }
+          : current.difficulty.length > 0
+            ? { ...current, difficulty: [] }
+            : current,
+      )
+    },
+    [],
+  )
+  // The top bar condenses once the sentinel above it scrolls under the
+  // sticky app header. Observing a separate sentinel (instead of
+  // window scroll offsets) avoids feedback loops when the bar shrinks.
+  const [condensed, setCondensed] = useState(false)
+  const sentinelObserverRef = useRef<IntersectionObserver | null>(null)
+  const sentinelRef = useCallback((sentinel: HTMLDivElement | null) => {
+    sentinelObserverRef.current?.disconnect()
+    sentinelObserverRef.current = null
+    if (sentinel == null) return
+    const headerHeight =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--app-header-height")
+        .trim() || "48px"
+    const observer = new IntersectionObserver(
+      // Entries are delivered oldest-first; only the newest crossing
+      // reflects the current state.
+      (entries) => setCondensed(!entries[entries.length - 1].isIntersecting),
+      { rootMargin: `-${headerHeight} 0px 0px 0px` },
+    )
+    observer.observe(sentinel)
+    sentinelObserverRef.current = observer
+  }, [])
+  // Sticky descendants (difficulty header, stats column) offset below the
+  // bar through this variable since the bar's height is dynamic.
+  const topBarObserverRef = useRef<ResizeObserver | null>(null)
+  const topBarRef = useCallback((bar: HTMLElement | null) => {
+    topBarObserverRef.current?.disconnect()
+    topBarObserverRef.current = null
+    if (bar == null) {
+      document.documentElement.style.removeProperty("--player-top-bar-height")
+      return
+    }
+    const observer = new ResizeObserver(() => {
+      document.documentElement.style.setProperty(
+        "--player-top-bar-height",
+        `${bar.offsetHeight}px`,
+      )
+    })
+    observer.observe(bar)
+    topBarObserverRef.current = observer
+  }, [])
   const notePopupRef = useRef<HTMLElement | null>(null)
   const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
     null,
@@ -154,16 +261,20 @@ const Player = ({ params }: { params: Params }) => {
       },
     },
   })
+  // The popover api is a fresh object every render; go through a ref so
+  // handleNotePopupOpen stays identity-stable for the memoized table.
+  const popoverRef = useRef(popover)
+  popoverRef.current = popover
 
   const { scoreTable, noteInconsistency } = useMemo(() => {
-    if (!recordResult.data) {
+    if (!scoresResult.data) {
       return { scoreTable: [], noteInconsistency: false }
     }
     const maxVersion = Math.max(...flattedEntries.map((entry) => entry.version))
     const scores =
       readFragment(
         dxIntlScoresFields,
-        recordResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
+        scoresResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
       ) ?? []
     const scoresMap = new Map(
       scores.map((score) => [getNoteHash(score), score]),
@@ -219,7 +330,7 @@ const Player = ({ params }: { params: Params }) => {
     })
     // It may be inconsistent if songs are added but song list not updated
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
-  }, [flattedEntries, recordResult, afterCircle])
+  }, [flattedEntries, scoresResult, afterCircle])
 
   // Song counts on the folder chips follow the 顯示刪除曲 toggle,
   // matching the entry counts shown elsewhere.
@@ -345,20 +456,24 @@ const Player = ({ params }: { params: Params }) => {
     )
   }, [params, scoreTable, recordResult])
 
-  const handleNotePopupOpen = (
-    event: React.MouseEvent<HTMLElement>,
-    entry: ScoreTableEntry,
-  ) => {
-    notePopupRef.current = event.currentTarget
-    setNotePopupEntry(entry)
-    popover.reposition()
-    popover.setOpen(true)
-  }
+  const handleNotePopupOpen = useCallback(
+    (event: React.MouseEvent<HTMLElement>, entry: ScoreTableEntry) => {
+      notePopupRef.current = event.currentTarget
+      setNotePopupEntry(entry)
+      popoverRef.current.reposition()
+      popoverRef.current.setOpen(true)
+    },
+    [],
+  )
 
-  if (recordResult.error != null || songsResult.error != null) {
+  if (
+    recordResult.error != null ||
+    scoresResult.error != null ||
+    songsResult.error != null
+  ) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
-  if (recordResult.data == null || songsResult.data == null) {
+  if (recordResult.data == null) {
     return <></>
   }
   if (recordResult.data.dx_intl_players.length === 0) {
@@ -366,13 +481,16 @@ const Player = ({ params }: { params: Params }) => {
   }
 
   const player = recordResult.data.dx_intl_players[0]
+  // A player without uploads has no record yet; the layout (tabs, edit)
+  // still renders and the scores tab shows the explanation instead.
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
+  // The scores/songs queries are paused on the edit/history tabs and may
+  // still be in flight right after switching back.
+  const scoresReady = scoresResult.data != null && songsResult.data != null
+  // While the editable query is in flight we cannot tell an owner from a
+  // visitor yet, so the owner-only routes hold off their redirect.
+  const ownershipPending = editableResult.fetching
 
-  if (record == null) {
-    return (
-      <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
-    )
-  }
   const collection = createListCollection({
     items: [
       { group: "譜面", value: "index", label: "預設" },
@@ -395,236 +513,304 @@ const Player = ({ params }: { params: Params }) => {
   return (
     <>
       <Titled
-        title={(title) => `${record.card_name} - maimai DX 成績單 - ${title}`}
+        title={(title) =>
+          `${record?.card_name ?? params.nickname} - maimai DX 成績單 - ${title}`
+        }
       />
       {maxVersion > versions.length - 1 || noteInconsistency ? (
         <Alert severity="error">
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
       ) : null}
-      <div className={layoutClasses["player-container"]}>
-        <div>
-          <Record
-            record={record}
-            updatedAt={player.updated_at}
-            isPrivate={player.private}
-          />
-          <div aria-label="成績單選項" className={layoutClasses.toolbar}>
-            {ownsScoreTable ? (
-              <LinkButton href={`~/dxi/p/${params.nickname}/edit`}>
-                <IconPencil /> 編輯
-              </LinkButton>
+      <Tabs.Root
+        className={classes.tabs}
+        value={activeTab}
+        onValueChange={({ value }) =>
+          navigate(playerTabRoutes[value as PlayerTab])
+        }
+      >
+        <div
+          ref={sentinelRef}
+          aria-hidden
+          className={classes["top-bar-sentinel"]}
+        />
+        <header
+          ref={topBarRef}
+          className={classes["top-bar"]}
+          data-condensed={condensed ? "" : undefined}
+        >
+          <div className={classes["top-bar-info"]}>
+            {record != null ? (
+              <Record
+                record={record}
+                updatedAt={player.updated_at}
+                isPrivate={player.private}
+                condensed={condensed}
+              />
             ) : null}
-            <LinkButton href={`~/dxi/p/${params.nickname}/history`}>
-              <IconHistory /> 歷史紀錄
-            </LinkButton>
-            <button onClick={downloadCSV}>
-              <IconFileDownload /> 下載 CSV
-            </button>
-            {ownsScoreTable ? (
-              <button onClick={() => setShowRatingImage(true)}>
-                <IconImage /> Rating 圖片
-              </button>
-            ) : null}
+            <Tabs.List aria-label="成績單頁面" className={classes["tabs-list"]}>
+              <Tabs.Trigger value="scores" className={classes["tab-trigger"]}>
+                <IconClipboardText /> 成績單
+              </Tabs.Trigger>
+              {ownsScoreTable ? (
+                <Tabs.Trigger value="edit" className={classes["tab-trigger"]}>
+                  <IconPencil /> 編輯
+                </Tabs.Trigger>
+              ) : null}
+              <Tabs.Trigger value="history" className={classes["tab-trigger"]}>
+                <IconHistory /> 歷史紀錄
+              </Tabs.Trigger>
+              {ownsScoreTable && record != null ? (
+                <Tabs.Trigger value="image" className={classes["tab-trigger"]}>
+                  <IconImage /> Rating 圖片
+                </Tabs.Trigger>
+              ) : null}
+              <Tabs.Indicator className={classes["tabs-indicator"]} />
+            </Tabs.List>
           </div>
-          {ownsScoreTable ? (
-            <PlayerRatingImage
-              open={showRatingImage}
-              onOpenChange={setShowRatingImage}
-              scoreTable={scoreTable}
-              cardName={record.card_name}
-              title={record.title}
-              trophy={record.trophy}
-              nickname={params.nickname ?? ""}
-              isPrivate={player.private}
-              courseRank={record.course_rank}
-              classRank={record.class_rank}
-            />
-          ) : null}
-          <div className={layoutClasses.line}>
-            <SelectContainer
-              label="排序"
-              collection={collection}
-              value={[ordering]}
-              onValueChange={(e) =>
-                setOrdering(
-                  e.items[0].value as
-                    | "index"
-                    | "level"
-                    | "internal_lv"
-                    | "score"
-                    | "rating"
-                    | "combo_flag"
-                    | "sync_flag",
-                )
-              }
+          {activeTab === "scores" && record != null && scoresReady ? (
+            <div
+              aria-label="成績單選項"
+              className={classes["top-bar-controls"]}
             >
-              {collection.group().map(([type, group]) => (
-                <Select.ItemGroup key={type}>
-                  <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
-                  {group.map((item) => (
-                    <Select.Item key={item.value} item={item}>
-                      <Select.ItemText>{item.label}</Select.ItemText>
-                    </Select.Item>
+              <Dialog.Root lazyMount unmountOnExit>
+                <Dialog.Trigger asChild>
+                  <button className={classes["folders-trigger"]}>
+                    <IconFilterVariant />
+                    <span className={classes["filter-label"]}>篩選</span>
+                    <span
+                      className={classes["filter-summary"]}
+                      title={filterTitle}
+                    >
+                      {filterTitle}
+                    </span>
+                    <span className={classes["filter-count"]}>
+                      {table.entries.length} 譜面
+                    </span>
+                  </button>
+                </Dialog.Trigger>
+                <Portal>
+                  <Dialog.Backdrop />
+                  <Dialog.Positioner>
+                    <Dialog.Content className={classes["folders-dialog"]}>
+                      <div className={classes["folders-dialog-header"]}>
+                        <Dialog.Title>
+                          {advanced ? "進階篩選" : "資料夾篩選"}
+                        </Dialog.Title>
+                        <Switch
+                          checked={advanced}
+                          onCheckedChange={({ checked }) =>
+                            setAdvanced(checked)
+                          }
+                        >
+                          進階模式
+                        </Switch>
+                        <Dialog.CloseTrigger asChild>
+                          <button aria-label="關閉">
+                            <IconClose />
+                          </button>
+                        </Dialog.CloseTrigger>
+                      </div>
+                      <div className={classes["folders-dialog-settings"]}>
+                        <Switch
+                          checked={includeInactive}
+                          onCheckedChange={({ checked }) =>
+                            setIncludeInactive(checked)
+                          }
+                        >
+                          顯示已刪除樂曲
+                        </Switch>
+                      </div>
+                      {advanced ? (
+                        <AdvancedFilter
+                          conditions={conditions}
+                          hasEffectiveConditions={hasEffectiveConditions}
+                          showAll={showAll}
+                          onConditionsChange={setConditions}
+                          onShowAllChange={setShowAll}
+                        />
+                      ) : (
+                        <Folders
+                          entries={folderEntries}
+                          filter={filter}
+                          difficulty={folderDifficulty}
+                          onFilterChange={setFilter}
+                          onDifficultyChange={handleFolderDifficultyChange}
+                        />
+                      )}
+                    </Dialog.Content>
+                  </Dialog.Positioner>
+                </Portal>
+              </Dialog.Root>
+              <div className={classes["sort-control"]}>
+                <IconSortVariant className={classes["sort-icon"]} />
+                <SelectContainer
+                  label="排序"
+                  collection={collection}
+                  value={[ordering]}
+                  onValueChange={(e) =>
+                    setOrdering(
+                      e.items[0].value as
+                        | "index"
+                        | "level"
+                        | "internal_lv"
+                        | "score"
+                        | "rating"
+                        | "combo_flag"
+                        | "sync_flag",
+                    )
+                  }
+                >
+                  {collection.group().map(([type, group]) => (
+                    <Select.ItemGroup key={type}>
+                      <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
+                      {group.map((item) => (
+                        <Select.Item key={item.value} item={item}>
+                          <Select.ItemText>{item.label}</Select.ItemText>
+                        </Select.Item>
+                      ))}
+                    </Select.ItemGroup>
                   ))}
-                </Select.ItemGroup>
-              ))}
-            </SelectContainer>
-            <Toggle.Root
-              pressed={orderingDesc}
-              onPressedChange={setOrderingDesc}
-            >
-              {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
-            </Toggle.Root>
-            <Switch
-              checked={includeInactive}
-              onCheckedChange={(e) => {
-                setIncludeInactive(e.checked)
-              }}
-            >
-              顯示刪除曲
-            </Switch>
-          </div>
-          <div className={classes["folders-block"]}>
-            <Dialog.Root lazyMount unmountOnExit>
-              <Dialog.Trigger asChild>
-                <button className={classes["folders-trigger"]}>
-                  <IconFilterVariant />
-                  {filterTitle}（{table.entries.length}）
+                </SelectContainer>
+                <Toggle.Root
+                  className={classes["sort-direction"]}
+                  pressed={orderingDesc}
+                  onPressedChange={setOrderingDesc}
+                  aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
+                  title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
+                >
+                  {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
+                  <span>{orderingDesc ? "降冪" : "升冪"}</span>
+                </Toggle.Root>
+              </div>
+              <div
+                className={`${classes["toolbar-actions"]} ${classes["hide-condensed"]}`}
+              >
+                <button className={classes["csv-button"]} onClick={downloadCSV}>
+                  <IconFileDownload /> 下載 CSV
                 </button>
-              </Dialog.Trigger>
-              <Portal>
-                <Dialog.Backdrop />
-                <Dialog.Positioner>
-                  <Dialog.Content className={classes["folders-dialog"]}>
-                    <div className={classes["folders-dialog-header"]}>
-                      <Dialog.Title>
-                        {advanced ? "進階篩選" : "資料夾篩選"}
-                      </Dialog.Title>
-                      <Switch
-                        checked={advanced}
-                        onCheckedChange={({ checked }) => setAdvanced(checked)}
-                      >
-                        進階模式
-                      </Switch>
-                      <Dialog.CloseTrigger asChild>
-                        <button aria-label="關閉">
-                          <IconClose />
-                        </button>
-                      </Dialog.CloseTrigger>
-                    </div>
-                    {advanced ? (
-                      <AdvancedFilter
-                        conditions={conditions}
-                        hasEffectiveConditions={hasEffectiveConditions}
-                        showAll={showAll}
-                        onConditionsChange={setConditions}
-                        onShowAllChange={setShowAll}
-                      />
-                    ) : (
-                      <Folders
-                        entries={folderEntries}
-                        filter={filter}
-                        onFilterChange={setFilter}
-                      />
-                    )}
-                  </Dialog.Content>
-                </Dialog.Positioner>
-              </Portal>
-            </Dialog.Root>
-          </div>
-          <div className={classes["score-stats-block"]}>
-            <div>
-              <strong>
-                {statFolder ? filterTitle : "全曲"} ({scoreStatsTargets.length})
-              </strong>
-              <Switch
-                checked={statFolder}
-                onCheckedChange={(e) => {
-                  setStatFolder(e.checked)
-                }}
-              >
-                限資料夾
-              </Switch>
-            </div>
-            <ul>
-              {scoreStats.scoreStats.map((count, i) =>
-                i !== 1 && i !== 2 ? (
-                  <li key={RANK_SCORES[i][1]}>
-                    <span>{RANK_SCORES[i][1]}</span> {count}
-                  </li>
-                ) : null,
-              )}
-              {scoreStats.comboStats.map((count, i) =>
-                i !== 0 ? (
-                  <li key={comboFlags[i]}>
-                    <ComboFlag flag={comboFlags[i]} /> {count}
-                  </li>
-                ) : null,
-              )}
-              {scoreStats.syncStats.map((count, i) =>
-                i !== 0 ? (
-                  <li key={syncFlags[i]}>
-                    <SyncFlag flag={syncFlags[i]} /> {count}
-                  </li>
-                ) : null,
-              )}
-            </ul>
-          </div>
-        </div>
-        <div>
-          {!advanced &&
-          (filter.category.length > 0 || filter.version.length > 0) ? (
-            // Advanced mode covers difficulty with its own condition
-            <div className={layoutClasses["sticky-header"]}>
-              <RadioGroup.Root
-                value={
-                  filter.difficulty.length > 0
-                    ? `${filter.difficulty[0]}`
-                    : null
-                }
-                onValueChange={(v) => {
-                  if (!v.value) return
-                  setFilter({
-                    ...filter,
-                    difficulty: [parseInt(v.value, 10)],
-                  })
-                }}
-                className={layoutClasses["tab-like-radio-group"]}
-              >
-                {difficultyShortNames.map((d, i) => (
-                  <RadioGroupItem
-                    key={d}
-                    value={i.toString()}
-                    className={
-                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                    }
-                  >
-                    {d}
-                  </RadioGroupItem>
-                ))}
-              </RadioGroup.Root>
+              </div>
             </div>
           ) : null}
-          <PlayerScoreTable
-            table={table.entries}
-            handleNotePopupOpen={handleNotePopupOpen}
-          />
-        </div>
-      </div>
+        </header>
+        <Tabs.Content value={activeTab} className={classes["tab-content"]}>
+          <RouteSwitch>
+            <Route path="/edit">
+              {ownsScoreTable ? (
+                <PlayerForm params={{ nickname: params.nickname }} />
+              ) : ownershipPending ? null : (
+                <Redirect to="/" replace />
+              )}
+            </Route>
+            <Route path="/history/:hash?">
+              {(routeParams) => (
+                <Suspense fallback={<></>}>
+                  <PlayerHistory
+                    params={{
+                      nickname: params.nickname,
+                      hash: routeParams.hash,
+                    }}
+                  />
+                </Suspense>
+              )}
+            </Route>
+            <Route path="/image">
+              {ownsScoreTable && record != null ? (
+                scoresReady ? (
+                  <PlayerRatingImage
+                    scoreTable={scoreTable}
+                    cardName={record.card_name}
+                    title={record.title}
+                    trophy={record.trophy}
+                    nickname={params.nickname ?? ""}
+                    isPrivate={player.private}
+                    courseRank={record.course_rank}
+                    classRank={record.class_rank}
+                  />
+                ) : null
+              ) : ownershipPending ? null : (
+                <Redirect to="/" replace />
+              )}
+            </Route>
+            <Route path="/">
+              {record == null ? (
+                <Alert severity="warning">
+                  沒有成績可以顯示。可能是還沒有上傳成績。
+                </Alert>
+              ) : !scoresReady ? null : (
+                <div className={layoutClasses["player-container"]}>
+                  <div>
+                    <div className={classes["score-stats-block"]}>
+                      <div>
+                        <strong>
+                          {statFolder ? filterTitle : "全曲"} (
+                          {scoreStatsTargets.length})
+                        </strong>
+                        <Switch
+                          checked={statFolder}
+                          onCheckedChange={(e) => {
+                            setStatFolder(e.checked)
+                          }}
+                        >
+                          限資料夾
+                        </Switch>
+                      </div>
+                      <ul>
+                        {scoreStats.scoreStats.map((count, i) =>
+                          i !== 1 && i !== 2 ? (
+                            <li key={RANK_SCORES[i][1]}>
+                              <span>{RANK_SCORES[i][1]}</span> {count}
+                            </li>
+                          ) : null,
+                        )}
+                        {scoreStats.comboStats.map((count, i) =>
+                          i !== 0 ? (
+                            <li key={comboFlags[i]}>
+                              <ComboFlag flag={comboFlags[i]} /> {count}
+                            </li>
+                          ) : null,
+                        )}
+                        {scoreStats.syncStats.map((count, i) =>
+                          i !== 0 ? (
+                            <li key={syncFlags[i]}>
+                              <SyncFlag flag={syncFlags[i]} /> {count}
+                            </li>
+                          ) : null,
+                        )}
+                      </ul>
+                    </div>
+                    {/* Reserved for the upcoming score graphs */}
+                    <div className={classes["graph-placeholder"]}>
+                      <IconChartLine />
+                      <p>成績圖表功能即將推出</p>
+                    </div>
+                  </div>
+                  <div>
+                    <PlayerScoreTable
+                      table={table.entries}
+                      handleNotePopupOpen={handleNotePopupOpen}
+                    />
+                  </div>
+                </div>
+              )}
+            </Route>
+            <Route>
+              <Redirect to="/" replace />
+            </Route>
+          </RouteSwitch>
+        </Tabs.Content>
+      </Tabs.Root>
       <Popover.RootProvider value={popover}>
         <Popover.Positioner>
           <Popover.Content>
-            <Popover.Content>
-              <Popover.Arrow>
-                <Popover.ArrowTip />
-              </Popover.Arrow>
-              <div>
-                {notePopupEntry ? (
-                  <NotePopup entry={notePopupEntry} afterCircle={afterCircle} />
-                ) : null}
-              </div>
-            </Popover.Content>
+            <Popover.Arrow>
+              <Popover.ArrowTip />
+            </Popover.Arrow>
+            <div>
+              {notePopupEntry ? (
+                <NotePopup entry={notePopupEntry} afterCircle={afterCircle} />
+              ) : null}
+            </div>
           </Popover.Content>
         </Popover.Positioner>
       </Popover.RootProvider>

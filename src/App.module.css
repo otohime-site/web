@@ -1,10 +1,10 @@
 .top {
-  z-index: 10; /* make sure popover won't be covered */
+  z-index: var(--z-index-header);
   padding: 0.25em 3rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 48px;
+  height: var(--app-header-height);
   position: sticky;
   top: 0;
   background: var(--otohime-0);

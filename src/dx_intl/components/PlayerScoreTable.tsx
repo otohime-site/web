@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { memo } from "react"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { getDifficultyClassName } from "../utils/styling"
@@ -7,7 +8,9 @@ import Long from "./Long"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
-export const PlayerScoreTable = ({
+// Memoized: the table is large and its props are identity-stable, so
+// unrelated Player state changes (e.g. the condensing top bar) skip it.
+const PlayerScoreTableBase = ({
   table,
   handleNotePopupOpen,
 }: {
@@ -72,3 +75,5 @@ export const PlayerScoreTable = ({
     </table>
   )
 }
+
+export const PlayerScoreTable = memo(PlayerScoreTableBase)

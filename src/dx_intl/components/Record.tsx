@@ -14,10 +14,13 @@ const Record = ({
   record,
   updatedAt,
   isPrivate,
+  condensed = false,
 }: {
   record: ResultOf<typeof dxIntlRecordsFields>
   updatedAt?: string | null
   isPrivate: boolean
+  // Compact single-row variant for the scrolled-down sticky top bar
+  condensed?: boolean
 }) => {
   const titleRef = useRef<HTMLDivElement>(null)
 
@@ -34,7 +37,16 @@ const Record = ({
         }s`
       }
     }
-  }, [record.title])
+  }, [record.title, condensed])
+
+  if (condensed) {
+    return (
+      <div className={classes.condensed}>
+        <Rating rating={record.rating} legacy={record.rating_legacy} />
+        <div className={classes["card-name"]}>{record.card_name}</div>
+      </div>
+    )
+  }
 
   return (
     <div>

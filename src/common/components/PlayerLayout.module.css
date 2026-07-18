@@ -9,7 +9,9 @@
       flex: 1 0 24rem;
       align-self: start;
       position: sticky;
-      top: 54px;
+      /* Offset below the dx_intl player top bar when present (the
+         variable is unset on other player pages). */
+      top: calc(54px + var(--player-top-bar-height, 0px));
     }
     & > div:last-of-type {
       min-width: 0;
@@ -49,7 +51,7 @@
 
 .sticky-header {
   position: sticky;
-  top: 48px;
+  top: calc(var(--app-header-height) + var(--player-top-bar-height, 0px));
   background: var(--surface-1);
   font-size: var(--font-size-2);
   font-family: "M PLUS 2";

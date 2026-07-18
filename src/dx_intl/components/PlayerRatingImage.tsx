@@ -1,22 +1,18 @@
-import { Dialog } from "@ark-ui/react/dialog"
-import { Portal } from "@ark-ui/react/portal"
 import saveAs from "file-saver"
 import { Suspense, lazy, useRef, useState } from "react"
-import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
 import { Switch } from "../../common/components/ui/Switch"
 import host from "../../host"
 import { ScoreTableEntry } from "../models/aggregation"
 import classes from "./PlayerRatingImage.module.css"
 
-// Konva is heavy; only pull it into a chunk that loads when the dialog opens.
+// Konva is heavy; only pull it into a chunk that loads with this tab.
 const PlayerRatingCanvas = lazy(
   async () => await import("./PlayerRatingCanvas"),
 )
 
+// The Rating 圖片 tab: canvas preview with display toggles and download.
 const PlayerRatingImage = ({
-  open,
-  onOpenChange,
   scoreTable,
   cardName,
   title,
@@ -26,8 +22,6 @@ const PlayerRatingImage = ({
   courseRank,
   classRank,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
   scoreTable: ScoreTableEntry[]
   cardName: string
   title: string
@@ -54,63 +48,49 @@ const PlayerRatingImage = ({
   }
 
   return (
-    <Dialog.Root open={open} onOpenChange={(e) => onOpenChange(e.open)}>
-      <Portal>
-        <Dialog.Backdrop />
-        <Dialog.Positioner>
-          <Dialog.Content className={classes.content}>
-            <div className={classes.toolbar}>
-              <Dialog.Title>Rating 組成</Dialog.Title>
-              <Switch
-                checked={showRating}
-                onCheckedChange={(e) => setShowRating(e.checked)}
-              >
-                Rating
-              </Switch>
-              <Switch
-                checked={showRanks}
-                onCheckedChange={(e) => setShowRanks(e.checked)}
-              >
-                段位／對戰階級
-              </Switch>
-              <Switch
-                checked={showUrl}
-                disabled={isPrivate}
-                onCheckedChange={(e) => setShowUrl(e.checked)}
-              >
-                成績單網址
-              </Switch>
-              <button onClick={handleDownload}>
-                <IconFileDownload /> 下載圖片
-              </button>
-              <Dialog.CloseTrigger asChild>
-                <button aria-label="關閉">
-                  <IconClose />
-                </button>
-              </Dialog.CloseTrigger>
-            </div>
-            <div ref={contentRef} className={classes.canvas}>
-              {open ? (
-                <Suspense fallback={<p>產生圖片中…</p>}>
-                  <PlayerRatingCanvas
-                    scoreTable={scoreTable}
-                    cardName={cardName}
-                    title={title}
-                    trophy={trophy}
-                    courseRank={courseRank}
-                    classRank={classRank}
-                    scoreUrl={scoreUrl}
-                    showRating={showRating}
-                    showRanks={showRanks}
-                    showUrl={showUrl && !isPrivate}
-                  />
-                </Suspense>
-              ) : null}
-            </div>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Portal>
-    </Dialog.Root>
+    <div className={classes.content}>
+      <div className={classes.toolbar}>
+        <h2>Rating 組成</h2>
+        <Switch
+          checked={showRating}
+          onCheckedChange={(e) => setShowRating(e.checked)}
+        >
+          Rating
+        </Switch>
+        <Switch
+          checked={showRanks}
+          onCheckedChange={(e) => setShowRanks(e.checked)}
+        >
+          段位／對戰階級
+        </Switch>
+        <Switch
+          checked={showUrl}
+          disabled={isPrivate}
+          onCheckedChange={(e) => setShowUrl(e.checked)}
+        >
+          成績單網址
+        </Switch>
+        <button onClick={handleDownload}>
+          <IconFileDownload /> 下載圖片
+        </button>
+      </div>
+      <div ref={contentRef} className={classes.canvas}>
+        <Suspense fallback={<p>產生圖片中…</p>}>
+          <PlayerRatingCanvas
+            scoreTable={scoreTable}
+            cardName={cardName}
+            title={title}
+            trophy={trophy}
+            courseRank={courseRank}
+            classRank={classRank}
+            scoreUrl={scoreUrl}
+            showRating={showRating}
+            showRanks={showRanks}
+            showUrl={showUrl && !isPrivate}
+          />
+        </Suspense>
+      </div>
+    </div>
   )
 }
 

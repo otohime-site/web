@@ -1,3 +1,16 @@
+/* Compact rating + card name row for the condensed sticky top bar */
+.condensed {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--size-2);
+  .card-name {
+    width: auto;
+    padding: 0 var(--size-2);
+    font-size: 100%;
+  }
+}
+
 .info-row {
   display: flex;
   flex-direction: row;

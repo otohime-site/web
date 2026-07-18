@@ -2,6 +2,21 @@
 @import "open-props/buttons";
 @import "./theme.css";
 
+:root {
+  /* Height of the sticky app header (.top in App.module.css). Sticky
+     elements offset below it and the player top-bar sentinel reads it. */
+  --app-header-height: 48px;
+  /* App-wide stacking convention. Components may use 0/1 internally;
+     page-level and portalled UI should use these named layers. */
+  --z-index-sticky: 10;
+  --z-index-header: 20;
+  --z-index-backdrop: 100;
+  --z-index-dialog: 110;
+  /* Applied to Ark floating content; Zag mirrors it to the positioner. */
+  --z-index-floating: 120;
+  --z-index-toast: 200;
+}
+
 html {
   font-size: 14px;
 }
@@ -147,6 +162,7 @@ a.btn {
 
 [data-scope="dialog"] {
   &[data-part="backdrop"] {
+    z-index: var(--z-index-backdrop);
     position: fixed;
     top: 0;
     left: 0;
@@ -169,6 +185,7 @@ a.btn {
     }
   }
   &[data-part="positioner"] {
+    z-index: var(--z-index-dialog);
     position: fixed;
     top: 0;
     left: 0;
@@ -180,6 +197,7 @@ a.btn {
     justify-content: center;
   }
   &[data-part="content"] {
+    z-index: var(--z-index-dialog);
     outline: none;
     padding: var(--size-4);
     background: var(--surface-1);
@@ -223,6 +241,9 @@ a.btn {
     color: var(--text-2);
   }
   &[data-part="content"] {
+    /* Zag reads this computed value and assigns it to the positioner through
+       its inline --z-index variable. */
+    z-index: var(--z-index-floating);
     padding: var(--size-1) 0;
     border-radius: var(--radius-2);
     border: var(--border-size-1) solid var(--surface-4);
@@ -257,6 +278,12 @@ a.btn {
       }
     }
   }
+}
+
+[data-scope="menu"][data-part="content"],
+[data-scope="popover"][data-part="content"],
+[data-scope="tooltip"][data-part="content"] {
+  z-index: var(--z-index-floating);
 }
 
 [data-scope="select"][data-part="trigger"] {

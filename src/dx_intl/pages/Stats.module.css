@@ -50,8 +50,8 @@
 
   .sidebar {
     position: sticky;
-    top: 48px;
-    z-index: 2;
+    top: var(--app-header-height);
+    z-index: var(--z-index-sticky);
     margin-bottom: var(--size-3);
     padding: var(--size-2);
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import {
   Group,
   Image as KonvaImage,
@@ -863,4 +863,6 @@ const PlayerRatingCanvas = ({
   )
 }
 
-export default PlayerRatingCanvas
+// Memoized: re-rendering walks and redraws the whole Konva scene, and all
+// props are scalars or identity-stable.
+export default memo(PlayerRatingCanvas)

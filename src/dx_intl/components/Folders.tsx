@@ -2,6 +2,8 @@ import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { useMemo } from "react"
 import { ScoreTableEntry } from "../models/aggregation"
 import {
+  difficultyClasses,
+  difficultyShortNames,
   displayVersionTitle,
   levels,
   RATING_NEW_COUNT,
@@ -18,6 +20,7 @@ interface FolderOption {
   label: string
   title?: string
   tag?: string
+  className?: string
 }
 
 // Single-select folder toggles. Values are strings; callers map to/from
@@ -42,7 +45,11 @@ const FolderGroup = ({
     }}
   >
     {options.map((option) => (
-      <ToggleGroup.Item key={option.value} value={option.value}>
+      <ToggleGroup.Item
+        key={option.value}
+        value={option.value}
+        className={option.className}
+      >
         <span className={styles.label}>{option.label}</span>
         {option.title != null || option.tag != null ? (
           <span className={styles.meta}>
@@ -62,14 +69,19 @@ const FolderGroup = ({
 const Folders = ({
   entries,
   filter,
+  difficulty,
   onFilterChange,
+  onDifficultyChange,
 }: {
   entries: ScoreTableEntry[]
   filter: ScoreFilter
+  difficulty: number | null
   onFilterChange: (filter: ScoreFilter) => void
+  onDifficultyChange: (difficulty: number | null) => void
 }) => {
-  // Song counts per folder: Master charts for rating/category/version,
-  // while level folders list every difficulty so all charts are counted.
+  // Category/version counts follow the selected difficulty. A null
+  // difficulty means every chart, exposed as the "all" option.
+  // Level folders always count every difficulty.
   // Rating is single-select: true→新曲, false→舊曲, none→不限 (no rating filter).
   // The rating folders list rating_listed entries only, capped at twice the
   // rating composition counts.
@@ -84,13 +96,14 @@ const Folders = ({
       for (const entry of entries) {
         const levelIndex = levels.indexOf(entry.level)
         if (levelIndex >= 0) levelCounts[levelIndex]++
-        if (entry.difficulty !== 3) continue
+        // Preserve the existing Master-based rating folder totals.
+        if (entry.difficulty === 3) ratingCounts[entry.rating_latest ? 1 : 0]++
+        if (difficulty != null && entry.difficulty !== difficulty) continue
         const categoryCount = categoryCounts.get(entry.category)
         if (categoryCount != null)
           categoryCounts.set(entry.category, categoryCount + 1)
         if (entry.version >= 0 && entry.version < versionCounts.length)
           versionCounts[entry.version]++
-        ratingCounts[entry.rating_latest ? 1 : 0]++
       }
       return {
         categoryOptions: valueOptions.category.map(({ value, label }) => ({
@@ -122,11 +135,29 @@ const Folders = ({
           },
         ],
       }
-    }, [entries])
+    }, [entries, difficulty])
+
+  const difficultyValues = difficulty == null ? ["all"] : [`${difficulty}`]
+  const difficultyOptions: FolderOption[] = [
+    { value: "all", label: "全部", className: styles.diffAll },
+    ...difficultyShortNames.map((label, value) => ({
+      value: `${value}`,
+      label,
+      className: styles[difficultyClasses[value]],
+    })),
+  ]
+  const changeDifficulty = (values: string[]) => {
+    const next = values[0] ?? "all"
+    onDifficultyChange(next === "all" ? null : parseInt(next, 10))
+  }
 
   const changeDimension = (key: ArrayFolderKey) => (values: string[]) => {
     const nums = values.map((v) => parseInt(v, 10))
-    // Clearing the folder lands on the empty "all songs" filter.
+    // Category/version folders retain the explicit difficulty choice.
+    const difficultyFilter =
+      (key === "category" || key === "version") && difficulty != null
+        ? [difficulty]
+        : []
     if (nums.length === 0) {
       onFilterChange(EMPTY_FILTER)
       return
@@ -135,12 +166,7 @@ const Folders = ({
     onFilterChange({
       ...EMPTY_FILTER,
       [key]: nums,
-      difficulty:
-        key === "level"
-          ? []
-          : filter.difficulty.length > 0
-            ? [filter.difficulty[0]]
-            : [2],
+      difficulty: difficultyFilter,
     })
   }
   const ratingValues =
@@ -159,6 +185,13 @@ const Folders = ({
         options={ratingOptions}
         onChange={changeRating}
         className={styles.ratingGroup}
+      />
+      <h4>分類／版本難易度</h4>
+      <FolderGroup
+        values={difficultyValues}
+        options={difficultyOptions}
+        onChange={changeDifficulty}
+        className={styles.difficultyGroup}
       />
       <h4>分類</h4>
       <FolderGroup

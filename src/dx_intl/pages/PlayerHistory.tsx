@@ -4,12 +4,10 @@ import { Line } from "react-chartjs-2"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
-import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 
 import { navigate } from "wouter/use-browser-location"
 import { Alert } from "../../common/components/ui/Alert"
-import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import "../../common/utils/chartSetup"
@@ -401,9 +399,6 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <LinkButton href={`~/dxi/p/${params.nickname}`}>
-        <IconArrowBack /> 回成績單
-      </LinkButton>
       <ScrollableSegmentGroupRoot
         value={params.hash ?? ""}
         onValueChange={({ value }) => {

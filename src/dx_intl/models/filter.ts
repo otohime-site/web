@@ -44,7 +44,10 @@ export const filterEntry = (
   (filter.version.length === 0 || filter.version.includes(entry.version)) &&
   (filter.level.length === 0 ||
     filter.level.includes(levels.indexOf(entry.level))) &&
-  (filter.difficulty.length === 0 ||
+  // Difficulty is a category/version folder preference. Rating folders list
+  // every rating candidate regardless of that preference.
+  (filter.rating_latest != null ||
+    filter.difficulty.length === 0 ||
     filter.difficulty.includes(entry.difficulty))
 
 // Advanced mode: a list of conditions AND-ed together.
@@ -213,11 +216,13 @@ export const getFilterTitle = (filter: ScoreFilter): string => {
     getDimensionTitle(filter.category, "分類", (v) => categories[v] ?? ""),
     getDimensionTitle(filter.version, "版本", (v) => versions[v]),
     getDimensionTitle(filter.level, "等級", (v) => `Level ${levels[v]}`),
-    getDimensionTitle(
-      filter.difficulty,
-      "難易度",
-      (v) => difficultyShortNames[v],
-    ),
+    filter.rating_latest == null
+      ? getDimensionTitle(
+          filter.difficulty,
+          "難易度",
+          (v) => difficultyShortNames[v],
+        )
+      : null,
   ].filter((part) => part != null)
   return parts.length > 0 ? parts.join("・") : "全曲"
 }

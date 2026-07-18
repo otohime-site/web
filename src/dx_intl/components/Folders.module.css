@@ -14,6 +14,14 @@
   }
 }
 
+/* Compound selector so it out-ranks the later .group grid rule,
+   like .group.levelGroup below. */
+.group.difficultyGroup {
+  &[data-scope="toggle-group"] {
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  }
+}
+
 .group {
   &[data-part="root"] {
     flex-direction: row;
@@ -105,6 +113,45 @@
   color: var(--otohime-0);
 }
 
+.diffAll {
+  --difficulty-color: var(--otohime-7);
+}
+
+.diff0 {
+  --difficulty-color: var(--green-8);
+}
+
+.diff1 {
+  --difficulty-color: var(--orange-8);
+}
+
+.diff2 {
+  --difficulty-color: var(--red-8);
+}
+
+.diff3 {
+  --difficulty-color: var(--violet-8);
+}
+
+.diff4 {
+  --difficulty-color: var(--purple-8);
+}
+
+.difficultyGroup [data-part="item"] {
+  border-color: color-mix(in oklab, var(--difficulty-color), transparent 50%);
+  color: var(--difficulty-color);
+
+  &:hover {
+    background: color-mix(in oklab, var(--difficulty-color), transparent 90%);
+  }
+
+  &:is([data-state="checked"], [data-state="on"]) {
+    border-color: var(--difficulty-color);
+    background: var(--difficulty-color);
+    color: #fff;
+  }
+}
+
 .group.levelGroup {
   [data-part="item"] {
     min-width: 0;
@@ -116,6 +163,30 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .diffAll {
+    --difficulty-color: var(--otohime-4);
+  }
+
+  .diff0 {
+    --difficulty-color: var(--green-5);
+  }
+
+  .diff1 {
+    --difficulty-color: var(--orange-5);
+  }
+
+  .diff2 {
+    --difficulty-color: var(--red-5);
+  }
+
+  .diff3 {
+    --difficulty-color: var(--violet-5);
+  }
+
+  .diff4 {
+    --difficulty-color: var(--purple-5);
+  }
+
   .group [data-part="item"] {
     border-color: var(--gray-7);
     color: var(--gray-2);
@@ -137,5 +208,17 @@
     .meta {
     background: var(--otohime-11);
     color: var(--otohime-1);
+  }
+
+  .difficultyGroup [data-part="item"] {
+    border-color: color-mix(in oklab, var(--difficulty-color), transparent 45%);
+    color: var(--difficulty-color);
+  }
+
+  .difficultyGroup
+    [data-part="item"]:is([data-state="checked"], [data-state="on"]) {
+    border-color: var(--difficulty-color);
+    background: var(--difficulty-color);
+    color: var(--gray-12);
   }
 }
