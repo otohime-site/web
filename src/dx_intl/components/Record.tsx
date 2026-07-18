@@ -1,8 +1,5 @@
 import clsx from "clsx"
 import { useLayoutEffect, useRef } from "react"
-import IconLock from "~icons/mdi/lock"
-import IconPublic from "~icons/mdi/public"
-import { formatRelative } from "../../common/utils/datetime"
 import { ResultOf } from "../../graphql"
 import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
@@ -12,14 +9,10 @@ import classes from "./Record.module.css"
 
 const Record = ({
   record,
-  updatedAt,
-  isPrivate,
   condensed = false,
 }: {
   record: ResultOf<typeof dxIntlRecordsFields>
-  updatedAt?: string | null
-  isPrivate: boolean
-  // Compact single-row variant for the scrolled-down sticky top bar
+  // Compact variant hides the title once the top bar becomes sticky.
   condensed?: boolean
 }) => {
   const titleRef = useRef<HTMLDivElement>(null)
@@ -39,45 +32,36 @@ const Record = ({
     }
   }, [record.title, condensed])
 
-  if (condensed) {
-    return (
-      <div className={classes.condensed}>
-        <Rating rating={record.rating} legacy={record.rating_legacy} />
-        <div className={classes["card-name"]}>{record.card_name}</div>
-      </div>
-    )
-  }
-
   return (
-    <div>
-      <div className={classes["info-row"]}>
-        <Rating rating={record.rating} legacy={record.rating_legacy} />
-        <span>
-          {updatedAt != null ? formatRelative(new Date(updatedAt)) : ""}
-          更新
-          {isPrivate ? <IconLock /> : <IconPublic />}
-        </span>
-      </div>
-      <div className={classes["info-row"]}>
+    <div className={clsx(classes.record, condensed && classes.condensed)}>
+      <div className={classes["primary-row"]}>
         <div className={classes["card-name"]}>{record.card_name}</div>
-        {record.max_rating >= 0 ? `(Max: ${record.max_rating})` : ""}
-        {record.grade != null ? <Grade grade={record.grade} /> : ""}
-        {record.course_rank != null && record.class_rank != null ? (
-          <div className={classes["inner-col"]}>
-            <CourseRank courseRank={record.course_rank} />
-            <ClassRank classRank={record.class_rank} />
+        <Rating rating={record.rating} legacy={record.rating_legacy} />
+      </div>
+      {condensed ? null : (
+        <div className={classes["secondary-row"]}>
+          <div
+            ref={titleRef}
+            className={clsx(classes.title, classes[record.trophy])}
+            title={record.title}
+          >
+            <span>{record.title}</span>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
-      <div
-        ref={titleRef}
-        className={clsx(classes.title, classes[record.trophy])}
-        title={record.title}
-      >
-        <span>{record.title}</span>
-      </div>
+          <div className={classes.ranks}>
+            {record.class_rank != null ? (
+              <ClassRank classRank={record.class_rank} />
+            ) : null}
+            {record.course_rank != null ? (
+              <CourseRank courseRank={record.course_rank} />
+            ) : null}
+            {record.class_rank == null &&
+            record.course_rank == null &&
+            record.grade != null ? (
+              <Grade grade={record.grade} />
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

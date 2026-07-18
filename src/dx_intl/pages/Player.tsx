@@ -24,14 +24,18 @@ import IconFileDownload from "~icons/mdi/file-download"
 import IconFilterVariant from "~icons/mdi/filter-variant"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
+import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
+import IconPublic from "~icons/mdi/public"
 import IconSortVariant from "~icons/mdi/sort-variant"
+import IconUpdate from "~icons/mdi/update"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { Switch } from "../../common/components/ui/Switch"
 
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
+import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
@@ -541,32 +545,56 @@ const Player = ({ params }: { params: Params }) => {
         >
           <div className={classes["top-bar-info"]}>
             {record != null ? (
-              <Record
-                record={record}
-                updatedAt={player.updated_at}
-                isPrivate={player.private}
-                condensed={condensed}
-              />
+              <Record record={record} condensed={condensed} />
             ) : null}
-            <Tabs.List aria-label="成績單頁面" className={classes["tabs-list"]}>
-              <Tabs.Trigger value="scores" className={classes["tab-trigger"]}>
-                <IconClipboardText /> 成績單
-              </Tabs.Trigger>
-              {ownsScoreTable ? (
-                <Tabs.Trigger value="edit" className={classes["tab-trigger"]}>
-                  <IconPencil /> 編輯
+            <div className={classes["player-toolbar"]}>
+              <div
+                className={`${classes["player-identity"]} ${classes["hide-condensed"]}`}
+              >
+                {player.private ? (
+                  <IconLock
+                    aria-label="私人成績單"
+                    role="img"
+                    title="私人成績單"
+                  />
+                ) : (
+                  <IconPublic
+                    aria-label="公開成績單"
+                    role="img"
+                    title="公開成績單"
+                  />
+                )}
+                <span>{params.nickname}</span>
+              </div>
+              <Tabs.List
+                aria-label="成績單頁面"
+                className={classes["tabs-list"]}
+              >
+                <Tabs.Trigger value="scores" className={classes["tab-trigger"]}>
+                  <IconClipboardText /> 成績單
                 </Tabs.Trigger>
-              ) : null}
-              <Tabs.Trigger value="history" className={classes["tab-trigger"]}>
-                <IconHistory /> 歷史紀錄
-              </Tabs.Trigger>
-              {ownsScoreTable && record != null ? (
-                <Tabs.Trigger value="image" className={classes["tab-trigger"]}>
-                  <IconImage /> Rating 圖片
+                {ownsScoreTable ? (
+                  <Tabs.Trigger value="edit" className={classes["tab-trigger"]}>
+                    <IconPencil /> 編輯
+                  </Tabs.Trigger>
+                ) : null}
+                <Tabs.Trigger
+                  value="history"
+                  className={classes["tab-trigger"]}
+                >
+                  <IconHistory /> 歷史紀錄
                 </Tabs.Trigger>
-              ) : null}
-              <Tabs.Indicator className={classes["tabs-indicator"]} />
-            </Tabs.List>
+                {ownsScoreTable && record != null ? (
+                  <Tabs.Trigger
+                    value="image"
+                    className={classes["tab-trigger"]}
+                  >
+                    <IconImage /> Rating 圖片
+                  </Tabs.Trigger>
+                ) : null}
+                <Tabs.Indicator className={classes["tabs-indicator"]} />
+              </Tabs.List>
+            </div>
           </div>
           {activeTab === "scores" && record != null && scoresReady ? (
             <div
@@ -686,6 +714,19 @@ const Player = ({ params }: { params: Params }) => {
               <div
                 className={`${classes["toolbar-actions"]} ${classes["hide-condensed"]}`}
               >
+                <span className={classes["updated-at"]}>
+                  <IconUpdate />
+                  {player.updated_at != null ? (
+                    <time
+                      dateTime={player.updated_at}
+                      title={formatDateTime(new Date(player.updated_at))}
+                    >
+                      {formatRelative(new Date(player.updated_at))}更新
+                    </time>
+                  ) : (
+                    "尚未更新"
+                  )}
+                </span>
                 <button className={classes["csv-button"]} onClick={downloadCSV}>
                   <IconFileDownload /> 下載 CSV
                 </button>

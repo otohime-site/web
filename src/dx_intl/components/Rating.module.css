@@ -1,4 +1,5 @@
 .rating {
+  flex: 0 0 auto;
   width: 7.56em;
   height: 2.2em;
   background-size: cover;

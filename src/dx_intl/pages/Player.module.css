@@ -31,6 +31,33 @@
   gap: var(--size-2) var(--size-4);
 }
 
+.player-toolbar {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--size-2) var(--size-4);
+  margin-left: auto;
+  font-family: "M PLUS 2";
+}
+
+.player-identity,
+.updated-at {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-1);
+  color: var(--text-2);
+  font-size: var(--font-size-1);
+  white-space: nowrap;
+
+  > svg {
+    color: var(--text-1);
+    font-size: var(--font-size-3);
+  }
+}
+
 .tabs {
   display: contents;
 }
@@ -41,7 +68,6 @@
   align-items: center;
   align-self: flex-end;
   gap: var(--size-1);
-  margin-left: auto;
   padding: var(--size-1);
   border-radius: var(--radius-3);
   background: transparent;
@@ -235,6 +261,14 @@
 }
 
 @media (max-width: 720px) {
+  .player-toolbar {
+    width: 100%;
+  }
+
+  .player-identity {
+    margin-right: auto;
+  }
+
   .folders-trigger {
     flex: 1 1 100%;
   }

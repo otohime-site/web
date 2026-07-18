@@ -1,38 +1,33 @@
-/* Compact rating + card name row for the condensed sticky top bar */
-.condensed {
+.record {
   display: flex;
-  flex-direction: row;
+  width: min(25em, 100%);
+  flex-direction: column;
+  gap: var(--size-1);
+}
+
+.primary-row,
+.secondary-row {
+  display: flex;
   align-items: center;
   gap: var(--size-2);
-  .card-name {
-    width: auto;
-    padding: 0 var(--size-2);
-    font-size: 100%;
-  }
 }
 
-.info-row {
+.ranks {
   display: flex;
-  flex-direction: row;
+  flex: 0 0 auto;
   align-items: center;
-  justify-content: space-between;
-  width: 20em;
-  & span svg {
-    display: inline-block;
-    vertical-align: middle;
-  }
+  gap: var(--size-1);
 }
 
-.inner-col {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.condensed {
+  width: auto;
 }
 
 .card-name {
-  margin-top: 0.1em;
-  margin-bottom: 0.1em;
+  min-width: 0;
   width: 9em;
+  padding: 0 var(--size-1);
+  overflow: hidden;
   background: white;
   color: black;
   border: 0.1em solid #cccccc;
@@ -40,10 +35,14 @@
   font-size: 120%;
   font-weight: 700;
   font-family: "M PLUS Rounded 1c";
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title {
+  min-width: 0;
   width: 20em;
+  flex: 0 1 20em;
   text-align: center;
   border-radius: 0.4em;
   border: 0.1em solid;
@@ -53,7 +52,7 @@
   text-shadow: 0.06em 0.06em #666666;
   font-weight: 700;
   font-family: "M PLUS Rounded 1c";
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
   overflow: hidden;
   white-space: nowrap;
 
