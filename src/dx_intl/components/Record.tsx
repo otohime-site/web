@@ -35,8 +35,8 @@ const Record = ({
   return (
     <div className={clsx(classes.record, condensed && classes.condensed)}>
       <div className={classes["primary-row"]}>
-        <div className={classes["card-name"]}>{record.card_name}</div>
         <Rating rating={record.rating} legacy={record.rating_legacy} />
+        <div className={classes["card-name"]}>{record.card_name}</div>
       </div>
       {condensed ? null : (
         <div className={classes["secondary-row"]}>
