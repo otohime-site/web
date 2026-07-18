@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { Line } from "react-chartjs-2"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
-import { Params } from "wouter"
+import { Link, Params } from "wouter"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 
 import { navigate } from "wouter/use-browser-location"
@@ -16,11 +16,15 @@ import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
-import { flatSongsResult, getNoteHash } from "../models/aggregation"
+import {
+  flatSongsResult,
+  getCoverUrl,
+  getNoteHash,
+} from "../models/aggregation"
 import {
   classRankNames,
   comboFlags,
-  difficultyShortNames,
+  difficulties,
   gradeNames,
   legacyCourseRankNames,
   syncFlags,
@@ -98,6 +102,100 @@ interface HistoryEntry {
   combo_flag: (typeof comboFlags)[number]
   sync_flag: (typeof syncFlags)[number]
 }
+
+const ChangeValue = ({
+  before,
+  after,
+  changed = true,
+  className,
+}: {
+  before: React.ReactNode
+  after: React.ReactNode
+  changed?: boolean
+  className?: string
+}) => (
+  <span className={clsx(classes["change-value"], className)}>
+    {changed ? (
+      <>
+        <span className={classes["change-before"]}>{before}</span>
+        <IconNavigateNext aria-hidden className={classes["change-arrow"]} />
+      </>
+    ) : null}
+    <strong className={classes["change-after"]}>{after}</strong>
+  </span>
+)
+
+const emptyValue = <span className={classes.empty}>—</span>
+
+const FlagValue = ({
+  flag,
+  type,
+}: {
+  flag: HistoryEntry["combo_flag"] | HistoryEntry["sync_flag"] | undefined
+  type: "combo" | "sync"
+}) => {
+  const label = flag ? flag.toUpperCase() : `無 ${type} 標記`
+  return (
+    <span
+      aria-label={label}
+      className={classes["flag-value"]}
+      role="img"
+      title={label}
+    >
+      {type === "combo" ? (
+        <ComboFlag flag={(flag ?? "") as HistoryEntry["combo_flag"]} />
+      ) : (
+        <SyncFlag flag={(flag ?? "") as HistoryEntry["sync_flag"]} />
+      )}
+    </span>
+  )
+}
+
+const ScoreChanges = ({
+  before,
+  after,
+}: {
+  before?: HistoryEntry
+  after?: HistoryEntry
+}) => {
+  const scoreChanged = before?.score !== after?.score
+  const comboChanged = (before?.combo_flag ?? "") !== (after?.combo_flag ?? "")
+  const syncChanged = (before?.sync_flag ?? "") !== (after?.sync_flag ?? "")
+
+  return (
+    <div className={classes["score-changes"]}>
+      <ChangeValue
+        before={before == null ? emptyValue : `${before.score.toFixed(4)}%`}
+        after={after == null ? emptyValue : `${after.score.toFixed(4)}%`}
+        changed={scoreChanged}
+        className={classes["score-change"]}
+      />
+      <div className={classes["flag-changes"]}>
+        <ChangeValue
+          before={<FlagValue flag={before?.combo_flag} type="combo" />}
+          after={<FlagValue flag={after?.combo_flag} type="combo" />}
+          changed={comboChanged}
+          className={classes["combo-change"]}
+        />
+        <span aria-hidden className={classes["flag-divider"]} />
+        <ChangeValue
+          before={<FlagValue flag={before?.sync_flag} type="sync" />}
+          after={<FlagValue flag={after?.sync_flag} type="sync" />}
+          changed={syncChanged}
+          className={classes["sync-change"]}
+        />
+      </div>
+    </div>
+  )
+}
+
+const historyEntriesEqual = (
+  before?: HistoryEntry,
+  after?: HistoryEntry,
+): boolean =>
+  before?.score === after?.score &&
+  before?.combo_flag === after?.combo_flag &&
+  before?.sync_flag === after?.sync_flag
 
 // Deal with timestamp precision for Postgres and JavaScript
 const dateStringToHash = (str: string): string => {
@@ -211,7 +309,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
   }
 
-  const recordDiffs = (
+  const getRecordChanges = (
     before?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
     after?: ResultOf<typeof dxIntlRecordsWithHistoryFields>,
   ): { item: string; before: string; after: string }[] => {
@@ -290,172 +388,189 @@ const PlayerHistory = ({ params }: { params: Params }) => {
 
   const showTimelineResult = (
     data: ResultOf<typeof dxIntlPlayerWithTimelineDocument>,
-  ): React.ReactNode => (
-    <table className={clsx(classes.table)}>
-      <colgroup>
-        <col className={tableClasses["col-title"]} />
-        <col className={tableClasses["col-score"]} />
-        <col className={tableClasses["col-flags"]} />
-        <col className={classes["col-arrow"]} />
-        <col className={tableClasses["col-score"]} />
-        <col className={tableClasses["col-flags"]} />
-      </colgroup>
-      <thead>
-        <tr>
-          <th>項目</th>
-          <th colSpan={2}>Before</th>
-          <th></th>
-          <th colSpan={2}>After</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.beforeRecord.length > 0 || data.afterRecord.length > 0 ? (
-          recordDiffs(
-            readFragment(dxIntlRecordsWithHistoryFields, data.beforeRecord[0]),
-            readFragment(dxIntlRecordsWithHistoryFields, data.afterRecord[0]),
-          ).map((entry) => (
-            <tr key={entry.item}>
-              <td
-                className={clsx(tableClasses["col-title"], classes["col-item"])}
-              >
-                {entry.item}
-              </td>
-              <td colSpan={2} className={classes["col-value"]}>
-                {entry.before}
-              </td>
-              <td className={classes["col-arrow"]}>
-                <IconNavigateNext />
-              </td>
-              <td colSpan={2} className={classes["col-value"]}>
-                {entry.after}
-              </td>
-            </tr>
-          ))
-        ) : (
-          <></>
-        )}
-        {flattedEntries
-          .filter(
-            (entry) => beforeMap.has(entry.hash) || afterMap.has(entry.hash),
-          )
-          .map((entry) => {
-            const before = beforeMap.get(entry.hash)
-            const after = afterMap.get(entry.hash)
-            return (
-              <tr key={entry.hash}>
-                <td
-                  className={clsx(
-                    tableClasses["col-title"],
-                    classes["col-item"],
-                  )}
-                >
-                  <div>
-                    <span>{entry.title}</span>
-                    <span>
-                      <Variant deluxe={entry.deluxe} />
-                      <span
-                        className={getDifficultyClassName(
-                          tableClasses,
-                          entry,
-                          classes["col-level-diff"],
-                        )}
-                      >
-                        {difficultyShortNames[entry.difficulty]} {entry.level}
-                      </span>
+  ): React.ReactNode => {
+    const recordChanges = getRecordChanges(
+      readFragment(dxIntlRecordsWithHistoryFields, data.beforeRecord[0]),
+      readFragment(dxIntlRecordsWithHistoryFields, data.afterRecord[0]),
+    )
+    const scoreChanges = flattedEntries.filter((entry) => {
+      const before = beforeMap.get(entry.hash)
+      const after = afterMap.get(entry.hash)
+      return (
+        (before != null || after != null) && !historyEntriesEqual(before, after)
+      )
+    })
+
+    if (recordChanges.length === 0 && scoreChanges.length === 0) {
+      return <p className={classes.empty}>這個時間點沒有可顯示的變更。</p>
+    }
+
+    return (
+      <div className={classes["history-cards"]}>
+        {recordChanges.length > 0 ? (
+          <article
+            className={clsx(
+              classes["history-card"],
+              classes["record-changes-card"],
+            )}
+          >
+            <dl className={classes["record-changes"]}>
+              {recordChanges.map((entry) => (
+                <div key={entry.item} className={classes["record-change"]}>
+                  <dt>{entry.item}</dt>
+                  <dd>
+                    <ChangeValue
+                      before={entry.before || emptyValue}
+                      after={entry.after || emptyValue}
+                    />
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ) : null}
+        {scoreChanges.map((entry) => {
+          const before = beforeMap.get(entry.hash)
+          const after = afterMap.get(entry.hash)
+          const songHref = `~/dxi/s/${entry.song_id.substring(0, 8)}/${
+            entry.deluxe ? "dx" : "std"
+          }/${entry.difficulty}`
+          return (
+            <article
+              key={entry.hash}
+              className={clsx(
+                classes["history-card"],
+                classes["score-change-card"],
+              )}
+            >
+              <Link className={classes["song-summary"]} href={songHref}>
+                <img src={getCoverUrl(entry.song_id)} alt="" />
+                <span className={classes["song-info"]}>
+                  <strong title={entry.title}>{entry.title}</strong>
+                  <span className={classes["song-meta"]}>
+                    <Variant deluxe={entry.deluxe} />
+                    <span
+                      className={getDifficultyClassName(
+                        tableClasses,
+                        entry,
+                        classes["song-difficulty"],
+                      )}
+                    >
+                      {difficulties[entry.difficulty]}{" "}
+                      {entry.internal_lv
+                        ? entry.internal_lv.toFixed(1)
+                        : entry.level}
                     </span>
-                  </div>
-                </td>
-                <td className={tableClasses["col-score"]}>
-                  {before ? `${before.score.toFixed(4)}%` : ""}
-                </td>
-                <td className={tableClasses["col-flags"]}>
-                  {before ? (
-                    <>
-                      <ComboFlag flag={before.combo_flag} />
-                      <SyncFlag flag={before.sync_flag} />
-                    </>
-                  ) : null}
-                </td>
-                <td className={classes["col-arrow"]}>
-                  <IconNavigateNext />
-                </td>
-                <td className={tableClasses["col-score"]}>
-                  {after ? `${after.score.toFixed(4)}%` : ""}
-                </td>
-                <td className={tableClasses["col-flags"]}>
-                  {after ? (
-                    <>
-                      <ComboFlag flag={after.combo_flag} />
-                      <SyncFlag flag={after.sync_flag} />
-                    </>
-                  ) : null}
-                </td>
-              </tr>
-            )
-          })}
-      </tbody>
-    </table>
-  )
+                  </span>
+                </span>
+              </Link>
+              <ScoreChanges before={before} after={after} />
+            </article>
+          )
+        })}
+      </div>
+    )
+  }
+  const timelines = outerTimelines.timelines.map((time) => ({
+    time,
+    hash: dateStringToHash(time),
+    label: formatDateTime(new Date(time)),
+  }))
+  const selectedTimeline = timelines.find(({ hash }) => hash === params.hash)
+  const historyHref = (hash: string): string =>
+    `/dxi/p/${params.nickname}/history/${hash}`
+
+  const historyContent =
+    params.hash == null ? (
+      <div>
+        <p>請選擇一個時間檢視該時間的歷程。</p>
+        {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
+          <div className={classes["rating-chart"]}>
+            <Line
+              data={{
+                datasets: [
+                  {
+                    label: "Rating",
+                    borderColor: "#1f77b4",
+                    backgroundColor: "#1f77b4",
+                    data: ratingGraphResult.data.dx_intl_records_with_history
+                      .filter((record) => record.start != null)
+                      .map((record) => ({
+                        x: new Date(record.start!).getTime(),
+                        y: record.rating ?? 0,
+                      })),
+                  },
+                ],
+              }}
+              options={{
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    type: "time",
+                    time: {
+                      unit: "month",
+                      tooltipFormat: "yyyy-MM-dd",
+                      displayFormats: { month: "yyyy-MM" },
+                    },
+                    ticks: { major: { enabled: true } },
+                  },
+                  y: { min: 0, max: 16750 },
+                },
+              }}
+            />
+          </div>
+        ) : null}
+      </div>
+    ) : timelineResult.data == null ? null : (
+      showTimelineResult(timelineResult.data)
+    )
+
   return (
     <>
       <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
-      <ScrollableSegmentGroupRoot
-        value={params.hash ?? ""}
-        onValueChange={({ value }) => {
-          navigate(`/dxi/p/${params.nickname}/history/${value}`)
-        }}
-      >
-        {outerTimelines.timelines.map((time) => (
-          <SegmentGroupItem key={time} value={dateStringToHash(time)}>
-            {formatDateTime(new Date(time))}
-          </SegmentGroupItem>
-        ))}
-      </ScrollableSegmentGroupRoot>
-      {params.hash == null ? (
-        <div>
-          請選擇一個時間檢視該時間的歷程。
-          {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
-            <div style={{ height: "40vh" }}>
-              <Line
-                data={{
-                  datasets: [
-                    {
-                      label: "Rating",
-                      borderColor: "#1f77b4",
-                      backgroundColor: "#1f77b4",
-                      data: ratingGraphResult.data.dx_intl_records_with_history
-                        .filter((record) => record.start != null)
-                        .map((record) => ({
-                          x: new Date(record.start!).getTime(),
-                          y: record.rating ?? 0,
-                        })),
-                    },
-                  ],
-                }}
-                options={{
-                  maintainAspectRatio: false,
-                  scales: {
-                    x: {
-                      type: "time",
-                      time: {
-                        unit: "month",
-                        tooltipFormat: "yyyy-MM-dd",
-                        displayFormats: { month: "yyyy-MM" },
-                      },
-                      ticks: { major: { enabled: true } },
-                    },
-                    y: { min: 0, max: 16750 },
-                  },
-                }}
-              />
-            </div>
+      <div className={classes["history-layout"]}>
+        <nav aria-label="歷史紀錄時間" className={classes["timeline-rail"]}>
+          <strong>時間</strong>
+          {timelines.map(({ time, hash, label }) => (
+            <Link
+              key={time}
+              aria-current={hash === params.hash ? "page" : undefined}
+              className={clsx(
+                classes["timeline-link"],
+                hash === params.hash && classes.active,
+              )}
+              href={`~${historyHref(hash)}`}
+            >
+              <time dateTime={time}>{label}</time>
+            </Link>
+          ))}
+        </nav>
+        <div className={classes["history-content"]}>
+          <div className={classes["mobile-timeline"]}>
+            <ScrollableSegmentGroupRoot
+              value={params.hash ?? ""}
+              onValueChange={({ value }) => {
+                if (value != null) navigate(historyHref(value))
+              }}
+            >
+              {timelines.map(({ time, hash, label }) => (
+                <SegmentGroupItem key={time} value={hash}>
+                  {label}
+                </SegmentGroupItem>
+              ))}
+            </ScrollableSegmentGroupRoot>
+          </div>
+          {selectedTimeline != null ? (
+            <time
+              className={classes["mobile-selected-time"]}
+              dateTime={selectedTimeline.time}
+            >
+              {selectedTimeline.label}
+            </time>
           ) : null}
+          {historyContent}
         </div>
-      ) : timelineResult.data == null ? (
-        <></>
-      ) : (
-        showTimelineResult(timelineResult.data)
-      )}
+      </div>
     </>
   )
 }
