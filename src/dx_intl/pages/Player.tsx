@@ -17,11 +17,10 @@ import {
 } from "wouter"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
-import IconChartLine from "~icons/mdi/chart-line"
 import IconClipboardText from "~icons/mdi/clipboard-text-outline"
 import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
-import IconFilterVariant from "~icons/mdi/filter-variant"
+import IconFolder from "~icons/mdi/folder"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
 import IconLock from "~icons/mdi/lock"
@@ -29,7 +28,6 @@ import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
 import IconSortVariant from "~icons/mdi/sort-variant"
 import IconUpdate from "~icons/mdi/update"
-import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { Switch } from "../../common/components/ui/Switch"
 
@@ -39,11 +37,9 @@ import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
-import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders from "../components/Folders"
 import NotePopup from "../components/NotePopup"
 import PlayerRatingImage from "../components/PlayerRatingImage"
-import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
   ESTIMATED_INTERNAL_LV,
@@ -51,10 +47,8 @@ import {
   flatSongsResult,
   getNoteHash,
   getRating,
-  getScoreStats,
 } from "../models/aggregation"
 import {
-  RANK_SCORES,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
   categories,
@@ -82,8 +76,9 @@ import {
 } from "../models/queries"
 import classes from "./Player.module.css"
 import PlayerForm from "./PlayerForm"
+import PlayerScores from "./PlayerScores"
 
-// History pulls in chart.js; keep it in its own chunk like before.
+// History pulls in Chart.js; keep it in its own chunk like before.
 const PlayerHistory = lazy(async () => await import("./PlayerHistory"))
 
 const playerTabRoutes = {
@@ -193,7 +188,6 @@ const Player = ({ params }: { params: Params }) => {
   >("index")
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [includeInactive, setIncludeInactive] = useState(false)
-  const [statFolder, setStatFolder] = useState(true)
   const handleFolderDifficultyChange = useCallback(
     (difficulty: number | null) => {
       setFolderDifficulty(difficulty)
@@ -411,14 +405,6 @@ const Player = ({ params }: { params: Params }) => {
     sortingFns,
     filterFn,
   })
-  const { scoreStatsTargets, scoreStats } = useMemo(() => {
-    const scoreStatsTargets = (statFolder ? table.entries : scoreTable).filter(
-      (s) => includeInactive || s.active,
-    )
-    const scoreStats = getScoreStats(scoreStatsTargets)
-    return { scoreStatsTargets, scoreStats }
-  }, [scoreTable, table, includeInactive, statFolder])
-
   const filterTitle = advanced
     ? conditionsActive
       ? getConditionsTitle(conditions)
@@ -604,7 +590,7 @@ const Player = ({ params }: { params: Params }) => {
               <Dialog.Root lazyMount unmountOnExit>
                 <Dialog.Trigger asChild>
                   <button className={classes["folders-trigger"]}>
-                    <IconFilterVariant />
+                    <IconFolder />
                     <span className={classes["filter-label"]}>篩選</span>
                     <span
                       className={classes["filter-summary"]}
@@ -779,60 +765,13 @@ const Player = ({ params }: { params: Params }) => {
                   沒有成績可以顯示。可能是還沒有上傳成績。
                 </Alert>
               ) : !scoresReady ? null : (
-                <div className={layoutClasses["player-container"]}>
-                  <div>
-                    <div className={classes["score-stats-block"]}>
-                      <div>
-                        <strong>
-                          {statFolder ? filterTitle : "全曲"} (
-                          {scoreStatsTargets.length})
-                        </strong>
-                        <Switch
-                          checked={statFolder}
-                          onCheckedChange={(e) => {
-                            setStatFolder(e.checked)
-                          }}
-                        >
-                          限資料夾
-                        </Switch>
-                      </div>
-                      <ul>
-                        {scoreStats.scoreStats.map((count, i) =>
-                          i !== 1 && i !== 2 ? (
-                            <li key={RANK_SCORES[i][1]}>
-                              <span>{RANK_SCORES[i][1]}</span> {count}
-                            </li>
-                          ) : null,
-                        )}
-                        {scoreStats.comboStats.map((count, i) =>
-                          i !== 0 ? (
-                            <li key={comboFlags[i]}>
-                              <ComboFlag flag={comboFlags[i]} /> {count}
-                            </li>
-                          ) : null,
-                        )}
-                        {scoreStats.syncStats.map((count, i) =>
-                          i !== 0 ? (
-                            <li key={syncFlags[i]}>
-                              <SyncFlag flag={syncFlags[i]} /> {count}
-                            </li>
-                          ) : null,
-                        )}
-                      </ul>
-                    </div>
-                    {/* Reserved for the upcoming score graphs */}
-                    <div className={classes["graph-placeholder"]}>
-                      <IconChartLine />
-                      <p>成績圖表功能即將推出</p>
-                    </div>
-                  </div>
-                  <div>
-                    <PlayerScoreTable
-                      table={table.entries}
-                      handleNotePopupOpen={handleNotePopupOpen}
-                    />
-                  </div>
-                </div>
+                <PlayerScores
+                  allEntries={scoreTable}
+                  entries={table.entries}
+                  filterTitle={filterTitle}
+                  includeInactive={includeInactive}
+                  onNoteOpen={handleNotePopupOpen}
+                />
               )}
             </Route>
             <Route>

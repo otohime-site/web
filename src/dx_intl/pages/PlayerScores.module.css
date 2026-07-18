@@ -1,0 +1,106 @@
+.score-stats-block {
+  margin: 0 var(--size-4) 0 0;
+  padding: var(--size-3);
+  border: var(--border-size-1) solid var(--surface-3);
+  border-radius: var(--radius-2);
+  font-family: "M PLUS 2";
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-3);
+  margin-bottom: var(--size-2);
+}
+
+.stats-groups {
+  display: grid;
+  gap: var(--size-2);
+}
+
+.stats-group {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--size-2);
+
+  h3 {
+    margin: var(--size-2) 0 0;
+    color: var(--text-2);
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-5);
+    text-transform: uppercase;
+  }
+}
+
+.stats-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3.1rem, 1fr));
+  gap: var(--size-1);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+  li {
+    display: flex;
+    min-width: 3.1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: var(--size-1);
+    list-style-type: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  img {
+    display: block;
+  }
+}
+
+.rank-label {
+  color: var(--yellow-3);
+  font-size: 90%;
+  font-weight: 900;
+  text-shadow: 0 2px 0 var(--yellow-6);
+  -webkit-text-stroke: 2px var(--orange-9);
+  paint-order: stroke fill;
+}
+
+.stats-list li:first-of-type .rank-label {
+  color: var(--red-2);
+  -webkit-text-stroke: 1px var(--red-8);
+}
+
+@media (max-width: 480px) {
+  .stats-group {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-group h3 {
+    margin-top: 0;
+  }
+}
+
+.stats-header strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats-header [data-scope="switch"][data-part="root"] {
+  flex: 0 0 auto;
+}
+
+@media (min-width: 961px) {
+  .scores-layout > div:first-of-type {
+    flex: 1 0 clamp(28rem, 36vw, 36rem);
+  }
+}
+
+@media (max-width: 960px) {
+  .score-stats-block {
+    margin: 0 0 var(--size-4);
+  }
+}
