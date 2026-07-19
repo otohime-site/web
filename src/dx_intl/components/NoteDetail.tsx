@@ -16,10 +16,11 @@ import {
 import { ComboFlag } from "./Flags"
 import classes from "./NoteDetail.module.css"
 
-// The gauge spans AAA→SSS+ in equal-width segments, one per rank, since
-// rating is so top-heavy that a linear bar would crowd every border
-// into its last stretch. Each border tick shows the rating reached there.
-const GAUGE_START = 94
+// From S upward the gauge axis is linear in rating, so the fill and the
+// border labels always agree and each border jump shows as a skip. The
+// 0–97% stretch would dwarf that scale, so it is compressed into a
+// fixed lead-in filled by score percentage instead.
+const GAUGE_LEAD = 0.15
 const GAUGE_STOPS = RANK_SCORES.slice(3)
 
 const NoteDetail = ({
@@ -36,33 +37,31 @@ const NoteDetail = ({
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const score = entry.score ?? 0
   const apBonus = afterCircle && entry.combo_flag >= comboFlags.indexOf("ap")
-  const { rating, maxRating, stops, fill } = useMemo(() => {
+  const { rating, baseRating, maxRating, stops, fill } = useMemo(() => {
     if (internalLv == null) {
-      return { rating: 0, maxRating: 0, stops: [], fill: 0 }
+      return { rating: 0, baseRating: 0, maxRating: 0, stops: [], fill: 0 }
     }
     const rating = getRating(internalLv, score, apBonus)
-    // 100.5% is only reachable with all critical perfect, so the
-    // maximum keeps the AP bonus once it exists.
+    // The formula caps the score at 100.5%; after CiRCLE the
+    // theoretical maximum also counts the AP bonus.
     const maxRating = getRating(internalLv, 100.5, afterCircle)
-    const stops = GAUGE_STOPS.map(([minScore, name]) => ({
-      name,
-      minScore,
-      rating: getRating(internalLv, minScore),
-    }))
-    const edges = [GAUGE_START, ...GAUGE_STOPS.map(([minScore]) => minScore)]
-    const segments = edges.length - 1
+    const baseRating = getRating(internalLv, score)
+    const ratingS = getRating(internalLv, 97)
+    const ratingSssPlus = getRating(internalLv, 100.5)
+    const ratingPos = (value: number) =>
+      GAUGE_LEAD +
+      ((value - ratingS) / (ratingSssPlus - ratingS)) * (1 - GAUGE_LEAD)
+    const stops = GAUGE_STOPS.map(([minScore, name]) => {
+      const stopRating = getRating(internalLv, minScore)
+      return { name, minScore, rating: stopRating, pos: ratingPos(stopRating) }
+    })
     const fill =
-      score >= edges[segments]
+      score >= 100.5
         ? 1
-        : edges.reduce(
-            (fill, edge, index) =>
-              index < segments && score >= edge
-                ? (index + (score - edge) / (edges[index + 1] - edge)) /
-                  segments
-                : fill,
-            0,
-          )
-    return { rating, maxRating, stops, fill }
+        : score >= 97
+          ? ratingPos(baseRating)
+          : GAUGE_LEAD * (score / 97)
+    return { rating, baseRating, maxRating, stops, fill }
   }, [internalLv, score, apBonus, afterCircle])
 
   if (internalLv == null) {
@@ -136,23 +135,49 @@ const NoteDetail = ({
             <span className={classes["rating-max"]}>/ {maxRating}</span>
           </span>
         </div>
-        <div className={classes.track}>
-          <span className={classes.fill} style={{ width: `${fill * 100}%` }} />
-          {stops.map((stop) => (
-            <span key={stop.name} className={classes.seg} />
-          ))}
-        </div>
-        <ol className={classes.stops}>
-          {stops.map((stop) => (
-            <li
-              key={stop.name}
-              data-achieved={score >= stop.minScore ? "" : undefined}
+        <div className={classes.gauge}>
+          {entry.score != null ? (
+            <span
+              className={classes.marker}
+              style={{
+                left: `clamp(1rem, ${(fill * 100).toFixed(2)}%, calc(100% - 1rem))`,
+              }}
             >
-              <span className={classes["stop-rank"]}>{stop.name}</span>
-              <span className={classes["stop-rating"]}>{stop.rating}</span>
-            </li>
-          ))}
-        </ol>
+              {baseRating}
+            </span>
+          ) : null}
+          <div className={classes.track}>
+            <span
+              className={classes.lead}
+              style={{ width: `${(GAUGE_LEAD * 100).toFixed(2)}%` }}
+            />
+            <span
+              className={classes.fill}
+              style={{ width: `${(fill * 100).toFixed(2)}%` }}
+            />
+            {stops.slice(0, -1).map((stop) => (
+              <span
+                key={stop.name}
+                className={classes.tick}
+                style={{ left: `${(stop.pos * 100).toFixed(2)}%` }}
+              />
+            ))}
+          </div>
+          <ol className={classes.stops}>
+            {stops.map((stop) => (
+              <li
+                key={stop.name}
+                data-achieved={score >= stop.minScore ? "" : undefined}
+                style={{
+                  left: `clamp(1.5rem, ${(stop.pos * 100).toFixed(2)}%, calc(100% - 1.75rem))`,
+                }}
+              >
+                <span className={classes["stop-rank"]}>{stop.name}</span>
+                <span className={classes["stop-rating"]}>{stop.rating}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
       <Link
         className={classes["stats-link"]}

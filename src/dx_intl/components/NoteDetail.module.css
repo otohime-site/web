@@ -138,6 +138,36 @@
   }
 }
 
+.gauge {
+  position: relative;
+  display: grid;
+  gap: var(--size-1);
+  /* Room for the current-rating marker riding the fill edge. */
+  padding-top: 1.1rem;
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  color: var(--text-1);
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.marker::after {
+  content: "";
+  margin-top: 1px;
+  border: 0.22rem solid transparent;
+  border-top-color: var(--otohime-6);
+}
+
 .track {
   position: relative;
   display: flex;
@@ -153,30 +183,41 @@
   background: var(--otohime-6);
 }
 
-/* Rendered above the fill so the borders stay visible as ticks. */
-.seg {
-  z-index: 1;
-  flex: 1;
-  border-right: 1px solid var(--surface-1);
+/* The compressed 0→S lead-in, on a visibly different ground. */
+.lead {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--surface-2);
 }
-.seg:last-child {
-  border-right: 0;
+
+/* Border ticks, above the fill so the jumps stay visible. */
+.tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 1px;
+  background: var(--surface-1);
 }
 
 .stops {
-  display: flex;
+  position: relative;
+  height: 2.3em;
   margin: 0;
   padding: 0;
   list-style: none;
 
   li {
+    position: absolute;
+    top: 0;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    transform: translateX(-50%);
     color: var(--text-2);
     font-variant-numeric: tabular-nums;
     line-height: 1.3;
+    white-space: nowrap;
   }
 
   li[data-achieved] {
@@ -199,5 +240,9 @@
 @media (prefers-color-scheme: dark) {
   .fill {
     background: var(--otohime-7);
+  }
+
+  .marker::after {
+    border-top-color: var(--otohime-7);
   }
 }
