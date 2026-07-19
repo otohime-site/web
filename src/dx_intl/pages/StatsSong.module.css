@@ -6,33 +6,6 @@
   }
 }
 
-.rates {
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  margin: var(--size-2) 0;
-  gap: var(--size-2);
-  & li {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    width: 6rem;
-    text-align: right;
-    flex-direction: column;
-    list-style-type: none;
-    background: var(--surface-2);
-    border-radius: var(--radius-3);
-    padding: var(--size-2);
-    & span:first-child {
-      font-size: 0.85rem;
-    }
-    & span:last-child {
-      font-weight: bold;
-      font-size: var(--font-size-2);
-    }
-  }
-}
-
 .intro {
   display: flex;
   flex-direction: row;
@@ -43,4 +16,29 @@
   img {
     height: 4em;
   }
+}
+
+.chart {
+  position: relative;
+  height: min(22rem, 60vh);
+}
+
+.table-scroll {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    max-width: 40rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :is(th, td):not(:first-child) {
+    text-align: right;
+    white-space: nowrap;
+  }
+}
+
+.distribution-chart {
+  position: relative;
+  height: min(26rem, 70vh);
 }

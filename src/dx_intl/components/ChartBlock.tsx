@@ -17,9 +17,7 @@ interface ChartBlockProps {
 const ChartBlock = ({ entry, rank, value }: ChartBlockProps) => (
   <Link
     className={classes["chart-block"]}
-    href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-      entry.deluxe ? "dx" : "std"
-    }/${entry.difficulty}`}
+    href={`~/dxi/s/${entry.song_id.substring(0, 8)}`}
   >
     <img
       className={classes["chart-cover"]}

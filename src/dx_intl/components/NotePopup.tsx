@@ -55,11 +55,7 @@ const NoteRating = ({
           <th colSpan={2}>
             <section>
               <img src={getCoverUrl(entry.song_id)} />
-              <Link
-                href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                  entry.deluxe ? "dx" : "std"
-                }/${entry.difficulty}`}
-              >
+              <Link href={`~/dxi/s/${entry.song_id.substring(0, 8)}`}>
                 <h6>{entry.title}</h6>
                 <p>{entry.artist ?? ""}</p>
                 <p>
@@ -124,11 +120,7 @@ const NoteRating = ({
         ))}
         <tr>
           <td colSpan={2}>
-            <Link
-              href={`~/dxi/s/${entry.song_id.substring(0, 8)}/${
-                entry.deluxe ? "dx" : "std"
-              }/${entry.difficulty}`}
-            >
+            <Link href={`~/dxi/s/${entry.song_id.substring(0, 8)}`}>
               檢視統計
             </Link>
           </td>

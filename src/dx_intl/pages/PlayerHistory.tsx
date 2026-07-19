@@ -432,9 +432,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
         {scoreChanges.map((entry) => {
           const before = beforeMap.get(entry.hash)
           const after = afterMap.get(entry.hash)
-          const songHref = `~/dxi/s/${entry.song_id.substring(0, 8)}/${
-            entry.deluxe ? "dx" : "std"
-          }/${entry.difficulty}`
+          const songHref = `~/dxi/s/${entry.song_id.substring(0, 8)}`
           return (
             <article
               key={entry.hash}

@@ -1,8 +1,15 @@
-import { Link, Redirect, Route, Switch, useRoute } from "wouter"
+import { Link, Params, Redirect, Route, Switch, useRoute } from "wouter"
 import classes from "./Stats.module.css"
 import StatsOverview from "./StatsOverview"
 import StatsRatingTarget from "./StatsRatingTarget"
 import StatsSong from "./StatsSong"
+
+const LegacySongStatsRedirect = ({ params }: { params: Params }) => (
+  <Redirect
+    to={`~/dxi/s/${params.songId ?? ""}/${params.variant ?? ""}`}
+    replace
+  />
+)
 
 const Stats = () => {
   const [overviewActive] = useRoute("/")
@@ -37,9 +44,12 @@ const Stats = () => {
         <Switch>
           <Route path="/" component={StatsOverview} />
           <Route path="/rt/:rating" component={StatsRatingTarget} />
-          <Route path="/:songId" component={StatsSong} />
+          <Route
+            path="/:songId/:variant/:difficulty"
+            component={LegacySongStatsRedirect}
+          />
           <Route path="/:songId/:variant" component={StatsSong} />
-          <Route path="/:songId/:variant/:difficulty" component={StatsSong} />
+          <Route path="/:songId" component={StatsSong} />
           <Route>
             <Redirect to="~/dxi/s" replace />
           </Route>
