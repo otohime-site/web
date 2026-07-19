@@ -38,11 +38,9 @@ const FolderGroup = ({
 }) => (
   <ToggleGroup.Root
     className={`${styles.group} ${className ?? ""}`}
+    deselectable={false}
     value={values}
-    onValueChange={({ value }) => {
-      // Clearing the last chip is allowed and lands on the "all songs" view.
-      onChange(value)
-    }}
+    onValueChange={({ value }) => onChange(value)}
   >
     {options.map((option) => (
       <ToggleGroup.Item
