@@ -1,5 +1,4 @@
 import { Dialog } from "@ark-ui/react/dialog"
-import { Popover, usePopover } from "@ark-ui/react/popover"
 import { Portal } from "@ark-ui/react/portal"
 import { Select, createListCollection } from "@ark-ui/react/select"
 import { Tabs } from "@ark-ui/react/tabs"
@@ -38,7 +37,6 @@ import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
 import Folders from "../components/Folders"
-import NotePopup from "../components/NotePopup"
 import PlayerRatingImage from "../components/PlayerRatingImage"
 import Record from "../components/Record"
 import {
@@ -246,25 +244,6 @@ const Player = ({ params }: { params: Params }) => {
     observer.observe(bar)
     topBarObserverRef.current = observer
   }, [])
-  const notePopupRef = useRef<HTMLElement | null>(null)
-  const [notePopupEntry, setNotePopupEntry] = useState<ScoreTableEntry | null>(
-    null,
-  )
-  const popover = usePopover({
-    autoFocus: true,
-    positioning: {
-      placement: "bottom-start",
-      getAnchorRect: () => {
-        const ref = notePopupRef.current
-        return ref ? ref.getBoundingClientRect() : null
-      },
-    },
-  })
-  // The popover api is a fresh object every render; go through a ref so
-  // handleNotePopupOpen stays identity-stable for the memoized table.
-  const popoverRef = useRef(popover)
-  popoverRef.current = popover
-
   const { scoreTable, noteInconsistency } = useMemo(() => {
     if (!scoresResult.data) {
       return { scoreTable: [], noteInconsistency: false }
@@ -450,16 +429,6 @@ const Player = ({ params }: { params: Params }) => {
       filename,
     )
   }, [params, scoreTable, recordResult])
-
-  const handleNotePopupOpen = useCallback(
-    (event: React.MouseEvent<HTMLElement>, entry: ScoreTableEntry) => {
-      notePopupRef.current = event.currentTarget
-      setNotePopupEntry(entry)
-      popoverRef.current.reposition()
-      popoverRef.current.setOpen(true)
-    },
-    [],
-  )
 
   if (
     recordResult.error != null ||
@@ -765,12 +734,12 @@ const Player = ({ params }: { params: Params }) => {
                   filterTitle={filterTitle}
                   includeInactive={includeInactive}
                   showCover={showCover}
+                  afterCircle={afterCircle}
                   onIncludeInactiveChange={setIncludeInactive}
                   onShowCoverChange={setShowCover}
                   difficulty={folderDifficulty}
                   showDifficulty={difficultyFolderActive}
                   onDifficultyChange={handleFolderDifficultyChange}
-                  onNoteOpen={handleNotePopupOpen}
                 />
               )}
             </Route>
@@ -780,20 +749,6 @@ const Player = ({ params }: { params: Params }) => {
           </RouteSwitch>
         </Tabs.Content>
       </Tabs.Root>
-      <Popover.RootProvider value={popover}>
-        <Popover.Positioner>
-          <Popover.Content>
-            <Popover.Arrow>
-              <Popover.ArrowTip />
-            </Popover.Arrow>
-            <div>
-              {notePopupEntry ? (
-                <NotePopup entry={notePopupEntry} afterCircle={afterCircle} />
-              ) : null}
-            </div>
-          </Popover.Content>
-        </Popover.Positioner>
-      </Popover.RootProvider>
     </>
   )
 }

@@ -22,10 +22,24 @@
   }
   tbody tr {
     height: 2em;
+    cursor: pointer;
   }
   tbody tr td {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--surface-3);
+  }
+
+  /* The expanded row and its detail row read as one card. */
+  tr.expanded td {
+    background: var(--surface-2);
+    border-bottom: 0;
+  }
+  tr.detail-row {
+    cursor: auto;
+  }
+  tr.detail-row td {
+    padding: 0;
+    background: var(--surface-2);
   }
 
   tr.inactive {
@@ -208,6 +222,11 @@ td.col-difficulty.non-plus {
   .table tbody td.col-title {
     grid-column: 2 / -1;
     padding-bottom: var(--size-1);
+  }
+
+  .table tbody tr.detail-row,
+  .table tbody tr.detail-row td {
+    display: block;
   }
 
   .table.no-cover tbody tr {

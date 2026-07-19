@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { memo, useMemo, useState } from "react"
+import { memo, useCallback, useMemo, useState } from "react"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Switch } from "../../common/components/ui/Switch"
 import { ComboFlag, SyncFlag } from "../components/Flags"
@@ -15,6 +15,7 @@ interface PlayerScoresProps {
   filterTitle: string
   includeInactive: boolean
   showCover: boolean
+  afterCircle: boolean
   difficulty: number | null
   // The folder difficulty only applies to category/version folders, so
   // the chips hide unless one of those folders is selected.
@@ -22,10 +23,6 @@ interface PlayerScoresProps {
   onIncludeInactiveChange: (includeInactive: boolean) => void
   onShowCoverChange: (showCover: boolean) => void
   onDifficultyChange: (difficulty: number | null) => void
-  onNoteOpen: (
-    event: React.MouseEvent<HTMLElement>,
-    entry: ScoreTableEntry,
-  ) => void
 }
 
 const PlayerScores = memo(function PlayerScores({
@@ -34,14 +31,18 @@ const PlayerScores = memo(function PlayerScores({
   filterTitle,
   includeInactive,
   showCover,
+  afterCircle,
   difficulty,
   showDifficulty,
   onIncludeInactiveChange,
   onShowCoverChange,
   onDifficultyChange,
-  onNoteOpen,
 }: PlayerScoresProps) {
   const [allSongs, setAllSongs] = useState(false)
+  const [expandedHash, setExpandedHash] = useState<string | null>(null)
+  const handleNoteToggle = useCallback((hash: string) => {
+    setExpandedHash((current) => (current === hash ? null : hash))
+  }, [])
   const statsEntries = useMemo(
     () =>
       (allSongs ? allEntries : entries).filter(
@@ -148,7 +149,9 @@ const PlayerScores = memo(function PlayerScores({
         <PlayerScoreTable
           table={entries}
           showCover={showCover}
-          handleNotePopupOpen={onNoteOpen}
+          afterCircle={afterCircle}
+          expandedHash={expandedHash}
+          onNoteToggle={handleNoteToggle}
         />
       </div>
     </div>
