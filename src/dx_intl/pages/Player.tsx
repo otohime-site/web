@@ -319,6 +319,11 @@ const Player = ({ params }: { params: Params }) => {
 
   // The rating folders keep their own ordering by the rating ranks
   const ratingFolder = !advanced && filter.rating_latest != null
+  const ratingCount = ratingFolder
+    ? filter.rating_latest
+      ? RATING_NEW_COUNT
+      : RATING_OLD_COUNT
+    : null
   // The difficulty chips only apply to category/version folders, so they
   // only show while one of those folders is selected.
   const difficultyFolderActive =
@@ -739,6 +744,7 @@ const Player = ({ params }: { params: Params }) => {
                   onShowCoverChange={setShowCover}
                   difficulty={folderDifficulty}
                   showDifficulty={difficultyFolderActive}
+                  ratingCount={ratingCount}
                   onDifficultyChange={handleFolderDifficultyChange}
                 />
               )}

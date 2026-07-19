@@ -12,6 +12,15 @@
   font-family: "M PLUS 2";
 }
 
+.rating-notice {
+  margin: 0 var(--size-4) var(--size-3) 0;
+  font-family: "M PLUS 2";
+
+  > [data-severity] {
+    margin: 0;
+  }
+}
+
 .score-stats-block {
   margin: 0 var(--size-4) 0 0;
   padding: var(--size-3);
@@ -125,6 +134,10 @@
   }
 
   .difficulty-folders {
+    margin-right: 0;
+  }
+
+  .rating-notice {
     margin-right: 0;
   }
 
