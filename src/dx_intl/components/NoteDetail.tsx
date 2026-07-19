@@ -16,11 +16,14 @@ import {
 import { ComboFlag } from "./Flags"
 import classes from "./NoteDetail.module.css"
 
-// From S upward the gauge axis is linear in rating, so the fill and the
-// border labels always agree and each border jump shows as a skip. The
-// 0–97% stretch would dwarf that scale, so it is compressed into a
-// fixed lead-in filled by score percentage instead.
+// The gauge axis is linear in rating, so the fill and the border labels
+// always agree and each border jump shows as a skip. Ratings below S
+// would dwarf that scale, so the 0→S range is compressed into a
+// fixed-width lead-in (on its own ground, like a broken axis). After
+// CiRCLE the axis ends with a fixed-width stub for the AP +1, so the
+// bar only completes when the header's maximum is actually reached.
 const GAUGE_LEAD = 0.15
+const GAUGE_AP_TAIL = 0.05
 const GAUGE_STOPS = RANK_SCORES.slice(3)
 
 const NoteDetail = ({
@@ -37,31 +40,31 @@ const NoteDetail = ({
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const score = entry.score ?? 0
   const apBonus = afterCircle && entry.combo_flag >= comboFlags.indexOf("ap")
-  const { rating, baseRating, maxRating, stops, fill } = useMemo(() => {
+  const { rating, maxRating, stops, fill, tail } = useMemo(() => {
     if (internalLv == null) {
-      return { rating: 0, baseRating: 0, maxRating: 0, stops: [], fill: 0 }
+      return { rating: 0, maxRating: 0, stops: [], fill: 0, tail: 0 }
     }
     const rating = getRating(internalLv, score, apBonus)
     // The formula caps the score at 100.5%; after CiRCLE the
     // theoretical maximum also counts the AP bonus.
     const maxRating = getRating(internalLv, 100.5, afterCircle)
-    const baseRating = getRating(internalLv, score)
     const ratingS = getRating(internalLv, 97)
     const ratingSssPlus = getRating(internalLv, 100.5)
+    const tail = afterCircle ? GAUGE_AP_TAIL : 0
     const ratingPos = (value: number) =>
-      GAUGE_LEAD +
-      ((value - ratingS) / (ratingSssPlus - ratingS)) * (1 - GAUGE_LEAD)
+      value < ratingS
+        ? GAUGE_LEAD * (value / ratingS)
+        : value <= ratingSssPlus
+          ? GAUGE_LEAD +
+            ((value - ratingS) / (ratingSssPlus - ratingS)) *
+              (1 - GAUGE_LEAD - tail)
+          : 1 - tail + (value - ratingSssPlus) * tail
     const stops = GAUGE_STOPS.map(([minScore, name]) => {
       const stopRating = getRating(internalLv, minScore)
       return { name, minScore, rating: stopRating, pos: ratingPos(stopRating) }
     })
-    const fill =
-      score >= 100.5
-        ? 1
-        : score >= 97
-          ? ratingPos(baseRating)
-          : GAUGE_LEAD * (score / 97)
-    return { rating, baseRating, maxRating, stops, fill }
+    const fill = Math.min(ratingPos(rating), 1)
+    return { rating, maxRating, stops, fill, tail }
   }, [internalLv, score, apBonus, afterCircle])
 
   if (internalLv == null) {
@@ -143,7 +146,7 @@ const NoteDetail = ({
                 left: `clamp(1rem, ${(fill * 100).toFixed(2)}%, calc(100% - 1rem))`,
               }}
             >
-              {baseRating}
+              {rating}
             </span>
           ) : null}
           <div className={classes.track}>
@@ -162,6 +165,18 @@ const NoteDetail = ({
                 style={{ left: `${(stop.pos * 100).toFixed(2)}%` }}
               />
             ))}
+            {tail > 0 ? (
+              <span
+                className={classes["ap-tail"]}
+                data-achieved={apBonus ? "" : undefined}
+                title={
+                  apBonus
+                    ? "AP 加成：Rating 已 +1"
+                    : "達成 AP / AP+ 時 Rating +1"
+                }
+                style={{ width: `${(tail * 100).toFixed(2)}%` }}
+              />
+            ) : null}
           </div>
           <ol className={classes.stops}>
             {stops.map((stop) => (

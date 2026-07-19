@@ -200,6 +200,24 @@
   background: var(--surface-1);
 }
 
+/* The AP +1 stub at the end of the axis: dashed while the point is
+   still an opportunity (echoing the pending pill), covered by the
+   fill once AP is achieved. */
+.ap-tail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  border: 1px dashed var(--surface-4);
+  border-radius: 0 var(--radius-2) var(--radius-2) 0;
+}
+
+.ap-tail[data-achieved] {
+  border-style: solid;
+  border-color: transparent;
+}
+
 .stops {
   position: relative;
   height: 2.3em;
