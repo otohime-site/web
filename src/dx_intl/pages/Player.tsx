@@ -188,6 +188,7 @@ const Player = ({ params }: { params: Params }) => {
   >("index")
   const [orderingDesc, setOrderingDesc] = useState(false)
   const [includeInactive, setIncludeInactive] = useState(false)
+  const [showCover, setShowCover] = useState(true)
   const handleFolderDifficultyChange = useCallback(
     (difficulty: number | null) => {
       setFolderDifficulty(difficulty)
@@ -339,6 +340,10 @@ const Player = ({ params }: { params: Params }) => {
 
   // The rating folders keep their own ordering by the rating ranks
   const ratingFolder = !advanced && filter.rating_latest != null
+  // The difficulty chips only apply to category/version folders, so they
+  // only show while one of those folders is selected.
+  const difficultyFolderActive =
+    !advanced && (filter.category.length > 0 || filter.version.length > 0)
   const hasEffectiveConditions = conditions.some(isEffectiveCondition)
   // The single gate for whether advanced mode lists anything at all;
   // the filter and the title must agree on it.
@@ -625,16 +630,6 @@ const Player = ({ params }: { params: Params }) => {
                           </button>
                         </Dialog.CloseTrigger>
                       </div>
-                      <div className={classes["folders-dialog-settings"]}>
-                        <Switch
-                          checked={includeInactive}
-                          onCheckedChange={({ checked }) =>
-                            setIncludeInactive(checked)
-                          }
-                        >
-                          顯示已刪除樂曲
-                        </Switch>
-                      </div>
                       {advanced ? (
                         <AdvancedFilter
                           conditions={conditions}
@@ -649,7 +644,6 @@ const Player = ({ params }: { params: Params }) => {
                           filter={filter}
                           difficulty={folderDifficulty}
                           onFilterChange={setFilter}
-                          onDifficultyChange={handleFolderDifficultyChange}
                         />
                       )}
                     </Dialog.Content>
@@ -770,6 +764,12 @@ const Player = ({ params }: { params: Params }) => {
                   entries={table.entries}
                   filterTitle={filterTitle}
                   includeInactive={includeInactive}
+                  showCover={showCover}
+                  onIncludeInactiveChange={setIncludeInactive}
+                  onShowCoverChange={setShowCover}
+                  difficulty={folderDifficulty}
+                  showDifficulty={difficultyFolderActive}
+                  onDifficultyChange={handleFolderDifficultyChange}
                   onNoteOpen={handleNotePopupOpen}
                 />
               )}

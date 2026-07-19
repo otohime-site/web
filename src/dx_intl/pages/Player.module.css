@@ -260,6 +260,16 @@
   }
 }
 
+@media (max-width: 960px) {
+  /* Bleed across the container gutter so the sticky background spans
+     the full viewport, keeping a slighter horizontal inset. */
+  .top-bar,
+  .top-bar[data-condensed] {
+    margin-inline: calc(-1 * var(--size-2));
+    padding-inline: var(--size-1);
+  }
+}
+
 @media (max-width: 720px) {
   .player-toolbar {
     width: 100%;
@@ -312,18 +322,5 @@
   /* The close trigger keeps to the right edge. */
   > button:last-child {
     margin-left: auto;
-  }
-}
-
-.folders-dialog-settings {
-  display: flex;
-  justify-content: flex-end;
-  padding: var(--size-2) var(--size-2) 0;
-  font-family: "M PLUS 2";
-
-  [data-scope="switch"][data-part="root"] {
-    padding: var(--size-2) var(--size-3);
-    border-radius: var(--radius-2);
-    background: var(--surface-2);
   }
 }

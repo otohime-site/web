@@ -26,11 +26,6 @@
   tbody tr td {
     padding: 0.5rem 0;
     border-bottom: 1px solid var(--surface-3);
-    word-break: break-all;
-  }
-
-  tr.used td {
-    background: var(--red-2);
   }
 
   tr.inactive {
@@ -58,9 +53,21 @@
   }
 }
 
+.col-cover {
+  width: 3.25rem;
+}
+td.col-cover img {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-1);
+  object-fit: cover;
+}
 .col-title {
   text-align: left;
   width: auto;
+  /* Break at spaces when possible; mid-word only as a last resort. */
+  overflow-wrap: anywhere;
   a {
     color: inherit;
     &:hover {
@@ -69,7 +76,7 @@
   }
 }
 .col-score {
-  width: clamp(6.6rem, 15vw, 14rem);
+  width: clamp(6.6rem, 15vw, 9rem);
   padding: 0 clamp(0.5rem, 1vw, 2rem);
   text-align: right;
 }
@@ -156,4 +163,62 @@ td.col-difficulty.non-plus {
 
 .estimated {
   font-style: italic;
+}
+
+@media (max-width: 480px) {
+  /* Two-line rows: the title spans the full width and the chart data
+     forms a second line, so titles stop fighting the fixed columns.
+     Fixed track sizes keep the second line aligned across rows. */
+  .table,
+  .table tbody {
+    display: block;
+  }
+
+  .table colgroup {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: grid;
+    grid-template-columns: 3rem 1.8rem 2.6rem 1fr 3.3rem minmax(
+        2.4rem,
+        max-content
+      );
+    align-items: center;
+    column-gap: var(--size-2);
+    height: auto;
+    padding: var(--size-1) 0;
+    border-bottom: 1px solid var(--surface-3);
+  }
+
+  .table tbody tr td {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .table tbody td.col-cover {
+    grid-row: 1 / 3;
+  }
+
+  .table tbody td.col-cover img {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .table tbody td.col-title {
+    grid-column: 2 / -1;
+    padding-bottom: var(--size-1);
+  }
+
+  .table.no-cover tbody tr {
+    grid-template-columns: 1.8rem 2.6rem 1fr 3.3rem minmax(2.4rem, max-content);
+  }
+
+  .table.no-cover tbody td.col-title {
+    grid-column: 1 / -1;
+  }
+
+  .table tbody td.col-score {
+    width: auto;
+  }
 }

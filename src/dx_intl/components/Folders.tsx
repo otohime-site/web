@@ -66,18 +66,50 @@ const FolderGroup = ({
   </ToggleGroup.Root>
 )
 
+// Difficulty chips shared with the scores page. The chosen difficulty
+// still drives the category/version counts inside the folder dialog.
+export const DifficultyFolders = ({
+  difficulty,
+  onDifficultyChange,
+  className,
+}: {
+  difficulty: number | null
+  onDifficultyChange: (difficulty: number | null) => void
+  className?: string
+}) => {
+  const difficultyValues = difficulty == null ? ["all"] : [`${difficulty}`]
+  const difficultyOptions: FolderOption[] = [
+    { value: "all", label: "全部", className: styles.diffAll },
+    ...difficultyShortNames.map((label, value) => ({
+      value: `${value}`,
+      label,
+      className: styles[difficultyClasses[value]],
+    })),
+  ]
+  const changeDifficulty = (values: string[]) => {
+    const next = values[0] ?? "all"
+    onDifficultyChange(next === "all" ? null : parseInt(next, 10))
+  }
+  return (
+    <FolderGroup
+      values={difficultyValues}
+      options={difficultyOptions}
+      onChange={changeDifficulty}
+      className={`${styles.difficultyGroup} ${className ?? ""}`}
+    />
+  )
+}
+
 const Folders = ({
   entries,
   filter,
   difficulty,
   onFilterChange,
-  onDifficultyChange,
 }: {
   entries: ScoreTableEntry[]
   filter: ScoreFilter
   difficulty: number | null
   onFilterChange: (filter: ScoreFilter) => void
-  onDifficultyChange: (difficulty: number | null) => void
 }) => {
   // Category/version counts follow the selected difficulty. A null
   // difficulty means every chart, exposed as the "all" option.
@@ -137,20 +169,6 @@ const Folders = ({
       }
     }, [entries, difficulty])
 
-  const difficultyValues = difficulty == null ? ["all"] : [`${difficulty}`]
-  const difficultyOptions: FolderOption[] = [
-    { value: "all", label: "全部", className: styles.diffAll },
-    ...difficultyShortNames.map((label, value) => ({
-      value: `${value}`,
-      label,
-      className: styles[difficultyClasses[value]],
-    })),
-  ]
-  const changeDifficulty = (values: string[]) => {
-    const next = values[0] ?? "all"
-    onDifficultyChange(next === "all" ? null : parseInt(next, 10))
-  }
-
   const changeDimension = (key: ArrayFolderKey) => (values: string[]) => {
     const nums = values.map((v) => parseInt(v, 10))
     // Category/version folders retain the explicit difficulty choice.
@@ -185,13 +203,6 @@ const Folders = ({
         options={ratingOptions}
         onChange={changeRating}
         className={styles.ratingGroup}
-      />
-      <h4>分類／版本難易度</h4>
-      <FolderGroup
-        values={difficultyValues}
-        options={difficultyOptions}
-        onChange={changeDifficulty}
-        className={styles.difficultyGroup}
       />
       <h4>分類</h4>
       <FolderGroup

@@ -1,3 +1,17 @@
+.view-settings {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--size-2) var(--size-4);
+  margin: 0 var(--size-4) var(--size-3) 0;
+  font-family: "M PLUS 2";
+}
+
+.difficulty-folders {
+  margin: 0 var(--size-4) var(--size-3) 0;
+  font-family: "M PLUS 2";
+}
+
 .score-stats-block {
   margin: 0 var(--size-4) 0 0;
   padding: var(--size-3);
@@ -100,6 +114,20 @@
 }
 
 @media (max-width: 960px) {
+  /* Follow the top bar across the container gutter, keeping a
+     slighter horizontal inset for the dense score table. */
+  .scores-layout {
+    margin-inline: calc(var(--size-1) - var(--size-2));
+  }
+
+  .view-settings {
+    margin-right: 0;
+  }
+
+  .difficulty-folders {
+    margin-right: 0;
+  }
+
   .score-stats-block {
     margin: 0 0 var(--size-4);
   }
