@@ -4,7 +4,7 @@ import { Select, createListCollection } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
 import clsx from "clsx"
 import saveAs from "file-saver"
-import { createParser, parseAsJson, useQueryStates } from "nuqs"
+import { createMultiParser, createParser, useQueryStates } from "nuqs"
 import { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import IconArrowDown from "~icons/mdi/arrow-down"
@@ -39,7 +39,6 @@ import {
 } from "../models/constants"
 import {
   Condition,
-  ConditionKey,
   DEFAULT_FILTER,
   EMPTY_FILTER,
   INTERNAL_LV_MAX,
@@ -63,7 +62,10 @@ type FolderQuery =
   | "all"
   | `category-${number}`
   | `version-${number}`
-  | `level-${number}`
+  | `level${LevelQueryFragment}`
+
+type LevelQueryFragment<Level extends string = (typeof levels)[number]> =
+  Level extends `${infer Value}+` ? `${Value}p` : Level
 
 type FolderDifficulty = number | "all"
 
@@ -82,6 +84,14 @@ type Ordering =
 const DEFAULT_FOLDER: FolderQuery = "rating-new"
 const DEFAULT_FOLDER_DIFFICULTY = difficulties.indexOf("Expert")
 
+const getLevelQueryFragment = (
+  level: (typeof levels)[number],
+): LevelQueryFragment =>
+  (level.endsWith("+") ? `${level.slice(0, -1)}p` : level) as LevelQueryFragment
+
+const getLevelIndex = (fragment: string): number =>
+  levels.findIndex((level) => getLevelQueryFragment(level) === fragment)
+
 const isFolderValue = (value: string): value is FolderQuery => {
   if (
     value === "rating-new" ||
@@ -91,7 +101,12 @@ const isFolderValue = (value: string): value is FolderQuery => {
   ) {
     return true
   }
-  const match = /^(category|version|level)-(\d+)$/.exec(value)
+  if (value.startsWith("level")) {
+    return levels.some(
+      (level) => value === `level${getLevelQueryFragment(level)}`,
+    )
+  }
+  const match = /^(category|version)-(\d+)$/.exec(value)
   if (match == null) return false
   const index = Number(match[2])
   switch (match[1]) {
@@ -99,18 +114,13 @@ const isFolderValue = (value: string): value is FolderQuery => {
       return valueOptions.category.some((option) => option.value === index)
     case "version":
       return index >= 0 && index < versions.length
-    case "level":
-      return index >= 0 && index < levels.length
     default:
       return false
   }
 }
 
 const folderParser = createParser<FolderQuery>({
-  // Keep old shared links working; the effect in PlayerScores rewrites the
-  // legacy spelling to the canonical folder=filters value.
-  parse: (value) =>
-    value === "advance" ? "filters" : isFolderValue(value) ? value : null,
+  parse: (value) => (isFolderValue(value) ? value : null),
   serialize: String,
 }).withDefault(DEFAULT_FOLDER)
 
@@ -128,55 +138,141 @@ const folderDifficultyParser = createParser<FolderDifficulty>({
   serialize: String,
 }).withDefault(DEFAULT_FOLDER_DIFFICULTY)
 
-const conditionKeys = new Set<ConditionKey>([
-  "level",
-  "internal_lv",
-  "category",
-  "version",
-  "deluxe",
-  "difficulty",
-  "combo_flag",
-  "sync_flag",
-])
-
-const isCondition = (value: unknown): value is Condition => {
-  if (value == null || typeof value !== "object" || !("key" in value)) {
-    return false
-  }
-  const key = value.key
-  if (typeof key !== "string" || !conditionKeys.has(key as ConditionKey)) {
-    return false
-  }
-  if (key === "level" || key === "internal_lv") {
-    if (!("range" in value) || !Array.isArray(value.range)) return false
-    if (
-      value.range.length !== 2 ||
-      !value.range.every(
-        (bound) => typeof bound === "number" && Number.isFinite(bound),
-      ) ||
-      value.range[0] > value.range[1]
-    ) {
-      return false
-    }
-    return key === "level"
-      ? value.range.every(
-          (bound) =>
-            Number.isInteger(bound) && bound >= 0 && bound < levels.length,
-        )
-      : value.range[0] >= INTERNAL_LV_MIN && value.range[1] <= INTERNAL_LV_MAX
-  }
-  if (!("values" in value) || !Array.isArray(value.values)) return false
-  const validValues = new Set(
-    valueOptions[key as ValuesConditionKey].map((option) => option.value),
-  )
-  return value.values.every(
-    (item) => typeof item === "number" && validValues.has(item),
-  )
+const valueConditionPrefixes: Record<ValuesConditionKey, string> = {
+  category: "category",
+  version: "version",
+  deluxe: "variant",
+  difficulty: "difficulty",
+  combo_flag: "combo",
+  sync_flag: "sync",
 }
 
-const conditionsParser = parseAsJson<Condition[]>((value) =>
-  Array.isArray(value) && value.every(isCondition) ? value : null,
-).withDefault([])
+const deluxeFragments = ["std", "dx"] as const
+const difficultyFragments = ["bsc", "adv", "exp", "mas", "rem"] as const
+
+const getConditionValueFragment = (
+  key: ValuesConditionKey,
+  value: number,
+): string => {
+  switch (key) {
+    case "category":
+    case "version":
+      return `${value}`
+    case "deluxe":
+      return deluxeFragments[value] ?? ""
+    case "difficulty":
+      return difficultyFragments[value] ?? ""
+    case "combo_flag": {
+      const flag = comboFlags[value]
+      return flag === "" ? "none" : (flag?.replace("+", "p") ?? "")
+    }
+    case "sync_flag": {
+      const flag = syncFlags[value]
+      return flag === ""
+        ? "none"
+        : flag === "s"
+          ? "sync"
+          : (flag?.replace("+", "p") ?? "")
+    }
+  }
+}
+
+const getConditionValue = (
+  key: ValuesConditionKey,
+  fragment: string,
+): number | null =>
+  valueOptions[key].find(
+    ({ value }) => getConditionValueFragment(key, value) === fragment,
+  )?.value ?? null
+
+const serializeCondition = (condition: Condition): string => {
+  switch (condition.key) {
+    case "level":
+      return `level-${getLevelQueryFragment(levels[condition.range[0]])}~${getLevelQueryFragment(levels[condition.range[1]])}`
+    case "internal_lv":
+      return `internal-lv-${condition.range[0].toFixed(1)}~${condition.range[1].toFixed(1)}`
+    default: {
+      const separator = condition.key === "category" ? "" : "."
+      const values = condition.values
+        .map((value) => getConditionValueFragment(condition.key, value))
+        .join(separator)
+      return `${valueConditionPrefixes[condition.key]}-${values}`
+    }
+  }
+}
+
+const parseRange = <T,>(
+  value: string,
+  parseBound: (bound: string) => T | null,
+): [T, T] | null => {
+  const bounds = value.split("~")
+  if (bounds.length !== 2) return null
+  const start = parseBound(bounds[0])
+  const end = parseBound(bounds[1])
+  return start == null || end == null ? null : [start, end]
+}
+
+const parseValuesCondition = (
+  key: ValuesConditionKey,
+  value: string,
+): Condition | null => {
+  const fragments =
+    value === "" ? [] : key === "category" ? [...value] : value.split(".")
+  const values = fragments.map((fragment) => getConditionValue(key, fragment))
+  if (values.some((item) => item == null)) return null
+  return { key, values: [...new Set(values as number[])] }
+}
+
+const parseCondition = (value: string): Condition | null => {
+  if (value.startsWith("level-")) {
+    const range = parseRange(value.slice("level-".length), (bound) => {
+      const index = getLevelIndex(bound)
+      return index < 0 ? null : index
+    })
+    return range == null || range[0] > range[1] ? null : { key: "level", range }
+  }
+  if (value.startsWith("internal-lv-")) {
+    const range = parseRange(value.slice("internal-lv-".length), (bound) => {
+      if (!/^\d+\.\d$/.test(bound)) return null
+      const internalLevel = Number(bound)
+      return internalLevel >= INTERNAL_LV_MIN &&
+        internalLevel <= INTERNAL_LV_MAX
+        ? internalLevel
+        : null
+    })
+    return range == null || range[0] > range[1]
+      ? null
+      : { key: "internal_lv", range }
+  }
+  for (const [key, prefix] of Object.entries(valueConditionPrefixes) as Array<
+    [ValuesConditionKey, string]
+  >) {
+    if (value.startsWith(`${prefix}-`)) {
+      return parseValuesCondition(key, value.slice(prefix.length + 1))
+    }
+  }
+  return null
+}
+
+// Advanced conditions use one readable, repeatable query parameter each:
+// filter=level-9p~14&filter=category-2345.
+const conditionsParser = createMultiParser<Condition[]>({
+  parse: (values) => {
+    const conditions = new Map<Condition["key"], Condition>()
+    for (const value of values) {
+      const condition = parseCondition(value)
+      if (condition != null) conditions.set(condition.key, condition)
+    }
+    return conditions.size === 0 ? null : [...conditions.values()]
+  },
+  serialize: (conditions) => conditions.map(serializeCondition),
+  eq: (a, b) =>
+    a.length === b.length &&
+    a.every(
+      (condition, index) =>
+        serializeCondition(condition) === serializeCondition(b[index]),
+    ),
+}).withDefault([])
 
 const scoreQueryParsers = {
   folder: folderParser,
@@ -208,7 +304,11 @@ const getFolderFilter = (
   if (folder === "rating-old") {
     return { ...EMPTY_FILTER, rating_latest: false }
   }
-  const match = /^(category|version|level)-(\d+)$/.exec(folder)
+  if (folder.startsWith("level")) {
+    const index = getLevelIndex(folder.slice("level".length))
+    return { ...EMPTY_FILTER, level: index < 0 ? [] : [index] }
+  }
+  const match = /^(category|version)-(\d+)$/.exec(folder)
   if (match == null) return EMPTY_FILTER
   const value = Number(match[2])
   const difficultyFilter =
@@ -228,7 +328,12 @@ const getFolderQuery = (filter: ScoreFilter): FolderQuery => {
   }
   if (filter.category.length > 0) return `category-${filter.category[0]}`
   if (filter.version.length > 0) return `version-${filter.version[0]}`
-  if (filter.level.length > 0) return `level-${filter.level[0]}`
+  if (filter.level.length > 0) {
+    const level = levels[filter.level[0]]
+    return level == null
+      ? DEFAULT_FOLDER
+      : `level${getLevelQueryFragment(level)}`
+  }
   return DEFAULT_FOLDER
 }
 
@@ -271,14 +376,6 @@ const PlayerScores = memo(function PlayerScores({
       void setScoreQuery({ filter: null }, { history: "replace" })
     }
   }, [advanced, conditions.length, setScoreQuery, showAll])
-
-  useEffect(() => {
-    if (
-      new URLSearchParams(window.location.search).get("folder") === "advance"
-    ) {
-      void setScoreQuery({ folder: "filters" }, { history: "replace" })
-    }
-  }, [setScoreQuery])
 
   const hasEffectiveConditions = conditions.some(isEffectiveCondition)
   const conditionsActive = hasEffectiveConditions || showAll
