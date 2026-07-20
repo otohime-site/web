@@ -8,13 +8,13 @@ import {
   getRating,
 } from "../models/aggregation"
 import {
+  RANK_CONST_BORDERS,
   RANK_SCORES,
   categories,
   comboFlags,
   versions,
 } from "../models/constants"
-import { ComboFlag } from "./Flags"
-import classes from "./NoteDetail.module.css"
+import classes from "./ChartDetail.module.css"
 
 // The gauge axis is linear in rating, so the fill and the border labels
 // always agree and each border jump shows as a skip. Ratings below S
@@ -26,7 +26,7 @@ const GAUGE_LEAD = 0.15
 const GAUGE_AP_TAIL = 0.05
 const GAUGE_STOPS = RANK_SCORES.slice(3)
 
-const NoteDetail = ({
+const ChartDetail = ({
   entry,
   showCover,
   afterCircle,
@@ -40,9 +40,16 @@ const NoteDetail = ({
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const score = entry.score ?? 0
   const apBonus = afterCircle && entry.combo_flag >= comboFlags.indexOf("ap")
-  const { rating, maxRating, stops, fill, tail } = useMemo(() => {
+  const { rating, maxRating, stops, gaps, fill, tail } = useMemo(() => {
     if (internalLv == null) {
-      return { rating: 0, maxRating: 0, stops: [], fill: 0, tail: 0 }
+      return {
+        rating: 0,
+        maxRating: 0,
+        stops: [],
+        gaps: [],
+        fill: 0,
+        tail: 0,
+      }
     }
     const rating = getRating(internalLv, score, apBonus)
     // The formula caps the score at 100.5%; after CiRCLE the
@@ -63,8 +70,35 @@ const NoteDetail = ({
       const stopRating = getRating(internalLv, minScore)
       return { name, minScore, rating: stopRating, pos: ratingPos(stopRating) }
     })
+    // Keep the rating axis unchanged, but mark values skipped when a rank
+    // coefficient changes. Adjacent jumps (such as the two at 100.4999%
+    // and 100.5%) are merged into one visible gap.
+    const gaps = RANK_CONST_BORDERS.filter(
+      ([border]) => border >= 970000,
+    ).reduce<Array<{ from: number; to: number; start: number; end: number }>>(
+      (result, [border]) => {
+        const from = getRating(internalLv, (border - 1) / 10000)
+        const to = getRating(internalLv, border / 10000)
+        if (to - from <= 1) return result
+        const gap = {
+          from,
+          to,
+          start: ratingPos(from),
+          end: ratingPos(to),
+        }
+        const previous = result[result.length - 1]
+        if (previous != null && gap.from <= previous.to) {
+          previous.to = gap.to
+          previous.end = gap.end
+        } else {
+          result.push(gap)
+        }
+        return result
+      },
+      [],
+    )
     const fill = Math.min(ratingPos(rating), 1)
-    return { rating, maxRating, stops, fill, tail }
+    return { rating, maxRating, stops, gaps, fill, tail }
   }, [internalLv, score, apBonus, afterCircle])
 
   if (internalLv == null) {
@@ -113,26 +147,6 @@ const NoteDetail = ({
               <IconCircleOutline />
             </a>
           </h6>
-          {afterCircle && entry.score != null ? (
-            apBonus ? (
-              <span
-                className={classes["ap-bonus"]}
-                title="AP 加成：Rating 已 +1"
-              >
-                <ComboFlag flag={comboFlags[entry.combo_flag]} />
-                +1
-              </span>
-            ) : (
-              <span
-                className={classes["ap-bonus"]}
-                data-pending=""
-                title="達成 AP / AP+ 時 Rating +1"
-              >
-                <ComboFlag flag="ap" />
-                +1
-              </span>
-            )
-          ) : null}
           <span className={classes["rating-value"]}>
             {rating}{" "}
             <span className={classes["rating-max"]}>/ {maxRating}</span>
@@ -158,6 +172,20 @@ const NoteDetail = ({
               className={classes.fill}
               style={{ width: `${(fill * 100).toFixed(2)}%` }}
             />
+            {gaps.map((gap) => (
+              <span
+                key={`${gap.from}-${gap.to}`}
+                aria-label={`無法取得的 Rating：${gap.from} 到 ${gap.to}`}
+                className={classes.gap}
+                title={`Rating 跳躍：${gap.from} → ${gap.to}`}
+                style={{
+                  left: `${(gap.start * 100).toFixed(2)}%`,
+                  width: `${((gap.end - gap.start) * 100).toFixed(2)}%`,
+                }}
+              >
+                {gap.to > stops[0].rating ? `+${gap.to - gap.from}` : null}
+              </span>
+            ))}
             {stops.slice(0, -1).map((stop) => (
               <span
                 key={stop.name}
@@ -191,6 +219,20 @@ const NoteDetail = ({
                 <span className={classes["stop-rating"]}>{stop.rating}</span>
               </li>
             ))}
+            {afterCircle ? (
+              <li
+                className={classes["ap-stop"]}
+                data-achieved={apBonus ? "" : undefined}
+                title={
+                  apBonus
+                    ? "AP 加成：Rating 已 +1"
+                    : "達成 AP / AP+ 時 Rating +1"
+                }
+              >
+                <span className={classes["stop-rank"]}>AP</span>
+                <span className={classes["stop-rating"]}>{maxRating}</span>
+              </li>
+            ) : null}
           </ol>
         </div>
       </section>
@@ -204,4 +246,4 @@ const NoteDetail = ({
   )
 }
 
-export default NoteDetail
+export default ChartDetail

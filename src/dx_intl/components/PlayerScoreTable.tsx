@@ -7,9 +7,9 @@ import {
 } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { getDifficultyClassName } from "../utils/styling"
+import ChartDetail from "./ChartDetail"
 import { ComboFlag, SyncFlag } from "./Flags"
 import Long from "./Long"
-import NoteDetail from "./NoteDetail"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
@@ -100,7 +100,7 @@ const PlayerScoreTableBase = ({
               {hash === expandedHash ? (
                 <tr className={classes["detail-row"]}>
                   <td colSpan={showCover ? 7 : 6}>
-                    <NoteDetail
+                    <ChartDetail
                       entry={entry}
                       showCover={!showCover}
                       afterCircle={afterCircle}

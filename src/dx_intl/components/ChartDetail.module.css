@@ -115,29 +115,6 @@
   font-weight: 400;
 }
 
-.ap-bonus {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--size-1);
-  padding: 0 var(--size-2);
-  border: 1px solid transparent;
-  border-radius: var(--radius-round);
-  background: var(--surface-3);
-  font-weight: 700;
-}
-
-/* Not yet achieved: the +1 is an opportunity, not part of the total. */
-.ap-bonus[data-pending] {
-  border-color: var(--surface-4);
-  border-style: dashed;
-  background: transparent;
-  color: var(--text-2);
-
-  img {
-    opacity: 0.45;
-  }
-}
-
 .gauge {
   position: relative;
   display: grid;
@@ -200,6 +177,31 @@
   background: var(--surface-1);
 }
 
+/* Hatched spans mark ratings skipped by coefficient jumps without
+   changing the rating-linear gauge axis itself. */
+.gap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  min-width: 2px;
+  place-items: center;
+  border-inline: 1px solid color-mix(in srgb, var(--text-2) 20%, transparent);
+  background: repeating-linear-gradient(
+    135deg,
+    transparent 0 4px,
+    color-mix(in srgb, var(--text-2) 20%, transparent) 4px 5px
+  );
+  color: var(--text-2);
+  font-size: 0.6rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 /* The AP +1 stub at the end of the axis: dashed while the point is
    still an opportunity (echoing the pending pill), covered by the
    fill once AP is achieved. */
@@ -249,6 +251,14 @@
 
 .stop-rating {
   font-size: 0.75rem;
+}
+
+/* The AP bonus is the final labeled point after SSS+. */
+.stops .ap-stop {
+  right: 0;
+  left: auto;
+  align-items: flex-end;
+  transform: none;
 }
 
 .stats-link {
