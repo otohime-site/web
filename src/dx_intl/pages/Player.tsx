@@ -1,9 +1,4 @@
-import { Dialog } from "@ark-ui/react/dialog"
-import { Portal } from "@ark-ui/react/portal"
-import { Select, createListCollection } from "@ark-ui/react/select"
 import { Tabs } from "@ark-ui/react/tabs"
-import { Toggle } from "@ark-ui/react/toggle"
-import saveAs from "file-saver"
 import { Suspense, lazy, useCallback, useMemo, useRef, useState } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
@@ -14,29 +9,15 @@ import {
   Switch as RouteSwitch,
   useLocation,
 } from "wouter"
-import IconArrowDown from "~icons/mdi/arrow-down"
-import IconArrowUp from "~icons/mdi/arrow-up"
 import IconClipboardText from "~icons/mdi/clipboard-text-outline"
-import IconClose from "~icons/mdi/close"
-import IconFileDownload from "~icons/mdi/file-download"
-import IconFolder from "~icons/mdi/folder"
 import IconHistory from "~icons/mdi/history"
 import IconImage from "~icons/mdi/image"
 import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
-import IconSortVariant from "~icons/mdi/sort-variant"
-import IconUpdate from "~icons/mdi/update"
 import { Alert } from "../../common/components/ui/Alert"
-import { Switch } from "../../common/components/ui/Switch"
-
-import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { useUser } from "../../common/contexts"
-import { formatDateTime, formatRelative } from "../../common/utils/datetime"
-import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
-import AdvancedFilter from "../components/AdvancedFilter"
-import Folders from "../components/Folders"
 import PlayerRatingImage from "../components/PlayerRatingImage"
 import Record from "../components/Record"
 import {
@@ -49,24 +30,10 @@ import {
 import {
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
-  categories,
   comboFlags,
-  difficulties,
-  levelCompareKey,
-  levels,
   syncFlags,
   versions,
 } from "../models/constants"
-import {
-  Condition,
-  DEFAULT_FILTER,
-  ScoreFilter,
-  filterEntry,
-  filterEntryConditions,
-  getConditionsTitle,
-  getFilterTitle,
-  isEffectiveCondition,
-} from "../models/filter"
 import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
 import {
   dxIntlPlayersEditableDocument,
@@ -159,49 +126,10 @@ const Player = ({ params }: { params: Params }) => {
   // * All perfect will add 1 point to rating.
   const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
-  const [filter, setFilter] = useState<ScoreFilter>(DEFAULT_FILTER)
-  // Advanced mode keeps its own condition list so toggling the mode
-  // switches between the two filters without converting them.
-  const [conditions, setConditions] = useState<Condition[]>([])
-  // Listing every chart is heavy, so without an effective condition
-  // advanced mode shows nothing until this is explicitly turned on.
-  const [showAll, setShowAll] = useState(false)
-  const [advanced, setAdvanced] = useState(false)
-  // Category/version folders default to EXP. Keep this preference separate
-  // so Rating and level folders are not accidentally difficulty-filtered.
-  const [folderDifficulty, setFolderDifficulty] = useState<number | null>(
-    difficulties.indexOf("Expert"),
-  )
-  const [ordering, setOrdering] = useState<
-    | "index"
-    | "level"
-    | "internal_lv"
-    | "score"
-    | "rating"
-    | "combo_flag"
-    | "sync_flag"
-    | "sss_rate"
-    | "fc_rate"
-    | "ap_rate"
-  >("index")
-  const [orderingDesc, setOrderingDesc] = useState(false)
-  const [includeInactive, setIncludeInactive] = useState(false)
-  const [showCover, setShowCover] = useState(true)
-  const handleFolderDifficultyChange = useCallback(
-    (difficulty: number | null) => {
-      setFolderDifficulty(difficulty)
-      setFilter((current) =>
-        current.category.length > 0 || current.version.length > 0
-          ? {
-              ...current,
-              difficulty: difficulty == null ? [] : [difficulty],
-            }
-          : current.difficulty.length > 0
-            ? { ...current, difficulty: [] }
-            : current,
-      )
-    },
-    [],
+  // PlayerScores owns the score-page state and portals its controls into
+  // this shared sticky header.
+  const [scoresToolbar, setScoresToolbar] = useState<HTMLDivElement | null>(
+    null,
   )
   // The top bar condenses once the sentinel above it scrolls under the
   // sticky app header. Observing a separate sentinel (instead of
@@ -310,131 +238,6 @@ const Player = ({ params }: { params: Params }) => {
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
   }, [flattedEntries, scoresResult, afterCircle])
 
-  // Song counts on the folder chips follow the 顯示刪除曲 toggle,
-  // matching the entry counts shown elsewhere.
-  const folderEntries = useMemo(
-    () => scoreTable.filter((entry) => includeInactive || entry.active),
-    [scoreTable, includeInactive],
-  )
-
-  // The rating folders keep their own ordering by the rating ranks
-  const ratingFolder = !advanced && filter.rating_latest != null
-  const ratingCount = ratingFolder
-    ? filter.rating_latest
-      ? RATING_NEW_COUNT
-      : RATING_OLD_COUNT
-    : null
-  // The difficulty chips only apply to category/version folders, so they
-  // only show while one of those folders is selected.
-  const difficultyFolderActive =
-    !advanced && (filter.category.length > 0 || filter.version.length > 0)
-  const hasEffectiveConditions = conditions.some(isEffectiveCondition)
-  // The single gate for whether advanced mode lists anything at all;
-  // the filter and the title must agree on it.
-  const conditionsActive = hasEffectiveConditions || showAll
-  const filterFn = useCallback(
-    (entry: ScoreTableEntry) =>
-      advanced
-        ? conditionsActive && filterEntryConditions(entry, conditions)
-        : filterEntry(entry, filter),
-    [filter, conditions, advanced, conditionsActive],
-  )
-  // When filtering revolves around levels, the default ordering
-  // considers internal lv as well.
-  const levelFiltered = advanced
-    ? conditions.some(
-        (condition) =>
-          condition.key === "level" || condition.key === "internal_lv",
-      )
-    : filter.level.length > 0
-  // Ordering and sortingFns are deps of useTable's internal memo, so
-  // they must keep their identity or every render re-sorts the table.
-  const tableOrdering = useMemo<
-    Array<{ key: keyof ScoreTableEntry; desc: boolean }>
-  >(
-    () =>
-      ratingFolder
-        ? [
-            { key: "old_rank", desc: false },
-            { key: "new_rank", desc: false },
-          ]
-        : [{ key: ordering, desc: orderingDesc }],
-    [ratingFolder, ordering, orderingDesc],
-  )
-  const sortingFns = useMemo(
-    () => ({
-      // Ensure difficulty is also considered
-      // In case like filtering by level
-      // Also, when filtering by level, also consider internal lv.
-      // (we may have better solution on this.)
-      index: (a: ScoreTableEntry, b: ScoreTableEntry) => {
-        if (levelFiltered) {
-          const internalLvA = a.internal_lv ?? levelCompareKey[a.level]
-          const internalLvB = b.internal_lv ?? levelCompareKey[b.level]
-          return internalLvA !== internalLvB
-            ? internalLvA - internalLvB
-            : a.index !== b.index
-              ? a.index - b.index
-              : a.difficulty - b.difficulty
-        }
-        return a.index - b.index
-      },
-      level: (a: ScoreTableEntry, b: ScoreTableEntry) =>
-        levels.indexOf(a.level) - levels.indexOf(b.level),
-      internal_lv: (a: ScoreTableEntry, b: ScoreTableEntry) =>
-        (a.internal_lv ?? levelCompareKey[a.level]) -
-        (b.internal_lv ?? levelCompareKey[b.level]),
-    }),
-    [levelFiltered],
-  )
-  const table = useTable({
-    data: scoreTable,
-    ordering: tableOrdering,
-    includeInactive,
-    sortingFns,
-    filterFn,
-  })
-  const filterTitle = advanced
-    ? conditionsActive
-      ? getConditionsTitle(conditions)
-      : "未指定條件"
-    : getFilterTitle(filter)
-
-  const downloadCSV = useCallback(async (): Promise<void> => {
-    const papa = await import("papaparse")
-    const updatedAt = recordResult.data?.dx_intl_players[0]?.updated_at
-    const updatedAtStr =
-      updatedAt != null ? new Date(updatedAt).toISOString().split("T")[0] : ""
-    const filename = `${params.nickname} - ${updatedAtStr}.csv`
-    const data = scoreTable.map((entry) => ({
-      category: entry.category,
-      category_repr: categories[entry.category] ?? "",
-      order: entry.order,
-      title: entry.title,
-      deluxe: entry.deluxe ? "DX" : "STD",
-      active: entry.active ? "Y" : "N",
-      version: entry.version,
-      version_repr: versions[entry.version] ?? "",
-      difficulty: entry.difficulty,
-      difficulty_repr: difficulties[entry.difficulty] ?? "",
-      level: entry.level,
-      internal_lv:
-        entry.internal_lv != null ? entry.internal_lv.toFixed(1) : "",
-      score: entry.score != null ? entry.score.toFixed(4) : "",
-      combo_flag: comboFlags[entry.combo_flag],
-      sync_flag: syncFlags[entry.sync_flag],
-      rating: entry.rating.toString(),
-    }))
-    const csvText = papa.unparse(data)
-    // Append BOM to ensure Excel can read it
-    saveAs(
-      new Blob([String.fromCharCode(0xfeff), csvText], {
-        type: "text/csv; charset=utf-8",
-      }),
-      filename,
-    )
-  }, [params, scoreTable, recordResult])
-
   if (
     recordResult.error != null ||
     scoresResult.error != null ||
@@ -460,21 +263,6 @@ const Player = ({ params }: { params: Params }) => {
   // visitor yet, so the owner-only routes hold off their redirect.
   const ownershipPending = editableResult.fetching
 
-  const collection = createListCollection({
-    items: [
-      { group: "譜面", value: "index", label: "預設" },
-      { group: "譜面", value: "level", label: "樂曲等級" },
-      { group: "譜面", value: "internal_lv", label: "譜面定數" },
-      { group: "成績單", value: "score", label: "成績" },
-      { group: "成績單", value: "rating", label: "Rating 分數" },
-      { group: "成績單", value: "combo_flag", label: "Combo 標記" },
-      { group: "成績單", value: "sync_flag", label: "Sync 標記" },
-      { group: "玩家統計", value: "sss_rate", label: "SSS Rate" },
-      { group: "玩家統計", value: "fc_rate", label: "FC Rate" },
-      { group: "玩家統計", value: "ap_rate", label: "AP Rate" },
-    ],
-    groupBy: (item) => item.group,
-  })
   const ownsScoreTable =
     editableResult.error == null &&
     (editableResult.data?.dx_intl_players?.length ?? 0) > 0
@@ -563,129 +351,10 @@ const Player = ({ params }: { params: Params }) => {
           </div>
           {activeTab === "scores" && record != null && scoresReady ? (
             <div
+              ref={setScoresToolbar}
               aria-label="成績單選項"
               className={classes["top-bar-controls"]}
-            >
-              <Dialog.Root lazyMount unmountOnExit>
-                <Dialog.Trigger asChild>
-                  <button className={classes["folders-trigger"]}>
-                    <IconFolder />
-                    <span className={classes["filter-label"]}>篩選</span>
-                    <span
-                      className={classes["filter-summary"]}
-                      title={filterTitle}
-                    >
-                      {filterTitle}
-                    </span>
-                    <span className={classes["filter-count"]}>
-                      {table.entries.length} 譜面
-                    </span>
-                  </button>
-                </Dialog.Trigger>
-                <Portal>
-                  <Dialog.Backdrop />
-                  <Dialog.Positioner>
-                    <Dialog.Content className={classes["folders-dialog"]}>
-                      <div className={classes["folders-dialog-header"]}>
-                        <Dialog.Title>
-                          {advanced ? "進階篩選" : "資料夾篩選"}
-                        </Dialog.Title>
-                        <Switch
-                          checked={advanced}
-                          onCheckedChange={({ checked }) =>
-                            setAdvanced(checked)
-                          }
-                        >
-                          進階模式
-                        </Switch>
-                        <Dialog.CloseTrigger asChild>
-                          <button aria-label="關閉">
-                            <IconClose />
-                          </button>
-                        </Dialog.CloseTrigger>
-                      </div>
-                      {advanced ? (
-                        <AdvancedFilter
-                          conditions={conditions}
-                          hasEffectiveConditions={hasEffectiveConditions}
-                          showAll={showAll}
-                          onConditionsChange={setConditions}
-                          onShowAllChange={setShowAll}
-                        />
-                      ) : (
-                        <Folders
-                          entries={folderEntries}
-                          filter={filter}
-                          difficulty={folderDifficulty}
-                          onFilterChange={setFilter}
-                        />
-                      )}
-                    </Dialog.Content>
-                  </Dialog.Positioner>
-                </Portal>
-              </Dialog.Root>
-              <div className={classes["sort-control"]}>
-                <IconSortVariant className={classes["sort-icon"]} />
-                <SelectContainer
-                  label="排序"
-                  collection={collection}
-                  value={[ordering]}
-                  onValueChange={(e) =>
-                    setOrdering(
-                      e.items[0].value as
-                        | "index"
-                        | "level"
-                        | "internal_lv"
-                        | "score"
-                        | "rating"
-                        | "combo_flag"
-                        | "sync_flag",
-                    )
-                  }
-                >
-                  {collection.group().map(([type, group]) => (
-                    <Select.ItemGroup key={type}>
-                      <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
-                      {group.map((item) => (
-                        <Select.Item key={item.value} item={item}>
-                          <Select.ItemText>{item.label}</Select.ItemText>
-                        </Select.Item>
-                      ))}
-                    </Select.ItemGroup>
-                  ))}
-                </SelectContainer>
-                <Toggle.Root
-                  className={classes["sort-direction"]}
-                  pressed={orderingDesc}
-                  onPressedChange={setOrderingDesc}
-                  aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
-                  title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
-                >
-                  {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
-                  <span>{orderingDesc ? "降冪" : "升冪"}</span>
-                </Toggle.Root>
-              </div>
-              <div
-                className={`${classes["toolbar-actions"]} ${classes["hide-condensed"]}`}
-              >
-                <span className={classes["updated-at"]}>
-                  <IconUpdate />
-                  {player.updated_at != null ? (
-                    <time
-                      dateTime={player.updated_at}
-                      title={formatDateTime(new Date(player.updated_at))}
-                    >
-                      {formatRelative(new Date(player.updated_at))}更新
-                    </time>
-                  ) : (
-                    "尚未更新"
-                  )}
-                </span>
-                <button className={classes["csv-button"]} onClick={downloadCSV}>
-                  <IconFileDownload /> 下載 CSV
-                </button>
-              </div>
-            </div>
+            />
           ) : null}
         </header>
         <Tabs.Content value={activeTab} className={classes["tab-content"]}>
@@ -735,17 +404,10 @@ const Player = ({ params }: { params: Params }) => {
               ) : !scoresReady ? null : (
                 <PlayerScores
                   allEntries={scoreTable}
-                  entries={table.entries}
-                  filterTitle={filterTitle}
-                  includeInactive={includeInactive}
-                  showCover={showCover}
                   afterCircle={afterCircle}
-                  onIncludeInactiveChange={setIncludeInactive}
-                  onShowCoverChange={setShowCover}
-                  difficulty={folderDifficulty}
-                  showDifficulty={difficultyFolderActive}
-                  ratingCount={ratingCount}
-                  onDifficultyChange={handleFolderDifficultyChange}
+                  nickname={params.nickname ?? ""}
+                  updatedAt={player.updated_at}
+                  toolbarContainer={scoresToolbar}
                 />
               )}
             </Route>
