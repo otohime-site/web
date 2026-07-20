@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
+import apIcon from "../images/flags/ap.svg"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
@@ -223,13 +224,19 @@ const ChartDetail = ({
               <li
                 className={classes["ap-stop"]}
                 data-achieved={apBonus ? "" : undefined}
+                aria-label={`AP 加成 Rating：${maxRating}`}
                 title={
                   apBonus
                     ? "AP 加成：Rating 已 +1"
                     : "達成 AP / AP+ 時 Rating +1"
                 }
               >
-                <span className={classes["stop-rank"]}>AP</span>
+                <img
+                  className={classes["ap-icon"]}
+                  src={apIcon}
+                  alt=""
+                  aria-hidden="true"
+                />
                 <span className={classes["stop-rating"]}>{maxRating}</span>
               </li>
             ) : null}
