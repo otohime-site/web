@@ -187,13 +187,6 @@ const ChartDetail = ({
                 {gap.to > stops[0].rating ? `+${gap.to - gap.from}` : null}
               </span>
             ))}
-            {stops.slice(0, -1).map((stop) => (
-              <span
-                key={stop.name}
-                className={classes.tick}
-                style={{ left: `${(stop.pos * 100).toFixed(2)}%` }}
-              />
-            ))}
             {tail > 0 ? (
               <span
                 className={classes["ap-tail"]}

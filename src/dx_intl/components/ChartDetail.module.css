@@ -167,16 +167,6 @@
   background: var(--surface-2);
 }
 
-/* Border ticks, above the fill so the jumps stay visible. */
-.tick {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-  width: 1px;
-  background: var(--surface-1);
-}
-
 /* Hatched spans mark ratings skipped by coefficient jumps without
    changing the rating-linear gauge axis itself. */
 .gap {
