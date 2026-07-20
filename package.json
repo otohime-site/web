@@ -27,7 +27,7 @@
     "firebase": "^12.16.0",
     "gql.tada": "^1.11.2",
     "graphql": "^16.14.2",
-    "nuqs": "^2.9.0",
+    "nuqs": "^2.9.1",
     "open-props": "^1.7.23",
     "papaparse": "^5.5.4",
     "react": "^19.2.7",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.17.3",
-    "@eslint-react/eslint-plugin": "^5.17.1",
+    "@eslint-react/eslint-plugin": "^5.17.2",
     "@eslint/js": "^10.0.1",
     "@iconify-json/grommet-icons": "^1.2.4",
     "@iconify-json/mdi": "^1.2.3",
