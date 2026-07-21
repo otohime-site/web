@@ -83,9 +83,16 @@
     text-transform: uppercase;
     border: 0;
     box-shadow: none;
-    background: none;
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
   }
+}
+
+/* Toggle items are buttons and need their default background cleared. Radio
+   items are labels; leaving their background alone preserves Finale's
+   difficulty-specific checked state. */
+.tab-like-radio-group[data-scope="toggle-group"][data-part="root"]
+  [data-part="item"] {
+  background: none;
 }
