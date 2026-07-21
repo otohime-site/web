@@ -1,5 +1,5 @@
 import { Tabs } from "@ark-ui/react/tabs"
-import { Suspense, lazy, useCallback, useMemo, useRef, useState } from "react"
+import { Suspense, lazy, useCallback, useRef, useState } from "react"
 import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import {
@@ -18,25 +18,8 @@ import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
 import { graphql, readFragment } from "../../graphql"
 import Record from "../components/Record"
-import {
-  ESTIMATED_INTERNAL_LV,
-  ScoreTableEntry,
-  flatSongsResult,
-  getNoteHash,
-  getRating,
-} from "../models/aggregation"
-import {
-  RATING_NEW_COUNT,
-  RATING_OLD_COUNT,
-  comboFlags,
-  syncFlags,
-  versions,
-} from "../models/constants"
-import { dxIntlRecordsFields, dxIntlScoresFields } from "../models/fragments"
-import {
-  dxIntlPlayersEditableDocument,
-  dxIntlSongsDocument,
-} from "../models/queries"
+import { dxIntlRecordsFields } from "../models/fragments"
+import { dxIntlPlayersEditableDocument } from "../models/queries"
 import classes from "./Player.module.css"
 import PlayerForm from "./PlayerForm"
 import PlayerScores from "./PlayerScores"
@@ -50,8 +33,8 @@ const playerTabRoutes = {
 } as const
 type PlayerTab = keyof typeof playerTabRoutes
 
-// The record (top bar) and the scores are fetched separately so the history
-// tab doesn't block on (or transfer) the heavy score rows.
+// Keep the lightweight record query in the shared player layout. PlayerScores
+// owns the heavier song/score queries and aggregation.
 const dxIntlRecordDocument = graphql(
   `
     query dxIntlRecord($nickname: String!) {
@@ -66,18 +49,6 @@ const dxIntlRecordDocument = graphql(
   `,
   [dxIntlRecordsFields],
 )
-const dxIntlScoresDocument = graphql(
-  `
-    query dxIntlScores($nickname: String!) {
-      dx_intl_players(where: { nickname: { _eq: $nickname } }) {
-        dx_intl_scores {
-          ...dxIntlScoresFields
-        }
-      }
-    }
-  `,
-  [dxIntlScoresFields],
-)
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
   // Tab routes nested under /p/:nickname. Editing is a dialog over the
@@ -87,9 +58,6 @@ const Player = ({ params }: { params: Params }) => {
   const activeTab: PlayerTab = location.startsWith("/history")
     ? "history"
     : "scores"
-  // The score rows are heavy; only the scores tab needs them (the rating
-  // image dialog lives inside the scores page).
-  const needScores = activeTab === "scores"
   const [editableResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
@@ -99,28 +67,6 @@ const Player = ({ params }: { params: Params }) => {
     query: dxIntlRecordDocument,
     variables: { nickname: params.nickname ?? "" },
   })
-  const [scoresResult] = useQuery({
-    query: dxIntlScoresDocument,
-    variables: { nickname: params.nickname ?? "" },
-    pause: !needScores,
-  })
-  const [songsResult] = useQuery({
-    query: dxIntlSongsDocument,
-    pause: !needScores,
-  })
-  const flattedEntries = useMemo(
-    () => flatSongsResult(songsResult.data),
-    [songsResult],
-  )
-  // Used to get rating in reliable way during major version updates
-  const maxVersion = useMemo(
-    () => Math.max(...flattedEntries.map((entry) => entry.version)),
-    [flattedEntries],
-  )
-  // CiRCLE had two rating differences:
-  // * "Latest songs" will include song in recent 2 versions instead of 1.
-  // * All perfect will add 1 point to rating.
-  const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
 
   // PlayerScores owns the score-page state and portals its controls into
   // this shared sticky header.
@@ -168,77 +114,7 @@ const Player = ({ params }: { params: Params }) => {
     observer.observe(bar)
     topBarObserverRef.current = observer
   }, [])
-  const { scoreTable, noteInconsistency } = useMemo(() => {
-    if (!scoresResult.data) {
-      return { scoreTable: [], noteInconsistency: false }
-    }
-    const maxVersion = Math.max(...flattedEntries.map((entry) => entry.version))
-    const scores =
-      readFragment(
-        dxIntlScoresFields,
-        scoresResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
-      ) ?? []
-    const scoresMap = new Map(
-      scores.map((score) => [getNoteHash(score), score]),
-    )
-    const scoreTable = flattedEntries.map<ScoreTableEntry>((entry, index) => {
-      const score = scoresMap.get(entry.hash)
-      scoresMap.delete(entry.hash)
-      return {
-        index,
-        ...entry,
-        score: score?.score,
-        combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
-        sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
-        updated_at: score?.start,
-        rating_latest: afterCircle
-          ? entry.version >= maxVersion - 1
-          : entry.version == maxVersion,
-        rating: score?.score
-          ? getRating(
-              entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
-              score.score ?? 0,
-              afterCircle &&
-                (score.combo_flag === "ap" || score.combo_flag === "ap+"),
-            )
-          : 0,
-        rating_listed: false,
-        rating_used: false,
-      }
-    })
-    const oldRanks = new Map(
-      scoreTable
-        .filter((entry) => !entry.rating_latest && entry.active)
-        .sort((a, b) => b.rating - a.rating)
-        .map((entry, index) => [entry.hash, index + 1]),
-    )
-    const newRanks = new Map(
-      scoreTable
-        .filter((entry) => entry.rating_latest && entry.active)
-        .sort((a, b) => b.rating - a.rating)
-        .map((entry, index) => [entry.hash, index + 1]),
-    )
-    scoreTable.forEach((entry) => {
-      entry.old_rank = oldRanks.get(entry.hash)
-      entry.new_rank = newRanks.get(entry.hash)
-      entry.rating_listed =
-        entry.rating > 0 &&
-        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
-          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2)
-      entry.rating_used =
-        entry.rating > 0 &&
-        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT ||
-          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT)
-    })
-    // It may be inconsistent if songs are added but song list not updated
-    return { scoreTable, noteInconsistency: scoresMap.size > 0 }
-  }, [flattedEntries, scoresResult, afterCircle])
-
-  if (
-    recordResult.error != null ||
-    scoresResult.error != null ||
-    songsResult.error != null
-  ) {
+  if (recordResult.error != null) {
     return <Alert severity="error">發生錯誤，請重試。</Alert>
   }
   if (recordResult.data == null) {
@@ -252,9 +128,6 @@ const Player = ({ params }: { params: Params }) => {
   // A player without uploads has no record yet; the layout (tabs, edit)
   // still renders and the scores tab shows the explanation instead.
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
-  // The scores/songs queries are paused on the history tab and may still be
-  // in flight right after switching back.
-  const scoresReady = scoresResult.data != null && songsResult.data != null
   // While the editable query is in flight we cannot tell an owner from a
   // visitor yet, so the owner-only routes hold off their redirect.
   const ownershipPending = editableResult.fetching
@@ -265,10 +138,8 @@ const Player = ({ params }: { params: Params }) => {
   const scoresContent =
     record == null ? (
       <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
-    ) : !scoresReady ? null : (
+    ) : (
       <PlayerScores
-        allEntries={scoreTable}
-        afterCircle={afterCircle}
         nickname={params.nickname ?? ""}
         updatedAt={player.updated_at}
         toolbarContainer={scoresToolbar}
@@ -291,11 +162,6 @@ const Player = ({ params }: { params: Params }) => {
           `${record?.card_name ?? params.nickname} - maimai DX 成績單 - ${title}`
         }
       />
-      {maxVersion > versions.length - 1 || noteInconsistency ? (
-        <Alert severity="error">
-          成績單目前有同步狀況，請試圖重新整理頁面。
-        </Alert>
-      ) : null}
       <Tabs.Root
         className={classes.tabs}
         value={activeTab}
@@ -367,7 +233,7 @@ const Player = ({ params }: { params: Params }) => {
               </Tabs.List>
             </div>
           </div>
-          {activeTab === "scores" && record != null && scoresReady ? (
+          {activeTab === "scores" && record != null ? (
             <div
               ref={setScoresToolbar}
               aria-label="成績單選項"

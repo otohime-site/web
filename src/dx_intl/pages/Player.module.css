@@ -164,11 +164,12 @@
 
 .folders-trigger {
   display: flex;
+  flex: 1 1 32rem;
   height: 2.75rem;
   min-width: 0;
   align-items: center;
   gap: var(--size-1);
-  max-width: min(32rem, 100%);
+  max-width: min(40rem, 100%);
   padding: 0 var(--size-2);
   overflow: hidden;
   border-color: var(--otohime-4);

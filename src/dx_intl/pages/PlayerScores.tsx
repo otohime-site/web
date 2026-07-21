@@ -7,6 +7,7 @@ import saveAs from "file-saver"
 import { createMultiParser, createParser, useQueryStates } from "nuqs"
 import { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
+import { useQuery } from "urql"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import IconClose from "~icons/mdi/close"
@@ -21,12 +22,20 @@ import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
 import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
+import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders, { DifficultyFolders } from "../components/Folders"
 import PlayerRatingImage from "../components/PlayerRatingImage"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
-import { ScoreTableEntry, getScoreStats } from "../models/aggregation"
+import {
+  ESTIMATED_INTERNAL_LV,
+  ScoreTableEntry,
+  flatSongsResult,
+  getNoteHash,
+  getRating,
+  getScoreStats,
+} from "../models/aggregation"
 import {
   RANK_SCORES,
   RATING_NEW_COUNT,
@@ -54,6 +63,8 @@ import {
   isEffectiveCondition,
   valueOptions,
 } from "../models/filter"
+import { dxIntlScoresFields } from "../models/fragments"
+import { dxIntlSongsDocument } from "../models/queries"
 import playerClasses from "./Player.module.css"
 import classes from "./PlayerScores.module.css"
 
@@ -82,6 +93,19 @@ type Ordering =
   | "sss_rate"
   | "fc_rate"
   | "ap_rate"
+
+const dxIntlScoresDocument = graphql(
+  `
+    query dxIntlScores($nickname: String!) {
+      dx_intl_players(where: { nickname: { _eq: $nickname } }) {
+        dx_intl_scores {
+          ...dxIntlScoresFields
+        }
+      }
+    }
+  `,
+  [dxIntlScoresFields],
+)
 
 const DEFAULT_FOLDER: FolderQuery = "rating-new"
 const DEFAULT_FOLDER_DIFFICULTY = difficulties.indexOf("Expert")
@@ -349,8 +373,6 @@ interface RatingImageInfo {
 }
 
 interface PlayerScoresProps {
-  allEntries: ScoreTableEntry[]
-  afterCircle: boolean
   nickname: string
   updatedAt?: string | null
   toolbarContainer: HTMLDivElement | null
@@ -361,14 +383,95 @@ interface PlayerScoresProps {
 }
 
 const PlayerScores = memo(function PlayerScores({
-  allEntries,
-  afterCircle,
   nickname,
   updatedAt,
   toolbarContainer,
   ownsScoreTable,
   ratingImage,
 }: PlayerScoresProps) {
+  const [scoresResult] = useQuery({
+    query: dxIntlScoresDocument,
+    variables: { nickname },
+  })
+  const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const flattedEntries = useMemo(
+    () => flatSongsResult(songsResult.data),
+    [songsResult],
+  )
+  // Used to get rating in a reliable way during major version updates.
+  const maxVersion = useMemo(
+    () => Math.max(...flattedEntries.map((entry) => entry.version)),
+    [flattedEntries],
+  )
+  // CiRCLE had two rating differences:
+  // * "Latest songs" includes songs from the most recent two versions.
+  // * All Perfect adds 1 point to Rating.
+  const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
+  const { scoreTable: allEntries, noteInconsistency } = useMemo(() => {
+    if (scoresResult.data == null) {
+      return { scoreTable: [], noteInconsistency: false }
+    }
+    const scores =
+      readFragment(
+        dxIntlScoresFields,
+        scoresResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
+      ) ?? []
+    const scoresMap = new Map(
+      scores.map((score) => [getNoteHash(score), score]),
+    )
+    const scoreTable = flattedEntries.map<ScoreTableEntry>((entry, index) => {
+      const score = scoresMap.get(entry.hash)
+      scoresMap.delete(entry.hash)
+      return {
+        index,
+        ...entry,
+        score: score?.score,
+        combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
+        sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
+        updated_at: score?.start,
+        rating_latest: afterCircle
+          ? entry.version >= maxVersion - 1
+          : entry.version === maxVersion,
+        rating: score?.score
+          ? getRating(
+              entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level],
+              score.score,
+              afterCircle &&
+                (score.combo_flag === "ap" || score.combo_flag === "ap+"),
+            )
+          : 0,
+        rating_listed: false,
+        rating_used: false,
+      }
+    })
+    const oldRanks = new Map(
+      scoreTable
+        .filter((entry) => !entry.rating_latest && entry.active)
+        .sort((a, b) => b.rating - a.rating)
+        .map((entry, index) => [entry.hash, index + 1]),
+    )
+    const newRanks = new Map(
+      scoreTable
+        .filter((entry) => entry.rating_latest && entry.active)
+        .sort((a, b) => b.rating - a.rating)
+        .map((entry, index) => [entry.hash, index + 1]),
+    )
+    scoreTable.forEach((entry) => {
+      entry.old_rank = oldRanks.get(entry.hash)
+      entry.new_rank = newRanks.get(entry.hash)
+      entry.rating_listed =
+        entry.rating > 0 &&
+        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT * 2 ||
+          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT * 2)
+      entry.rating_used =
+        entry.rating > 0 &&
+        ((entry.new_rank ?? Infinity) <= RATING_NEW_COUNT ||
+          (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT)
+    })
+    // Remaining scores indicate that the score and song data are out of sync.
+    return { scoreTable, noteInconsistency: scoresMap.size > 0 }
+  }, [afterCircle, flattedEntries, maxVersion, scoresResult.data])
+
   const [scoreQuery, setScoreQuery] = useQueryStates(scoreQueryParsers)
   const { folder, filter: conditions, difficulty: difficultyQuery } = scoreQuery
   const advanced = folder === "filters" || folder === "all"
@@ -403,6 +506,9 @@ const PlayerScores = memo(function PlayerScores({
       ? RATING_NEW_COUNT
       : RATING_OLD_COUNT
     : null
+  const latestRatingVersions = [maxVersion - 1, maxVersion].map(
+    (version) => versions[version] ?? `版本 ${version}`,
+  )
   const difficultyFolderActive =
     !advanced && (filter.category.length > 0 || filter.version.length > 0)
 
@@ -473,6 +579,10 @@ const PlayerScores = memo(function PlayerScores({
         ? getConditionsTitle(conditions)
         : "未指定條件"
     : getFilterTitle(filter)
+  const folderButtonTitle =
+    filter.rating_latest == null
+      ? filterTitle
+      : `Rating 組成 (${filter.rating_latest ? "新曲" : "舊曲"})`
   const statsUseAllSongs = showAll || allSongs
   const statsEntries = useMemo(
     () =>
@@ -582,6 +692,13 @@ const PlayerScores = memo(function PlayerScores({
     )
   }, [allEntries, nickname, updatedAt])
 
+  if (scoresResult.error != null || songsResult.error != null) {
+    return <Alert severity="error">發生錯誤，請重試。</Alert>
+  }
+  if (scoresResult.data == null || songsResult.data == null) {
+    return null
+  }
+
   const toolbar = (
     <>
       <Dialog.Root lazyMount unmountOnExit>
@@ -591,12 +708,15 @@ const PlayerScores = memo(function PlayerScores({
             <span className={playerClasses["filter-label"]}>篩選</span>
             <span
               className={playerClasses["filter-summary"]}
-              title={filterTitle}
+              title={folderButtonTitle}
             >
-              {filterTitle}
+              {folderButtonTitle}
             </span>
-            <span className={playerClasses["filter-count"]}>
-              {table.entries.length} 譜面
+            <span
+              className={playerClasses["filter-count"]}
+              title={`${table.entries.length} 譜面`}
+            >
+              {table.entries.length}
             </span>
           </button>
         </Dialog.Trigger>
@@ -642,38 +762,40 @@ const PlayerScores = memo(function PlayerScores({
           </Dialog.Positioner>
         </Portal>
       </Dialog.Root>
-      <div className={playerClasses["sort-control"]}>
-        <IconSortVariant className={playerClasses["sort-icon"]} />
-        <SelectContainer
-          label="排序"
-          collection={orderingCollection}
-          value={[ordering]}
-          onValueChange={(event) =>
-            setOrdering(event.items[0].value as Ordering)
-          }
-        >
-          {orderingCollection.group().map(([type, group]) => (
-            <Select.ItemGroup key={type}>
-              <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
-              {group.map((item) => (
-                <Select.Item key={item.value} item={item}>
-                  <Select.ItemText>{item.label}</Select.ItemText>
-                </Select.Item>
-              ))}
-            </Select.ItemGroup>
-          ))}
-        </SelectContainer>
-        <Toggle.Root
-          className={playerClasses["sort-direction"]}
-          pressed={orderingDesc}
-          onPressedChange={setOrderingDesc}
-          aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
-          title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
-        >
-          {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
-          <span>{orderingDesc ? "降冪" : "升冪"}</span>
-        </Toggle.Root>
-      </div>
+      {!ratingFolder ? (
+        <div className={playerClasses["sort-control"]}>
+          <IconSortVariant className={playerClasses["sort-icon"]} />
+          <SelectContainer
+            label="排序"
+            collection={orderingCollection}
+            value={[ordering]}
+            onValueChange={(event) =>
+              setOrdering(event.items[0].value as Ordering)
+            }
+          >
+            {orderingCollection.group().map(([type, group]) => (
+              <Select.ItemGroup key={type}>
+                <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
+                {group.map((item) => (
+                  <Select.Item key={item.value} item={item}>
+                    <Select.ItemText>{item.label}</Select.ItemText>
+                  </Select.Item>
+                ))}
+              </Select.ItemGroup>
+            ))}
+          </SelectContainer>
+          <Toggle.Root
+            className={playerClasses["sort-direction"]}
+            pressed={orderingDesc}
+            onPressedChange={setOrderingDesc}
+            aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
+            title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
+          >
+            {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
+            <span>{orderingDesc ? "降冪" : "升冪"}</span>
+          </Toggle.Root>
+        </div>
+      ) : null}
       <div
         className={`${playerClasses["toolbar-actions"]} ${playerClasses["hide-condensed"]}`}
       >
@@ -704,6 +826,11 @@ const PlayerScores = memo(function PlayerScores({
 
   return (
     <>
+      {maxVersion > versions.length - 1 || noteInconsistency ? (
+        <Alert severity="error">
+          成績單目前有同步狀況，請試圖重新整理頁面。
+        </Alert>
+      ) : null}
       {toolbarContainer == null
         ? null
         : createPortal(toolbar, toolbarContainer)}
@@ -758,7 +885,7 @@ const PlayerScores = memo(function PlayerScores({
               className={classes["rating-notice"]}
             >
               <Alert severity="info">
-                採計前 {ratingCount} / 顯示前 {ratingCount * 2}
+                {`採計前 ${ratingCount} / 顯示前 ${ratingCount * 2}；「新曲」為近兩代曲目（${latestRatingVersions.join("、")}）`}
               </Alert>
             </section>
           ) : null}
