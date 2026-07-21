@@ -3,6 +3,8 @@
 @import "./theme.css";
 
 :root {
+  /* Inherited by native checkboxes, radios, ranges, and progress controls. */
+  accent-color: var(--accent-color);
   /* Height of the sticky app header (.top in App.module.css). Sticky
      elements offset below it and the player top-bar sentinel reads it. */
   --app-header-height: 48px;
@@ -52,11 +54,11 @@ input {
 .btn,
 button,
 input:is([type="button"], [type="submit"], [type="reset"]) {
-  --_accent: var(--otohime-8);
+  --_accent: var(--accent-color);
   --_text: var(--otohime-9);
   --_border: var(--otohime-2);
   @media (prefers-color-scheme: dark) {
-    --_accent: var(--otohime-3);
+    --_accent: var(--accent-color);
     --_text: var(--otohime-1);
     --_border: var(--otohime-10);
     --_bg-dark: color-mix(in oklab, var(--surface-3), var(--otohime-11) 35%);

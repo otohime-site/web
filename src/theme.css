@@ -27,12 +27,15 @@
 
 /* Re-point open-props normalize semantic hooks at the brand scale. */
 :root {
-  --link: var(--otohime-8);
+  /* Shared brand accent for components and native form controls. */
+  --accent-color: var(--otohime-8);
+  --link: var(--accent-color);
   --link-visited: var(--otohime-10);
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --link: var(--otohime-3);
+    --accent-color: var(--otohime-3);
+    --link: var(--accent-color);
     --link-visited: var(--otohime-5);
   }
 }

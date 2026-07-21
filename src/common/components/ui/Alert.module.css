@@ -1,40 +1,76 @@
 .alert {
+  --alert-accent: var(--accent-color);
+  --alert-background: color-mix(
+    in oklab,
+    var(--alert-accent) 8%,
+    var(--surface-1)
+  );
+  --alert-border: color-mix(
+    in oklab,
+    var(--alert-accent) 42%,
+    var(--surface-3)
+  );
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--size-2);
   margin: var(--size-2) 0;
-  padding: var(--size-2);
-  border-width: var(--border-size-1);
+  padding: var(--size-3);
+  border: var(--border-size-1) solid var(--alert-border);
+  border-inline-start: 3px solid var(--alert-accent);
   border-radius: var(--radius-2);
+  background: var(--alert-background);
+  color: var(--text-1);
 }
 
 .alert[data-severity="info"] {
-  border-color: var(--blue-3);
-  background: var(--blue-1);
-  color: var(--blue-11);
+  --alert-accent: var(--blue-8);
 }
 .alert[data-severity="error"] {
-  border-color: var(--red-3);
-  background: var(--red-1);
-  color: var(--red-11);
+  --alert-accent: var(--red-8);
 }
 .alert[data-severity="warning"] {
-  border-color: var(--yellow-3);
-  background: var(--yellow-1);
-  color: var(--yellow-11);
+  --alert-accent: var(--orange-8);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-round);
+  background: color-mix(in oklab, var(--alert-accent) 14%, var(--surface-1));
+  color: var(--alert-accent);
+
+  & > svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.content {
+  min-width: 0;
+  padding-block: 0.2rem;
+  line-height: var(--font-lineheight-3);
+
+  & > :where(:first-child) {
+    margin-block-start: 0;
+  }
+
+  & > :where(:last-child) {
+    margin-block-end: 0;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   .alert[data-severity="info"] {
-    border-color: var(--blue-12);
-    background: var(--blue-10);
-    color: var(--blue-1);
+    --alert-accent: var(--blue-4);
   }
   .alert[data-severity="error"] {
-    border-color: var(--red-10);
-    background: var(--red-12);
-    color: var(--red-1);
+    --alert-accent: var(--red-4);
   }
   .alert[data-severity="warning"] {
-    border-color: var(--yellow-10);
-    background: var(--yellow-12);
-    color: var(--yellow-1);
+    --alert-accent: var(--orange-4);
   }
 }
