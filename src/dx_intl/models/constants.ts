@@ -39,6 +39,7 @@ export const versions = [
   "PRiSM",
   "PRiSM PLUS",
   "CiRCLE",
+  "CiRCLE PLUS",
 ] as const
 
 export const levels = [
