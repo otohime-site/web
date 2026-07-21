@@ -47,6 +47,9 @@ importers:
       graphql:
         specifier: ^16.14.2
         version: 16.14.2
+      konva:
+        specifier: ^10.2.3
+        version: 10.2.3
       nuqs:
         specifier: ^2.9.1
         version: 2.9.1(react@19.2.7)

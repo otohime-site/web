@@ -1,3 +1,4 @@
+import Konva from "konva"
 import { memo, useEffect, useMemo, useState } from "react"
 import {
   Group,
@@ -25,6 +26,11 @@ import { ScoreTableEntry, getCoverUrl } from "../models/aggregation"
 import { RATING_NEW_COUNT, RATING_OLD_COUNT } from "../models/constants"
 import { classRankImages, courseRankImages } from "./Ranks"
 import { getRatingImage } from "./Rating"
+
+// This stage is already sized at the intended export resolution. Letting Konva
+// apply the device pixel ratio would turn it into a 6300x11250 backing canvas on
+// a 3x iPhone, which exceeds iOS Safari's canvas memory budget.
+Konva.pixelRatio = 1
 
 // Concrete colors for difficulty accents (Konva can't read CSS variables).
 const difficultyColors = [
