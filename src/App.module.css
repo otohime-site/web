@@ -8,10 +8,22 @@
   position: sticky;
   top: 0;
   background: var(--otohime-0);
+  /* The search field keeps its width where there is room but shrinks on
+     narrow screens instead of forcing overflow; the .space spacer does the
+     growing so UserBox stays at the right edge. */
+  [data-scope="field"][data-part="root"] {
+    flex: 0 1 24rem;
+    min-width: 0;
+  }
   [data-scope="combobox"][data-part="root"] {
     padding-left: var(--size-4);
   }
+  [data-scope="combobox"][data-part="control"] {
+    display: flex;
+  }
   [data-scope="combobox"][data-part="input"] {
+    min-width: 0;
+    flex: 1 1 auto;
     background-color: var(--otohime-1);
     color: var(--otohime-6);
     &::placeholder {
@@ -19,8 +31,9 @@
       opacity: 0.9;
     }
   }
+  /* Absorbs the leftover room so UserBox stays pinned to the right edge. */
   .space {
-    flex: 1;
+    flex: 1 1 var(--size-4);
   }
   @media (prefers-color-scheme: dark) {
     background: var(--otohime-12);
@@ -36,12 +49,13 @@
 @media (max-width: 960px) {
   .top {
     padding: 0.25rem;
+    gap: 0.25rem;
     text-wrap: nowrap;
-    input {
-      width: 10rem;
+    [data-scope="combobox"][data-part="root"] {
+      padding-left: var(--size-2);
     }
     .nav {
-      margin-left: 0.75rem;
+      margin-left: 0;
     }
   }
 

@@ -33,7 +33,7 @@ input {
   max-width: initial;
 }
 
-:where(p, li) {
+:where(p, li, small) {
   max-width: initial;
 }
 

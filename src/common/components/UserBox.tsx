@@ -1,20 +1,15 @@
-import { Dialog } from "@ark-ui/react/dialog"
 import { Popover } from "@ark-ui/react/popover"
-import { Portal } from "@ark-ui/react/portal"
-import clsx from "clsx"
 import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   signOut,
 } from "firebase/auth"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import { navigate } from "wouter/use-browser-location"
-import MdiCloudDownloadOutline from "~icons/mdi/cloud-download-outline"
 import IconGoogle from "~icons/mdi/google"
 import { firebaseAuth, useUser } from "../contexts"
 
-import Token from "./Token"
 import { Alert } from "./ui/Alert"
 import { Avatar } from "./ui/Avatar"
 import { Menu } from "./ui/Menu"
@@ -28,7 +23,6 @@ const isInAppBrowser = (agent: string): boolean =>
 
 const UserBoxComponent = () => {
   const user = useUser()
-  const [tokenDialogOpen, setTokenDialogOpen] = useState(false)
 
   const performLogin = async (provider: GoogleAuthProvider) => {
     try {
@@ -65,32 +59,6 @@ const UserBoxComponent = () => {
         .find((pd) => pd.providerId !== "facebook.com") ?? user
     return (
       <div className={classes["user-box"]}>
-        <button
-          className={clsx("accent", classes["token-button"])}
-          onClick={() => setTokenDialogOpen(true)}
-        >
-          <MdiCloudDownloadOutline />
-          <span>取得更新連結</span>
-        </button>
-        <Dialog.Root
-          lazyMount
-          unmountOnExit
-          open={tokenDialogOpen}
-          onOpenChange={(e) => setTokenDialogOpen(e.open)}
-        >
-          <Portal>
-            <Dialog.Backdrop />
-            <Dialog.Positioner>
-              <Dialog.Content className={classes["token-dialog"]}>
-                <Dialog.Title>取得更新連結</Dialog.Title>
-                <Token onNavigate={() => setTokenDialogOpen(false)} />
-                <Dialog.CloseTrigger asChild>
-                  <button>關閉</button>
-                </Dialog.CloseTrigger>
-              </Dialog.Content>
-            </Dialog.Positioner>
-          </Portal>
-        </Dialog.Root>
         <Menu
           trigger={
             <Avatar

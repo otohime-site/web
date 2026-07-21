@@ -1,5 +1,6 @@
 import { Titled } from "react-titled"
 import DxUserPlayers from "../../dx_intl/components/UserPlayers"
+import Token from "../components/Token"
 import { LinkButton } from "../components/ui/Button"
 import { useUser } from "../contexts"
 
@@ -55,7 +56,7 @@ const HomeComponent = () => {
               點上方的「取得更新連結」，照著說明把 Bookmarklet 加入瀏覽器書籤。
             </li>
             <li>
-              之後每次打完機台，登入官方成績單網站、點一下書籤，成績就會同步到
+              之後每次打完機台，登入官方 DXNET、點一下書籤，成績就會同步到
               Otohime。
             </li>
           </ol>
@@ -70,13 +71,9 @@ const HomeComponent = () => {
         <h4>我的成績單</h4>
         <DxUserPlayers />
       </article>
-      <aside className={classes["my-tips"]}>
-        <h6>小提醒</h6>
-        <ul>
-          <li>點右上角的「取得更新連結」設定 Bookmarklet，隨時同步成績。</li>
-          <li>設為公開的成績單會納入玩家統計，也可以分享給朋友。</li>
-          <li>帳號轉移與刪除帳號請到頭像選單中的「設定」。</li>
-        </ul>
+      <aside className={classes["update-link"]}>
+        <h4>更新書籤</h4>
+        <Token />
       </aside>
     </div>
   )

@@ -116,3 +116,13 @@
     }
   }
 }
+
+.update-link {
+  border: var(--border-size-1) solid var(--surface-3);
+  border-radius: var(--radius-3);
+  padding: var(--size-4);
+  h4 {
+    font-size: var(--font-size-3);
+    margin-bottom: var(--size-3);
+  }
+}

@@ -1,18 +1,42 @@
 .body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-3);
+
   p {
-    margin-block: var(--size-2);
+    margin: 0;
   }
-  ul {
-    margin-block: var(--size-1);
-    padding-inline-start: var(--size-6);
-    li {
-      margin-block: var(--size-1);
-    }
+}
+
+/* The install step: intro line, the prominent action, then a muted hint. */
+.install {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-2);
+  padding: var(--size-4);
+  border-radius: var(--radius-3);
+  background: var(--surface-2);
+}
+
+/* The desktop drag target reads as draggable, not merely clickable. */
+.drag-link {
+  cursor: grab;
+}
+
+/* Slightly tinted so it reads as a note without shouting like an Alert. */
+.hint {
+  color: var(--yellow-11);
+  font-size: var(--font-size-1);
+  line-height: 1.5;
+
+  a {
+    color: inherit;
+    font-weight: var(--font-weight-6);
   }
-  h6 {
-    margin-top: var(--size-4);
-    padding-top: var(--size-3);
-    border-top: var(--border-size-1) solid var(--surface-3);
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--yellow-4);
   }
 }
 
@@ -21,4 +45,132 @@
   font-family: var(--font-mono);
   font-size: var(--font-size-0);
   resize: vertical;
+}
+
+.raw {
+  summary {
+    cursor: pointer;
+    color: var(--text-2);
+    font-size: var(--font-size-0);
+  }
+
+  .content {
+    margin-top: var(--size-2);
+  }
+}
+
+/* De-emphasized destructive action, aligned to the start. */
+.regenerate {
+  align-self: flex-start;
+}
+
+.howto-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+  width: min(28rem, 100%);
+}
+
+/* Lightweight inline confirmation instead of a full bordered Alert. */
+.copied {
+  display: flex;
+  align-items: center;
+  gap: var(--size-1);
+  margin: 0;
+  color: var(--green-9);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-6);
+
+  > svg {
+    flex: 0 0 auto;
+    font-size: var(--font-size-3);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--green-5);
+  }
+}
+
+.howto-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+
+  h5 {
+    margin: 0;
+    color: var(--otohime-8);
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-7);
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    margin: 0;
+    font-size: var(--font-size-1);
+    line-height: 1.6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    h5 {
+      color: var(--otohime-4);
+    }
+  }
+}
+
+/* Numbered steps: a badge marker beside a text column (main + muted sub-line). */
+.howto-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-3);
+
+  li {
+    counter-increment: step;
+    display: flex;
+    gap: var(--size-2);
+  }
+
+  li::before {
+    content: counter(step);
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-round);
+    background: var(--gray-5);
+    color: var(--gray-0);
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-7);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Text column fills the rest; min-width:0 lets long lines wrap normally. */
+  li > div {
+    min-width: 0;
+    flex: 1;
+  }
+
+  span {
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-6);
+  }
+
+  small {
+    display: block;
+    color: var(--text-2);
+    font-size: var(--font-size-1);
+    line-height: 1.5;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    li::before {
+      background: var(--gray-6);
+      color: var(--gray-12);
+    }
+  }
 }
