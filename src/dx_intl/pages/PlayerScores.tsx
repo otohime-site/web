@@ -846,6 +846,16 @@ const PlayerScores = memo(function PlayerScores({
           isPrivate={ratingImage.isPrivate}
           courseRank={ratingImage.courseRank}
           classRank={ratingImage.classRank}
+          updatedDate={
+            updatedAt != null
+              ? new Date(updatedAt).toISOString().split("T")[0]
+              : undefined
+          }
+          maxVersion={
+            Number.isFinite(maxVersion)
+              ? (versions[maxVersion] ?? `版本 ${maxVersion}`)
+              : undefined
+          }
         />
       ) : null}
       <div

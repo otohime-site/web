@@ -21,12 +21,7 @@ import fspFlagUrl from "../images/flags/fsp.svg"
 import sFlagUrl from "../images/flags/s.svg"
 import dxVariantUrl from "../images/variants/dx.svg"
 import stdVariantUrl from "../images/variants/std.svg"
-import {
-  ESTIMATED_INTERNAL_LV,
-  ScoreTableEntry,
-  getCoverUrl,
-  getRating,
-} from "../models/aggregation"
+import { ScoreTableEntry, getCoverUrl } from "../models/aggregation"
 import { RATING_NEW_COUNT, RATING_OLD_COUNT } from "../models/constants"
 import { classRankImages, courseRankImages } from "./Ranks"
 import { getRatingImage } from "./Rating"
@@ -67,8 +62,10 @@ const syncFlagImages: string[] = [
 // the layout math in the component.
 const WIDTH = 2100
 const HEIGHT = 3750
-const HEADER_HEIGHT = 600
-const FOOTER_HEIGHT = 100
+// The smaller record header frees 100px for a roomier footer while preserving
+// the existing content band—and therefore all song-card dimensions.
+const HEADER_HEIGHT = 500
+const FOOTER_HEIGHT = 260
 const PADDING = 64
 const COLUMNS = 5
 const TILE_GAP = 20
@@ -99,14 +96,22 @@ const BLOCK_RADIUS = 20
 // Concrete equivalent of --otohime-0. Keeping this fixed makes exported images
 // use the light brand canvas even when the browser is in dark mode.
 const BG_COLOR = "oklch(98.2% 0.012 340)"
-const RANK_GAP = 16
 
 // The QR code lives in the header's top-right corner with the score URL above
 // it and the site logo badged in its center. Sized generously for the larger
 // canvas so it stays scannable at export resolution.
 const QR_SIZE = 240
-const CORNER_URL_HEIGHT = 40
+const CORNER_URL_HEIGHT = 56
 const LOGO_BADGE = 60
+
+// The browser record is based on the app's 14px root font. Header elements in
+// this full-resolution export use the same CSS em measurements at 3x. Since the
+// dialog previews the canvas at 25%, they appear at 75% of the browser size.
+const HEADER_EXPORT_SCALE = 3
+const BROWSER_ROOT_EM = 14
+const HEADER_EM = BROWSER_ROOT_EM * HEADER_EXPORT_SCALE
+// Footer branding keeps its original export scale independently of the record.
+const FOOTER_EM = BROWSER_ROOT_EM * 4
 
 // Load an image element for use in Konva, requesting CORS so the resulting
 // canvas stays exportable (covers are served from Cloudflare R2 / covers.otohi.me).
@@ -126,7 +131,7 @@ const useImage = (url: string): HTMLImageElement | undefined => {
 // Mirror of <Rating>: an SVG plate chosen by rating tier, with the number
 // overlaid in gold right-aligned text. The plate art is 296x86; sizes below
 // are derived from Rating.module.css where 1em maps to PLATE_EM px.
-const PLATE_EM = 46
+const PLATE_EM = HEADER_EM
 const PLATE_WIDTH = 7.56 * PLATE_EM
 const PLATE_HEIGHT = 2.2 * PLATE_EM
 
@@ -149,7 +154,7 @@ const RatingPlate = ({
       ) : null}
       <Text
         x={0}
-        y={0.6 * PLATE_EM}
+        y={0.5 * PLATE_EM}
         width={PLATE_WIDTH - 0.4 * PLATE_EM}
         align="right"
         text={`${rating}`}
@@ -264,23 +269,27 @@ const TitlePlate = ({
   height: number
 }) => {
   const style = trophyStyles[trophy]
-  const radius = height * 0.28
+  // Width may flex-shrink around rank badges in the browser, but its font and
+  // vertical measurements continue to use the unchanged root em.
+  const em = HEADER_EM
+  const radius = em * 0.4
   return (
     <Group x={x} y={y}>
       {/* Drop shadow sits just below the plate. */}
       <Rect
-        y={height * 0.14}
+        y={em * 0.2}
         width={width}
         height={height}
         cornerRadius={radius}
         fill={style.shadow}
+        opacity={0.72}
       />
       <Rect
         width={width}
         height={height}
         cornerRadius={radius}
         stroke={style.border}
-        strokeWidth={height * 0.07}
+        strokeWidth={em * 0.1}
         fillLinearGradientStartPoint={{ x: 0, y: 0 }}
         fillLinearGradientEndPoint={
           trophy === "rainbow" ? { x: width, y: 0 } : { x: 0, y: height }
@@ -299,13 +308,15 @@ const TitlePlate = ({
         align="center"
         verticalAlign="middle"
         text={title}
-        fontSize={height * 0.5}
+        fontSize={em}
         fontStyle="700"
         fontFamily="M PLUS Rounded 1c"
         fill="#ffffff"
         stroke="#000000"
-        strokeWidth={height * 0.045}
+        strokeWidth={em * 0.1}
         fillAfterStrokeEnabled={true}
+        shadowColor="#666666"
+        shadowOffset={{ x: em * 0.06, y: em * 0.06 }}
         wrap="none"
         ellipsis={true}
       />
@@ -369,16 +380,13 @@ const QrCode = ({ url, x, y }: { url: string; x: number; y: number }) => {
 // One chart rendered as a cover-backed block: the square cover art is
 // center-cropped to fill the landscape block, with a difficulty-tinted scrim at
 // the top (variant + difficulty on the left, rating score on the right) and
-// bottom (song title, level, and a rating progress bar), plus a
-// difficulty-colored frame.
+// bottom (song title, score, flags, and rating), plus a difficulty-colored
+// frame.
 const TITLE_BAND_H = Math.round(BLOCK_H * 0.4)
 const SCORE_BAND_H = Math.round(BLOCK_H * 0.44)
 // The variant badge SVGs are 2:1; drawn at the top-left header height.
 const HEADER_FONT = Math.round(BLOCK_H * 0.07)
-const VARIANT_H = Math.round(HEADER_FONT * 1.15)
-// A thin white progress bar showing this chart's rating against the theoretical
-// max for its internal level (SSS+/AP at 101%).
-const BAR_H = Math.max(3, Math.round(BLOCK_H * 0.02))
+const VARIANT_H = Math.round(HEADER_FONT * 2.3)
 // Combo / sync flag badges on the score line; the source SVGs are square.
 const FLAG_SIZE = Math.round(BLOCK_H * 0.13)
 
@@ -417,19 +425,18 @@ const ChartBlock = ({
   const isReMaster = entry.difficulty === REMASTER_DIFFICULTY
   const scrimTint = isReMaster ? "#e6a8ff" : accent
   const level = entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level
-  // Max rating this chart can yield: SSS+/AP (101%) at its internal level. When
-  // the exact internal level is unknown, fall back to the estimated one for the
-  // displayed level so the bar stays meaningful; guard against a zero denominator.
-  const effectiveLv =
-    entry.internal_lv ?? ESTIMATED_INTERNAL_LV[entry.level] ?? 0
-  const maxRating = effectiveLv > 0 ? getRating(effectiveLv, 101, true) : 0
-  const progress = maxRating > 0 ? Math.min(1, entry.rating / maxRating) : 0
   const pad = Math.round(BLOCK_W * 0.03)
-  // Bottom band: two lines above the progress bar. Line 2 (score % + rating)
-  // sits just above the bar; line 1 (title + flags) sits above line 2.
+  // Bottom band: a full-width title above evenly spaced score, flags, and
+  // rating. The final line sits against the bottom padding.
   const BOTTOM_LINE2_H = Math.round(BLOCK_H * 0.16)
-  const BOTTOM_LINE2_Y = BLOCK_H - BAR_H - pad - BOTTOM_LINE2_H
+  const BOTTOM_LINE2_Y = BLOCK_H - pad - BOTTOM_LINE2_H
   const BOTTOM_LINE1_Y = BOTTOM_LINE2_Y - FLAG_SIZE - Math.round(BLOCK_H * 0.02)
+  const RATING_VALUE_W = Math.round(BLOCK_W * 0.24)
+  const FLAG_GAP = 4
+  const ITEM_GAP = 10
+  const RATING_X = BLOCK_W - pad - RATING_VALUE_W
+  const FLAGS_X = RATING_X - ITEM_GAP - FLAG_SIZE * 2 - FLAG_GAP
+  const FLAGS_Y = BOTTOM_LINE2_Y + (BOTTOM_LINE2_H - FLAG_SIZE) / 2
   return (
     <Group x={x} y={y}>
       {/* Cover art (center-cropped) or a placeholder, clipped to the block. */}
@@ -466,7 +473,7 @@ const ChartBlock = ({
         cornerRadius={[BLOCK_RADIUS, BLOCK_RADIUS, 0, 0]}
         fillLinearGradientStartPoint={{ x: 0, y: 0 }}
         fillLinearGradientEndPoint={{ x: 0, y: TITLE_BAND_H }}
-        fillLinearGradientColorStops={[0, "#000000d8", 1, "#00000000"]}
+        fillLinearGradientColorStops={[0, "#000000b8", 1, "#00000000"]}
       />
       {/* Bottom scrim behind the title/level, tinted with the difficulty accent. */}
       <Rect
@@ -516,43 +523,27 @@ const ChartBlock = ({
         fillAfterStrokeEnabled={true}
       />
 
-      {/* Bottom band, two lines stacked above the progress bar:
-          line 1 — song title (left) + combo/sync flags (right);
-          line 2 — score % (left) + rating (right). */}
-      {/* Line 1: title (left) + flags (right). */}
+      {/* Bottom band: a larger song title, then score · flags · rating. */}
       <Text
         x={pad}
         y={BOTTOM_LINE1_Y}
-        width={BLOCK_W - pad * 2 - FLAG_SIZE * 2 - 12}
+        width={BLOCK_W - pad * 2}
         height={FLAG_SIZE}
         verticalAlign="middle"
         text={entry.title}
-        fontSize={Math.round(BLOCK_H * 0.11)}
+        fontSize={Math.round(BLOCK_H * 0.13)}
         fontStyle="700"
         fontFamily="M PLUS 2"
         fill="#ffffff"
         wrap="none"
         ellipsis={true}
       />
-      <KonvaImage
-        image={comboFlag}
-        x={BLOCK_W - pad - FLAG_SIZE * 2 - 6}
-        y={BOTTOM_LINE1_Y}
-        width={FLAG_SIZE}
-        height={FLAG_SIZE}
-      />
-      <KonvaImage
-        image={syncFlag}
-        x={BLOCK_W - pad - FLAG_SIZE}
-        y={BOTTOM_LINE1_Y}
-        width={FLAG_SIZE}
-        height={FLAG_SIZE}
-      />
 
-      {/* Line 2: score % (left) + rating (right). */}
+      {/* Final line: score (left), combo/sync flags, and rating (right). */}
       <Text
         x={pad}
         y={BOTTOM_LINE2_Y}
+        width={FLAGS_X - pad - ITEM_GAP}
         height={BOTTOM_LINE2_H}
         verticalAlign="middle"
         text={entry.score ? `${entry.score.toFixed(4)}%` : "―"}
@@ -560,40 +551,39 @@ const ChartBlock = ({
         fontStyle="bold"
         fontFamily="M PLUS 2"
         fill="#ffffff"
+        wrap="none"
+        ellipsis={true}
+      />
+      <KonvaImage
+        image={comboFlag}
+        x={FLAGS_X}
+        y={FLAGS_Y}
+        width={FLAG_SIZE}
+        height={FLAG_SIZE}
+      />
+      <KonvaImage
+        image={syncFlag}
+        x={FLAGS_X + FLAG_SIZE + FLAG_GAP}
+        y={FLAGS_Y}
+        width={FLAG_SIZE}
+        height={FLAG_SIZE}
       />
       <Text
-        x={0}
+        x={RATING_X}
         y={BOTTOM_LINE2_Y}
-        width={BLOCK_W - pad}
+        width={RATING_VALUE_W}
         height={BOTTOM_LINE2_H}
         align="right"
         verticalAlign="middle"
         text={`${entry.rating}`}
-        fontSize={BOTTOM_LINE2_H}
+        fontSize={Math.round(BLOCK_H * 0.14)}
         fontStyle="bold"
         fontFamily="M PLUS 2"
         fill="#ffffff"
         stroke="#00000070"
         strokeWidth={Math.round(BLOCK_H * 0.009)}
         fillAfterStrokeEnabled={true}
-      />
-
-      {/* Rating progress bar along the bottom edge. */}
-      <Rect
-        x={pad}
-        y={BLOCK_H - BAR_H - pad}
-        width={BLOCK_W - pad * 2}
-        height={BAR_H}
-        cornerRadius={BAR_H / 2}
-        fill="#00000070"
-      />
-      <Rect
-        x={pad}
-        y={BLOCK_H - BAR_H - pad}
-        width={(BLOCK_W - pad * 2) * progress}
-        height={BAR_H}
-        cornerRadius={BAR_H / 2}
-        fill="#ffffff"
+        wrap="none"
       />
     </Group>
   )
@@ -609,16 +599,45 @@ const Section = ({
   y: number
 }) => {
   const total = entries.reduce((sum, e) => sum + e.rating, 0)
+  const average = entries.length > 0 ? total / entries.length : 0
   return (
     <Group y={y}>
-      <Text
+      {/* A small Otohime-colored flourish gives each section a clear visual
+          start without competing with the difficulty colors below it. */}
+      <Rect
         x={PADDING}
+        y={20}
+        width={12}
+        height={36}
+        cornerRadius={6}
+        fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+        fillLinearGradientEndPoint={{ x: 12, y: 36 }}
+        fillLinearGradientColorStops={[0, "#5f4181", 1, "#209edb"]}
+      />
+      <Text
+        x={PADDING + 32}
         y={12}
-        text={`${title}  (${entries.length})  —  ${total}`}
+        text={`${title} ${entries.length} - ${total} (Avg ${average.toFixed(1)})`}
         fontSize={52}
         fontStyle="bold"
         fontFamily="M PLUS 2"
-        fill="#ffd54f"
+        fill="#5f4181"
+      />
+      <Rect
+        x={PADDING + 820}
+        y={37}
+        width={WIDTH - PADDING * 2 - 850}
+        height={3}
+        cornerRadius={2}
+        fill="#d9c8e5"
+      />
+      <Rect
+        x={WIDTH - PADDING - 16}
+        y={29}
+        width={16}
+        height={16}
+        rotation={45}
+        fill="#209edb"
       />
       {entries.map((entry, i) => {
         const col = i % COLUMNS
@@ -641,15 +660,30 @@ const sectionHeight = (count: number) => {
   return SECTION_TITLE_HEIGHT + rows * (BLOCK_H + TILE_GAP) - TILE_GAP
 }
 
-// Header line geometry. The rating plate sets the height of line 1; the card
-// name plate mirrors it on line 2; the trophy title bar is line 3. Rank badges
-// are drawn as SVGs to the right of the plate on their respective line.
-const CARD_PLATE_HEIGHT = 96
-const CARD_PLATE_WIDTH = 560
-const TITLE_BAR_HEIGHT = 96
-const TITLE_BAR_WIDTH = 840
-const RANK_BADGE_HEIGHT = 84
-const HEADER_LINE_GAP = 20
+// Browser-derived header measurements at 3x. The card name establishes its
+// own em with font-size: 120%; the auto heights include the inherited 1.5 line
+// height and 0.1em borders on both sides.
+const CARD_PLATE_FONT_SIZE = HEADER_EM * 1.2
+const CARD_PLATE_WIDTH = Math.round(CARD_PLATE_FONT_SIZE * 9)
+const CARD_PLATE_BORDER = CARD_PLATE_FONT_SIZE * 0.1
+const CARD_PLATE_PADDING = HEADER_EM * 0.25
+const CARD_PLATE_HEIGHT = Math.round(
+  CARD_PLATE_FONT_SIZE * 1.5 + CARD_PLATE_BORDER * 2,
+)
+const BROWSER_RECORD_WIDTH = HEADER_EM * 25
+const TITLE_BAR_MAX_WIDTH = HEADER_EM * 20
+const TITLE_BAR_HEIGHT = Math.round(HEADER_EM * 1.5 + HEADER_EM * 0.2)
+const RANK_BADGE_HEIGHT = HEADER_EM * 2
+// --size-2 between items in a row; --size-1 between browser record rows.
+const RANK_GAP = HEADER_EM * 0.5
+const RANK_GROUP_GAP = HEADER_EM * 0.25
+const CLASS_RANK_WIDTH = RANK_BADGE_HEIGHT * (126 / 70)
+const COURSE_RANK_WIDTH = RANK_BADGE_HEIGHT * (175 / 70)
+const HEADER_LINE_GAP = HEADER_EM * 0.25
+const FOOTER_LOGO_SIZE = FOOTER_EM * 1.7
+const FOOTER_WORD_FONT_SIZE = FOOTER_EM * 1.25
+const FOOTER_WORD_WIDTH = 300
+const FOOTER_BRAND_GAP = FOOTER_EM * 0.2
 
 const PlayerRatingCanvas = ({
   scoreTable,
@@ -658,6 +692,8 @@ const PlayerRatingCanvas = ({
   trophy,
   courseRank,
   classRank,
+  updatedDate,
+  maxVersion,
   scoreUrl,
   showRating,
   showRanks,
@@ -669,6 +705,8 @@ const PlayerRatingCanvas = ({
   trophy: Trophy
   courseRank?: number | null
   classRank?: number | null
+  updatedDate?: string
+  maxVersion?: string
   scoreUrl?: string
   showRating: boolean
   showRanks: boolean
@@ -678,6 +716,17 @@ const PlayerRatingCanvas = ({
   const hasRanks = showRanks && courseRank != null && classRank != null
   const hasUrl = showUrl && scoreUrl != null
   const hasTitle = title.length > 0
+  const footerLogo = useImage(logoUrl)
+  const titleBarWidth = hasRanks
+    ? Math.min(
+        TITLE_BAR_MAX_WIDTH,
+        BROWSER_RECORD_WIDTH -
+          RANK_GAP -
+          CLASS_RANK_WIDTH -
+          RANK_GROUP_GAP -
+          COURSE_RANK_WIDTH,
+      )
+    : TITLE_BAR_MAX_WIDTH
 
   const { newEntries, oldEntries } = useMemo(() => {
     const used = scoreTable.filter((entry) => entry.rating_used)
@@ -698,18 +747,19 @@ const PlayerRatingCanvas = ({
   // M PLUS Rounded 1c — before rendering.
   useEffect(() => {
     const mplus2Text = [
-      "Rating 組成新曲舊曲Best",
+      `Rating NEW OLD Avg ${updatedDate ?? ""} ${maxVersion ?? ""}`,
       ...newEntries.map((entry) => entry.title),
       ...oldEntries.map((entry) => entry.title),
     ].join("")
-    const roundedText = `${cardName}${title}`
+    const roundedText = `${cardName}${title}Otohime`
     Promise.all([
       document.fonts.load(`800 30px "M PLUS 2"`, mplus2Text),
       document.fonts.load(`700 30px "M PLUS Rounded 1c"`, roundedText),
+      document.fonts.load(`400 30px "McLaren"`, "Otohime"),
     ])
       .then(() => setFontsLoaded(true))
       .catch(() => setFontsLoaded(true))
-  }, [cardName, title, newEntries, oldEntries])
+  }, [cardName, title, updatedDate, maxVersion, newEntries, oldEntries])
 
   if (!fontsLoaded) {
     return null
@@ -750,6 +800,18 @@ const PlayerRatingCanvas = ({
   const cornerX = WIDTH - PADDING - QR_SIZE
   const cornerUrlY = line1Y
   const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 12
+  const leftLine1Right =
+    PADDING +
+    (showRating ? PLATE_WIDTH + RANK_GAP : 0) +
+    (hasRanks ? CLASS_RANK_WIDTH : 0)
+  const cornerUrlX = Math.max(WIDTH * 0.4, leftLine1Right + RANK_GAP)
+  const cornerUrlWidth = WIDTH - PADDING - cornerUrlX
+  // Approximate M PLUS 2's URL glyph width and shrink only when necessary.
+  // The generous line width handles normal URLs at the preferred 44px size.
+  const cornerUrlFontSize =
+    scoreUrl != null
+      ? Math.min(44, cornerUrlWidth / Math.max(1, scoreUrl.length * 0.62))
+      : 44
 
   return (
     <Stage width={WIDTH} height={HEIGHT}>
@@ -779,19 +841,21 @@ const PlayerRatingCanvas = ({
           <Rect
             width={CARD_PLATE_WIDTH}
             height={CARD_PLATE_HEIGHT}
-            cornerRadius={CARD_PLATE_HEIGHT * 0.16}
+            cornerRadius={CARD_PLATE_FONT_SIZE * 0.2}
             fill="#ffffff"
             stroke="#cccccc"
-            strokeWidth={CARD_PLATE_HEIGHT * 0.08}
+            strokeWidth={CARD_PLATE_BORDER}
           />
           <Text
-            x={CARD_PLATE_HEIGHT * 0.28}
+            x={CARD_PLATE_PADDING + CARD_PLATE_BORDER}
             y={0}
-            width={CARD_PLATE_WIDTH - CARD_PLATE_HEIGHT * 0.56}
+            width={
+              CARD_PLATE_WIDTH - (CARD_PLATE_PADDING + CARD_PLATE_BORDER) * 2
+            }
             height={CARD_PLATE_HEIGHT}
             verticalAlign="middle"
             text={cardName}
-            fontSize={CARD_PLATE_HEIGHT * 0.52}
+            fontSize={CARD_PLATE_FONT_SIZE}
             fontStyle="700"
             fontFamily="M PLUS Rounded 1c"
             fill="#000000"
@@ -815,8 +879,23 @@ const PlayerRatingCanvas = ({
             trophy={trophy}
             x={PADDING}
             y={line3Y}
-            width={TITLE_BAR_WIDTH}
+            width={titleBarWidth}
             height={TITLE_BAR_HEIGHT}
+          />
+        ) : null}
+
+        {/* Snapshot metadata sits beside the shorter trophy plate. */}
+        {updatedDate != null || maxVersion != null ? (
+          <Text
+            x={PADDING + (hasTitle ? titleBarWidth + RANK_GAP : 0)}
+            y={line3Y}
+            height={TITLE_BAR_HEIGHT}
+            verticalAlign="middle"
+            text={`(${[updatedDate, maxVersion].filter(Boolean).join(" ")})`}
+            fontSize={HEADER_EM}
+            fontStyle="600"
+            fontFamily="M PLUS 2"
+            fill="#8a7698"
           />
         ) : null}
 
@@ -824,40 +903,68 @@ const PlayerRatingCanvas = ({
         {hasUrl ? (
           <>
             <Text
-              x={cornerX - 200}
+              x={cornerUrlX}
               y={cornerUrlY}
-              width={QR_SIZE + 200}
+              width={cornerUrlWidth}
               height={CORNER_URL_HEIGHT}
               align="right"
               verticalAlign="middle"
               text={scoreUrl}
-              fontSize={32}
+              fontSize={cornerUrlFontSize}
               fontFamily="M PLUS 2"
               fill="#c8c8c8"
               wrap="none"
-              ellipsis={true}
             />
             <QrCode url={scoreUrl} x={cornerX} y={cornerQrY} />
           </>
         ) : null}
 
-        <Section title="新曲 (Best 15)" entries={newEntries} y={newSectionY} />
-        <Section title="舊曲 (Best 35)" entries={oldEntries} y={oldSectionY} />
+        <Section title="NEW" entries={newEntries} y={newSectionY} />
+        <Section title="OLD" entries={oldEntries} y={oldSectionY} />
 
-        {/* Footer band: site attribution centered along the bottom. */}
-        <Text
-          x={0}
+        {/* App-bar-style footer lockup with a subtle top rule. */}
+        <Rect
+          x={PADDING}
           y={HEIGHT - FOOTER_HEIGHT}
-          width={WIDTH}
-          height={FOOTER_HEIGHT}
-          align="center"
-          verticalAlign="middle"
-          text="otohi.me"
-          fontSize={40}
-          fontStyle="bold"
-          fontFamily="M PLUS 2"
-          fill="#8a8f99"
+          width={WIDTH - PADDING * 2}
+          height={2}
+          fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+          fillLinearGradientEndPoint={{ x: WIDTH - PADDING * 2, y: 0 }}
+          fillLinearGradientColorStops={[
+            0,
+            "#d9c8e500",
+            0.5,
+            "#bca5cc",
+            1,
+            "#d9c8e500",
+          ]}
         />
+        <Group
+          x={
+            (WIDTH - FOOTER_LOGO_SIZE - FOOTER_BRAND_GAP - FOOTER_WORD_WIDTH) /
+            2
+          }
+          y={HEIGHT - FOOTER_HEIGHT}
+        >
+          {footerLogo ? (
+            <KonvaImage
+              image={footerLogo}
+              y={(FOOTER_HEIGHT - FOOTER_LOGO_SIZE) / 2}
+              width={FOOTER_LOGO_SIZE}
+              height={FOOTER_LOGO_SIZE}
+            />
+          ) : null}
+          <Text
+            x={FOOTER_LOGO_SIZE + FOOTER_BRAND_GAP}
+            width={FOOTER_WORD_WIDTH}
+            height={FOOTER_HEIGHT}
+            verticalAlign="middle"
+            text="Otohime"
+            fontSize={FOOTER_WORD_FONT_SIZE}
+            fontFamily="McLaren"
+            fill="#5f4181"
+          />
+        </Group>
       </Layer>
     </Stage>
   )

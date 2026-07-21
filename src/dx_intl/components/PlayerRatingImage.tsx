@@ -26,6 +26,8 @@ const PlayerRatingImage = ({
   isPrivate,
   courseRank,
   classRank,
+  updatedDate,
+  maxVersion,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -37,6 +39,8 @@ const PlayerRatingImage = ({
   isPrivate: boolean
   courseRank?: number | null
   classRank?: number | null
+  updatedDate?: string
+  maxVersion?: string
 }) => {
   const contentRef = useRef<HTMLDivElement>(null)
   // Scale the intrinsic 2100px-wide canvas to fit the dialog: cap at 25% on
@@ -124,6 +128,8 @@ const PlayerRatingImage = ({
                       trophy={trophy}
                       courseRank={courseRank}
                       classRank={classRank}
+                      updatedDate={updatedDate}
+                      maxVersion={maxVersion}
                       scoreUrl={scoreUrl}
                       showRating={showRating}
                       showRanks={showRanks}
