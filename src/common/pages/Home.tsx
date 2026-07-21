@@ -19,9 +19,9 @@ const HomeComponent = () => {
         <div className={classes.hero}>
           <h2>Otohime 是適用於 maimai 國際版的成績單系統。</h2>
           <p>
-            打完機台之後，成績不必只留在官方網站。把成績匯入
-            Otohime，整理成一份可以公開分享、也可以自己私藏的成績單，記下每一次的進步。
+            完整方便的成績瀏覽介面、豐富的統計資訊，紀錄遊玩點滴、思考進步途徑。
           </p>
+          <p>期望能成為您遊玩的好夥伴。</p>
           <p className={classes.actions}>
             <LinkButton href="~/dxi/p/koinu" className="primary">
               成績單範例
@@ -33,8 +33,7 @@ const HomeComponent = () => {
           <section>
             <h5>方便更新</h5>
             <p>
-              採用可複製的 Bookmarklet
-              連結，可在電腦與手機、平板瀏覽器上使用，隨時更新。
+              Otohime 的書籤連結可在電腦與手機、平板瀏覽器上使用，隨時更新。
             </p>
           </section>
           <section>
@@ -47,7 +46,7 @@ const HomeComponent = () => {
           <section>
             <h5>完整統計</h5>
             <p>
-              根據公開成績單分析，提供各曲目的 Clear 狀況統計、各 Rating
+              提供各曲目的 Clear 狀況統計、各 Rating
               的熱門採計曲、各版本難易度別的最難達成排名等項目，方便攻略特定成就。
             </p>
           </section>
@@ -55,14 +54,9 @@ const HomeComponent = () => {
         <section className={classes["getting-started"]}>
           <h5>如何開始？</h5>
           <ol>
-            <li>點右上角的「登入」，用 Google 帳號登入就完成註冊了。</li>
-            <li>
-              點上方的「取得更新連結」，照著說明把 Bookmarklet 加入瀏覽器書籤。
-            </li>
-            <li>
-              之後每次打完機台，登入官方 DXNET、點一下書籤，成績就會同步到
-              Otohime。
-            </li>
+            <li>以 Google 帳號登入。</li>
+            <li>建立成績單後，產生書籤並加入到手機或電腦等裝置。</li>
+            <li>登入官方 DXNET、點一下書籤，成績就會同步到 Otohime。</li>
           </ol>
         </section>
       </>
