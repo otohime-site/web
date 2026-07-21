@@ -1,10 +1,8 @@
 import { createListCollection, Listbox } from "@ark-ui/react/listbox"
 import { useQuery } from "urql"
 import { Link } from "wouter"
-import IconAdd from "~icons/mdi/add"
 import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
-import { LinkButton } from "../../common/components/ui/Button"
 import { useUser } from "../../common/contexts"
 import { finalePlayersFields } from "../../finale/models/fragments"
 import { graphql, readFragment } from "../../graphql"
@@ -71,10 +69,6 @@ const UserPlayers = () => {
       ) : (
         "目前沒有成績單。請新增一個！"
       )}
-      <LinkButton href="~/dxi/p/new" className="primary">
-        <IconAdd />
-        新增成績單
-      </LinkButton>
     </QueryResult>
   )
 }

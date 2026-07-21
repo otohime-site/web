@@ -46,13 +46,12 @@ const PlayerHistory = lazy(async () => await import("./PlayerHistory"))
 
 const playerTabRoutes = {
   scores: "/",
-  edit: "/edit",
   history: "/history",
 } as const
 type PlayerTab = keyof typeof playerTabRoutes
 
-// The record (top bar) and the scores are fetched separately so the
-// edit/history tabs don't block on (or transfer) the heavy score rows.
+// The record (top bar) and the scores are fetched separately so the history
+// tab doesn't block on (or transfer) the heavy score rows.
 const dxIntlRecordDocument = graphql(
   `
     query dxIntlRecord($nickname: String!) {
@@ -81,14 +80,13 @@ const dxIntlScoresDocument = graphql(
 )
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
-  // Tab routes nested under /p/:nickname. The nested location is the
-  // single source of truth for the active tab; the RouteSwitch below
-  // renders the matching content.
+  // Tab routes nested under /p/:nickname. Editing is a dialog over the
+  // scores view, so /edit keeps the scores tab active underneath it.
   const [location, navigate] = useLocation()
-  const activeTab = (Object.entries(playerTabRoutes).find(
-    ([, path]) =>
-      path !== "/" && (location === path || location.startsWith(`${path}/`)),
-  )?.[0] ?? "scores") as PlayerTab
+  const editing = location === "/edit"
+  const activeTab: PlayerTab = location.startsWith("/history")
+    ? "history"
+    : "scores"
   // The score rows are heavy; only the scores tab needs them (the rating
   // image dialog lives inside the scores page).
   const needScores = activeTab === "scores"
@@ -254,8 +252,8 @@ const Player = ({ params }: { params: Params }) => {
   // A player without uploads has no record yet; the layout (tabs, edit)
   // still renders and the scores tab shows the explanation instead.
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
-  // The scores/songs queries are paused on the edit/history tabs and may
-  // still be in flight right after switching back.
+  // The scores/songs queries are paused on the history tab and may still be
+  // in flight right after switching back.
   const scoresReady = scoresResult.data != null && songsResult.data != null
   // While the editable query is in flight we cannot tell an owner from a
   // visitor yet, so the owner-only routes hold off their redirect.
@@ -264,6 +262,27 @@ const Player = ({ params }: { params: Params }) => {
   const ownsScoreTable =
     editableResult.error == null &&
     (editableResult.data?.dx_intl_players?.length ?? 0) > 0
+  const scoresContent =
+    record == null ? (
+      <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
+    ) : !scoresReady ? null : (
+      <PlayerScores
+        allEntries={scoreTable}
+        afterCircle={afterCircle}
+        nickname={params.nickname ?? ""}
+        updatedAt={player.updated_at}
+        toolbarContainer={scoresToolbar}
+        ownsScoreTable={ownsScoreTable}
+        ratingImage={{
+          cardName: record.card_name,
+          title: record.title,
+          trophy: record.trophy,
+          isPrivate: player.private,
+          courseRank: record.course_rank,
+          classRank: record.class_rank,
+        }}
+      />
+    )
 
   return (
     <>
@@ -317,6 +336,20 @@ const Player = ({ params }: { params: Params }) => {
                 )}
                 <span>{params.nickname}</span>
               </div>
+              {ownsScoreTable ? (
+                <PlayerForm
+                  params={{ nickname: params.nickname }}
+                  open={editing}
+                  onOpenChange={(open) =>
+                    navigate(open ? "/edit" : "/", { replace: !open })
+                  }
+                  trigger={
+                    <button className={classes["edit-button"]}>
+                      <IconPencil /> 編輯
+                    </button>
+                  }
+                />
+              ) : null}
               <Tabs.List
                 aria-label="成績單頁面"
                 className={classes["tabs-list"]}
@@ -324,11 +357,6 @@ const Player = ({ params }: { params: Params }) => {
                 <Tabs.Trigger value="scores" className={classes["tab-trigger"]}>
                   <IconClipboardText /> 成績單
                 </Tabs.Trigger>
-                {ownsScoreTable ? (
-                  <Tabs.Trigger value="edit" className={classes["tab-trigger"]}>
-                    <IconPencil /> 編輯
-                  </Tabs.Trigger>
-                ) : null}
                 <Tabs.Trigger
                   value="history"
                   className={classes["tab-trigger"]}
@@ -348,54 +376,33 @@ const Player = ({ params }: { params: Params }) => {
           ) : null}
         </header>
         <Tabs.Content value={activeTab} className={classes["tab-content"]}>
-          <RouteSwitch>
-            <Route path="/edit">
-              {ownsScoreTable ? (
-                <PlayerForm params={{ nickname: params.nickname }} />
-              ) : ownershipPending ? null : (
+          {activeTab === "scores" ? (
+            scoresContent
+          ) : (
+            <RouteSwitch>
+              <Route path="/history/:hash?">
+                {(routeParams) => (
+                  <Suspense fallback={<></>}>
+                    <PlayerHistory
+                      params={{
+                        nickname: params.nickname,
+                        hash: routeParams.hash,
+                      }}
+                    />
+                  </Suspense>
+                )}
+              </Route>
+              <Route>
                 <Redirect to="/" replace />
-              )}
-            </Route>
-            <Route path="/history/:hash?">
-              {(routeParams) => (
-                <Suspense fallback={<></>}>
-                  <PlayerHistory
-                    params={{
-                      nickname: params.nickname,
-                      hash: routeParams.hash,
-                    }}
-                  />
-                </Suspense>
-              )}
-            </Route>
-            <Route path="/">
-              {record == null ? (
-                <Alert severity="warning">
-                  沒有成績可以顯示。可能是還沒有上傳成績。
-                </Alert>
-              ) : !scoresReady ? null : (
-                <PlayerScores
-                  allEntries={scoreTable}
-                  afterCircle={afterCircle}
-                  nickname={params.nickname ?? ""}
-                  updatedAt={player.updated_at}
-                  toolbarContainer={scoresToolbar}
-                  ownsScoreTable={ownsScoreTable}
-                  ratingImage={{
-                    cardName: record.card_name,
-                    title: record.title,
-                    trophy: record.trophy,
-                    isPrivate: player.private,
-                    courseRank: record.course_rank,
-                    classRank: record.class_rank,
-                  }}
-                />
-              )}
-            </Route>
-            <Route>
-              <Redirect to="/" replace />
-            </Route>
-          </RouteSwitch>
+              </Route>
+            </RouteSwitch>
+          )}
+          {editing && !ownsScoreTable && !ownershipPending ? (
+            <Redirect to="/" replace />
+          ) : null}
+          {activeTab === "scores" && location !== "/" && !editing ? (
+            <Redirect to="/" replace />
+          ) : null}
         </Tabs.Content>
       </Tabs.Root>
     </>

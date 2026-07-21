@@ -1,5 +1,8 @@
+import { useState } from "react"
 import { Titled } from "react-titled"
+import IconAdd from "~icons/mdi/add"
 import DxUserPlayers from "../../dx_intl/components/UserPlayers"
+import PlayerForm from "../../dx_intl/pages/PlayerForm"
 import Token from "../components/Token"
 import { LinkButton } from "../components/ui/Button"
 import { useUser } from "../contexts"
@@ -8,6 +11,7 @@ import classes from "./Home.module.css"
 
 const HomeComponent = () => {
   const user = useUser()
+  const [playersRevision, setPlayersRevision] = useState(0)
   if (user == null) {
     return (
       <>
@@ -69,7 +73,17 @@ const HomeComponent = () => {
       <Titled title={(title) => `首頁 - ${title}`} />
       <article className={classes["my-players"]}>
         <h4>我的成績單</h4>
-        <DxUserPlayers />
+        <DxUserPlayers key={playersRevision} />
+        <PlayerForm
+          params={{}}
+          onSaved={() => setPlayersRevision((revision) => revision + 1)}
+          trigger={
+            <button className="primary">
+              <IconAdd />
+              新增成績單
+            </button>
+          }
+        />
       </article>
       <aside className={classes["update-link"]}>
         <h4>更新書籤</h4>

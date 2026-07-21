@@ -108,6 +108,30 @@
   }
 }
 
+.edit-button {
+  display: inline-flex;
+  min-inline-size: auto;
+  align-items: center;
+  gap: var(--size-1);
+  margin: 0;
+  padding: var(--size-1) var(--size-3);
+  border-color: var(--otohime-3);
+  border-radius: var(--radius-2);
+  background: var(--surface-1);
+  box-shadow: none;
+  color: var(--otohime-9);
+  font: inherit;
+
+  &:where(:not(:disabled):hover) {
+    border-color: var(--otohime-5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    border-color: var(--otohime-9);
+    color: var(--otohime-2);
+  }
+}
+
 .tabs-indicator {
   bottom: 0;
   width: var(--width);
