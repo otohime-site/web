@@ -11,14 +11,12 @@ import {
 } from "wouter"
 import IconClipboardText from "~icons/mdi/clipboard-text-outline"
 import IconHistory from "~icons/mdi/history"
-import IconImage from "~icons/mdi/image"
 import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
 import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
 import { graphql, readFragment } from "../../graphql"
-import PlayerRatingImage from "../components/PlayerRatingImage"
 import Record from "../components/Record"
 import {
   ESTIMATED_INTERNAL_LV,
@@ -50,7 +48,6 @@ const playerTabRoutes = {
   scores: "/",
   edit: "/edit",
   history: "/history",
-  image: "/image",
 } as const
 type PlayerTab = keyof typeof playerTabRoutes
 
@@ -92,8 +89,9 @@ const Player = ({ params }: { params: Params }) => {
     ([, path]) =>
       path !== "/" && (location === path || location.startsWith(`${path}/`)),
   )?.[0] ?? "scores") as PlayerTab
-  // The score rows are heavy; only the scores and image tabs need them.
-  const needScores = activeTab === "scores" || activeTab === "image"
+  // The score rows are heavy; only the scores tab needs them (the rating
+  // image dialog lives inside the scores page).
+  const needScores = activeTab === "scores"
   const [editableResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
@@ -337,14 +335,6 @@ const Player = ({ params }: { params: Params }) => {
                 >
                   <IconHistory /> 歷史紀錄
                 </Tabs.Trigger>
-                {ownsScoreTable && record != null ? (
-                  <Tabs.Trigger
-                    value="image"
-                    className={classes["tab-trigger"]}
-                  >
-                    <IconImage /> Rating 圖片
-                  </Tabs.Trigger>
-                ) : null}
                 <Tabs.Indicator className={classes["tabs-indicator"]} />
               </Tabs.List>
             </div>
@@ -378,24 +368,6 @@ const Player = ({ params }: { params: Params }) => {
                 </Suspense>
               )}
             </Route>
-            <Route path="/image">
-              {ownsScoreTable && record != null ? (
-                scoresReady ? (
-                  <PlayerRatingImage
-                    scoreTable={scoreTable}
-                    cardName={record.card_name}
-                    title={record.title}
-                    trophy={record.trophy}
-                    nickname={params.nickname ?? ""}
-                    isPrivate={player.private}
-                    courseRank={record.course_rank}
-                    classRank={record.class_rank}
-                  />
-                ) : null
-              ) : ownershipPending ? null : (
-                <Redirect to="/" replace />
-              )}
-            </Route>
             <Route path="/">
               {record == null ? (
                 <Alert severity="warning">
@@ -408,6 +380,15 @@ const Player = ({ params }: { params: Params }) => {
                   nickname={params.nickname ?? ""}
                   updatedAt={player.updated_at}
                   toolbarContainer={scoresToolbar}
+                  ownsScoreTable={ownsScoreTable}
+                  ratingImage={{
+                    cardName: record.card_name,
+                    title: record.title,
+                    trophy: record.trophy,
+                    isPrivate: player.private,
+                    courseRank: record.course_rank,
+                    classRank: record.class_rank,
+                  }}
                 />
               )}
             </Route>

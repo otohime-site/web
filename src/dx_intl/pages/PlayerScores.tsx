@@ -12,6 +12,7 @@ import IconArrowUp from "~icons/mdi/arrow-up"
 import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconFolder from "~icons/mdi/folder"
+import IconImage from "~icons/mdi/image"
 import IconSortVariant from "~icons/mdi/sort-variant"
 import IconUpdate from "~icons/mdi/update"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
@@ -23,6 +24,7 @@ import { useTable } from "../../common/utils/table"
 import AdvancedFilter from "../components/AdvancedFilter"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders, { DifficultyFolders } from "../components/Folders"
+import PlayerRatingImage from "../components/PlayerRatingImage"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import { ScoreTableEntry, getScoreStats } from "../models/aggregation"
 import {
@@ -337,12 +339,25 @@ const getFolderQuery = (filter: ScoreFilter): FolderQuery => {
   return DEFAULT_FOLDER
 }
 
+interface RatingImageInfo {
+  cardName: string
+  title: string
+  trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
+  isPrivate: boolean
+  courseRank?: number | null
+  classRank?: number | null
+}
+
 interface PlayerScoresProps {
   allEntries: ScoreTableEntry[]
   afterCircle: boolean
   nickname: string
   updatedAt?: string | null
   toolbarContainer: HTMLDivElement | null
+  // The rating image dialog is owner-only; only owners get the record
+  // details needed to render it.
+  ownsScoreTable: boolean
+  ratingImage: RatingImageInfo
 }
 
 const PlayerScores = memo(function PlayerScores({
@@ -351,6 +366,8 @@ const PlayerScores = memo(function PlayerScores({
   nickname,
   updatedAt,
   toolbarContainer,
+  ownsScoreTable,
+  ratingImage,
 }: PlayerScoresProps) {
   const [scoreQuery, setScoreQuery] = useQueryStates(scoreQueryParsers)
   const { folder, filter: conditions, difficulty: difficultyQuery } = scoreQuery
@@ -368,6 +385,7 @@ const PlayerScores = memo(function PlayerScores({
   const [showCover, setShowCover] = useState(true)
   const [allSongs, setAllSongs] = useState(false)
   const [expandedHash, setExpandedHash] = useState<string | null>(null)
+  const [ratingImageOpen, setRatingImageOpen] = useState(false)
 
   // Old or hand-edited URLs can combine mutually exclusive states. Remove
   // stale conditions so normal folders and folder=all stay deterministic.
@@ -675,6 +693,11 @@ const PlayerScores = memo(function PlayerScores({
         <button className={playerClasses["csv-button"]} onClick={downloadCSV}>
           <IconFileDownload /> 下載 CSV
         </button>
+        {ownsScoreTable ? (
+          <button onClick={() => setRatingImageOpen(true)}>
+            <IconImage /> Rating 圖片
+          </button>
+        ) : null}
       </div>
     </>
   )
@@ -684,6 +707,20 @@ const PlayerScores = memo(function PlayerScores({
       {toolbarContainer == null
         ? null
         : createPortal(toolbar, toolbarContainer)}
+      {ownsScoreTable ? (
+        <PlayerRatingImage
+          open={ratingImageOpen}
+          onOpenChange={setRatingImageOpen}
+          scoreTable={allEntries}
+          cardName={ratingImage.cardName}
+          title={ratingImage.title}
+          trophy={ratingImage.trophy}
+          nickname={nickname}
+          isPrivate={ratingImage.isPrivate}
+          courseRank={ratingImage.courseRank}
+          classRank={ratingImage.classRank}
+        />
+      ) : null}
       <div
         className={clsx(
           layoutClasses["player-container"],

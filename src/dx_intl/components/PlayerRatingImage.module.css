@@ -2,32 +2,79 @@
   display: flex;
   flex-direction: column;
   gap: var(--size-2);
-  padding: var(--size-2) 0;
+  /* Cap the dialog to the largest scaled canvas width (2100 * 0.25 = 525px)
+     plus its padding; on narrow screens it shrinks and the canvas scales to
+     fit. A fixed height keeps the dialog from resizing between the loading
+     placeholder and the rendered canvas. */
+  width: min(90vw, calc(525px + 2 * var(--size-4)));
+  height: 90vh;
 }
 
 .toolbar {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: var(--size-2);
+}
+
+/* Title on the left; the download / close actions pinned to the top-right. */
+.toolbar-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--size-2);
+
   & h2 {
-    flex: 1;
+    /* Push the action buttons to the right regardless of the title width. */
+    margin-right: auto;
     margin-bottom: 0;
+  }
+
+  /* Keep both action buttons the same height so they line up. */
+  & button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--size-1);
   }
 }
 
+/* Display toggles on their own row below the title. */
+.toolbar-switches {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--size-2) var(--size-4);
+}
+
 .canvas {
+  /* Fill the remaining dialog height so the box is stable whether it holds the
+     loading placeholder or the rendered canvas. */
+  flex: 1;
+  min-height: 0;
   overflow: auto;
-  /* Konva renders a fixed 2100x3750 canvas at its intrinsic size. Fit it to the
-     viewport, but never below 50% of intrinsic — at that floor the box scrolls
-     rather than shrinking the image further, keeping text legible. */
-  & canvas {
-    min-width: 1050px;
-    min-height: 1875px;
-    max-width: 100%;
-    max-height: 80vh;
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain;
+
+  /* Center the loading placeholder in the reserved space. */
+  & > p {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    color: var(--text-2);
+  }
+}
+
+/* Konva renders a fixed 2100x3750 stage (a .konvajs-content div wrapping the
+   canvas) at its intrinsic size. The --rating-scale variable (set on .canvas
+   from its measured width, capped at 0.25) scales the stage down to fit; the
+   canvas keeps its full resolution so the download stays crisp. The box
+   reserves the scaled size since a transform doesn't affect layout. */
+.canvas-scale {
+  width: calc(2100px * var(--rating-scale, 0.25));
+  height: calc(3750px * var(--rating-scale, 0.25));
+
+  /* .konvajs-content is the stage div Konva creates as the canvas's parent. */
+  & > :first-child {
+    transform: scale(var(--rating-scale, 0.25));
+    transform-origin: top left;
   }
 }
