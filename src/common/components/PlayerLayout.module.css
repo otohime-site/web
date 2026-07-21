@@ -67,7 +67,8 @@
 }
 
 /* Shared by the radio group and the multi-select toggle group */
-.tab-like-radio-group[data-part="root"] {
+.tab-like-radio-group[data-scope="radio-group"][data-part="root"],
+.tab-like-radio-group[data-scope="toggle-group"][data-part="root"] {
   display: flex;
   flex-direction: row;
   border-radius: var(--radius-3);
