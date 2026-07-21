@@ -125,14 +125,21 @@ const useImage = (url: string): HTMLImageElement | undefined => {
   const [image, setImage] = useState<HTMLImageElement>()
   useEffect(() => {
     const img = new window.Image()
-    img.crossOrigin = "anonymous"
-    img.src = url
     const onLoad = () => setImage(img)
     img.addEventListener("load", onLoad)
+    // WebKit may issue or cache a non-CORS request when these are assigned in
+    // the opposite order. Both must be in place before starting the request.
+    img.crossOrigin = "anonymous"
+    img.src = url
     return () => img.removeEventListener("load", onLoad)
   }, [url])
   return image
 }
+
+// The score table has already loaded this resource as an ordinary <img> by the
+// time the dialog opens. Keep the canvas request on a distinct cache key so
+// Safari cannot reuse that non-CORS response for an anonymous-CORS image.
+const getCanvasCoverUrl = (songId: string) => `${getCoverUrl(songId)}?cors=1`
 
 // Mirror of <Rating>: an SVG plate chosen by rating tier, with the number
 // overlaid in gold right-aligned text. The plate art is 296x86; sizes below
@@ -421,7 +428,7 @@ const ChartBlock = ({
   x: number
   y: number
 }) => {
-  const cover = useImage(getCoverUrl(entry.song_id))
+  const cover = useImage(getCanvasCoverUrl(entry.song_id))
   const variant = useImage(entry.deluxe ? dxVariantUrl : stdVariantUrl)
   const comboFlag = useImage(comboFlagImages[entry.combo_flag] ?? blankFlagUrl)
   const syncFlag = useImage(syncFlagImages[entry.sync_flag] ?? blankFlagUrl)
