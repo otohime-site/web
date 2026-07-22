@@ -7,6 +7,7 @@ import IconFileDownload from "~icons/mdi/file-download"
 import { Switch } from "../../common/components/ui/Switch"
 import host from "../../host"
 import { ScoreTableEntry } from "../models/aggregation"
+import type { RatingImageInfo } from "./PlayerRatingCanvas"
 import classes from "./PlayerRatingImage.module.css"
 
 // Konva is heavy; only pull it into a chunk that loads when the dialog opens.
@@ -19,29 +20,16 @@ const PlayerRatingImage = ({
   open,
   onOpenChange,
   scoreTable,
-  cardName,
-  title,
-  trophy,
+  info,
   nickname,
-  isPrivate,
-  courseRank,
-  classRank,
-  updatedDate,
-  maxVersion,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
   scoreTable: ScoreTableEntry[]
-  cardName: string
-  title: string
-  trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
+  info: RatingImageInfo
   nickname: string
-  isPrivate: boolean
-  courseRank?: number | null
-  classRank?: number | null
-  updatedDate?: string
-  maxVersion?: string
 }) => {
+  const { cardName, title, isPrivate } = info
   const contentRef = useRef<HTMLDivElement>(null)
   // Scale the intrinsic 2100px-wide canvas to fit the dialog: cap at 25% on
   // wide screens, shrink to the available width on narrow ones so it never
@@ -59,7 +47,7 @@ const PlayerRatingImage = ({
     observer.observe(box)
     scaleObserverRef.current = observer
   }, [])
-  const [showRating, setShowRating] = useState(true)
+  const [showTitle, setShowTitle] = useState(true)
   const [showRanks, setShowRanks] = useState(true)
   // The URL is only meaningful for a public score, so the toggle defaults on
   // only when the score is public and can never be enabled while it is private.
@@ -94,10 +82,11 @@ const PlayerRatingImage = ({
               </div>
               <div className={classes["toolbar-switches"]}>
                 <Switch
-                  checked={showRating}
-                  onCheckedChange={(e) => setShowRating(e.checked)}
+                  checked={showTitle}
+                  disabled={title.length === 0}
+                  onCheckedChange={(e) => setShowTitle(e.checked)}
                 >
-                  Rating
+                  稱號
                 </Switch>
                 <Switch
                   checked={showRanks}
@@ -123,15 +112,9 @@ const PlayerRatingImage = ({
                   <div className={classes["canvas-scale"]}>
                     <PlayerRatingCanvas
                       scoreTable={scoreTable}
-                      cardName={cardName}
-                      title={title}
-                      trophy={trophy}
-                      courseRank={courseRank}
-                      classRank={classRank}
-                      updatedDate={updatedDate}
-                      maxVersion={maxVersion}
+                      info={info}
                       scoreUrl={scoreUrl}
-                      showRating={showRating}
+                      showTitle={showTitle}
                       showRanks={showRanks}
                       showUrl={showUrl && !isPrivate}
                     />

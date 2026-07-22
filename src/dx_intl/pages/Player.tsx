@@ -148,6 +148,7 @@ const Player = ({ params }: { params: Params }) => {
           cardName: record.card_name,
           title: record.title,
           trophy: record.trophy,
+          rating: record.rating,
           isPrivate: player.private,
           courseRank: record.course_rank,
           classRank: record.class_rank,

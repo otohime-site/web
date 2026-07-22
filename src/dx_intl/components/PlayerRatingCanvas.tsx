@@ -208,7 +208,24 @@ const RankImage = ({
 // gradient (lighter top 60%, darker bottom) with a colored border and shadow.
 // Konva can't clip a CSS gradient string, so we mirror the same stops here as
 // a linear fill from top to bottom.
-type Trophy = "normal" | "bronze" | "silver" | "gold" | "rainbow"
+export type Trophy = "normal" | "bronze" | "silver" | "gold" | "rainbow"
+
+// Everything the image needs about the player, gathered once where the record
+// is read so the dialog and the canvas can pass it along untouched.
+export interface RatingImageInfo {
+  cardName: string
+  title: string
+  trophy: Trophy
+  // The record's own rating, which is what the game reports; summing the
+  // listed entries can disagree with it during data updates.
+  rating: number
+  isPrivate: boolean
+  courseRank?: number | null
+  classRank?: number | null
+  updatedDate?: string
+  versionName?: string
+}
+
 const trophyStyles: Record<
   Trophy,
   { top: string; bottom: string; border: string; shadow: string }
@@ -700,35 +717,33 @@ const FOOTER_BRAND_GAP = FOOTER_EM * 0.2
 
 const PlayerRatingCanvas = ({
   scoreTable,
-  cardName,
-  title,
-  trophy,
-  courseRank,
-  classRank,
-  updatedDate,
-  maxVersion,
+  info,
   scoreUrl,
-  showRating,
+  showTitle,
   showRanks,
   showUrl,
 }: {
   scoreTable: ScoreTableEntry[]
-  cardName: string
-  title: string
-  trophy: Trophy
-  courseRank?: number | null
-  classRank?: number | null
-  updatedDate?: string
-  maxVersion?: string
+  info: RatingImageInfo
   scoreUrl?: string
-  showRating: boolean
+  showTitle: boolean
   showRanks: boolean
   showUrl: boolean
 }) => {
+  const {
+    cardName,
+    title,
+    trophy,
+    rating,
+    courseRank,
+    classRank,
+    updatedDate,
+    versionName,
+  } = info
   const [fontsLoaded, setFontsLoaded] = useState(false)
   const hasRanks = showRanks && courseRank != null && classRank != null
   const hasUrl = showUrl && scoreUrl != null
-  const hasTitle = title.length > 0
+  const hasTitle = showTitle && title.length > 0
   const footerLogo = useImage(logoUrl)
   const titleBarWidth = hasRanks
     ? Math.min(
@@ -754,13 +769,22 @@ const PlayerRatingCanvas = ({
     return { newEntries, oldEntries }
   }, [scoreTable])
 
+  // Snapshot provenance: when the scores were taken, and which version's song
+  // data they were scored against.
+  const metaText = [
+    updatedDate != null ? `Updated at ${updatedDate}` : null,
+    versionName != null ? `using ${versionName} data` : null,
+  ]
+    .filter(Boolean)
+    .join("; ")
+
   // Konva paints to a canvas, so a font that isn't loaded yet falls back
   // silently with no re-paint. Wait for every glyph we draw — the section
   // labels and song titles in M PLUS 2, plus the card name and user title in
   // M PLUS Rounded 1c — before rendering.
   useEffect(() => {
     const mplus2Text = [
-      `Rating NEW OLD Avg ${updatedDate ?? ""} ${maxVersion ?? ""}`,
+      `Rating NEW OLD Avg ${metaText}`,
       ...newEntries.map((entry) => entry.title),
       ...oldEntries.map((entry) => entry.title),
     ].join("")
@@ -772,28 +796,25 @@ const PlayerRatingCanvas = ({
     ])
       .then(() => setFontsLoaded(true))
       .catch(() => setFontsLoaded(true))
-  }, [cardName, title, updatedDate, maxVersion, newEntries, oldEntries])
+  }, [cardName, title, metaText, newEntries, oldEntries])
 
   if (!fontsLoaded) {
     return null
   }
 
-  const totalRating = [...newEntries, ...oldEntries].reduce(
-    (sum, e) => sum + e.rating,
-    0,
-  )
-
   // The header stacks three left-aligned lines: rating + class rank, card name
   // + course rank, then the trophy title bar, vertically centered in the fixed
-  // header band.
+  // header band. That third line carries the title bar, the snapshot metadata,
+  // or both, so it is reserved whenever either has something to draw.
+  const hasLine3 = hasTitle || metaText !== ""
   const line1H = PLATE_HEIGHT
   const line2H = CARD_PLATE_HEIGHT
-  const line3H = hasTitle ? TITLE_BAR_HEIGHT : 0
+  const line3H = hasLine3 ? TITLE_BAR_HEIGHT : 0
   const linesH =
     line1H +
     HEADER_LINE_GAP +
     line2H +
-    (hasTitle ? HEADER_LINE_GAP + line3H : 0)
+    (hasLine3 ? HEADER_LINE_GAP + line3H : 0)
   const line1Y = Math.round((HEADER_HEIGHT - linesH) / 2)
   const line2Y = line1Y + line1H + HEADER_LINE_GAP
   const line3Y = line2Y + line2H + HEADER_LINE_GAP
@@ -814,9 +835,7 @@ const PlayerRatingCanvas = ({
   const cornerUrlY = line1Y
   const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 12
   const leftLine1Right =
-    PADDING +
-    (showRating ? PLATE_WIDTH + RANK_GAP : 0) +
-    (hasRanks ? CLASS_RANK_WIDTH : 0)
+    PADDING + PLATE_WIDTH + RANK_GAP + (hasRanks ? CLASS_RANK_WIDTH : 0)
   const cornerUrlX = Math.max(WIDTH * 0.4, leftLine1Right + RANK_GAP)
   const cornerUrlWidth = WIDTH - PADDING - cornerUrlX
   // Approximate M PLUS 2's URL glyph width and shrink only when necessary.
@@ -832,18 +851,11 @@ const PlayerRatingCanvas = ({
         <Rect width={WIDTH} height={HEIGHT} fill={BG_COLOR} />
 
         {/* Line 1: rating plate + class rank badge */}
-        {showRating ? (
-          <RatingPlate
-            rating={totalRating}
-            legacy={false}
-            x={PADDING}
-            y={line1Y}
-          />
-        ) : null}
+        <RatingPlate rating={rating} legacy={false} x={PADDING} y={line1Y} />
         {hasRanks ? (
           <RankImage
             src={classRankImages[classRank]}
-            x={PADDING + (showRating ? PLATE_WIDTH + RANK_GAP : 0)}
+            x={PADDING + PLATE_WIDTH + RANK_GAP}
             y={line1Y + (PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
             height={RANK_BADGE_HEIGHT}
           />
@@ -898,13 +910,13 @@ const PlayerRatingCanvas = ({
         ) : null}
 
         {/* Snapshot metadata sits beside the shorter trophy plate. */}
-        {updatedDate != null || maxVersion != null ? (
+        {metaText !== "" ? (
           <Text
             x={PADDING + (hasTitle ? titleBarWidth + RANK_GAP : 0)}
             y={line3Y}
             height={TITLE_BAR_HEIGHT}
             verticalAlign="middle"
-            text={`(${[updatedDate, maxVersion].filter(Boolean).join(" ")})`}
+            text={metaText}
             fontSize={HEADER_EM}
             fontStyle="600"
             fontFamily="M PLUS 2"

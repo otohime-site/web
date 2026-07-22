@@ -26,6 +26,7 @@ import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
 import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders, { DifficultyFolders } from "../components/Folders"
+import type { RatingImageInfo } from "../components/PlayerRatingCanvas"
 import PlayerRatingImage from "../components/PlayerRatingImage"
 import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import {
@@ -363,23 +364,14 @@ const getFolderQuery = (filter: ScoreFilter): FolderQuery => {
   return DEFAULT_FOLDER
 }
 
-interface RatingImageInfo {
-  cardName: string
-  title: string
-  trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
-  isPrivate: boolean
-  courseRank?: number | null
-  classRank?: number | null
-}
-
 interface PlayerScoresProps {
   nickname: string
   updatedAt?: string | null
   toolbarContainer: HTMLDivElement | null
   // The rating image dialog is owner-only; only owners get the record
-  // details needed to render it.
+  // details needed to render it. The snapshot metadata is filled in here.
   ownsScoreTable: boolean
-  ratingImage: RatingImageInfo
+  ratingImage: Omit<RatingImageInfo, "updatedDate" | "versionName">
 }
 
 const PlayerScores = memo(function PlayerScores({
@@ -508,6 +500,21 @@ const PlayerScores = memo(function PlayerScores({
     : null
   const latestRatingVersions = [maxVersion - 1, maxVersion].map(
     (version) => versions[version] ?? `版本 ${version}`,
+  )
+  // The record details come from the parent; the snapshot metadata is derived
+  // from data this page already has.
+  const ratingImageInfo: RatingImageInfo = useMemo(
+    () => ({
+      ...ratingImage,
+      updatedDate:
+        updatedAt != null
+          ? new Date(updatedAt).toISOString().split("T")[0]
+          : undefined,
+      versionName: Number.isFinite(maxVersion)
+        ? (versions[maxVersion] ?? `版本 ${maxVersion}`)
+        : undefined,
+    }),
+    [ratingImage, updatedAt, maxVersion],
   )
   const difficultyFolderActive =
     !advanced && (filter.category.length > 0 || filter.version.length > 0)
@@ -840,23 +847,8 @@ const PlayerScores = memo(function PlayerScores({
           open={ratingImageOpen}
           onOpenChange={setRatingImageOpen}
           scoreTable={allEntries}
-          cardName={ratingImage.cardName}
-          title={ratingImage.title}
-          trophy={ratingImage.trophy}
           nickname={nickname}
-          isPrivate={ratingImage.isPrivate}
-          courseRank={ratingImage.courseRank}
-          classRank={ratingImage.classRank}
-          updatedDate={
-            updatedAt != null
-              ? new Date(updatedAt).toISOString().split("T")[0]
-              : undefined
-          }
-          maxVersion={
-            Number.isFinite(maxVersion)
-              ? (versions[maxVersion] ?? `版本 ${maxVersion}`)
-              : undefined
-          }
+          info={ratingImageInfo}
         />
       ) : null}
       <div
