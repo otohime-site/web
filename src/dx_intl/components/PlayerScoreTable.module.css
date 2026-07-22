@@ -240,4 +240,17 @@ td.col-difficulty.non-plus {
   .table tbody td.col-score {
     width: auto;
   }
+
+  /* The rows are grids here, so a background on the cells only paints the
+     cell boxes and leaves the column gaps bare. Move the expanded card
+     background onto the rows, which cover the whole grid area. */
+  .table tbody tr.expanded,
+  .table tbody tr.detail-row {
+    background: var(--surface-2);
+  }
+
+  .table tbody tr.expanded td,
+  .table tbody tr.detail-row td {
+    background: none;
+  }
 }

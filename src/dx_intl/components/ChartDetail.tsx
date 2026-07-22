@@ -21,10 +21,11 @@ import classes from "./ChartDetail.module.css"
 // always agree and each border jump shows as a skip. Ratings below S
 // would dwarf that scale, so the 0→S range is compressed into a
 // fixed-width lead-in (on its own ground, like a broken axis). After
-// CiRCLE the axis ends with a fixed-width stub for the AP +1, so the
-// bar only completes when the header's maximum is actually reached.
+// CiRCLE the axis ends with a stub for the AP +1, sized as one rating
+// unit on the same scale so it reads at the same weight as the skipped
+// spans, and the bar only completes when the header's maximum is
+// actually reached.
 const GAUGE_LEAD = 0.15
-const GAUGE_AP_TAIL = 0.05
 const GAUGE_STOPS = RANK_SCORES.slice(3)
 
 const ChartDetail = ({
@@ -58,7 +59,11 @@ const ChartDetail = ({
     const maxRating = getRating(internalLv, 100.5, afterCircle)
     const ratingS = getRating(internalLv, 97)
     const ratingSssPlus = getRating(internalLv, 100.5)
-    const tail = afterCircle ? GAUGE_AP_TAIL : 0
+    // One rating unit wide on the S→SSS+ scale: that span carries
+    // `1 - GAUGE_LEAD - tail`, so an equal-weight tail solves to this.
+    const tail = afterCircle
+      ? (1 - GAUGE_LEAD) / (ratingSssPlus - ratingS + 1)
+      : 0
     const ratingPos = (value: number) =>
       value < ratingS
         ? GAUGE_LEAD * (value / ratingS)
@@ -155,13 +160,20 @@ const ChartDetail = ({
         </div>
         <div className={classes.gauge}>
           {entry.score != null ? (
-            <span
-              className={classes.marker}
-              style={{
-                left: `clamp(1rem, ${(fill * 100).toFixed(2)}%, calc(100% - 1rem))`,
-              }}
-            >
-              {rating}
+            <span className={classes.marker}>
+              <span
+                className={classes["marker-label"]}
+                style={{
+                  left: `clamp(0.75rem, ${(fill * 100).toFixed(2)}%, calc(100% - 0.75rem))`,
+                }}
+              >
+                {rating}
+              </span>
+              <span
+                aria-hidden="true"
+                className={classes["marker-pointer"]}
+                style={{ left: `${(fill * 100).toFixed(2)}%` }}
+              />
             </span>
           ) : null}
           <div className={classes.track}>
@@ -201,38 +213,51 @@ const ChartDetail = ({
             ) : null}
           </div>
           <ol className={classes.stops}>
-            {stops.map((stop) => (
-              <li
-                key={stop.name}
-                data-achieved={score >= stop.minScore ? "" : undefined}
-                style={{
-                  left: `clamp(1.5rem, ${(stop.pos * 100).toFixed(2)}%, calc(100% - 1.75rem))`,
-                }}
-              >
-                <span className={classes["stop-rank"]}>{stop.name}</span>
-                <span className={classes["stop-rating"]}>{stop.rating}</span>
-              </li>
-            ))}
-            {afterCircle ? (
-              <li
-                className={classes["ap-stop"]}
-                data-achieved={apBonus ? "" : undefined}
-                aria-label={`AP 加成 Rating：${maxRating}`}
-                title={
-                  apBonus
-                    ? "AP 加成：Rating 已 +1"
-                    : "達成 AP / AP+ 時 Rating +1"
-                }
-              >
-                <img
-                  className={classes["ap-icon"]}
-                  src={apIcon}
-                  alt=""
-                  aria-hidden="true"
-                />
-                <span className={classes["stop-rating"]}>{maxRating}</span>
-              </li>
-            ) : null}
+            {stops.map((stop, index) => {
+              // The last stop is the axis endpoint and carries the extra
+              // AP line, so it anchors to the right edge instead of being
+              // centred — a centred label that wide overflows the track.
+              const isLast = index === stops.length - 1
+              return (
+                <li
+                  key={stop.name}
+                  data-achieved={score >= stop.minScore ? "" : undefined}
+                  data-endpoint={isLast ? "" : undefined}
+                  style={
+                    isLast
+                      ? undefined
+                      : {
+                          left: `clamp(1.5rem, ${(stop.pos * 100).toFixed(2)}%, calc(100% - 1.75rem))`,
+                        }
+                  }
+                >
+                  <span className={classes["stop-rank"]}>{stop.name}</span>
+                  <span className={classes["stop-rating"]}>{stop.rating}</span>
+                  {/* The AP bonus is just one more rating above SSS+, so it
+                    reads as an extra line on that last stop. */}
+                  {afterCircle && isLast ? (
+                    <span
+                      className={classes["ap-rating"]}
+                      data-achieved={apBonus ? "" : undefined}
+                      aria-label={`AP 加成 Rating：${maxRating}`}
+                      title={
+                        apBonus
+                          ? "AP 加成：Rating 已 +1"
+                          : "達成 AP / AP+ 時 Rating +1"
+                      }
+                    >
+                      <img
+                        className={classes["ap-icon"]}
+                        src={apIcon}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      {maxRating}
+                    </span>
+                  ) : null}
+                </li>
+              )
+            })}
           </ol>
         </div>
       </section>
