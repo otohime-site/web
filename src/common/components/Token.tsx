@@ -138,13 +138,13 @@ const Token = () => {
                 <ol className={classes["howto-steps"]}>
                   <li>
                     <div>
-                      <span>將本頁加入書籤。</span>
-                      <small>加入時的標題為「更新 Otohime 成績單」。</small>
+                      <span>關閉對話框前，將本頁加入書籤。</span>
+                      <small>書籤的標題會變成「更新 Otohime 成績單」。</small>
                     </div>
                   </li>
                   <li>
                     <div>
-                      <span>編輯書籤。</span>
+                      <span>編輯書籤網址。</span>
                       <small>清空網址、貼上剛剛複製的網址並儲存。</small>
                     </div>
                   </li>
@@ -159,7 +159,7 @@ const Token = () => {
                 </p>
               </section>
               <Dialog.CloseTrigger asChild>
-                <button className="primary">我知道了</button>
+                <button className="primary">OK</button>
               </Dialog.CloseTrigger>
             </Dialog.Content>
           </Dialog.Positioner>
