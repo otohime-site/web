@@ -9,6 +9,7 @@ import Orange from "../images/ratings/orange.svg"
 import Platinum from "../images/ratings/platinum.svg"
 import Purple from "../images/ratings/purple.svg"
 import Rainbow from "../images/ratings/rainbow.svg"
+import RainbowKiwami from "../images/ratings/rainbow_kiwami.svg"
 import Red from "../images/ratings/red.svg"
 import Silver from "../images/ratings/silver.svg"
 import classes from "./Rating.module.css"
@@ -59,8 +60,10 @@ export const getRatingImage = (rating: number, legacy: boolean): any => {
       return Gold
     case rating < 15000:
       return Platinum
-    case isFinite(rating):
+    case rating < 16000:
       return Rainbow
+    case isFinite(rating):
+      return RainbowKiwami
   }
   return Normal
 }

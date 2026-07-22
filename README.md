@@ -65,4 +65,9 @@ Artworks in `public/favicon.ico`, `src/logo`, `src/dx_intl/images/course_ranks` 
 
 (C) 2021-2023 Akanyan, released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
+`src/dx_intl/images/ratings/rainbow_kiwami.svg` is a modified version of Akanyan's
+`rainbow.svg`, adapted by Hsiao-Ting Yu (littlebtc). As a derivative work it is likewise
+released under [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/),
+with the original attributed to Akanyan.
+
 Logos are generated with [RealFaviconGenerator.net](https://realfavicongenerator.net/).
