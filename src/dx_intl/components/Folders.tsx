@@ -102,11 +102,13 @@ const Folders = ({
   entries,
   filter,
   difficulty,
+  maxVersion,
   onFilterChange,
 }: {
   entries: ScoreTableEntry[]
   filter: ScoreFilter
   difficulty: number | null
+  maxVersion: number
   onFilterChange: (filter: ScoreFilter) => void
 }) => {
   // Category/version counts follow the selected difficulty. A null
@@ -141,12 +143,16 @@ const Folders = ({
           label,
           tag: `${categoryCounts.get(value)}`,
         })),
-        versionOptions: valueOptions.version.map(({ value, label }) => ({
-          value: `${value}`,
-          label,
-          title: displayVersionTitle(value),
-          tag: `${versionCounts[value]}`,
-        })),
+        // Versions are a static list that runs ahead of the song data
+        // during major version updates; hide the not-yet-released ones.
+        versionOptions: valueOptions.version
+          .filter(({ value }) => value <= maxVersion)
+          .map(({ value, label }) => ({
+            value: `${value}`,
+            label,
+            title: displayVersionTitle(value),
+            tag: `${versionCounts[value]}`,
+          })),
         levelOptions: levels.map((level, index) => ({
           value: `${index}`,
           label: `Lv ${level}`,
@@ -165,7 +171,7 @@ const Folders = ({
           },
         ],
       }
-    }, [entries, difficulty])
+    }, [entries, difficulty, maxVersion])
 
   const changeDimension = (key: ArrayFolderKey) => (values: string[]) => {
     const nums = values.map((v) => parseInt(v, 10))

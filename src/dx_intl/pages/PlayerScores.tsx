@@ -755,6 +755,7 @@ const PlayerScores = memo(function PlayerScores({
                   entries={folderEntries}
                   filter={filter}
                   difficulty={folderDifficulty}
+                  maxVersion={maxVersion}
                   onFilterChange={handleFolderChange}
                 />
               )}
