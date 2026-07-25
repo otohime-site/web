@@ -109,7 +109,7 @@ const dxIntlScoresDocument = graphql(
 )
 
 const DEFAULT_FOLDER: FolderQuery = "rating-new"
-const DEFAULT_FOLDER_DIFFICULTY = difficulties.indexOf("Expert")
+const DEFAULT_FOLDER_DIFFICULTY = difficulties.indexOf("Master")
 
 const getLevelQueryFragment = (
   level: (typeof levels)[number],
@@ -481,6 +481,7 @@ const PlayerScores = memo(function PlayerScores({
   const [allSongs, setAllSongs] = useState(false)
   const [expandedHash, setExpandedHash] = useState<string | null>(null)
   const [ratingImageOpen, setRatingImageOpen] = useState(false)
+  const [foldersOpen, setFoldersOpen] = useState(false)
 
   // Old or hand-edited URLs can combine mutually exclusive states. Remove
   // stale conditions so normal folders and folder=all stay deterministic.
@@ -653,6 +654,8 @@ const PlayerScores = memo(function PlayerScores({
         folder: getFolderQuery(nextFilter),
         filter: null,
       })
+      // Picking a folder is the whole interaction in non-advanced mode.
+      setFoldersOpen(false)
     },
     [setScoreQuery],
   )
@@ -708,7 +711,12 @@ const PlayerScores = memo(function PlayerScores({
 
   const toolbar = (
     <>
-      <Dialog.Root lazyMount unmountOnExit>
+      <Dialog.Root
+        lazyMount
+        unmountOnExit
+        open={foldersOpen}
+        onOpenChange={({ open }) => setFoldersOpen(open)}
+      >
         <Dialog.Trigger asChild>
           <button className={playerClasses["folders-trigger"]}>
             <IconFolder />
