@@ -1,5 +1,14 @@
 import Konva from "konva"
-import { memo, useEffect, useMemo, useState } from "react"
+import {
+  createContext,
+  memo,
+  use,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react"
 import {
   Group,
   Image as KonvaImage,
@@ -119,20 +128,81 @@ const HEADER_EM = BROWSER_ROOT_EM * HEADER_EXPORT_SCALE
 // Footer branding keeps its original export scale independently of the record.
 const FOOTER_EM = BROWSER_ROOT_EM * 4
 
+// Shared by every useImage in the scene: the decoded images, plus a count of
+// the requests still in flight so the root can export exactly once, when all of
+// them have settled. Both live in one object because they are one concern —
+// the images live in nested components, so this is passed through context.
+//
+// The cache exists because toggling a switch remounts the rank badges and
+// re-runs every block's useImage; without it each toggle would build fresh
+// Image elements and re-decode art already in memory. A settled entry resolves
+// during render, so the export isn't gated on work that's already done. null
+// marks a failed load — never re-requested, and Konva draws nothing for it.
+//
+// It is owned by the stage rather than the module so ~50 decoded covers
+// (~30MB) are released when the dialog closes instead of accumulating for the
+// page's lifetime as the user browses players.
+class ImageLoadTracker {
+  readonly cache = new Map<string, HTMLImageElement | null>()
+  pending = 0
+  private readonly onChange: () => void
+  constructor(onChange: () => void) {
+    this.onChange = onChange
+  }
+  add() {
+    this.pending++
+  }
+  settle(url: string, image: HTMLImageElement | null) {
+    this.cache.set(url, image)
+    this.pending--
+    this.onChange()
+  }
+  // A request abandoned mid-flight (a toggle swapping the scene) releases its
+  // slot without caching, or the pending count could never reach zero.
+  abandon() {
+    this.pending--
+    this.onChange()
+  }
+}
+const ImageLoadContext = createContext<ImageLoadTracker | null>(null)
+
 // Load an image element for use in Konva, requesting CORS so the resulting
 // canvas stays exportable (covers are served from Cloudflare R2 / covers.otohi.me).
 const useImage = (url: string): HTMLImageElement | undefined => {
-  const [image, setImage] = useState<HTMLImageElement>()
+  const tracker = use(ImageLoadContext)
+  // Reading the cache during render means a URL that already settled resolves
+  // on the first render, with no effect round-trip, so remounted badges and
+  // blocks paint immediately. The tracker re-renders the stage as entries land.
+  const image = tracker?.cache.get(url) ?? undefined
   useEffect(() => {
+    if (tracker == null || tracker.cache.has(url)) return
     const img = new window.Image()
-    const onLoad = () => setImage(img)
+    tracker.add()
+    // A missing or non-CORS cover must still settle, or the export would wait
+    // on it forever; Konva simply draws nothing for an image that never loads.
+    let settled = false
+    const settle = (image: HTMLImageElement | null) => () => {
+      if (settled) return
+      settled = true
+      tracker.settle(url, image)
+    }
+    const onLoad = settle(img)
+    const onError = settle(null)
     img.addEventListener("load", onLoad)
+    img.addEventListener("error", onError)
     // WebKit may issue or cache a non-CORS request when these are assigned in
     // the opposite order. Both must be in place before starting the request.
     img.crossOrigin = "anonymous"
     img.src = url
-    return () => img.removeEventListener("load", onLoad)
-  }, [url])
+    return () => {
+      img.removeEventListener("load", onLoad)
+      img.removeEventListener("error", onError)
+      if (!settled) {
+        settled = true
+        tracker.abandon()
+      }
+    }
+  }, [url, tracker])
   return image
 }
 
@@ -202,6 +272,23 @@ const RankImage = ({
   if (src == null || !image) return null
   const width = (image.naturalWidth / image.naturalHeight) * height
   return <KonvaImage image={image} x={x} y={y} width={width} height={height} />
+}
+
+// The site logo in the footer lockup. This is a component rather than a
+// useImage call in the root so that it renders below the ImageLoadContext
+// provider — every image in the scene is then counted the same way, and the
+// export gate stays a single "pending === 0" with no per-image exceptions.
+const FooterLogo = () => {
+  const image = useImage(logoUrl)
+  if (!image) return null
+  return (
+    <KonvaImage
+      image={image}
+      y={(FOOTER_HEIGHT - FOOTER_LOGO_SIZE) / 2}
+      width={FOOTER_LOGO_SIZE}
+      height={FOOTER_LOGO_SIZE}
+    />
+  )
 }
 
 // Trophy title bars in the DOM (Record.module.css) use a two-stop vertical
@@ -722,6 +809,7 @@ const PlayerRatingCanvas = ({
   showTitle,
   showRanks,
   showUrl,
+  onRender,
 }: {
   scoreTable: ScoreTableEntry[]
   info: RatingImageInfo
@@ -729,6 +817,7 @@ const PlayerRatingCanvas = ({
   showTitle: boolean
   showRanks: boolean
   showUrl: boolean
+  onRender: (blob: Blob) => void
 }) => {
   const {
     cardName,
@@ -741,10 +830,34 @@ const PlayerRatingCanvas = ({
     versionName,
   } = info
   const [fontsLoaded, setFontsLoaded] = useState(false)
+  const layerRef = useRef<Konva.Layer>(null)
+  // Bumped as images settle, so the scene re-renders to draw them and the
+  // export effect re-checks the pending count.
+  const [settledCount, bumpSettled] = useReducer(
+    (count: number) => count + 1,
+    0,
+  )
+  // Identity-stable so useImage's effect doesn't re-run and double-count.
+  const tracker = useMemo(() => new ImageLoadTracker(bumpSettled), [])
+  // Konva sizes four 2100x3750 canvases per stage — the layer's scene and hit
+  // canvases plus the stage's two buffers — at ~31.5MB each, over 120MB of
+  // backing store. destroy() resizes them to 0x0 (Konva.releaseCanvasOnDestroy
+  // is on by default), which frees that immediately instead of leaving it for
+  // whenever iOS Safari next collects.
+  useEffect(
+    () => () => {
+      layerRef.current?.getStage()?.destroy()
+    },
+    [],
+  )
   const hasRanks = showRanks && courseRank != null && classRank != null
   const hasUrl = showUrl && scoreUrl != null
   const hasTitle = showTitle && title.length > 0
-  const footerLogo = useImage(logoUrl)
+  // What the toggles actually change about the drawn scene. The export effect
+  // keys off this instead of the raw props: a toggle that doesn't alter the
+  // scene skips a redundant re-export, and anything new that changes the
+  // composition belongs here rather than appended to a dependency list.
+  const sceneKey = `${hasRanks}|${hasUrl}|${hasTitle}`
   const titleBarWidth = hasRanks
     ? Math.min(
         TITLE_BAR_MAX_WIDTH,
@@ -783,6 +896,10 @@ const PlayerRatingCanvas = ({
   // labels and song titles in M PLUS 2, plus the card name and user title in
   // M PLUS Rounded 1c — before rendering.
   useEffect(() => {
+    // Fonts can't un-load, and the toggles re-run this effect; without the
+    // guard every toggle rebuilds a ~50-title string and re-runs unicode-range
+    // matching on the main thread, right before the export.
+    if (fontsLoaded) return
     const mplus2Text = [
       `Rating NEW OLD Avg ${metaText}`,
       ...newEntries.map((entry) => entry.title),
@@ -796,7 +913,36 @@ const PlayerRatingCanvas = ({
     ])
       .then(() => setFontsLoaded(true))
       .catch(() => setFontsLoaded(true))
-  }, [cardName, title, metaText, newEntries, oldEntries])
+  }, [cardName, title, metaText, newEntries, oldEntries, fontsLoaded])
+
+  // A canvas can't be long-pressed to copy or save on iOS, so the stage is only
+  // an offscreen renderer and the dialog displays the PNG below. Export once
+  // the scene is complete: fonts resolved and every image settled. sceneKey
+  // re-exports when a toggle changes what's drawn without changing the count.
+  useEffect(() => {
+    if (!fontsLoaded || tracker.pending > 0) return
+    const canvas = layerRef.current?.getCanvas()._canvas
+    if (canvas == null) return
+    let cancelled = false
+    // Let Konva finish the draw this commit scheduled before reading it back.
+    const frame = requestAnimationFrame(() => {
+      // Read the layer's existing backing canvas rather than Konva's
+      // toBlob/toDataURL, which re-render the scene into a fresh destination
+      // canvas plus a buffer canvas — 31.5MB each at this size, on top of the
+      // live one. toBlob also encodes off the main thread, unlike toDataURL.
+      canvas.toBlob((blob) => {
+        // A newer toggle already superseded this export.
+        if (cancelled || blob == null) return
+        onRender(blob)
+      }, "image/png")
+    })
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frame)
+    }
+    // settledCount is the re-check trigger: tracker.pending is a mutable field,
+    // so it can't be a dependency on its own.
+  }, [onRender, fontsLoaded, tracker, settledCount, sceneKey])
 
   if (!fontsLoaded) {
     return null
@@ -846,152 +992,153 @@ const PlayerRatingCanvas = ({
       : 44
 
   return (
-    <Stage width={WIDTH} height={HEIGHT}>
-      <Layer>
-        <Rect width={WIDTH} height={HEIGHT} fill={BG_COLOR} />
+    <ImageLoadContext value={tracker}>
+      <Stage width={WIDTH} height={HEIGHT}>
+        {/* Nothing here is interactive. This skips hit-graph drawing on every
+            redraw; Konva still sizes the hit canvas up front, so it saves work
+            rather than memory. */}
+        <Layer ref={layerRef} listening={false}>
+          <Rect width={WIDTH} height={HEIGHT} fill={BG_COLOR} />
 
-        {/* Line 1: rating plate + class rank badge */}
-        <RatingPlate rating={rating} legacy={false} x={PADDING} y={line1Y} />
-        {hasRanks ? (
-          <RankImage
-            src={classRankImages[classRank]}
-            x={PADDING + PLATE_WIDTH + RANK_GAP}
-            y={line1Y + (PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
-            height={RANK_BADGE_HEIGHT}
-          />
-        ) : null}
-
-        {/* Line 2: card name plate + course rank badge */}
-        <Group x={PADDING} y={line2Y}>
-          <Rect
-            width={CARD_PLATE_WIDTH}
-            height={CARD_PLATE_HEIGHT}
-            cornerRadius={CARD_PLATE_FONT_SIZE * 0.2}
-            fill="#ffffff"
-            stroke="#cccccc"
-            strokeWidth={CARD_PLATE_BORDER}
-          />
-          <Text
-            x={CARD_PLATE_PADDING + CARD_PLATE_BORDER}
-            y={0}
-            width={
-              CARD_PLATE_WIDTH - (CARD_PLATE_PADDING + CARD_PLATE_BORDER) * 2
-            }
-            height={CARD_PLATE_HEIGHT}
-            verticalAlign="middle"
-            text={cardName}
-            fontSize={CARD_PLATE_FONT_SIZE}
-            fontStyle="700"
-            fontFamily="M PLUS Rounded 1c"
-            fill="#000000"
-            wrap="none"
-            ellipsis={true}
-          />
-        </Group>
-        {hasRanks ? (
-          <RankImage
-            src={courseRankImages[courseRank]}
-            x={PADDING + CARD_PLATE_WIDTH + RANK_GAP}
-            y={line2Y + (CARD_PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
-            height={RANK_BADGE_HEIGHT}
-          />
-        ) : null}
-
-        {/* Line 3: user-assigned title with trophy effect */}
-        {hasTitle ? (
-          <TitlePlate
-            title={title}
-            trophy={trophy}
-            x={PADDING}
-            y={line3Y}
-            width={titleBarWidth}
-            height={TITLE_BAR_HEIGHT}
-          />
-        ) : null}
-
-        {/* Snapshot metadata sits beside the shorter trophy plate. */}
-        {metaText !== "" ? (
-          <Text
-            x={PADDING + (hasTitle ? titleBarWidth + RANK_GAP : 0)}
-            y={line3Y}
-            height={TITLE_BAR_HEIGHT}
-            verticalAlign="middle"
-            text={metaText}
-            fontSize={HEADER_EM}
-            fontStyle="600"
-            fontFamily="M PLUS 2"
-            fill="#8a7698"
-          />
-        ) : null}
-
-        {/* Top-right corner: score URL + QR code with logo badge */}
-        {hasUrl ? (
-          <>
-            <Text
-              x={cornerUrlX}
-              y={cornerUrlY}
-              width={cornerUrlWidth}
-              height={CORNER_URL_HEIGHT}
-              align="right"
-              verticalAlign="middle"
-              text={scoreUrl}
-              fontSize={cornerUrlFontSize}
-              fontFamily="M PLUS 2"
-              fill="#c8c8c8"
-              wrap="none"
-            />
-            <QrCode url={scoreUrl} x={cornerX} y={cornerQrY} />
-          </>
-        ) : null}
-
-        <Section title="NEW" entries={newEntries} y={newSectionY} />
-        <Section title="OLD" entries={oldEntries} y={oldSectionY} />
-
-        {/* App-bar-style footer lockup with a subtle top rule. */}
-        <Rect
-          x={PADDING}
-          y={HEIGHT - FOOTER_HEIGHT}
-          width={WIDTH - PADDING * 2}
-          height={2}
-          fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-          fillLinearGradientEndPoint={{ x: WIDTH - PADDING * 2, y: 0 }}
-          fillLinearGradientColorStops={[
-            0,
-            "#d9c8e500",
-            0.5,
-            "#bca5cc",
-            1,
-            "#d9c8e500",
-          ]}
-        />
-        <Group
-          x={
-            (WIDTH - FOOTER_LOGO_SIZE - FOOTER_BRAND_GAP - FOOTER_WORD_WIDTH) /
-            2
-          }
-          y={HEIGHT - FOOTER_HEIGHT}
-        >
-          {footerLogo ? (
-            <KonvaImage
-              image={footerLogo}
-              y={(FOOTER_HEIGHT - FOOTER_LOGO_SIZE) / 2}
-              width={FOOTER_LOGO_SIZE}
-              height={FOOTER_LOGO_SIZE}
+          {/* Line 1: rating plate + class rank badge */}
+          <RatingPlate rating={rating} legacy={false} x={PADDING} y={line1Y} />
+          {hasRanks ? (
+            <RankImage
+              src={classRankImages[classRank]}
+              x={PADDING + PLATE_WIDTH + RANK_GAP}
+              y={line1Y + (PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
+              height={RANK_BADGE_HEIGHT}
             />
           ) : null}
-          <Text
-            x={FOOTER_LOGO_SIZE + FOOTER_BRAND_GAP}
-            width={FOOTER_WORD_WIDTH}
-            height={FOOTER_HEIGHT}
-            verticalAlign="middle"
-            text="Otohime"
-            fontSize={FOOTER_WORD_FONT_SIZE}
-            fontFamily="McLaren"
-            fill="#5f4181"
+
+          {/* Line 2: card name plate + course rank badge */}
+          <Group x={PADDING} y={line2Y}>
+            <Rect
+              width={CARD_PLATE_WIDTH}
+              height={CARD_PLATE_HEIGHT}
+              cornerRadius={CARD_PLATE_FONT_SIZE * 0.2}
+              fill="#ffffff"
+              stroke="#cccccc"
+              strokeWidth={CARD_PLATE_BORDER}
+            />
+            <Text
+              x={CARD_PLATE_PADDING + CARD_PLATE_BORDER}
+              y={0}
+              width={
+                CARD_PLATE_WIDTH - (CARD_PLATE_PADDING + CARD_PLATE_BORDER) * 2
+              }
+              height={CARD_PLATE_HEIGHT}
+              verticalAlign="middle"
+              text={cardName}
+              fontSize={CARD_PLATE_FONT_SIZE}
+              fontStyle="700"
+              fontFamily="M PLUS Rounded 1c"
+              fill="#000000"
+              wrap="none"
+              ellipsis={true}
+            />
+          </Group>
+          {hasRanks ? (
+            <RankImage
+              src={courseRankImages[courseRank]}
+              x={PADDING + CARD_PLATE_WIDTH + RANK_GAP}
+              y={line2Y + (CARD_PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
+              height={RANK_BADGE_HEIGHT}
+            />
+          ) : null}
+
+          {/* Line 3: user-assigned title with trophy effect */}
+          {hasTitle ? (
+            <TitlePlate
+              title={title}
+              trophy={trophy}
+              x={PADDING}
+              y={line3Y}
+              width={titleBarWidth}
+              height={TITLE_BAR_HEIGHT}
+            />
+          ) : null}
+
+          {/* Snapshot metadata sits beside the shorter trophy plate. */}
+          {metaText !== "" ? (
+            <Text
+              x={PADDING + (hasTitle ? titleBarWidth + RANK_GAP : 0)}
+              y={line3Y}
+              height={TITLE_BAR_HEIGHT}
+              verticalAlign="middle"
+              text={metaText}
+              fontSize={HEADER_EM}
+              fontStyle="600"
+              fontFamily="M PLUS 2"
+              fill="#8a7698"
+            />
+          ) : null}
+
+          {/* Top-right corner: score URL + QR code with logo badge */}
+          {hasUrl ? (
+            <>
+              <Text
+                x={cornerUrlX}
+                y={cornerUrlY}
+                width={cornerUrlWidth}
+                height={CORNER_URL_HEIGHT}
+                align="right"
+                verticalAlign="middle"
+                text={scoreUrl}
+                fontSize={cornerUrlFontSize}
+                fontFamily="M PLUS 2"
+                fill="#c8c8c8"
+                wrap="none"
+              />
+              <QrCode url={scoreUrl} x={cornerX} y={cornerQrY} />
+            </>
+          ) : null}
+
+          <Section title="NEW" entries={newEntries} y={newSectionY} />
+          <Section title="OLD" entries={oldEntries} y={oldSectionY} />
+
+          {/* App-bar-style footer lockup with a subtle top rule. */}
+          <Rect
+            x={PADDING}
+            y={HEIGHT - FOOTER_HEIGHT}
+            width={WIDTH - PADDING * 2}
+            height={2}
+            fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+            fillLinearGradientEndPoint={{ x: WIDTH - PADDING * 2, y: 0 }}
+            fillLinearGradientColorStops={[
+              0,
+              "#d9c8e500",
+              0.5,
+              "#bca5cc",
+              1,
+              "#d9c8e500",
+            ]}
           />
-        </Group>
-      </Layer>
-    </Stage>
+          <Group
+            x={
+              (WIDTH -
+                FOOTER_LOGO_SIZE -
+                FOOTER_BRAND_GAP -
+                FOOTER_WORD_WIDTH) /
+              2
+            }
+            y={HEIGHT - FOOTER_HEIGHT}
+          >
+            <FooterLogo />
+            <Text
+              x={FOOTER_LOGO_SIZE + FOOTER_BRAND_GAP}
+              width={FOOTER_WORD_WIDTH}
+              height={FOOTER_HEIGHT}
+              verticalAlign="middle"
+              text="Otohime"
+              fontSize={FOOTER_WORD_FONT_SIZE}
+              fontFamily="McLaren"
+              fill="#5f4181"
+            />
+          </Group>
+        </Layer>
+      </Stage>
+    </ImageLoadContext>
   )
 }
 

@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--size-2);
-  /* Cap the dialog to the largest scaled canvas width (2100 * 0.25 = 525px)
-     plus its padding; on narrow screens it shrinks and the canvas scales to
-     fit. A fixed height keeps the dialog from resizing between the loading
-     placeholder and the rendered canvas. */
+  /* Cap the dialog to the largest sensible image width (2100 / 4 = 525px) plus
+     its padding; on narrow screens it shrinks and the image follows. A fixed
+     height keeps the dialog from resizing between the loading placeholder and
+     the rendered image. */
   width: min(90vw, calc(525px + 2 * var(--size-4)));
   height: 90vh;
 }
@@ -47,7 +47,7 @@
 
 .canvas {
   /* Fill the remaining dialog height so the box is stable whether it holds the
-     loading placeholder or the rendered canvas. */
+     loading placeholder or the rendered image. */
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -63,18 +63,21 @@
   }
 }
 
-/* Konva renders a fixed 2100x3750 stage (a .konvajs-content div wrapping the
-   canvas) at its intrinsic size. The --rating-scale variable (set on .canvas
-   from its measured width, capped at 0.25) scales the stage down to fit; the
-   canvas keeps its full resolution so the download stays crisp. The box
-   reserves the scaled size since a transform doesn't affect layout. */
-.canvas-scale {
-  width: calc(2100px * var(--rating-scale, 0.25));
-  height: calc(3750px * var(--rating-scale, 0.25));
+/* The PNG carries the stage's intrinsic 2100x3750, so the aspect ratio holds
+   on its own and the image just tracks the dialog width. */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
-  /* .konvajs-content is the stage div Konva creates as the canvas's parent. */
-  & > :first-child {
-    transform: scale(var(--rating-scale, 0.25));
-    transform-origin: top left;
-  }
+/* Holds the Konva stage, which exists only to produce the bitmap above. It
+   stays in the layout (Konva needs a real box) but never renders. */
+.offscreen {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
 }
