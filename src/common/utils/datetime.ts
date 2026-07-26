@@ -19,10 +19,18 @@ const df = new Intl.DateTimeFormat("zh-TW", {
   month: "long",
   day: "numeric",
 })
+const numericDf = new Intl.DateTimeFormat("zh-TW", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+})
 const rtf = new Intl.RelativeTimeFormat("zh-TW", { style: "short" })
 
 export const formatDate = (input: Date): string => {
   return df.format(input)
+}
+export const formatNumericDate = (input: Date): string => {
+  return numericDf.format(input)
 }
 export const formatDateTime = (input: Date): string => {
   return dtf.format(input)

@@ -92,9 +92,12 @@ type Ordering =
   | "rating"
   | "combo_flag"
   | "sync_flag"
+  | "updated_at"
   | "sss_rate"
   | "fc_rate"
   | "ap_rate"
+  | "rating_group_average"
+  | "rating_group_difference"
 
 const dxIntlScoresDocument = graphql(
   `
@@ -321,21 +324,37 @@ const scoreQueryParsers = {
   difficulty: folderDifficultyParser,
 }
 
-const orderingCollection = createListCollection({
-  items: [
-    { group: "譜面", value: "index", label: "預設" },
-    { group: "譜面", value: "level", label: "樂曲等級" },
-    { group: "譜面", value: "internal_lv", label: "譜面定數" },
-    { group: "成績單", value: "score", label: "成績" },
-    { group: "成績單", value: "rating", label: "Rating 分數" },
-    { group: "成績單", value: "combo_flag", label: "Combo 標記" },
-    { group: "成績單", value: "sync_flag", label: "Sync 標記" },
-    { group: "玩家統計", value: "sss_rate", label: "SSS Rate" },
-    { group: "玩家統計", value: "fc_rate", label: "FC Rate" },
-    { group: "玩家統計", value: "ap_rate", label: "AP Rate" },
-  ],
-  groupBy: (item) => item.group,
-})
+const getOrderingCollection = (ratingGroupTarget?: number) =>
+  createListCollection({
+    items: [
+      { group: "譜面", value: "index", label: "預設" },
+      { group: "譜面", value: "level", label: "樂曲等級" },
+      { group: "譜面", value: "internal_lv", label: "譜面定數" },
+      { group: "成績單", value: "score", label: "成績" },
+      { group: "成績單", value: "rating", label: "Rating 分數" },
+      { group: "成績單", value: "combo_flag", label: "Combo 標記" },
+      { group: "成績單", value: "sync_flag", label: "Sync 標記" },
+      { group: "成績單", value: "updated_at", label: "分數更新時間" },
+      { group: "玩家統計", value: "sss_rate", label: "SSS Rate" },
+      { group: "玩家統計", value: "fc_rate", label: "FC Rate" },
+      { group: "玩家統計", value: "ap_rate", label: "AP Rate" },
+      ...(ratingGroupTarget != null
+        ? [
+            {
+              group: "玩家統計",
+              value: "rating_group_average",
+              label: `${ratingGroupTarget} 平均`,
+            },
+            {
+              group: "玩家統計",
+              value: "rating_group_difference",
+              label: `${ratingGroupTarget} 平均差距`,
+            },
+          ]
+        : []),
+    ],
+    groupBy: (item) => item.group,
+  })
 
 const getFolderFilter = (
   folder: FolderQuery,
@@ -404,9 +423,14 @@ const PlayerScores = memo(function PlayerScores({
     variables: { nickname },
   })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const ratingGroupTarget = getClosestRatingTarget(rating)
+  const orderingCollection = useMemo(
+    () => getOrderingCollection(ratingLegacy ? undefined : ratingGroupTarget),
+    [ratingGroupTarget, ratingLegacy],
+  )
   const [ratingGroupResult] = useQuery({
     query: dxIntlScorePerRatingGroupDocument,
-    variables: { ratingTarget: getClosestRatingTarget(rating) },
+    variables: { ratingTarget: ratingGroupTarget },
     pause: ratingLegacy,
   })
   const flattedEntries = useMemo(
@@ -458,6 +482,7 @@ const PlayerScores = memo(function PlayerScores({
     )
     const scoreTable = flattedEntries.map<ScoreTableEntry>((entry, index) => {
       const score = scoresMap.get(entry.hash)
+      const ratingGroupAverage = ratingGroupAverageMap.get(entry.hash)
       scoresMap.delete(entry.hash)
       return {
         index,
@@ -466,7 +491,11 @@ const PlayerScores = memo(function PlayerScores({
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
-        rating_group_average: ratingGroupAverageMap.get(entry.hash),
+        rating_group_average: ratingGroupAverage,
+        rating_group_difference:
+          score?.score != null && ratingGroupAverage != null
+            ? score.score - ratingGroupAverage
+            : undefined,
         rating_latest: afterCircle
           ? entry.version >= maxVersion - 1
           : entry.version === maxVersion,
@@ -622,6 +651,9 @@ const PlayerScores = memo(function PlayerScores({
       internal_lv: (a: ScoreTableEntry, b: ScoreTableEntry) =>
         (a.internal_lv ?? levelCompareKey[a.level]) -
         (b.internal_lv ?? levelCompareKey[b.level]),
+      updated_at: (a: ScoreTableEntry, b: ScoreTableEntry) =>
+        (a.updated_at != null ? Date.parse(a.updated_at) : 0) -
+        (b.updated_at != null ? Date.parse(b.updated_at) : 0),
     }),
     [levelFiltered],
   )
@@ -1021,6 +1053,8 @@ const PlayerScores = memo(function PlayerScores({
             table={table.entries}
             showCover={showCover}
             afterCircle={afterCircle}
+            ratingGroupTarget={ratingLegacy ? undefined : ratingGroupTarget}
+            valueKey={ratingFolder ? "rating" : ordering}
             expandedHash={expandedHash}
             onNoteToggle={handleNoteToggle}
           />

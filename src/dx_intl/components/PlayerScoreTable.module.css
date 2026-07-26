@@ -101,9 +101,15 @@ td.col-cover img {
   width: 2rem;
   font-size: var(--font-size-0);
 }
-.col-rating {
+.col-value {
   width: 2.4rem;
   font-size: var(--font-size-0);
+}
+.wide-value .col-value {
+  width: 4.5rem;
+}
+.date-value .col-value {
+  width: 6.5rem;
 }
 .col-ranking {
   width: 3.2rem;
@@ -120,7 +126,7 @@ td.col-cover img {
     vertical-align: middle;
   }
 }
-td.col-rating {
+td.col-value {
   text-align: right;
 }
 td.col-ranking {

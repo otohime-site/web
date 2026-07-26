@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
+import { formatDate } from "../../common/utils/datetime"
 import apIcon from "../images/flags/ap.svg"
 import {
   ESTIMATED_INTERNAL_LV,
@@ -32,12 +33,14 @@ const ChartDetail = ({
   entry,
   showCover,
   afterCircle,
+  ratingGroupTarget,
 }: {
   entry: ScoreTableEntry
   // The table row already shows the cover, title, difficulty and
   // internal lv, so the detail only fills in what is missing there.
   showCover: boolean
   afterCircle: boolean
+  ratingGroupTarget?: number
 }) => {
   const internalLv = entry.internal_lv || ESTIMATED_INTERNAL_LV[entry.level]
   const score = entry.score ?? 0
@@ -122,24 +125,57 @@ const ChartDetail = ({
           </p>
         </Link>
       </div>
-      <ul className={classes.rates}>
-        <li>
-          <span>Play</span>
-          <span>{entry?.play ?? 0}</span>
-        </li>
-        <li>
-          <span>SSS Rate</span>
-          <span>{((entry?.sss_rate ?? 0) * 100).toFixed(1)}%</span>
-        </li>
-        <li>
-          <span>FC Rate</span>
-          <span>{((entry?.fc_rate ?? 0) * 100).toFixed(1)}%</span>
-        </li>
-        <li>
-          <span>AP Rate</span>
-          <span>{((entry?.ap_rate ?? 0) * 100).toFixed(1)}%</span>
-        </li>
-      </ul>
+      <div className={classes.statistics}>
+        <dl className={classes.rates}>
+          <div>
+            <dt>Play</dt>
+            <dd>{entry.play ?? 0}</dd>
+          </div>
+          <div>
+            <dt>SSS Rate</dt>
+            <dd>{((entry.sss_rate ?? 0) * 100).toFixed(1)}%</dd>
+          </div>
+          <div>
+            <dt>FC Rate</dt>
+            <dd>{((entry.fc_rate ?? 0) * 100).toFixed(1)}%</dd>
+          </div>
+          <div>
+            <dt>AP Rate</dt>
+            <dd>{((entry.ap_rate ?? 0) * 100).toFixed(1)}%</dd>
+          </div>
+        </dl>
+        <div className={classes.metadata}>
+          <dl className={classes["group-average"]}>
+            <dt title="Rating Group Average">
+              {ratingGroupTarget != null
+                ? `${ratingGroupTarget} 平均`
+                : "分組平均"}
+            </dt>
+            <dd>
+              {entry.rating_group_average != null
+                ? `${entry.rating_group_average.toFixed(4)}%`
+                : "—"}
+              {entry.rating_group_difference != null ? (
+                <span
+                  className={classes["average-diff"]}
+                  title="Difference from current score"
+                >
+                  ({entry.rating_group_difference > 0 ? "+" : ""}
+                  {entry.rating_group_difference.toFixed(4)}%)
+                </span>
+              ) : null}
+            </dd>
+          </dl>
+          {entry.updated_at != null ? (
+            <p className={classes["updated-at"]}>
+              更新於{" "}
+              <time dateTime={entry.updated_at}>
+                {formatDate(new Date(entry.updated_at))}
+              </time>
+            </p>
+          ) : null}
+        </div>
+      </div>
       <section className={classes.rating} aria-label="Rating">
         <div className={classes["rating-header"]}>
           <h6>

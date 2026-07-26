@@ -1,4 +1,4 @@
-/* Wide rows: info left, rate chips right, the gauge spanning below.
+/* Wide rows: info left, statistics right, the gauge spanning below.
    Collapses to a single-column stack on narrow screens. */
 .detail {
   display: grid;
@@ -15,14 +15,13 @@
   grid-column: 1 / -1;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 720px) {
   .detail {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .rates {
+  .statistics {
     grid-column: 1;
-    justify-content: flex-start;
   }
 }
 
@@ -49,32 +48,105 @@
   }
 }
 
-.rates {
+.statistics {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: var(--size-2);
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--size-1);
+}
+
+.rates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(4.5rem, auto));
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-2);
+  background: var(--surface-3);
 
-  li {
+  div {
     display: flex;
-    min-width: 5em;
     flex-direction: column;
-    padding: var(--size-2);
-    border-radius: var(--radius-3);
-    background: var(--surface-3);
-    list-style-type: none;
+    justify-content: center;
+    padding: var(--size-1) var(--size-2);
     text-align: right;
+  }
 
-    span:first-child {
-      font-size: 0.75rem;
-      font-weight: 400;
+  div + div {
+    border-inline-start: 1px solid var(--surface-4);
+  }
+
+  dt {
+    color: var(--text-2);
+    font-size: 0.7rem;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  dd {
+    margin: 0;
+    font-size: var(--font-size-1);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--size-1) var(--size-3);
+}
+
+.group-average {
+  display: flex;
+  align-items: baseline;
+  gap: var(--size-1);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  dt {
+    color: var(--text-2);
+    font-size: 0.7rem;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+.average-diff {
+  margin-inline-start: var(--size-1);
+  color: var(--text-2);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.updated-at {
+  margin: 0;
+  margin-inline-start: auto;
+  color: var(--text-2);
+  font-size: 0.7rem;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .rates {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    div {
+      padding-inline: var(--size-1);
+      text-align: center;
     }
-    span:last-child {
-      font-size: var(--font-size-2);
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
+
+    dt {
+      font-size: 0.65rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

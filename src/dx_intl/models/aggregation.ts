@@ -140,6 +140,7 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   sync_flag: number
   updated_at?: string
   rating_group_average?: number
+  rating_group_difference?: number
   rating_latest: boolean
   rating: number
   // Record the ranking for the rating in old/new songs
