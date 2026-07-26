@@ -16,6 +16,7 @@ import IconPublic from "~icons/mdi/public"
 import { PageMeta } from "../../common/components/PageMeta"
 import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
+import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { graphql, readFragment } from "../../graphql"
 import Record from "../components/Record"
 import { dxIntlRecordsFields } from "../models/fragments"
@@ -226,22 +227,36 @@ const Player = ({ params }: { params: Params }) => {
             ) : null}
             <div className={classes["player-toolbar"]}>
               <div
-                className={`${classes["player-identity"]} ${classes["hide-condensed"]}`}
+                className={`${classes["player-meta"]} ${classes["hide-condensed"]}`}
               >
-                {player.private ? (
-                  <IconLock
-                    aria-label="私人成績單"
-                    role="img"
-                    title="私人成績單"
-                  />
-                ) : (
-                  <IconPublic
-                    aria-label="公開成績單"
-                    role="img"
-                    title="公開成績單"
-                  />
-                )}
-                <span>{params.nickname}</span>
+                <div className={classes["player-identity"]}>
+                  {player.private ? (
+                    <IconLock
+                      aria-label="私人成績單"
+                      role="img"
+                      title="私人成績單"
+                    />
+                  ) : (
+                    <IconPublic
+                      aria-label="公開成績單"
+                      role="img"
+                      title="公開成績單"
+                    />
+                  )}
+                  <span>{params.nickname}</span>
+                </div>
+                <span className={classes["updated-at"]}>
+                  {player.updated_at != null ? (
+                    <time
+                      dateTime={player.updated_at}
+                      title={formatDateTime(new Date(player.updated_at))}
+                    >
+                      {formatRelative(new Date(player.updated_at))}更新
+                    </time>
+                  ) : (
+                    "尚未更新"
+                  )}
+                </span>
               </div>
               {ownsScoreTable ? (
                 <PlayerForm
@@ -251,7 +266,9 @@ const Player = ({ params }: { params: Params }) => {
                     navigate(open ? "/edit" : "/", { replace: !open })
                   }
                   trigger={
-                    <button className={classes["edit-button"]}>
+                    <button
+                      className={`${classes["edit-button"]} ${classes["hide-condensed"]}`}
+                    >
                       <IconPencil /> 編輯
                     </button>
                   }

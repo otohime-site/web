@@ -1,10 +1,63 @@
+.sidebar-tools {
+  display: grid;
+  gap: var(--size-2);
+  margin: 0 var(--size-4) var(--size-3) 0;
+  font-family: "M PLUS 2";
+}
+
+.song-search {
+  display: flex;
+  height: 2.75rem;
+  min-width: 0;
+  align-items: center;
+  gap: var(--size-2);
+  margin: 0;
+  padding: 0 var(--size-3);
+  border: var(--border-size-1) solid var(--surface-4);
+  border-radius: var(--radius-2);
+  background: var(--surface-1);
+  font-family: "M PLUS 2";
+
+  &:focus-within {
+    border-color: var(--otohime-5);
+    outline: 2px solid var(--otohime-5);
+    outline-offset: -1px;
+  }
+
+  > svg {
+    flex: 0 0 auto;
+    color: var(--text-2);
+    font-size: var(--font-size-3);
+  }
+
+  > input {
+    min-width: 0;
+    height: 100%;
+    flex: 1 1 auto;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-1);
+    font-family: inherit;
+    font-size: 16px;
+
+    &::placeholder {
+      color: var(--text-2);
+      font-size: var(--font-size-1);
+      opacity: 1;
+    }
+  }
+}
+
 .view-settings {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--size-2) var(--size-4);
-  margin: 0 var(--size-4) var(--size-3) 0;
-  font-family: "M PLUS 2";
+  margin: 0;
+  font-family: inherit;
 }
 
 .difficulty-folders {
@@ -96,12 +149,56 @@
 }
 
 @media (max-width: 480px) {
+  .sidebar-tools {
+    gap: var(--size-1);
+    margin-bottom: var(--size-2);
+  }
+
+  .view-settings {
+    justify-content: space-between;
+    gap: var(--size-1) var(--size-2);
+    padding: var(--size-1);
+  }
+
+  .rating-notice {
+    margin-bottom: var(--size-2);
+
+    > [data-severity] {
+      gap: var(--size-1);
+      padding: var(--size-2);
+    }
+  }
+
+  .score-stats-block {
+    padding: var(--size-2);
+  }
+
+  .stats-header {
+    gap: var(--size-1);
+    margin-bottom: var(--size-1);
+  }
+
+  .stats-groups,
+  .stats-group {
+    gap: var(--size-1);
+  }
+
   .stats-group {
     grid-template-columns: 1fr;
   }
 
   .stats-group h3 {
     margin-top: 0;
+  }
+
+  .stats-list {
+    grid-template-columns: repeat(auto-fill, minmax(2.75rem, 1fr));
+    gap: 0;
+
+    li {
+      min-width: 2.75rem;
+      padding: var(--size-1) 0;
+    }
   }
 }
 
@@ -129,7 +226,7 @@
     margin-inline: calc(var(--size-1) - var(--size-2));
   }
 
-  .view-settings {
+  .sidebar-tools {
     margin-right: 0;
   }
 
@@ -143,5 +240,11 @@
 
   .score-stats-block {
     margin: 0 0 var(--size-4);
+  }
+}
+
+@media (max-width: 720px) {
+  .song-search {
+    height: 2.5rem;
   }
 }

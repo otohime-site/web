@@ -52,10 +52,10 @@ export const filterEntry = (
 
 // Advanced mode: a list of conditions AND-ed together.
 // Range conditions hold [min, max] (level as indexes of `levels`,
-// internal_lv as the raw chart constant). Values conditions hold values
-// OR-ed inside the condition; an empty array matches everything,
-// like a freshly added, not yet filled-in condition.
-export type RangeConditionKey = "level" | "internal_lv"
+// internal_lv as the raw chart constant, score as a percentage). Values
+// conditions hold values OR-ed inside the condition; an empty array matches
+// everything, like a freshly added, not yet filled-in condition.
+export type RangeConditionKey = "level" | "internal_lv" | "score"
 export type ValuesConditionKey =
   "category" | "version" | "deluxe" | "difficulty" | "combo_flag" | "sync_flag"
 export type ConditionKey = RangeConditionKey | ValuesConditionKey
@@ -66,10 +66,13 @@ export type Condition =
 
 export const INTERNAL_LV_MIN = 10
 export const INTERNAL_LV_MAX = 15
+export const SCORE_MIN = 0
+export const SCORE_MAX = 101
 
 export const conditionLabels: Record<ConditionKey, string> = {
   level: "等級",
   internal_lv: "譜面定數",
+  score: "達成率",
   category: "分類",
   version: "版本",
   deluxe: "譜面類型",
@@ -117,7 +120,9 @@ export const defaultCondition = (key: ConditionKey): Condition =>
     ? { key, range: [levels.indexOf("13"), levels.indexOf("14")] }
     : key === "internal_lv"
       ? { key, range: [13, 14] }
-      : { key, values: [] }
+      : key === "score"
+        ? { key, range: [SCORE_MIN, SCORE_MAX] }
+        : { key, values: [] }
 
 // A full-range / nothing-picked condition does not restrict anything.
 // Callers avoid listing the whole table until at least one condition
@@ -131,13 +136,17 @@ export const isEffectiveCondition = (condition: Condition): boolean => {
         condition.range[0] > INTERNAL_LV_MIN ||
         condition.range[1] < INTERNAL_LV_MAX
       )
+    case "score":
+      // A score condition is useful even at its full range: it explicitly
+      // opts into listing every chart, with unplayed charts treated as 0%.
+      return true
     default:
       return condition.values.length > 0
   }
 }
 
-// Avoid floating point issues on the 0.1-stepped internal lv bounds
-const INTERNAL_LV_EPSILON = 1e-6
+// Avoid floating point issues on the 0.1-stepped range bounds
+const RANGE_EPSILON = 1e-6
 
 const matchCondition = (
   entry: ScoreTableEntry,
@@ -152,8 +161,13 @@ const matchCondition = (
       // Only charts with a known constant can match
       return (
         entry.internal_lv != null &&
-        entry.internal_lv >= condition.range[0] - INTERNAL_LV_EPSILON &&
-        entry.internal_lv <= condition.range[1] + INTERNAL_LV_EPSILON
+        entry.internal_lv >= condition.range[0] - RANGE_EPSILON &&
+        entry.internal_lv <= condition.range[1] + RANGE_EPSILON
+      )
+    case "score":
+      return (
+        (entry.score ?? SCORE_MIN) >= condition.range[0] - RANGE_EPSILON &&
+        (entry.score ?? SCORE_MIN) <= condition.range[1] + RANGE_EPSILON
       )
     case "category":
       return (
@@ -259,6 +273,13 @@ const getConditionTitle = (condition: Condition): string | null => {
         "定數",
         (v) => v.toFixed(1),
       )
+    case "score":
+      return getRangeTitle(
+        condition.range,
+        [SCORE_MIN, SCORE_MAX],
+        "達成率",
+        (v) => `${v.toFixed(1)}%`,
+      )
     // The flag names alone (無, FC, …) are ambiguous between the two
     // flag dimensions, so single values keep a Combo/Sync prefix.
     case "combo_flag":
@@ -285,4 +306,17 @@ const getConditionTitle = (condition: Condition): string | null => {
 export const getConditionsTitle = (conditions: Condition[]): string => {
   const parts = conditions.map(getConditionTitle).filter((part) => part != null)
   return parts.length > 0 ? parts.join("・") : "全曲"
+}
+
+const normalizeSearchText = (value: string): string =>
+  value.normalize("NFKC").toLocaleLowerCase()
+
+export const matchesSongSearch = (
+  entry: Pick<ScoreTableEntry, "title" | "artist">,
+  query: string,
+): boolean => {
+  const terms = normalizeSearchText(query).trim().split(/\s+/).filter(Boolean)
+  if (terms.length === 0) return true
+  const searchableText = normalizeSearchText(`${entry.title}\n${entry.artist}`)
+  return terms.every((term) => searchableText.includes(term))
 }

@@ -14,13 +14,12 @@ import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconFolder from "~icons/mdi/folder"
 import IconImage from "~icons/mdi/image"
+import IconMagnify from "~icons/mdi/magnify"
 import IconSortVariant from "~icons/mdi/sort-variant"
-import IconUpdate from "~icons/mdi/update"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
-import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
@@ -56,6 +55,8 @@ import {
   EMPTY_FILTER,
   INTERNAL_LV_MAX,
   INTERNAL_LV_MIN,
+  SCORE_MAX,
+  SCORE_MIN,
   ScoreFilter,
   ValuesConditionKey,
   filterEntry,
@@ -63,6 +64,7 @@ import {
   getConditionsTitle,
   getFilterTitle,
   isEffectiveCondition,
+  matchesSongSearch,
   valueOptions,
 } from "../models/filter"
 import { dxIntlScoresFields } from "../models/fragments"
@@ -235,6 +237,8 @@ const serializeCondition = (condition: Condition): string => {
       return `level-${getLevelQueryFragment(levels[condition.range[0]])}~${getLevelQueryFragment(levels[condition.range[1]])}`
     case "internal_lv":
       return `internal-lv-${condition.range[0].toFixed(1)}~${condition.range[1].toFixed(1)}`
+    case "score":
+      return `score-${condition.range[0].toFixed(1)}~${condition.range[1].toFixed(1)}`
     default: {
       const separator = condition.key === "category" ? "" : "."
       const values = condition.values
@@ -288,6 +292,14 @@ const parseCondition = (value: string): Condition | null => {
       ? null
       : { key: "internal_lv", range }
   }
+  if (value.startsWith("score-")) {
+    const range = parseRange(value.slice("score-".length), (bound) => {
+      if (!/^\d+(?:\.\d)?$/.test(bound)) return null
+      const score = Number(bound)
+      return score >= SCORE_MIN && score <= SCORE_MAX ? score : null
+    })
+    return range == null || range[0] > range[1] ? null : { key: "score", range }
+  }
   for (const [key, prefix] of Object.entries(valueConditionPrefixes) as Array<
     [ValuesConditionKey, string]
   >) {
@@ -318,10 +330,16 @@ const conditionsParser = createMultiParser<Condition[]>({
     ),
 }).withDefault([])
 
+const searchParser = createParser<string>({
+  parse: (value) => (value.trim() === "" ? null : value),
+  serialize: String,
+}).withDefault("")
+
 const scoreQueryParsers = {
   folder: folderParser,
   filter: conditionsParser,
   difficulty: folderDifficultyParser,
+  search: searchParser,
 }
 
 const getOrderingCollection = (ratingGroupTarget?: number) =>
@@ -547,7 +565,12 @@ const PlayerScores = memo(function PlayerScores({
   ])
 
   const [scoreQuery, setScoreQuery] = useQueryStates(scoreQueryParsers)
-  const { folder, filter: conditions, difficulty: difficultyQuery } = scoreQuery
+  const {
+    folder,
+    filter: conditions,
+    difficulty: difficultyQuery,
+    search: songSearch,
+  } = scoreQuery
   const advanced = folder === "filters" || folder === "all"
   const showAll = folder === "all"
   const folderDifficulty = difficultyQuery === "all" ? null : difficultyQuery
@@ -608,11 +631,12 @@ const PlayerScores = memo(function PlayerScores({
   )
   const filterFn = useCallback(
     (entry: ScoreTableEntry) =>
-      advanced
+      matchesSongSearch(entry, songSearch) &&
+      (advanced
         ? showAll ||
           (conditionsActive && filterEntryConditions(entry, conditions))
-        : filterEntry(entry, filter),
-    [advanced, conditions, conditionsActive, filter, showAll],
+        : filterEntry(entry, filter)),
+    [advanced, conditions, conditionsActive, filter, showAll, songSearch],
   )
   const levelFiltered = advanced
     ? conditions.some(
@@ -796,123 +820,118 @@ const PlayerScores = memo(function PlayerScores({
 
   const toolbar = (
     <>
-      <Dialog.Root
-        lazyMount
-        unmountOnExit
-        open={foldersOpen}
-        onOpenChange={({ open }) => setFoldersOpen(open)}
-      >
-        <Dialog.Trigger asChild>
-          <button className={playerClasses["folders-trigger"]}>
-            <IconFolder />
-            <span className={playerClasses["filter-label"]}>篩選</span>
-            <span
-              className={playerClasses["filter-summary"]}
-              title={folderButtonTitle}
-            >
-              {folderButtonTitle}
-            </span>
-            <span
-              className={playerClasses["filter-count"]}
-              title={`${table.entries.length} 譜面`}
-            >
-              {table.entries.length}
-            </span>
-          </button>
-        </Dialog.Trigger>
-        <Portal>
-          <Dialog.Backdrop />
-          <Dialog.Positioner>
-            <Dialog.Content className={playerClasses["folders-dialog"]}>
-              <div className={playerClasses["folders-dialog-header"]}>
-                <Dialog.Title>
-                  {advanced ? "進階篩選" : "資料夾篩選"}
-                </Dialog.Title>
-                <Switch
-                  checked={advanced}
-                  onCheckedChange={({ checked }) =>
-                    handleAdvancedChange(checked)
-                  }
-                >
-                  進階模式
-                </Switch>
-                <Dialog.CloseTrigger asChild>
-                  <button aria-label="關閉">
-                    <IconClose />
-                  </button>
-                </Dialog.CloseTrigger>
-              </div>
-              {advanced ? (
-                <AdvancedFilter
-                  conditions={conditions}
-                  hasEffectiveConditions={hasEffectiveConditions}
-                  showAll={showAll}
-                  onConditionsChange={handleConditionsChange}
-                  onShowAllChange={handleShowAllChange}
-                />
-              ) : (
-                <Folders
-                  entries={folderEntries}
-                  filter={filter}
-                  difficulty={folderDifficulty}
-                  maxVersion={maxVersion}
-                  onFilterChange={handleFolderChange}
-                />
-              )}
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
-      {!ratingFolder ? (
-        <div className={playerClasses["sort-control"]}>
-          <IconSortVariant className={playerClasses["sort-icon"]} />
-          <SelectContainer
-            label="排序"
-            collection={orderingCollection}
-            value={[ordering]}
-            onValueChange={(event) =>
-              setOrdering(event.items[0].value as Ordering)
-            }
-          >
-            {orderingCollection.group().map(([type, group]) => (
-              <Select.ItemGroup key={type}>
-                <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
-                {group.map((item) => (
-                  <Select.Item key={item.value} item={item}>
-                    <Select.ItemText>{item.label}</Select.ItemText>
-                  </Select.Item>
-                ))}
-              </Select.ItemGroup>
-            ))}
-          </SelectContainer>
-          <Toggle.Root
-            className={playerClasses["sort-direction"]}
-            pressed={orderingDesc}
-            onPressedChange={setOrderingDesc}
-            aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
-            title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
-          >
-            {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
-            <span>{orderingDesc ? "降冪" : "升冪"}</span>
-          </Toggle.Root>
-        </div>
-      ) : null}
       <div
+        role="group"
+        aria-label="篩選與排序"
+        className={playerClasses["filter-controls"]}
+      >
+        <Dialog.Root
+          lazyMount
+          unmountOnExit
+          open={foldersOpen}
+          onOpenChange={({ open }) => setFoldersOpen(open)}
+        >
+          <Dialog.Trigger asChild>
+            <button className={playerClasses["folders-trigger"]}>
+              <IconFolder />
+              <span className={playerClasses["filter-label"]}>篩選</span>
+              <span
+                className={playerClasses["filter-summary"]}
+                title={folderButtonTitle}
+              >
+                {folderButtonTitle}
+              </span>
+              <span
+                className={playerClasses["filter-count"]}
+                title={`${table.entries.length} 譜面`}
+              >
+                {table.entries.length}
+              </span>
+            </button>
+          </Dialog.Trigger>
+          <Portal>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content className={playerClasses["folders-dialog"]}>
+                <div className={playerClasses["folders-dialog-header"]}>
+                  <Dialog.Title>
+                    {advanced ? "進階篩選" : "資料夾篩選"}
+                  </Dialog.Title>
+                  <Switch
+                    checked={advanced}
+                    onCheckedChange={({ checked }) =>
+                      handleAdvancedChange(checked)
+                    }
+                  >
+                    進階模式
+                  </Switch>
+                  <Dialog.CloseTrigger asChild>
+                    <button aria-label="關閉">
+                      <IconClose />
+                    </button>
+                  </Dialog.CloseTrigger>
+                </div>
+                {advanced ? (
+                  <AdvancedFilter
+                    conditions={conditions}
+                    hasEffectiveConditions={hasEffectiveConditions}
+                    showAll={showAll}
+                    onConditionsChange={handleConditionsChange}
+                    onShowAllChange={handleShowAllChange}
+                  />
+                ) : (
+                  <Folders
+                    entries={folderEntries}
+                    filter={filter}
+                    difficulty={folderDifficulty}
+                    maxVersion={maxVersion}
+                    onFilterChange={handleFolderChange}
+                  />
+                )}
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </Portal>
+        </Dialog.Root>
+        {!ratingFolder ? (
+          <div className={playerClasses["sort-control"]}>
+            <IconSortVariant className={playerClasses["sort-icon"]} />
+            <SelectContainer
+              label="排序"
+              collection={orderingCollection}
+              value={[ordering]}
+              onValueChange={(event) =>
+                setOrdering(event.items[0].value as Ordering)
+              }
+            >
+              {orderingCollection.group().map(([type, group]) => (
+                <Select.ItemGroup key={type}>
+                  <Select.ItemGroupLabel>{type}</Select.ItemGroupLabel>
+                  {group.map((item) => (
+                    <Select.Item key={item.value} item={item}>
+                      <Select.ItemText>{item.label}</Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </Select.ItemGroup>
+              ))}
+            </SelectContainer>
+            <Toggle.Root
+              className={playerClasses["sort-direction"]}
+              pressed={orderingDesc}
+              onPressedChange={setOrderingDesc}
+              aria-label={`排序方向：${orderingDesc ? "降冪" : "升冪"}`}
+              title={orderingDesc ? "目前為降冪排序" : "目前為升冪排序"}
+            >
+              {orderingDesc ? <IconArrowDown /> : <IconArrowUp />}
+              <span>{orderingDesc ? "降冪" : "升冪"}</span>
+            </Toggle.Root>
+          </div>
+        ) : null}
+      </div>
+      <div
+        role="group"
+        aria-label="匯出"
         className={`${playerClasses["toolbar-actions"]} ${playerClasses["hide-condensed"]}`}
       >
-        <span className={playerClasses["updated-at"]}>
-          <IconUpdate />
-          {updatedAt != null ? (
-            <time
-              dateTime={updatedAt}
-              title={formatDateTime(new Date(updatedAt))}
-            >
-              {formatRelative(new Date(updatedAt))}更新
-            </time>
-          ) : (
-            "尚未更新"
-          )}
-        </span>
         <button className={playerClasses["csv-button"]} onClick={downloadCSV}>
           <IconFileDownload /> 下載 CSV
         </button>
@@ -951,20 +970,41 @@ const PlayerScores = memo(function PlayerScores({
         )}
       >
         <div>
-          <div className={classes["view-settings"]}>
-            <Switch
-              checked={includeInactive}
-              onCheckedChange={({ checked }) => setIncludeInactive(checked)}
-            >
-              顯示已刪除樂曲
-            </Switch>
-            <Switch
-              checked={showCover}
-              onCheckedChange={({ checked }) => setShowCover(checked)}
-            >
-              顯示封面
-            </Switch>
-          </div>
+          <section
+            aria-label="搜尋與顯示設定"
+            className={classes["sidebar-tools"]}
+          >
+            <label className={classes["song-search"]}>
+              <IconMagnify aria-hidden />
+              <input
+                type="search"
+                aria-label="搜尋歌曲名稱或演出者"
+                placeholder="搜尋歌曲名稱或演出者"
+                value={songSearch}
+                onChange={(event) => {
+                  const search = event.currentTarget.value
+                  void setScoreQuery(
+                    { search: search.trim() === "" ? null : search },
+                    { history: "replace" },
+                  )
+                }}
+              />
+            </label>
+            <div className={classes["view-settings"]}>
+              <Switch
+                checked={includeInactive}
+                onCheckedChange={({ checked }) => setIncludeInactive(checked)}
+              >
+                顯示已刪除樂曲
+              </Switch>
+              <Switch
+                checked={showCover}
+                onCheckedChange={({ checked }) => setShowCover(checked)}
+              >
+                顯示封面
+              </Switch>
+            </div>
+          </section>
           {difficultyFolderActive ? (
             <section
               aria-label="分類／版本難易度"

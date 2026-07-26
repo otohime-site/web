@@ -11,6 +11,8 @@ import {
   ConditionKey,
   INTERNAL_LV_MAX,
   INTERNAL_LV_MIN,
+  SCORE_MAX,
+  SCORE_MIN,
   conditionLabels,
   defaultCondition,
   valueOptions,
@@ -83,6 +85,19 @@ const ConditionEditor = ({
           />
           <p className={styles.note}>只會列出已知譜面定數的譜面。</p>
         </>
+      )
+    case "score":
+      return (
+        <Slider
+          min={SCORE_MIN}
+          max={SCORE_MAX}
+          step={0.1}
+          value={condition.range}
+          valueText={`${condition.range[0].toFixed(1)}% 〜 ${condition.range[1].toFixed(1)}%`}
+          onValueChange={({ value }) => {
+            onChange({ ...condition, range: [value[0], value[1]] })
+          }}
+        />
       )
     default:
       return (
