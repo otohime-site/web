@@ -99,6 +99,15 @@ export const levelCompareKey: Record<(typeof levels)[number], number> = {
 export const RATING_NEW_COUNT = 15
 export const RATING_OLD_COUNT = 35
 
+export const RATING_TARGETS = Array.from(
+  { length: 11 },
+  (_, index) => 14000 + index * 250,
+)
+
+export const getClosestRatingTarget = (rating: number): number =>
+  RATING_TARGETS.find((target) => rating < target + 125) ??
+  RATING_TARGETS[RATING_TARGETS.length - 1]
+
 export const difficulties = [
   "Basic",
   "Advanced",

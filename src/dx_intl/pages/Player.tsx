@@ -144,6 +144,8 @@ const Player = ({ params }: { params: Params }) => {
         updatedAt={player.updated_at}
         toolbarContainer={scoresToolbar}
         ownsScoreTable={ownsScoreTable}
+        rating={record.rating}
+        ratingLegacy={record.rating_legacy}
         ratingImage={{
           cardName: record.card_name,
           title: record.title,

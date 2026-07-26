@@ -44,6 +44,7 @@ import {
   categories,
   comboFlags,
   difficulties,
+  getClosestRatingTarget,
   levelCompareKey,
   levels,
   syncFlags,
@@ -107,6 +108,19 @@ const dxIntlScoresDocument = graphql(
   `,
   [dxIntlScoresFields],
 )
+
+const dxIntlScorePerRatingGroupDocument = graphql(`
+  query dxIntlPlayerScorePerRatingGroup($ratingTarget: Int!) {
+    dx_intl_score_per_rating_group(
+      where: { rating_target: { _eq: $ratingTarget } }
+    ) {
+      song_id
+      deluxe
+      difficulty
+      average_score
+    }
+  }
+`)
 
 const DEFAULT_FOLDER: FolderQuery = "rating-new"
 const DEFAULT_FOLDER_DIFFICULTY = difficulties.indexOf("Master")
@@ -366,6 +380,8 @@ const getFolderQuery = (filter: ScoreFilter): FolderQuery => {
 
 interface PlayerScoresProps {
   nickname: string
+  rating: number
+  ratingLegacy: boolean
   updatedAt?: string | null
   toolbarContainer: HTMLDivElement | null
   // The rating image dialog is owner-only; only owners get the record
@@ -376,6 +392,8 @@ interface PlayerScoresProps {
 
 const PlayerScores = memo(function PlayerScores({
   nickname,
+  rating,
+  ratingLegacy,
   updatedAt,
   toolbarContainer,
   ownsScoreTable,
@@ -386,6 +404,11 @@ const PlayerScores = memo(function PlayerScores({
     variables: { nickname },
   })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
+  const [ratingGroupResult] = useQuery({
+    query: dxIntlScorePerRatingGroupDocument,
+    variables: { ratingTarget: getClosestRatingTarget(rating) },
+    pause: ratingLegacy,
+  })
   const flattedEntries = useMemo(
     () => flatSongsResult(songsResult.data),
     [songsResult],
@@ -411,6 +434,28 @@ const PlayerScores = memo(function PlayerScores({
     const scoresMap = new Map(
       scores.map((score) => [getNoteHash(score), score]),
     )
+    const ratingGroupAverageMap = new Map(
+      (ratingLegacy
+        ? []
+        : (ratingGroupResult.data?.dx_intl_score_per_rating_group ?? [])
+      ).flatMap((entry) =>
+        entry.song_id == null ||
+        entry.deluxe == null ||
+        entry.difficulty == null ||
+        entry.average_score == null
+          ? []
+          : [
+              [
+                getNoteHash({
+                  song_id: entry.song_id,
+                  deluxe: entry.deluxe,
+                  difficulty: entry.difficulty,
+                }),
+                Number(entry.average_score),
+              ] as const,
+            ],
+      ),
+    )
     const scoreTable = flattedEntries.map<ScoreTableEntry>((entry, index) => {
       const score = scoresMap.get(entry.hash)
       scoresMap.delete(entry.hash)
@@ -421,6 +466,7 @@ const PlayerScores = memo(function PlayerScores({
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
         updated_at: score?.start,
+        rating_group_average: ratingGroupAverageMap.get(entry.hash),
         rating_latest: afterCircle
           ? entry.version >= maxVersion - 1
           : entry.version === maxVersion,
@@ -462,7 +508,14 @@ const PlayerScores = memo(function PlayerScores({
     })
     // Remaining scores indicate that the score and song data are out of sync.
     return { scoreTable, noteInconsistency: scoresMap.size > 0 }
-  }, [afterCircle, flattedEntries, maxVersion, scoresResult.data])
+  }, [
+    afterCircle,
+    flattedEntries,
+    maxVersion,
+    ratingGroupResult.data,
+    ratingLegacy,
+    scoresResult.data,
+  ])
 
   const [scoreQuery, setScoreQuery] = useQueryStates(scoreQueryParsers)
   const { folder, filter: conditions, difficulty: difficultyQuery } = scoreQuery

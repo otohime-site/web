@@ -8,6 +8,7 @@ import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
 import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
+import { RATING_TARGETS } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 
 const dxIntlRatingTargetStatsDocument = graphql(`
@@ -25,11 +26,6 @@ const dxIntlRatingTargetStatsDocument = graphql(`
     }
   }
 `)
-
-export const RATING_TARGETS = Array.from(
-  { length: 11 },
-  (_, i) => 14000 + i * 250,
-)
 
 type AggregatedRow = {
   note: ReturnType<typeof flatSongsResult>[number]

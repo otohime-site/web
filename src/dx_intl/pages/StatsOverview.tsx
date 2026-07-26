@@ -16,10 +16,13 @@ import { Switch } from "../../common/components/ui/Switch"
 import { graphql } from "../../graphql"
 import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
-import { versionRewardTitle, versions } from "../models/constants"
+import {
+  RATING_TARGETS,
+  versionRewardTitle,
+  versions,
+} from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./StatsOverview.module.css"
-import { RATING_TARGETS } from "./StatsRatingTarget"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
