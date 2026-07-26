@@ -1,6 +1,5 @@
 import { Tabs } from "@ark-ui/react/tabs"
 import { Suspense, lazy, useCallback, useRef, useState } from "react"
-import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import {
   Params,
@@ -14,6 +13,7 @@ import IconHistory from "~icons/mdi/history"
 import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
+import { PageMeta } from "../../common/components/PageMeta"
 import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
 import { graphql, readFragment } from "../../graphql"
@@ -51,6 +51,8 @@ const dxIntlRecordDocument = graphql(
 )
 const Player = ({ params }: { params: Params }) => {
   const user = useUser()
+  const nickname = params.nickname ?? ""
+  const playerPath = `/dxi/p/${encodeURIComponent(nickname)}`
   // Tab routes nested under /p/:nickname. Editing is a dialog over the
   // scores view, so /edit keeps the scores tab active underneath it.
   const [location, navigate] = useLocation()
@@ -60,12 +62,12 @@ const Player = ({ params }: { params: Params }) => {
     : "scores"
   const [editableResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
-    variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
+    variables: { userId: user?.uid ?? "", nickname },
     pause: user == null,
   })
   const [recordResult] = useQuery({
     query: dxIntlRecordDocument,
-    variables: { nickname: params.nickname ?? "" },
+    variables: { nickname },
   })
 
   // PlayerScores owns the score-page state and portals its controls into
@@ -115,19 +117,46 @@ const Player = ({ params }: { params: Params }) => {
     topBarObserverRef.current = observer
   }, [])
   if (recordResult.error != null) {
-    return <Alert severity="error">發生錯誤，請重試。</Alert>
+    return (
+      <>
+        <PageMeta
+          canonicalPath={playerPath}
+          description={`查看 ${nickname} 的 maimai DX 國際版成績單。`}
+          title={`${nickname} - maimai DX 成績單 - Otohime`}
+        />
+        <Alert severity="error">發生錯誤，請重試。</Alert>
+      </>
+    )
   }
   if (recordResult.data == null) {
-    return <></>
+    return (
+      <PageMeta
+        canonicalPath={playerPath}
+        description={`查看 ${nickname} 的 maimai DX 國際版成績單。`}
+        title={`${nickname} - maimai DX 成績單 - Otohime`}
+      />
+    )
   }
   if (recordResult.data.dx_intl_players.length === 0) {
-    return <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
+    return (
+      <>
+        <PageMeta
+          canonicalPath={playerPath}
+          description="這個 Otohime 成績單不存在或未公開。"
+          noIndex
+          title="成績單不存在 - Otohime"
+        />
+        <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
+      </>
+    )
   }
 
   const player = recordResult.data.dx_intl_players[0]
   // A player without uploads has no record yet; the layout (tabs, edit)
   // still renders and the scores tab shows the explanation instead.
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
+  const cardName = record?.card_name ?? nickname
+  const onHistory = activeTab === "history"
   // While the editable query is in flight we cannot tell an owner from a
   // visitor yet, so the owner-only routes hold off their redirect.
   const ownershipPending = editableResult.fetching
@@ -160,9 +189,18 @@ const Player = ({ params }: { params: Params }) => {
 
   return (
     <>
-      <Titled
-        title={(title) =>
-          `${record?.card_name ?? params.nickname} - maimai DX 成績單 - ${title}`
+      <PageMeta
+        canonicalPath={onHistory ? `${playerPath}/history` : playerPath}
+        description={
+          onHistory
+            ? `查看 ${cardName} 的 maimai DX 成績單歷史紀錄。`
+            : `查看 ${cardName} 的 maimai DX 國際版成績單、Rating 與 Best 50 組成。`
+        }
+        noIndex={editing || onHistory}
+        title={
+          onHistory
+            ? `成績單歷史紀錄 - ${cardName} - maimai DX 成績單 - Otohime`
+            : `${cardName} - maimai DX 成績單 - Otohime`
         }
       />
       <Tabs.Root

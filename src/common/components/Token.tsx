@@ -1,7 +1,7 @@
 import { Dialog } from "@ark-ui/react/dialog"
 import { Portal } from "@ark-ui/react/portal"
+import { useHead } from "@unhead/react"
 import { useState } from "react"
-import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import MdiCheckCircle from "~icons/mdi/check-circle"
 import MdiCloudDownloadOutline from "~icons/mdi/cloud-download-outline"
@@ -13,6 +13,11 @@ import { useUser } from "../contexts"
 import { QueryResult } from "./QueryResult"
 import classes from "./Token.module.css"
 import { Alert } from "./ui/Alert"
+
+const BookmarkTitle = () => {
+  useHead({ title: "更新 Otohime 成績單" })
+  return null
+}
 
 // Phones and tablets cannot drag the bookmarklet link to a bookmark bar, so
 // they get the copy-and-edit-bookmark flow instead. iPadOS 13+ reports itself
@@ -113,11 +118,7 @@ const Token = () => {
       : tokensResult.data.tokens[0].id
   return (
     <div>
-      {isMobile && token.length > 0 ? (
-        <Titled title="更新 Otohime 成績單" />
-      ) : (
-        <></>
-      )}
+      {isMobile && token.length > 0 ? <BookmarkTitle /> : <></>}
       <Dialog.Root
         open={bookDialogOpen}
         onOpenChange={(e) => {

@@ -1,10 +1,10 @@
 import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { BarElement, CategoryScale, Chart as ChartJS } from "chart.js"
 import { Bar, Line } from "react-chartjs-2"
-import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params, Redirect } from "wouter"
 import { navigate } from "wouter/use-browser-location"
+import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import "../../common/utils/chartSetup"
@@ -157,8 +157,10 @@ const StatsSong = ({ params }: { params: Params }) => {
     <QueryResult result={songsResult}>
       {song != null ? (
         <>
-          <Titled
-            title={(title) => `${song.title} - maimai DX 樂曲統計 - ${title}`}
+          <PageMeta
+            canonicalPath={`/dxi/s/${songId}/${deluxe ? "dx" : "std"}`}
+            description={`查看 ${song.title}（${song.artist}）在 Otohime 公開 maimai DX 成績單中的分數與 Rating 統計。`}
+            title={`${song.title} - maimai DX 樂曲統計 - Otohime`}
           />
           <section className={classes.intro}>
             <img src={getCoverUrl(song.id)} />

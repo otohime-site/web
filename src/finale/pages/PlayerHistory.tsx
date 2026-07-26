@@ -1,11 +1,11 @@
 import clsx from "clsx"
 import { useMemo } from "react"
 import { Line } from "react-chartjs-2"
-import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Params } from "wouter"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
+import { PageMeta } from "../../common/components/PageMeta"
 
 import { navigate } from "wouter/use-browser-location"
 import { Alert } from "../../common/components/ui/Alert"
@@ -368,7 +368,12 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   )
   return (
     <>
-      <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
+      <PageMeta
+        canonicalPath={`/fin/p/${encodeURIComponent(params.nickname ?? "")}/history`}
+        description={`查看 ${params.nickname ?? ""} 的舊版 maimai 成績單歷史紀錄。`}
+        noIndex
+        title={`成績單歷史紀錄 - ${params.nickname ?? ""} - 舊版 maimai 成績單 - Otohime`}
+      />
       <LinkButton href={`~/fin/p/${params.nickname}`}>
         <IconArrowBack /> 回成績單
       </LinkButton>

@@ -1,7 +1,6 @@
 import clsx from "clsx"
 import { useMemo } from "react"
 import { Line } from "react-chartjs-2"
-import { Titled } from "react-titled"
 import { useQuery } from "urql"
 import { Link, Params } from "wouter"
 import IconNavigateNext from "~icons/mdi/navigate-next"
@@ -525,7 +524,6 @@ const PlayerHistory = ({ params }: { params: Params }) => {
 
   return (
     <>
-      <Titled title={(title) => `成績單歷史紀錄 - ${title}`} />
       <div className={classes["history-layout"]}>
         <nav aria-label="歷史紀錄時間" className={classes["timeline-rail"]}>
           <strong>時間</strong>

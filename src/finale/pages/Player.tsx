@@ -4,7 +4,6 @@ import { SegmentGroup } from "@ark-ui/react/segment-group"
 import { Select } from "@ark-ui/react/select"
 import { Toggle } from "@ark-ui/react/toggle"
 import { useMemo, useState } from "react"
-import { Titled } from "react-titled"
 import { useMutation, useQuery } from "urql"
 import { Params } from "wouter"
 import { navigate } from "wouter/use-browser-location"
@@ -12,6 +11,7 @@ import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import IconHistory from "~icons/mdi/history"
+import { PageMeta } from "../../common/components/PageMeta"
 import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -212,8 +212,10 @@ const Player = ({ params }: { params: Params }) => {
 
   return (
     <>
-      <Titled
-        title={(title) => `${record.card_name} - 舊版 maimai 成績單 - ${title}`}
+      <PageMeta
+        canonicalPath={`/fin/p/${encodeURIComponent(params.nickname ?? "")}`}
+        description={`查看 ${record.card_name} 的舊版 maimai 成績單。`}
+        title={`${record.card_name} - 舊版 maimai 成績單 - Otohime`}
       />
       <Alert severity="info">
         <p>這是從以前 Semiquaver 成績單系統中轉移的 maimai 舊框成績單。</p>

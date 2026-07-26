@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { Titled } from "react-titled"
 import IconAdd from "~icons/mdi/add"
 import DxUserPlayers from "../../dx_intl/components/UserPlayers"
 import PlayerForm from "../../dx_intl/pages/PlayerForm"
+import { PageMeta, SITE_DESCRIPTION } from "../components/PageMeta"
 import Token from "../components/Token"
 import { LinkButton } from "../components/ui/Button"
 import { useUser } from "../contexts"
@@ -15,7 +15,11 @@ const HomeComponent = () => {
   if (user == null) {
     return (
       <>
-        <Titled title="Otohime: 音 Game 成績單網站" />
+        <PageMeta
+          canonicalPath="/"
+          description={SITE_DESCRIPTION}
+          title="Otohime: maimai DX 國際版成績單集計網站"
+        />
         <div className={classes.hero}>
           <h2>Otohime 是適用於 maimai 國際版的成績單系統。</h2>
           <p>
@@ -64,7 +68,11 @@ const HomeComponent = () => {
   }
   return (
     <div className={classes.my}>
-      <Titled title={(title) => `首頁 - ${title}`} />
+      <PageMeta
+        canonicalPath="/"
+        description={SITE_DESCRIPTION}
+        title="首頁 - Otohime"
+      />
       <article className={classes["my-players"]}>
         <h4>我的成績單</h4>
         <DxUserPlayers key={playersRevision} />

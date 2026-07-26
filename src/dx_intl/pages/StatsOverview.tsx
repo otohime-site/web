@@ -9,6 +9,7 @@ import { useMemo, useState } from "react"
 import { Bar } from "react-chartjs-2"
 import { useQuery } from "urql"
 import { Link } from "wouter"
+import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
@@ -179,6 +180,11 @@ const StatsOverview = () => {
 
   return (
     <main>
+      <PageMeta
+        canonicalPath="/dxi/s"
+        description="Otohime 的 maimai DX 國際版玩家 Rating、熱門譜面與達成率統計。"
+        title="maimai DX 國際版玩家統計 - Otohime"
+      />
       <h4>maimai DX 國際版玩家統計</h4>
       <p>只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。</p>
       <p>

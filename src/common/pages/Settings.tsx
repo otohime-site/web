@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { Titled } from "react-titled"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import { graphql } from "../../graphql"
+import { PageMeta } from "../components/PageMeta"
 import TransferSection from "../components/TransferSection"
 import { Alert } from "../components/ui/Alert"
 import { useUser } from "../contexts"
@@ -38,12 +38,25 @@ const Settings = () => {
   }
 
   if (user == null) {
-    return <Alert severity="info">請先登入。</Alert>
+    return (
+      <>
+        <PageMeta
+          canonicalPath="/settings"
+          noIndex
+          title="使用者設定 - Otohime"
+        />
+        <Alert severity="info">請先登入。</Alert>
+      </>
+    )
   }
 
   return (
     <div className={classes.container}>
-      <Titled title={(title) => `使用者設定 - ${title}`} />
+      <PageMeta
+        canonicalPath="/settings"
+        noIndex
+        title="使用者設定 - Otohime"
+      />
       <h3>使用者設定</h3>
       <section className={classes.section}>
         <h4>成績單帳號轉移</h4>

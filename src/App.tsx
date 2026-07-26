@@ -33,6 +33,9 @@ const App = () => {
       <div className={classes.container}>
         <AuthMigrate />
         <Suspense fallback={<></>}>
+          {/* Keep Firebase Hosting's scoped redirects and rewrites in
+              firebase.json synchronized with route changes here. They avoid a
+              catch-all so unknown URLs receive a real HTTP 404. */}
           <Router>
             <Route path="/" component={Home} />
             <Route path="/settings" component={Settings} />

@@ -1,13 +1,16 @@
+import { UnheadProvider, createHead } from "@unhead/react/client"
 import { createRoot } from "react-dom/client"
-import { Titled } from "react-titled"
 import App, { Skeleton } from "./App"
+import { SiteMeta } from "./common/components/PageMeta"
 import { AppProvider } from "./common/contexts"
 
 const container = document.getElementById("root")
+const head = createHead()
 createRoot(container!).render(
-  <Titled title="Otohime">
+  <UnheadProvider head={head}>
+    <SiteMeta />
     <AppProvider skeleton={<Skeleton />}>
       <App />
     </AppProvider>
-  </Titled>,
+  </UnheadProvider>,
 )

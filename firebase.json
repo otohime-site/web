@@ -2,9 +2,38 @@
   "hosting": {
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      {
+        "source": "/dxi",
+        "destination": "/dxi/s",
+        "type": 301
+      },
+      {
+        "source": "/transfer",
+        "destination": "/settings",
+        "type": 301
+      },
+      {
+        "source": "/forget",
+        "destination": "/settings",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "/settings",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/dxi/s{,/**}",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/dxi/p/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/fin/p/**",
         "destination": "/index.html"
       }
     ],

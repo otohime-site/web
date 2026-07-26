@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { useQuery } from "urql"
 import { Params, Redirect } from "wouter"
 import { navigate } from "wouter/use-browser-location"
+import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
@@ -106,6 +107,11 @@ const StatsRatingTarget = ({ params }: { params: Params }) => {
 
   return (
     <>
+      <PageMeta
+        canonicalPath={`/dxi/s/rt/${rating}`}
+        description={`查看 Otohime 公開成績單中，maimai DX 玩家 Rating ${rating} 玩家最常見的 Best 50 組成曲。`}
+        title={`Rating ${rating} Best 50 組成曲 - maimai DX 玩家統計 - Otohime`}
+      />
       <main>
         <h4>Rating 別 Best 50 組成曲</h4>
         <p>
