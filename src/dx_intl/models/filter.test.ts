@@ -19,9 +19,9 @@ const entry = (score?: number): ScoreTableEntry =>
   }) as ScoreTableEntry
 
 describe("score advanced condition", () => {
-  it("starts with the full score range", () => {
+  it("starts with the 97–99% score range", () => {
     const condition = defaultCondition("score")
-    expect(condition).toEqual({ key: "score", range: [SCORE_MIN, SCORE_MAX] })
+    expect(condition).toEqual({ key: "score", range: [97, 99] })
     expect(isEffectiveCondition(condition)).toBe(true)
   })
 
@@ -44,7 +44,7 @@ describe("score advanced condition", () => {
 
   it("describes the selected percentage range", () => {
     expect(getConditionsTitle([{ key: "score", range: [100, 100.5] }])).toBe(
-      "達成率 100.0%〜100.5%",
+      "成績 100.0%〜100.5%",
     )
   })
 })

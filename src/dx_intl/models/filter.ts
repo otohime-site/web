@@ -72,7 +72,7 @@ export const SCORE_MAX = 101
 export const conditionLabels: Record<ConditionKey, string> = {
   level: "等級",
   internal_lv: "譜面定數",
-  score: "達成率",
+  score: "成績",
   category: "分類",
   version: "版本",
   deluxe: "譜面類型",
@@ -121,7 +121,7 @@ export const defaultCondition = (key: ConditionKey): Condition =>
     : key === "internal_lv"
       ? { key, range: [13, 14] }
       : key === "score"
-        ? { key, range: [SCORE_MIN, SCORE_MAX] }
+        ? { key, range: [97, 99] }
         : { key, values: [] }
 
 // A full-range / nothing-picked condition does not restrict anything.
@@ -277,7 +277,7 @@ const getConditionTitle = (condition: Condition): string | null => {
       return getRangeTitle(
         condition.range,
         [SCORE_MIN, SCORE_MAX],
-        "達成率",
+        "成績",
         (v) => `${v.toFixed(1)}%`,
       )
     // The flag names alone (無, FC, …) are ambiguous between the two
