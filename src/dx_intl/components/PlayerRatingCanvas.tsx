@@ -2,6 +2,7 @@ import Konva from "konva"
 import {
   createContext,
   memo,
+  type RefObject,
   use,
   useEffect,
   useMemo,
@@ -31,10 +32,38 @@ import fspFlagUrl from "../images/flags/fsp.svg"
 import sFlagUrl from "../images/flags/s.svg"
 import dxVariantUrl from "../images/variants/dx.svg"
 import stdVariantUrl from "../images/variants/std.svg"
-import { ScoreTableEntry, getCoverUrl } from "../models/aggregation"
+import { getCoverUrl, type ScoreTableEntry } from "../models/aggregation"
 import { RATING_NEW_COUNT, RATING_OLD_COUNT } from "../models/constants"
 import { classRankImages, courseRankImages } from "./Ranks"
 import { getRatingImage } from "./Rating"
+
+export type Trophy = "normal" | "bronze" | "silver" | "gold" | "rainbow"
+
+// Everything the image needs about the player, gathered once where the record
+// is read so the dialog and the canvas can pass it along untouched.
+export interface RatingImageInfo {
+  cardName: string
+  title: string
+  trophy: Trophy
+  // The record's own rating, which is what the game reports; summing the
+  // listed entries can disagree with it during data updates.
+  rating: number
+  isPrivate: boolean
+  courseRank?: number | null
+  classRank?: number | null
+  updatedDate?: string
+  versionName?: string
+}
+
+interface PlayerRatingCanvasProps {
+  scoreTable: ScoreTableEntry[]
+  info: RatingImageInfo
+  scoreUrl?: string
+  showTitle: boolean
+  showRanks: boolean
+  showUrl: boolean
+  onRender: (blob: Blob) => void
+}
 
 // This stage is already sized at the intended export resolution. Letting Konva
 // apply the device pixel ratio would turn it into a 6300x11250 backing canvas on
@@ -168,14 +197,14 @@ const ImageLoadContext = createContext<ImageLoadTracker | null>(null)
 
 // Load an image element for use in Konva, requesting CORS so the resulting
 // canvas stays exportable (covers are served from Cloudflare R2 / covers.otohi.me).
-const useImage = (url: string): HTMLImageElement | undefined => {
+const useImage = (url?: string): HTMLImageElement | undefined => {
   const tracker = use(ImageLoadContext)
   // Reading the cache during render means a URL that already settled resolves
   // on the first render, with no effect round-trip, so remounted badges and
   // blocks paint immediately. The tracker re-renders the stage as entries land.
-  const image = tracker?.cache.get(url) ?? undefined
+  const image = url == null ? undefined : (tracker?.cache.get(url) ?? undefined)
   useEffect(() => {
-    if (tracker == null || tracker.cache.has(url)) return
+    if (tracker == null || url == null || tracker.cache.has(url)) return
     const img = new window.Image()
     tracker.add()
     // A missing or non-CORS cover must still settle, or the export would wait
@@ -268,7 +297,7 @@ const RankImage = ({
   y: number
   height: number
 }) => {
-  const image = useImage(src ?? "")
+  const image = useImage(src)
   if (src == null || !image) return null
   const width = (image.naturalWidth / image.naturalHeight) * height
   return <KonvaImage image={image} x={x} y={y} width={width} height={height} />
@@ -295,24 +324,6 @@ const FooterLogo = () => {
 // gradient (lighter top 60%, darker bottom) with a colored border and shadow.
 // Konva can't clip a CSS gradient string, so we mirror the same stops here as
 // a linear fill from top to bottom.
-export type Trophy = "normal" | "bronze" | "silver" | "gold" | "rainbow"
-
-// Everything the image needs about the player, gathered once where the record
-// is read so the dialog and the canvas can pass it along untouched.
-export interface RatingImageInfo {
-  cardName: string
-  title: string
-  trophy: Trophy
-  // The record's own rating, which is what the game reports; summing the
-  // listed entries can disagree with it during data updates.
-  rating: number
-  isPrivate: boolean
-  courseRank?: number | null
-  classRank?: number | null
-  updatedDate?: string
-  versionName?: string
-}
-
 const trophyStyles: Record<
   Trophy,
   { top: string; bottom: string; border: string; shadow: string }
@@ -506,6 +517,16 @@ const HEADER_FONT = Math.round(BLOCK_H * 0.07)
 const VARIANT_H = Math.round(HEADER_FONT * 2.3)
 // Combo / sync flag badges on the score line; the source SVGs are square.
 const FLAG_SIZE = Math.round(BLOCK_H * 0.13)
+const BLOCK_PAD = Math.round(BLOCK_W * 0.03)
+const SCORE_LINE_HEIGHT = Math.round(BLOCK_H * 0.16)
+const SCORE_LINE_Y = BLOCK_H - BLOCK_PAD - SCORE_LINE_HEIGHT
+const TITLE_LINE_Y = SCORE_LINE_Y - FLAG_SIZE - Math.round(BLOCK_H * 0.02)
+const RATING_VALUE_WIDTH = Math.round(BLOCK_W * 0.24)
+const FLAG_GAP = 4
+const SCORE_ITEM_GAP = 10
+const RATING_VALUE_X = BLOCK_W - BLOCK_PAD - RATING_VALUE_WIDTH
+const FLAGS_X = RATING_VALUE_X - SCORE_ITEM_GAP - FLAG_SIZE * 2 - FLAG_GAP
+const FLAGS_Y = SCORE_LINE_Y + (SCORE_LINE_HEIGHT - FLAG_SIZE) / 2
 
 // Center-crop the square source cover to the block's aspect ratio. The source
 // is square (side = naturalWidth), so we keep the full width and trim the
@@ -542,18 +563,6 @@ const ChartBlock = ({
   const isReMaster = entry.difficulty === REMASTER_DIFFICULTY
   const scrimTint = isReMaster ? "#e6a8ff" : accent
   const level = entry.internal_lv ? entry.internal_lv.toFixed(1) : entry.level
-  const pad = Math.round(BLOCK_W * 0.03)
-  // Bottom band: a full-width title above evenly spaced score, flags, and
-  // rating. The final line sits against the bottom padding.
-  const BOTTOM_LINE2_H = Math.round(BLOCK_H * 0.16)
-  const BOTTOM_LINE2_Y = BLOCK_H - pad - BOTTOM_LINE2_H
-  const BOTTOM_LINE1_Y = BOTTOM_LINE2_Y - FLAG_SIZE - Math.round(BLOCK_H * 0.02)
-  const RATING_VALUE_W = Math.round(BLOCK_W * 0.24)
-  const FLAG_GAP = 4
-  const ITEM_GAP = 10
-  const RATING_X = BLOCK_W - pad - RATING_VALUE_W
-  const FLAGS_X = RATING_X - ITEM_GAP - FLAG_SIZE * 2 - FLAG_GAP
-  const FLAGS_Y = BOTTOM_LINE2_Y + (BOTTOM_LINE2_H - FLAG_SIZE) / 2
   return (
     <Group x={x} y={y}>
       {/* Cover art (center-cropped) or a placeholder, clipped to the block. */}
@@ -617,8 +626,8 @@ const ChartBlock = ({
       {variant ? (
         <KonvaImage
           image={variant}
-          x={pad}
-          y={pad}
+          x={BLOCK_PAD}
+          y={BLOCK_PAD}
           width={VARIANT_H * 2}
           height={VARIANT_H}
         />
@@ -627,8 +636,8 @@ const ChartBlock = ({
       {/* Top-right: the (internal) level, larger. */}
       <Text
         x={0}
-        y={pad}
-        width={BLOCK_W - pad}
+        y={BLOCK_PAD}
+        width={BLOCK_W - BLOCK_PAD}
         align="right"
         text={`${level}`}
         fontSize={Math.round(BLOCK_H * 0.15)}
@@ -642,9 +651,9 @@ const ChartBlock = ({
 
       {/* Bottom band: a larger song title, then score · flags · rating. */}
       <Text
-        x={pad}
-        y={BOTTOM_LINE1_Y}
-        width={BLOCK_W - pad * 2}
+        x={BLOCK_PAD}
+        y={TITLE_LINE_Y}
+        width={BLOCK_W - BLOCK_PAD * 2}
         height={FLAG_SIZE}
         verticalAlign="middle"
         text={entry.title}
@@ -658,10 +667,10 @@ const ChartBlock = ({
 
       {/* Final line: score (left), combo/sync flags, and rating (right). */}
       <Text
-        x={pad}
-        y={BOTTOM_LINE2_Y}
-        width={FLAGS_X - pad - ITEM_GAP}
-        height={BOTTOM_LINE2_H}
+        x={BLOCK_PAD}
+        y={SCORE_LINE_Y}
+        width={FLAGS_X - BLOCK_PAD - SCORE_ITEM_GAP}
+        height={SCORE_LINE_HEIGHT}
         verticalAlign="middle"
         text={entry.score ? `${entry.score.toFixed(4)}%` : "―"}
         fontSize={Math.round(BLOCK_H * 0.1)}
@@ -686,10 +695,10 @@ const ChartBlock = ({
         height={FLAG_SIZE}
       />
       <Text
-        x={RATING_X}
-        y={BOTTOM_LINE2_Y}
-        width={RATING_VALUE_W}
-        height={BOTTOM_LINE2_H}
+        x={RATING_VALUE_X}
+        y={SCORE_LINE_Y}
+        width={RATING_VALUE_WIDTH}
+        height={SCORE_LINE_HEIGHT}
         align="right"
         verticalAlign="middle"
         text={`${entry.rating}`}
@@ -802,62 +811,44 @@ const FOOTER_WORD_FONT_SIZE = FOOTER_EM * 1.25
 const FOOTER_WORD_WIDTH = 300
 const FOOTER_BRAND_GAP = FOOTER_EM * 0.2
 
-const PlayerRatingCanvas = ({
-  scoreTable,
-  info,
-  scoreUrl,
-  showTitle,
-  showRanks,
-  showUrl,
-  onRender,
-}: {
-  scoreTable: ScoreTableEntry[]
-  info: RatingImageInfo
+// -----------------------------------------------------------------------------
+// Scene data and layout
+// -----------------------------------------------------------------------------
+
+const selectRatingEntries = (scoreTable: ScoreTableEntry[]) => {
+  const used = scoreTable.filter((entry) => entry.rating_used)
+  const newEntries = used
+    .filter((entry) => entry.rating_latest)
+    .sort((a, b) => (a.new_rank ?? Infinity) - (b.new_rank ?? Infinity))
+    .slice(0, RATING_NEW_COUNT)
+  const oldEntries = used
+    .filter((entry) => !entry.rating_latest)
+    .sort((a, b) => (a.old_rank ?? Infinity) - (b.old_rank ?? Infinity))
+    .slice(0, RATING_OLD_COUNT)
+  return { newEntries, oldEntries }
+}
+
+const formatMetaText = ({ updatedDate, versionName }: RatingImageInfo) =>
+  [
+    updatedDate != null ? `Updated at ${updatedDate}` : null,
+    versionName != null ? `using ${versionName} data` : null,
+  ]
+    .filter(Boolean)
+    .join("; ")
+
+interface HeaderLayoutOptions {
+  hasRanks: boolean
+  hasTitle: boolean
+  metaText: string
   scoreUrl?: string
-  showTitle: boolean
-  showRanks: boolean
-  showUrl: boolean
-  onRender: (blob: Blob) => void
-}) => {
-  const {
-    cardName,
-    title,
-    trophy,
-    rating,
-    courseRank,
-    classRank,
-    updatedDate,
-    versionName,
-  } = info
-  const [fontsLoaded, setFontsLoaded] = useState(false)
-  const layerRef = useRef<Konva.Layer>(null)
-  // Bumped as images settle, so the scene re-renders to draw them and the
-  // export effect re-checks the pending count.
-  const [settledCount, bumpSettled] = useReducer(
-    (count: number) => count + 1,
-    0,
-  )
-  // Identity-stable so useImage's effect doesn't re-run and double-count.
-  const tracker = useMemo(() => new ImageLoadTracker(bumpSettled), [])
-  // Konva sizes four 2100x3750 canvases per stage — the layer's scene and hit
-  // canvases plus the stage's two buffers — at ~31.5MB each, over 120MB of
-  // backing store. destroy() resizes them to 0x0 (Konva.releaseCanvasOnDestroy
-  // is on by default), which frees that immediately instead of leaving it for
-  // whenever iOS Safari next collects.
-  useEffect(
-    () => () => {
-      layerRef.current?.getStage()?.destroy()
-    },
-    [],
-  )
-  const hasRanks = showRanks && courseRank != null && classRank != null
-  const hasUrl = showUrl && scoreUrl != null
-  const hasTitle = showTitle && title.length > 0
-  // What the toggles actually change about the drawn scene. The export effect
-  // keys off this instead of the raw props: a toggle that doesn't alter the
-  // scene skips a redundant re-export, and anything new that changes the
-  // composition belongs here rather than appended to a dependency list.
-  const sceneKey = `${hasRanks}|${hasUrl}|${hasTitle}`
+}
+
+const getHeaderLayout = ({
+  hasRanks,
+  hasTitle,
+  metaText,
+  scoreUrl,
+}: HeaderLayoutOptions) => {
   const titleBarWidth = hasRanks
     ? Math.min(
         TITLE_BAR_MAX_WIDTH,
@@ -869,36 +860,81 @@ const PlayerRatingCanvas = ({
       )
     : TITLE_BAR_MAX_WIDTH
 
-  const { newEntries, oldEntries } = useMemo(() => {
-    const used = scoreTable.filter((entry) => entry.rating_used)
-    const newEntries = used
-      .filter((entry) => entry.rating_latest)
-      .sort((a, b) => (a.new_rank ?? Infinity) - (b.new_rank ?? Infinity))
-      .slice(0, RATING_NEW_COUNT)
-    const oldEntries = used
-      .filter((entry) => !entry.rating_latest)
-      .sort((a, b) => (a.old_rank ?? Infinity) - (b.old_rank ?? Infinity))
-      .slice(0, RATING_OLD_COUNT)
-    return { newEntries, oldEntries }
-  }, [scoreTable])
+  // The three left-aligned lines are vertically centered in the fixed header.
+  const hasLine3 = hasTitle || metaText !== ""
+  const linesHeight =
+    PLATE_HEIGHT +
+    HEADER_LINE_GAP +
+    CARD_PLATE_HEIGHT +
+    (hasLine3 ? HEADER_LINE_GAP + TITLE_BAR_HEIGHT : 0)
+  const line1Y = Math.round((HEADER_HEIGHT - linesHeight) / 2)
+  const line2Y = line1Y + PLATE_HEIGHT + HEADER_LINE_GAP
+  const line3Y = line2Y + CARD_PLATE_HEIGHT + HEADER_LINE_GAP
 
-  // Snapshot provenance: when the scores were taken, and which version's song
-  // data they were scored against.
-  const metaText = [
-    updatedDate != null ? `Updated at ${updatedDate}` : null,
-    versionName != null ? `using ${versionName} data` : null,
-  ]
-    .filter(Boolean)
-    .join("; ")
+  // The score URL sits above the QR code in the top-right corner.
+  const cornerX = WIDTH - PADDING - QR_SIZE
+  const cornerUrlY = line1Y
+  const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 12
+  const leftLine1Right =
+    PADDING + PLATE_WIDTH + RANK_GAP + (hasRanks ? CLASS_RANK_WIDTH : 0)
+  const cornerUrlX = Math.max(WIDTH * 0.4, leftLine1Right + RANK_GAP)
+  const cornerUrlWidth = WIDTH - PADDING - cornerUrlX
+  const cornerUrlFontSize =
+    scoreUrl != null
+      ? Math.min(44, cornerUrlWidth / Math.max(1, scoreUrl.length * 0.62))
+      : 44
+
+  return {
+    titleBarWidth,
+    line1Y,
+    line2Y,
+    line3Y,
+    cornerX,
+    cornerUrlY,
+    cornerQrY,
+    cornerUrlX,
+    cornerUrlWidth,
+    cornerUrlFontSize,
+  }
+}
+
+const getSectionPositions = (newCount: number, oldCount: number) => {
+  const newSectionHeight = sectionHeight(newCount)
+  const oldSectionHeight = sectionHeight(oldCount)
+  const contentHeight = newSectionHeight + SECTION_GAP + oldSectionHeight
+  const contentBottom = HEIGHT - FOOTER_HEIGHT
+  const slack = Math.max(0, contentBottom - HEADER_HEIGHT - contentHeight)
+  const newSectionY = HEADER_HEIGHT + slack / 2
+  return {
+    newSectionY,
+    oldSectionY: newSectionY + newSectionHeight + SECTION_GAP,
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Renderer lifecycle
+// -----------------------------------------------------------------------------
+
+interface CanvasFontOptions {
+  cardName: string
+  title: string
+  metaText: string
+  newEntries: ScoreTableEntry[]
+  oldEntries: ScoreTableEntry[]
+}
+
+const useCanvasFonts = ({
+  cardName,
+  title,
+  metaText,
+  newEntries,
+  oldEntries,
+}: CanvasFontOptions) => {
+  const [fontsLoaded, setFontsLoaded] = useState(false)
 
   // Konva paints to a canvas, so a font that isn't loaded yet falls back
-  // silently with no re-paint. Wait for every glyph we draw — the section
-  // labels and song titles in M PLUS 2, plus the card name and user title in
-  // M PLUS Rounded 1c — before rendering.
+  // silently with no re-paint. Wait for every glyph drawn by the scene.
   useEffect(() => {
-    // Fonts can't un-load, and the toggles re-run this effect; without the
-    // guard every toggle rebuilds a ~50-title string and re-runs unicode-range
-    // matching on the main thread, right before the export.
     if (fontsLoaded) return
     const mplus2Text = [
       `Rating NEW OLD Avg ${metaText}`,
@@ -915,23 +951,65 @@ const PlayerRatingCanvas = ({
       .catch(() => setFontsLoaded(true))
   }, [cardName, title, metaText, newEntries, oldEntries, fontsLoaded])
 
-  // A canvas can't be long-pressed to copy or save on iOS, so the stage is only
-  // an offscreen renderer and the dialog displays the PNG below. Export once
-  // the scene is complete: fonts resolved and every image settled. sceneKey
-  // re-exports when a toggle changes what's drawn without changing the count.
+  return fontsLoaded
+}
+
+const useImageTracker = () => {
+  // Bumped as images settle, so the scene re-renders to draw them and the
+  // export effect re-checks the mutable pending count.
+  const [settledCount, bumpSettled] = useReducer(
+    (count: number) => count + 1,
+    0,
+  )
+  // Identity-stable so useImage's effect doesn't re-run and double-count.
+  const tracker = useMemo(() => new ImageLoadTracker(bumpSettled), [])
+  return { tracker, settledCount }
+}
+
+const useDestroyStageOnUnmount = (layerRef: RefObject<Konva.Layer | null>) => {
+  // Konva sizes four 2100x3750 canvases per stage. destroy() resizes them to
+  // 0x0, releasing over 120MB of backing store immediately on iOS Safari.
+  useEffect(
+    () => () => {
+      layerRef.current?.getStage()?.destroy()
+    },
+    [layerRef],
+  )
+}
+
+interface CanvasExportOptions {
+  layerRef: RefObject<Konva.Layer | null>
+  fontsLoaded: boolean
+  tracker: ImageLoadTracker
+  settledCount: number
+  hasRanks: boolean
+  hasUrl: boolean
+  hasTitle: boolean
+  onRender: (blob: Blob) => void
+}
+
+const useCanvasExport = ({
+  layerRef,
+  fontsLoaded,
+  tracker,
+  settledCount,
+  hasRanks,
+  hasUrl,
+  hasTitle,
+  onRender,
+}: CanvasExportOptions) => {
+  // The stage is an offscreen renderer. Export only after the fonts and every
+  // image have settled, and re-export when a visible toggle changes the scene.
   useEffect(() => {
     if (!fontsLoaded || tracker.pending > 0) return
     const canvas = layerRef.current?.getCanvas()._canvas
     if (canvas == null) return
     let cancelled = false
-    // Let Konva finish the draw this commit scheduled before reading it back.
+    // Let Konva finish the draw scheduled by this commit before reading it.
     const frame = requestAnimationFrame(() => {
-      // Read the layer's existing backing canvas rather than Konva's
-      // toBlob/toDataURL, which re-render the scene into a fresh destination
-      // canvas plus a buffer canvas — 31.5MB each at this size, on top of the
-      // live one. toBlob also encodes off the main thread, unlike toDataURL.
+      // Reading the existing layer avoids the two additional ~31.5MB canvases
+      // that Konva's export helpers allocate at this resolution.
       canvas.toBlob((blob) => {
-        // A newer toggle already superseded this export.
         if (cancelled || blob == null) return
         onRender(blob)
       }, "image/png")
@@ -940,56 +1018,246 @@ const PlayerRatingCanvas = ({
       cancelled = true
       cancelAnimationFrame(frame)
     }
-    // settledCount is the re-check trigger: tracker.pending is a mutable field,
-    // so it can't be a dependency on its own.
-  }, [onRender, fontsLoaded, tracker, settledCount, sceneKey])
+    // settledCount is the re-check trigger for tracker.pending. The visibility
+    // booleans represent only toggles that actually alter the drawn scene.
+  }, [
+    layerRef,
+    onRender,
+    fontsLoaded,
+    tracker,
+    settledCount,
+    hasRanks,
+    hasUrl,
+    hasTitle,
+  ])
+}
+
+// -----------------------------------------------------------------------------
+// Composite scene components
+// -----------------------------------------------------------------------------
+
+interface CanvasHeaderProps {
+  info: RatingImageInfo
+  scoreUrl?: string
+  metaText: string
+  hasRanks: boolean
+  hasUrl: boolean
+  hasTitle: boolean
+}
+
+const CanvasHeader = ({
+  info,
+  scoreUrl,
+  metaText,
+  hasRanks,
+  hasUrl,
+  hasTitle,
+}: CanvasHeaderProps) => {
+  const { cardName, title, trophy, rating, courseRank, classRank } = info
+  const layout = getHeaderLayout({ hasRanks, hasTitle, metaText, scoreUrl })
+
+  return (
+    <>
+      <RatingPlate
+        rating={rating}
+        legacy={false}
+        x={PADDING}
+        y={layout.line1Y}
+      />
+      {hasRanks && classRank != null ? (
+        <RankImage
+          src={classRankImages[classRank]}
+          x={PADDING + PLATE_WIDTH + RANK_GAP}
+          y={layout.line1Y + (PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
+          height={RANK_BADGE_HEIGHT}
+        />
+      ) : null}
+
+      <Group x={PADDING} y={layout.line2Y}>
+        <Rect
+          width={CARD_PLATE_WIDTH}
+          height={CARD_PLATE_HEIGHT}
+          cornerRadius={CARD_PLATE_FONT_SIZE * 0.2}
+          fill="#ffffff"
+          stroke="#cccccc"
+          strokeWidth={CARD_PLATE_BORDER}
+        />
+        <Text
+          x={CARD_PLATE_PADDING + CARD_PLATE_BORDER}
+          y={0}
+          width={
+            CARD_PLATE_WIDTH - (CARD_PLATE_PADDING + CARD_PLATE_BORDER) * 2
+          }
+          height={CARD_PLATE_HEIGHT}
+          verticalAlign="middle"
+          text={cardName}
+          fontSize={CARD_PLATE_FONT_SIZE}
+          fontStyle="700"
+          fontFamily="M PLUS Rounded 1c"
+          fill="#000000"
+          wrap="none"
+          ellipsis={true}
+        />
+      </Group>
+      {hasRanks && courseRank != null ? (
+        <RankImage
+          src={courseRankImages[courseRank]}
+          x={PADDING + CARD_PLATE_WIDTH + RANK_GAP}
+          y={layout.line2Y + (CARD_PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
+          height={RANK_BADGE_HEIGHT}
+        />
+      ) : null}
+
+      {hasTitle ? (
+        <TitlePlate
+          title={title}
+          trophy={trophy}
+          x={PADDING}
+          y={layout.line3Y}
+          width={layout.titleBarWidth}
+          height={TITLE_BAR_HEIGHT}
+        />
+      ) : null}
+
+      {metaText !== "" ? (
+        <Text
+          x={PADDING + (hasTitle ? layout.titleBarWidth + RANK_GAP : 0)}
+          y={layout.line3Y}
+          height={TITLE_BAR_HEIGHT}
+          verticalAlign="middle"
+          text={metaText}
+          fontSize={HEADER_EM}
+          fontStyle="600"
+          fontFamily="M PLUS 2"
+          fill="#8a7698"
+        />
+      ) : null}
+
+      {hasUrl && scoreUrl != null ? (
+        <>
+          <Text
+            x={layout.cornerUrlX}
+            y={layout.cornerUrlY}
+            width={layout.cornerUrlWidth}
+            height={CORNER_URL_HEIGHT}
+            align="right"
+            verticalAlign="middle"
+            text={scoreUrl}
+            fontSize={layout.cornerUrlFontSize}
+            fontFamily="M PLUS 2"
+            fill="#c8c8c8"
+            wrap="none"
+          />
+          <QrCode url={scoreUrl} x={layout.cornerX} y={layout.cornerQrY} />
+        </>
+      ) : null}
+    </>
+  )
+}
+
+const CanvasSections = ({
+  newEntries,
+  oldEntries,
+}: {
+  newEntries: ScoreTableEntry[]
+  oldEntries: ScoreTableEntry[]
+}) => {
+  const { newSectionY, oldSectionY } = getSectionPositions(
+    newEntries.length,
+    oldEntries.length,
+  )
+  return (
+    <>
+      <Section title="NEW" entries={newEntries} y={newSectionY} />
+      <Section title="OLD" entries={oldEntries} y={oldSectionY} />
+    </>
+  )
+}
+
+const CanvasFooter = () => (
+  <>
+    <Rect
+      x={PADDING}
+      y={HEIGHT - FOOTER_HEIGHT}
+      width={WIDTH - PADDING * 2}
+      height={2}
+      fillLinearGradientStartPoint={{ x: 0, y: 0 }}
+      fillLinearGradientEndPoint={{ x: WIDTH - PADDING * 2, y: 0 }}
+      fillLinearGradientColorStops={[
+        0,
+        "#d9c8e500",
+        0.5,
+        "#bca5cc",
+        1,
+        "#d9c8e500",
+      ]}
+    />
+    <Group
+      x={(WIDTH - FOOTER_LOGO_SIZE - FOOTER_BRAND_GAP - FOOTER_WORD_WIDTH) / 2}
+      y={HEIGHT - FOOTER_HEIGHT}
+    >
+      <FooterLogo />
+      <Text
+        x={FOOTER_LOGO_SIZE + FOOTER_BRAND_GAP}
+        width={FOOTER_WORD_WIDTH}
+        height={FOOTER_HEIGHT}
+        verticalAlign="middle"
+        text="Otohime"
+        fontSize={FOOTER_WORD_FONT_SIZE}
+        fontFamily="McLaren"
+        fill="#5f4181"
+      />
+    </Group>
+  </>
+)
+
+// -----------------------------------------------------------------------------
+// Root renderer
+// -----------------------------------------------------------------------------
+
+const PlayerRatingCanvas = ({
+  scoreTable,
+  info,
+  scoreUrl,
+  showTitle,
+  showRanks,
+  showUrl,
+  onRender,
+}: PlayerRatingCanvasProps) => {
+  const { cardName, title, courseRank, classRank } = info
+  const layerRef = useRef<Konva.Layer>(null)
+  const { tracker, settledCount } = useImageTracker()
+  const hasRanks = showRanks && courseRank != null && classRank != null
+  const hasUrl = showUrl && scoreUrl != null
+  const hasTitle = showTitle && title.length > 0
+  const { newEntries, oldEntries } = useMemo(
+    () => selectRatingEntries(scoreTable),
+    [scoreTable],
+  )
+  const metaText = formatMetaText(info)
+  const fontsLoaded = useCanvasFonts({
+    cardName,
+    title,
+    metaText,
+    newEntries,
+    oldEntries,
+  })
+
+  useDestroyStageOnUnmount(layerRef)
+  useCanvasExport({
+    layerRef,
+    fontsLoaded,
+    tracker,
+    settledCount,
+    hasRanks,
+    hasUrl,
+    hasTitle,
+    onRender,
+  })
 
   if (!fontsLoaded) {
     return null
   }
-
-  // The header stacks three left-aligned lines: rating + class rank, card name
-  // + course rank, then the trophy title bar, vertically centered in the fixed
-  // header band. That third line carries the title bar, the snapshot metadata,
-  // or both, so it is reserved whenever either has something to draw.
-  const hasLine3 = hasTitle || metaText !== ""
-  const line1H = PLATE_HEIGHT
-  const line2H = CARD_PLATE_HEIGHT
-  const line3H = hasLine3 ? TITLE_BAR_HEIGHT : 0
-  const linesH =
-    line1H +
-    HEADER_LINE_GAP +
-    line2H +
-    (hasLine3 ? HEADER_LINE_GAP + line3H : 0)
-  const line1Y = Math.round((HEADER_HEIGHT - linesH) / 2)
-  const line2Y = line1Y + line1H + HEADER_LINE_GAP
-  const line3Y = line2Y + line2H + HEADER_LINE_GAP
-
-  // Content sits between the header and footer bands, vertically centered in the
-  // slack so the grid floats evenly regardless of exact block sizing.
-  const newSectionH = sectionHeight(newEntries.length)
-  const oldSectionH = sectionHeight(oldEntries.length)
-  const contentH = newSectionH + SECTION_GAP + oldSectionH
-  const contentTop = HEADER_HEIGHT
-  const contentBottom = HEIGHT - FOOTER_HEIGHT
-  const slack = Math.max(0, contentBottom - contentTop - contentH)
-  const newSectionY = contentTop + slack / 2
-  const oldSectionY = newSectionY + newSectionH + SECTION_GAP
-
-  // Header's top-right corner: score URL above the QR code, right-aligned.
-  const cornerX = WIDTH - PADDING - QR_SIZE
-  const cornerUrlY = line1Y
-  const cornerQrY = cornerUrlY + CORNER_URL_HEIGHT + 12
-  const leftLine1Right =
-    PADDING + PLATE_WIDTH + RANK_GAP + (hasRanks ? CLASS_RANK_WIDTH : 0)
-  const cornerUrlX = Math.max(WIDTH * 0.4, leftLine1Right + RANK_GAP)
-  const cornerUrlWidth = WIDTH - PADDING - cornerUrlX
-  // Approximate M PLUS 2's URL glyph width and shrink only when necessary.
-  // The generous line width handles normal URLs at the preferred 44px size.
-  const cornerUrlFontSize =
-    scoreUrl != null
-      ? Math.min(44, cornerUrlWidth / Math.max(1, scoreUrl.length * 0.62))
-      : 44
 
   return (
     <ImageLoadContext value={tracker}>
@@ -999,143 +1267,16 @@ const PlayerRatingCanvas = ({
             rather than memory. */}
         <Layer ref={layerRef} listening={false}>
           <Rect width={WIDTH} height={HEIGHT} fill={BG_COLOR} />
-
-          {/* Line 1: rating plate + class rank badge */}
-          <RatingPlate rating={rating} legacy={false} x={PADDING} y={line1Y} />
-          {hasRanks ? (
-            <RankImage
-              src={classRankImages[classRank]}
-              x={PADDING + PLATE_WIDTH + RANK_GAP}
-              y={line1Y + (PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
-              height={RANK_BADGE_HEIGHT}
-            />
-          ) : null}
-
-          {/* Line 2: card name plate + course rank badge */}
-          <Group x={PADDING} y={line2Y}>
-            <Rect
-              width={CARD_PLATE_WIDTH}
-              height={CARD_PLATE_HEIGHT}
-              cornerRadius={CARD_PLATE_FONT_SIZE * 0.2}
-              fill="#ffffff"
-              stroke="#cccccc"
-              strokeWidth={CARD_PLATE_BORDER}
-            />
-            <Text
-              x={CARD_PLATE_PADDING + CARD_PLATE_BORDER}
-              y={0}
-              width={
-                CARD_PLATE_WIDTH - (CARD_PLATE_PADDING + CARD_PLATE_BORDER) * 2
-              }
-              height={CARD_PLATE_HEIGHT}
-              verticalAlign="middle"
-              text={cardName}
-              fontSize={CARD_PLATE_FONT_SIZE}
-              fontStyle="700"
-              fontFamily="M PLUS Rounded 1c"
-              fill="#000000"
-              wrap="none"
-              ellipsis={true}
-            />
-          </Group>
-          {hasRanks ? (
-            <RankImage
-              src={courseRankImages[courseRank]}
-              x={PADDING + CARD_PLATE_WIDTH + RANK_GAP}
-              y={line2Y + (CARD_PLATE_HEIGHT - RANK_BADGE_HEIGHT) / 2}
-              height={RANK_BADGE_HEIGHT}
-            />
-          ) : null}
-
-          {/* Line 3: user-assigned title with trophy effect */}
-          {hasTitle ? (
-            <TitlePlate
-              title={title}
-              trophy={trophy}
-              x={PADDING}
-              y={line3Y}
-              width={titleBarWidth}
-              height={TITLE_BAR_HEIGHT}
-            />
-          ) : null}
-
-          {/* Snapshot metadata sits beside the shorter trophy plate. */}
-          {metaText !== "" ? (
-            <Text
-              x={PADDING + (hasTitle ? titleBarWidth + RANK_GAP : 0)}
-              y={line3Y}
-              height={TITLE_BAR_HEIGHT}
-              verticalAlign="middle"
-              text={metaText}
-              fontSize={HEADER_EM}
-              fontStyle="600"
-              fontFamily="M PLUS 2"
-              fill="#8a7698"
-            />
-          ) : null}
-
-          {/* Top-right corner: score URL + QR code with logo badge */}
-          {hasUrl ? (
-            <>
-              <Text
-                x={cornerUrlX}
-                y={cornerUrlY}
-                width={cornerUrlWidth}
-                height={CORNER_URL_HEIGHT}
-                align="right"
-                verticalAlign="middle"
-                text={scoreUrl}
-                fontSize={cornerUrlFontSize}
-                fontFamily="M PLUS 2"
-                fill="#c8c8c8"
-                wrap="none"
-              />
-              <QrCode url={scoreUrl} x={cornerX} y={cornerQrY} />
-            </>
-          ) : null}
-
-          <Section title="NEW" entries={newEntries} y={newSectionY} />
-          <Section title="OLD" entries={oldEntries} y={oldSectionY} />
-
-          {/* App-bar-style footer lockup with a subtle top rule. */}
-          <Rect
-            x={PADDING}
-            y={HEIGHT - FOOTER_HEIGHT}
-            width={WIDTH - PADDING * 2}
-            height={2}
-            fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-            fillLinearGradientEndPoint={{ x: WIDTH - PADDING * 2, y: 0 }}
-            fillLinearGradientColorStops={[
-              0,
-              "#d9c8e500",
-              0.5,
-              "#bca5cc",
-              1,
-              "#d9c8e500",
-            ]}
+          <CanvasHeader
+            info={info}
+            scoreUrl={scoreUrl}
+            metaText={metaText}
+            hasRanks={hasRanks}
+            hasUrl={hasUrl}
+            hasTitle={hasTitle}
           />
-          <Group
-            x={
-              (WIDTH -
-                FOOTER_LOGO_SIZE -
-                FOOTER_BRAND_GAP -
-                FOOTER_WORD_WIDTH) /
-              2
-            }
-            y={HEIGHT - FOOTER_HEIGHT}
-          >
-            <FooterLogo />
-            <Text
-              x={FOOTER_LOGO_SIZE + FOOTER_BRAND_GAP}
-              width={FOOTER_WORD_WIDTH}
-              height={FOOTER_HEIGHT}
-              verticalAlign="middle"
-              text="Otohime"
-              fontSize={FOOTER_WORD_FONT_SIZE}
-              fontFamily="McLaren"
-              fill="#5f4181"
-            />
-          </Group>
+          <CanvasSections newEntries={newEntries} oldEntries={oldEntries} />
+          <CanvasFooter />
         </Layer>
       </Stage>
     </ImageLoadContext>
