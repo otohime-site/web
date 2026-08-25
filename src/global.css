@@ -30,7 +30,7 @@ input {
 
 /* Override some good but annonying open-props styles */
 :where(img, svg, video) {
-  /* Remove this will blank responsive chart from Nivo */
+  /* Keep responsive plots from inheriting the normalize size constraints. */
   height: initial;
   max-width: initial;
 }

@@ -25,7 +25,7 @@ import classes from "./Player.module.css"
 import PlayerForm from "./PlayerForm"
 import PlayerScores from "./PlayerScores"
 
-// History pulls in Chart.js; keep it in its own chunk like before.
+// History pulls in Observable Plot; keep it in its own chunk.
 const PlayerHistory = lazy(async () => await import("./PlayerHistory"))
 
 const playerTabRoutes = {

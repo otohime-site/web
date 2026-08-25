@@ -1,0 +1,15 @@
+.plot {
+  width: 100%;
+  min-width: 0;
+  color: var(--text-1);
+  font-family: "M PLUS 2", sans-serif;
+
+  > figure {
+    max-width: 100% !important;
+    margin: 0;
+  }
+
+  > :is(figure, svg) {
+    display: block;
+  }
+}

@@ -1,3 +1,7 @@
+.rating-chart {
+  max-width: 80rem;
+}
+
 .rating-target-nav {
   display: flex;
   flex-wrap: wrap;

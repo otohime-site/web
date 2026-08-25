@@ -19,8 +19,7 @@
 }
 
 .chart {
-  position: relative;
-  height: min(22rem, 60vh);
+  max-width: 80rem;
 }
 
 .table-scroll {
@@ -38,7 +37,15 @@
   }
 }
 
-.distribution-chart {
-  position: relative;
-  height: min(26rem, 70vh);
+.fine-distribution {
+  max-width: 80rem;
+  margin-top: var(--size-5);
+
+  > h5 {
+    margin-top: 0;
+  }
+}
+
+.fine-distribution-chart {
+  margin-top: var(--size-3);
 }

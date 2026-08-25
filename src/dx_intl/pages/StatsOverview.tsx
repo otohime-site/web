@@ -1,14 +1,8 @@
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  LinearScale,
-  Tooltip,
-} from "chart.js"
+import * as Plot from "@observablehq/plot"
 import { useMemo, useState } from "react"
-import { Bar } from "react-chartjs-2"
 import { useQuery } from "urql"
 import { Link } from "wouter"
+import { ObservablePlot } from "../../common/components/ObservablePlot"
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
@@ -24,8 +18,6 @@ import {
 } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./StatsOverview.module.css"
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
 
 // Solid colors representing each maimai DX rating frame tier. Mirrors the
 // (non-legacy) thresholds in components/Rating.tsx so the rating distribution
@@ -173,6 +165,9 @@ const StatsOverview = () => {
   }, [flattedEntries, activeVersion, includeReMaster])
 
   const baseRatingStats = baseRatingResult.data?.dx_intl_new_rating_stats ?? []
+  const publicRatingStats = [...baseRatingStats].sort(
+    (a, b) => parseInt(a.range ?? "", 10) - parseInt(b.range ?? "", 10),
+  )
   const totalPlayers = baseRatingStats.reduce(
     (sum, curr) => sum + (curr.count ?? 0),
     0,
@@ -192,34 +187,41 @@ const StatsOverview = () => {
       </p>
       <h5>Rating</h5>
       <QueryResult result={baseRatingResult}>
-        <div style={{ height: "8rem" }}>
-          <Bar
-            data={{
-              labels: ["Rating"],
-              datasets: baseRatingStats.map((stat) => ({
-                label: stat.range ?? "",
-                backgroundColor: rangeColor(stat.range),
-                data: [stat.count ?? 0],
-              })),
-            }}
-            options={{
-              indexAxis: "y",
-              maintainAspectRatio: false,
-              plugins: {
-                legend: { display: false },
-                tooltip: {
-                  callbacks: {
-                    label: (item) => `${item.dataset.label}: ${item.parsed.x}`,
+        <ObservablePlot
+          ariaLabel="公開成績單玩家 Rating 分布長條圖"
+          className={classes["rating-chart"]}
+          options={(width) => ({
+            color: { type: "identity" },
+            height: Math.min(360, Math.max(260, Math.round(width * 0.4))),
+            marginBottom: width < 600 ? 84 : 68,
+            marginLeft: 56,
+            x: {
+              domain: publicRatingStats.map((stat) => stat.range ?? ""),
+              label: "Rating",
+              tickRotate: -45,
+            },
+            y: {
+              grid: true,
+              label: "公開玩家數",
+              tickFormat: ",d",
+            },
+            marks: [
+              Plot.barY(publicRatingStats, {
+                x: (stat) => stat.range ?? "",
+                y: (stat) => stat.count ?? 0,
+                fill: (stat) => rangeColor(stat.range),
+                inset: 1,
+                tip: {
+                  format: {
+                    x: (value) => `Rating ${value}`,
+                    y: (value) => `${Number(value).toLocaleString()} 人`,
                   },
                 },
-              },
-              scales: {
-                x: { stacked: true, beginAtZero: true },
-                y: { stacked: true },
-              },
-            }}
-          />
-        </div>
+              }),
+              Plot.ruleY([0]),
+            ],
+          })}
+        />
         <p className={classes["rating-target-nav"]}>
           <span>各 Rating 目標的 Best 50 組成曲:</span>
           {RATING_TARGETS.map((target) => (

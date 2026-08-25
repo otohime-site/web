@@ -1,15 +1,14 @@
 import clsx from "clsx"
 import { useMemo } from "react"
-import { Line } from "react-chartjs-2"
 import { useQuery } from "urql"
 import { Link, Params } from "wouter"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 
 import { navigate } from "wouter/use-browser-location"
+import { RatingHistoryPlot } from "../../common/components/RatingHistoryPlot"
 import { Alert } from "../../common/components/ui/Alert"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
-import "../../common/utils/chartSetup"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
@@ -482,40 +481,16 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       <div>
         <p>請選擇一個時間檢視該時間的歷程。</p>
         {ratingGraphResult.data?.dx_intl_records_with_history != null ? (
-          <div className={classes["rating-chart"]}>
-            <Line
-              data={{
-                datasets: [
-                  {
-                    label: "Rating",
-                    borderColor: "#1f77b4",
-                    backgroundColor: "#1f77b4",
-                    data: ratingGraphResult.data.dx_intl_records_with_history
-                      .filter((record) => record.start != null)
-                      .map((record) => ({
-                        x: new Date(record.start!).getTime(),
-                        y: record.rating ?? 0,
-                      })),
-                  },
-                ],
-              }}
-              options={{
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    type: "time",
-                    time: {
-                      unit: "month",
-                      tooltipFormat: "yyyy-MM-dd",
-                      displayFormats: { month: "yyyy-MM" },
-                    },
-                    ticks: { major: { enabled: true } },
-                  },
-                  y: { min: 0, max: 16750 },
-                },
-              }}
-            />
-          </div>
+          <RatingHistoryPlot
+            className={classes["rating-chart"]}
+            data={ratingGraphResult.data.dx_intl_records_with_history
+              .filter((record) => record.start != null)
+              .map((record) => ({
+                date: new Date(record.start!),
+                rating: record.rating ?? 0,
+              }))}
+            maxRating={16750}
+          />
         ) : null}
       </div>
     ) : timelineResult.data == null ? null : (
