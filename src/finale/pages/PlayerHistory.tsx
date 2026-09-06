@@ -199,17 +199,25 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   }, [timelineResult])
 
   if (timelinesResult.error != null) {
-    return <Alert severity="error">發生錯誤，請重試。</Alert>
+    return (
+      <>
+        <PageMeta noIndex />
+        <Alert severity="error">發生錯誤，請重試。</Alert>
+      </>
+    )
   }
   if (timelinesResult.data == null) {
-    return <></>
+    return <PageMeta noIndex />
   }
   const outerTimelines = timelinesResult.data.finale_players_timelines[0]
   if (outerTimelines == null || outerTimelines.timelines == null) {
     return (
-      <Alert severity="warning">
-        沒有歷史紀錄。可能是還沒有上傳成績，或著成績單的隱私設定為「私人」。
-      </Alert>
+      <>
+        <PageMeta noIndex />
+        <Alert severity="warning">
+          沒有歷史紀錄。可能是還沒有上傳成績，或著成績單的隱私設定為「私人」。
+        </Alert>
+      </>
     )
   }
 

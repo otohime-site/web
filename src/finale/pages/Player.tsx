@@ -185,21 +185,37 @@ const Player = ({ params }: { params: Params }) => {
   }
 
   if (recordResult.error != null || songsResult.error != null) {
-    return <Alert severity="error">發生錯誤，請重試。</Alert>
+    return (
+      <>
+        <PageMeta noIndex />
+        <Alert severity="error">發生錯誤，請重試。</Alert>
+      </>
+    )
   }
   if (recordResult.data == null || songsResult.data == null) {
-    return <></>
+    // Loading alone does not tell us whether a player is public or private.
+    return null
   }
-  if (recordResult.data.finale_players.length === 0) {
-    return <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
-  }
-
   const player = recordResult.data.finale_players[0]
-  const record = readFragment(finaleRecordsFields, player.finale_record)
 
+  if (player == null) {
+    return (
+      <>
+        <PageMeta noIndex />
+        <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
+      </>
+    )
+  }
+
+  const record = readFragment(finaleRecordsFields, player.finale_record)
   if (record == null) {
     return (
-      <Alert severity="warning">沒有成績可以顯示。可能是還沒有上傳成績。</Alert>
+      <>
+        <PageMeta noIndex />
+        <Alert severity="warning">
+          沒有成績可以顯示。可能是還沒有上傳成績。
+        </Alert>
+      </>
     )
   }
   const collection = createListCollection({
@@ -216,6 +232,7 @@ const Player = ({ params }: { params: Params }) => {
   return (
     <>
       <PageMeta
+        noIndex={player.private}
         canonicalPath={`/fin/p/${encodeURIComponent(params.nickname ?? "")}`}
         description={`查看 ${record.card_name} 的舊版 maimai 成績單。`}
         title={`${record.card_name} - 舊版 maimai 成績單 - Otohime`}

@@ -61,6 +61,8 @@ const Player = ({ params }: { params: Params }) => {
   const activeTab: PlayerTab = location.startsWith("/history")
     ? "history"
     : "scores"
+  // This layout owns metadata for both the scores and nested history pages.
+  const isHistoryPage = activeTab === "history"
   const [editableResult] = useQuery({
     query: dxIntlPlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname },
@@ -124,33 +126,18 @@ const Player = ({ params }: { params: Params }) => {
   if (recordResult.error != null) {
     return (
       <>
-        <PageMeta
-          canonicalPath={playerPath}
-          description={`查看 ${nickname} 的 maimai DX 國際版成績單。`}
-          title={`${nickname} - maimai DX 成績單 - Otohime`}
-        />
+        <PageMeta noIndex />
         <Alert severity="error">發生錯誤，請重試。</Alert>
       </>
     )
   }
   if (recordResult.data == null) {
-    return (
-      <PageMeta
-        canonicalPath={playerPath}
-        description={`查看 ${nickname} 的 maimai DX 國際版成績單。`}
-        title={`${nickname} - maimai DX 成績單 - Otohime`}
-      />
-    )
+    return null
   }
   if (recordResult.data.dx_intl_players.length === 0) {
     return (
       <>
-        <PageMeta
-          canonicalPath={playerPath}
-          description="這個 Otohime 成績單不存在或未公開。"
-          noIndex
-          title="成績單不存在 - Otohime"
-        />
+        <PageMeta noIndex />
         <Alert severity="warning">成績單不存在或為私人成績單。</Alert>
       </>
     )
@@ -161,7 +148,6 @@ const Player = ({ params }: { params: Params }) => {
   // still renders and the scores tab shows the explanation instead.
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
   const cardName = record?.card_name ?? nickname
-  const onHistory = activeTab === "history"
   // While the sign-in state or the editable query is still pending we cannot
   // tell an owner from a visitor yet, so the owner-only routes hold off their
   // redirect.
@@ -196,15 +182,15 @@ const Player = ({ params }: { params: Params }) => {
   return (
     <>
       <PageMeta
-        canonicalPath={onHistory ? `${playerPath}/history` : playerPath}
+        canonicalPath={isHistoryPage ? `${playerPath}/history` : playerPath}
         description={
-          onHistory
+          isHistoryPage
             ? `查看 ${cardName} 的 maimai DX 成績單歷史紀錄。`
             : `查看 ${cardName} 的 maimai DX 國際版成績單、Rating 與 Best 50 組成。`
         }
-        noIndex={editing || onHistory}
+        noIndex={player.private || editing || isHistoryPage}
         title={
-          onHistory
+          isHistoryPage
             ? `成績單歷史紀錄 - ${cardName} - maimai DX 成績單 - Otohime`
             : `${cardName} - maimai DX 成績單 - Otohime`
         }

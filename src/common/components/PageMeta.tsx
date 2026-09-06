@@ -24,10 +24,10 @@ export const SiteMeta = () => {
 }
 
 interface PageMetaProps {
-  canonicalPath: string
+  canonicalPath?: string
   description?: string
   noIndex?: boolean
-  title: string
+  title?: string
 }
 
 export const PageMeta = ({
@@ -36,19 +36,18 @@ export const PageMeta = ({
   noIndex = false,
   title,
 }: PageMetaProps) => {
-  const canonicalUrl = new URL(canonicalPath, SITE_ORIGIN).href
+  const canonicalUrl =
+    canonicalPath == null ? undefined : new URL(canonicalPath, SITE_ORIGIN).href
 
   useSeoMeta({
-    title,
+    ...(title == null ? {} : { title, ogTitle: title }),
     ...(description == null ? {} : { description, ogDescription: description }),
-    ogTitle: title,
-    ogLocale: "zh_TW",
-    ogSiteName: "Otohime",
-    ogType: "website",
-    ogUrl: canonicalUrl,
+    ...(canonicalUrl == null ? {} : { ogUrl: canonicalUrl }),
     robots: noIndex ? "noindex, follow" : "index, follow",
-    twitterCard: "summary",
   })
-  useHead({ link: [{ rel: "canonical", href: canonicalUrl }] })
+  useHead({
+    link:
+      canonicalUrl == null ? [] : [{ rel: "canonical", href: canonicalUrl }],
+  })
   return null
 }
