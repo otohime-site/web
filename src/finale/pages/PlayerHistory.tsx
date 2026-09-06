@@ -12,6 +12,7 @@ import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
+import { useUser } from "../../common/contexts"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
@@ -123,6 +124,10 @@ const hashToDateString = (hash: string): string => {
 }
 
 const PlayerHistory = ({ params }: { params: Params }) => {
+  // Unlike the DX history this page is a top-level route, so nothing above
+  // it has waited for the sign-in state yet. Private score tables are only
+  // visible to their owner, so the player queries wait for it here.
+  const { pending } = useUser()
   const [songsResult] = useQuery({
     query: finaleSongsDocument,
     pause: params.hash === null,
@@ -130,10 +135,12 @@ const PlayerHistory = ({ params }: { params: Params }) => {
   const [timelinesResult] = useQuery({
     query: finalePlayersTimelinesDocument,
     variables: { nickname: params.nickname ?? "" },
+    pause: pending,
   })
   const [ratingGraphResult] = useQuery({
     query: finalePlayerRatingGraphDocument,
     variables: { nickname: params.nickname ?? "" },
+    pause: pending,
   })
   const [timelineResult] = useQuery({
     query: finalePlayerWithTimelineDocument,
@@ -141,7 +148,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
       nickname: params.nickname ?? "",
       time: hashToDateString(params.hash ?? ""),
     },
-    pause: params.hash == null || params.hash.length === 0,
+    pause: pending || params.hash == null || params.hash.length === 0,
   })
 
   const flattedEntries = useMemo(
