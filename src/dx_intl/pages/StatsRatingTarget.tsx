@@ -109,7 +109,7 @@ const StatsRatingTarget = ({ params }: { params: Params }) => {
     <>
       <PageMeta
         canonicalPath={`/dxi/s/rt/${rating}`}
-        description={`查看 Otohime 公開成績單中，maimai DX 玩家 Rating ${rating} 玩家最常見的 Best 50 組成曲。`}
+        description={`查看 Otohime 公開成績單中，maimai DX Rating ${rating}（正負 125 分）玩家最常見的 Best 50 組成曲。`}
         title={`Rating ${rating} Best 50 組成曲 - maimai DX 玩家統計 - Otohime`}
       />
       <main>
