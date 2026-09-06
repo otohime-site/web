@@ -63,7 +63,7 @@ const PlayerForm = ({
   onOpenChange,
   onSaved,
 }: PlayerFormProps) => {
-  const user = useUser()
+  const { user } = useUser()
   const [, navigate] = useLocation()
   const [localOpen, setLocalOpen] = useState(false)
   const dialogOpen = open ?? localOpen

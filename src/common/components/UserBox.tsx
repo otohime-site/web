@@ -8,7 +8,8 @@ import {
 import { useCallback } from "react"
 import { navigate } from "wouter/use-browser-location"
 import IconGoogle from "~icons/mdi/google"
-import { firebaseAuth, useUser } from "../contexts"
+import { firebaseAuth, prepareSignIn, useUser } from "../contexts"
+import { isMobile } from "../utils/browser"
 
 import { Alert } from "./ui/Alert"
 import { Avatar } from "./ui/Avatar"
@@ -17,16 +18,14 @@ import classes from "./UserBox.module.css"
 
 const googleProvider = new GoogleAuthProvider()
 
-const isInAppBrowser = (agent: string): boolean =>
-  agent.search(/(iPhone|iPad|iPod)(?!.*Safari)/) !== -1 ||
-  agent.search(/Android.*(wv|\.0\.0\.0)/) !== -1
-
 const UserBoxComponent = () => {
-  const user = useUser()
+  const { user, pending } = useUser()
 
   const performLogin = async (provider: GoogleAuthProvider) => {
     try {
-      if (isInAppBrowser(navigator.userAgent)) {
+      // Mobile browsers (in-app ones especially) block popups, so they take
+      // the full-page redirect. Desktop keeps the popup and stays on the page.
+      if (isMobile) {
         await signInWithRedirect(firebaseAuth, provider)
       } else {
         await signInWithPopup(firebaseAuth, provider)
@@ -48,11 +47,16 @@ const UserBoxComponent = () => {
   const handleLogout = async (): Promise<void> => {
     await signOut(firebaseAuth)
   }
+  if (pending) {
+    // Keep the slot so the header does not jump once the state resolves.
+    return <div className={classes["user-box"]} />
+  }
   if (user !== null) {
-    // Facebook login is abandoned but its provider can't be removed yet for
-    // compatibility, so its profile data (which can be stale/empty) is skipped.
-    // providerData is ordered oldest-first, so the last non-FB entry is the
-    // latest usable profile; fall back to the aggregated top-level fields.
+    // Facebook login is long gone but accounts linked back then still carry
+    // its provider entry, whose profile data can be stale/empty, so it is
+    // skipped. providerData is ordered oldest-first, so the last non-FB entry
+    // is the latest usable profile; fall back to the aggregated top-level
+    // fields.
     const profile =
       [...user.providerData]
         .reverse()
@@ -81,7 +85,15 @@ const UserBoxComponent = () => {
     )
   }
   return (
-    <Popover.Root>
+    <Popover.Root
+      onOpenChange={(details) => {
+        // Opening the popover signals intent: load the sign-in iframe now so
+        // the popup opens on the first click. Redirect sign-in needs no iframe.
+        if (details.open && !isMobile) {
+          prepareSignIn()
+        }
+      }}
+    >
       <Popover.Trigger>登入</Popover.Trigger>
       <Popover.Positioner>
         <Popover.Content className={classes["popover"]}>
@@ -90,6 +102,8 @@ const UserBoxComponent = () => {
               <IconGoogle /> 以 Google 帳號登入
             </button>
           </p>
+          {/* For visitors who last signed in back when Facebook login still
+              existed. */}
           <Alert severity="warning">
             <p>Facebook 登入已於 7/15 停止運作。</p>
             <p>

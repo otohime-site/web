@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react"
 import { Link, Redirect, Route, Router, useRoute } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
-import { AuthMigrate } from "./common/components/AuthMigrate"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
 import DxIntl from "./dx_intl/index"
@@ -31,7 +30,6 @@ const App = () => {
         <UserBox />
       </div>
       <div className={classes.container}>
-        <AuthMigrate />
         <Suspense fallback={<></>}>
           {/* Keep Firebase Hosting's scoped redirects and rewrites in
               firebase.json synchronized with route changes here. They avoid a
@@ -90,13 +88,3 @@ const App = () => {
 }
 
 export default App
-
-export const Skeleton = () => (
-  <>
-    <div className={classes.top}>
-      <Link href="~/" className={classes.title}>
-        <img src={Logo} /> <p>Otohime</p>
-      </Link>
-    </div>
-  </>
-)

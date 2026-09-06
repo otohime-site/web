@@ -10,6 +10,7 @@ import IconRefresh from "~icons/mdi/refresh"
 import { graphql } from "../../graphql"
 import host from "../../host"
 import { useUser } from "../contexts"
+import { isMobile } from "../utils/browser"
 import { QueryResult } from "./QueryResult"
 import classes from "./Token.module.css"
 import { Alert } from "./ui/Alert"
@@ -18,13 +19,6 @@ const BookmarkTitle = () => {
   useHead({ title: "更新 Otohime 成績單" })
   return null
 }
-
-// Phones and tablets cannot drag the bookmarklet link to a bookmark bar, so
-// they get the copy-and-edit-bookmark flow instead. iPadOS 13+ reports itself
-// as Macintosh, hence the extra touch-points check.
-const isMobile =
-  /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
-  (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1)
 
 const bookmarkletContent = (token: string): string => `
 javascript:
@@ -67,7 +61,7 @@ const regenerateTokenDocument = graphql(`
 // The Bookmarklet link-generation block for the home page. First-time token
 // creation and regeneration both live here.
 const Token = () => {
-  const user = useUser()
+  const { user } = useUser()
   const [tokensResult, refetchTokens] = useQuery({
     query: tokensDocument,
     requestPolicy: "network-only",

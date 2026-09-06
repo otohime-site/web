@@ -78,15 +78,18 @@ const groupKeyOptions = {
 } as const
 
 const Player = ({ params }: { params: Params }) => {
-  const user = useUser()
+  const { user, pending } = useUser()
   const [editableResult] = useQuery({
     query: finalePlayersEditableDocument,
     variables: { userId: user?.uid ?? "", nickname: params.nickname ?? "" },
     pause: user == null,
   })
+  // Private score tables are visible to their owner only, so wait for the
+  // sign-in state before asking.
   const [recordResult] = useQuery({
     query: finaleRecordWithScoresDocument,
     variables: { nickname: params.nickname ?? "" },
+    pause: pending,
   })
   const [songsResult] = useQuery({ query: finaleSongsDocument })
   const [, deletePlayer] = useMutation(deleteFinalePlayerDocument)

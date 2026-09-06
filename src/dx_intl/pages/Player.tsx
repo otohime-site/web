@@ -51,7 +51,7 @@ const dxIntlRecordDocument = graphql(
   [dxIntlRecordsFields],
 )
 const Player = ({ params }: { params: Params }) => {
-  const user = useUser()
+  const { user, pending } = useUser()
   const nickname = params.nickname ?? ""
   const playerPath = `/dxi/p/${encodeURIComponent(nickname)}`
   // Tab routes nested under /p/:nickname. Editing is a dialog over the
@@ -66,9 +66,13 @@ const Player = ({ params }: { params: Params }) => {
     variables: { userId: user?.uid ?? "", nickname },
     pause: user == null,
   })
+  // What the record query returns depends on who is asking (private score
+  // tables are visible to their owner only), so it waits for the sign-in
+  // state instead of answering "not found" to an owner still being resolved.
   const [recordResult] = useQuery({
     query: dxIntlRecordDocument,
     variables: { nickname },
+    pause: pending,
   })
 
   // PlayerScores owns the score-page state and portals its controls into
@@ -158,9 +162,10 @@ const Player = ({ params }: { params: Params }) => {
   const record = readFragment(dxIntlRecordsFields, player.dx_intl_record)
   const cardName = record?.card_name ?? nickname
   const onHistory = activeTab === "history"
-  // While the editable query is in flight we cannot tell an owner from a
-  // visitor yet, so the owner-only routes hold off their redirect.
-  const ownershipPending = editableResult.fetching
+  // While the sign-in state or the editable query is still pending we cannot
+  // tell an owner from a visitor yet, so the owner-only routes hold off their
+  // redirect.
+  const ownershipPending = pending || editableResult.fetching
 
   const ownsScoreTable =
     editableResult.error == null &&

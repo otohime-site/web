@@ -10,8 +10,20 @@ import { useUser } from "../contexts"
 import classes from "./Home.module.css"
 
 const HomeComponent = () => {
-  const user = useUser()
+  const { user, pending } = useUser()
   const [playersRevision, setPlayersRevision] = useState(0)
+  if (pending) {
+    // Neither the landing page nor the dashboard is right until the sign-in
+    // state is known; showing the landing page to a returning user would
+    // flash it away a moment later.
+    return (
+      <PageMeta
+        canonicalPath="/"
+        description={SITE_DESCRIPTION}
+        title="Otohime: maimai DX 國際版成績單集計網站"
+      />
+    )
+  }
   if (user == null) {
     return (
       <>

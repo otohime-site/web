@@ -58,7 +58,7 @@ const escapeForLike = (keyword: string): string =>
   keyword.replace(/%/g, "\\%").replace(/_/g, "\\_")
 
 const Search = () => {
-  const user = useUser()
+  const { user, pending } = useUser()
   // const navigate = useNavigate()
   const [keyword, setKeyword] = useState("")
   const [keywordAnonResult] = useQuery({
@@ -66,7 +66,7 @@ const Search = () => {
     variables: {
       nickname_like: `${escapeForLike(keyword)}%`,
     },
-    pause: user != null || keyword.length === 0,
+    pause: pending || user != null || keyword.length === 0,
   })
   const [keywordUserResult] = useQuery({
     query: dxIntlPlayersWithKeywordUserDocument,
@@ -74,7 +74,7 @@ const Search = () => {
       nickname_like: `${escapeForLike(keyword)}%`,
       userId: user?.uid ?? "",
     },
-    pause: user == null || keyword.length === 0,
+    pause: pending || user == null || keyword.length === 0,
   })
 
   const hasError =

@@ -23,7 +23,7 @@ const dxIntlPlayersForUserDocument = graphql(
 )
 
 const UserPlayers = () => {
-  const user = useUser()
+  const { user } = useUser()
   const [playersResult] = useQuery({
     query: dxIntlPlayersForUserDocument,
     variables: { userId: user?.uid ?? "" },

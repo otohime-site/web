@@ -20,7 +20,7 @@ const deleteUserDocument = graphql(`
 
 const Settings = () => {
   const [, navigate] = useLocation()
-  const user = useUser()
+  const { user, pending } = useUser()
   const [, deleteUser] = useMutation(deleteUserDocument)
   const [confirmed, setConfirmed] = useState(false)
 
@@ -45,7 +45,7 @@ const Settings = () => {
           noIndex
           title="使用者設定 - Otohime"
         />
-        <Alert severity="info">請先登入。</Alert>
+        {pending ? null : <Alert severity="info">請先登入。</Alert>}
       </>
     )
   }
