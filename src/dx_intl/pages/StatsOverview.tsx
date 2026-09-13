@@ -1,7 +1,6 @@
 import * as Plot from "@observablehq/plot"
 import { useMemo, useState } from "react"
 import { useQuery } from "urql"
-import { Link } from "wouter"
 import { ObservablePlot } from "../../common/components/ObservablePlot"
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -11,11 +10,7 @@ import { Switch } from "../../common/components/ui/Switch"
 import { graphql } from "../../graphql"
 import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
-import {
-  RATING_TARGETS,
-  versionRewardTitle,
-  versions,
-} from "../models/constants"
+import { versionRewardTitle, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./StatsOverview.module.css"
 
@@ -181,7 +176,10 @@ const StatsOverview = () => {
         title="maimai DX 國際版玩家統計 - Otohime"
       />
       <h4>maimai DX 國際版玩家統計</h4>
-      <p>只計算公開成績單與遊玩過 Splash PLUS 以後版本的玩家。</p>
+      <p>
+        只計算已在本站登錄且公開的成績單。Rating 相關的統計只計入 Splash PLUS
+        改制後的玩家。
+      </p>
       <p>
         公開成績單玩家總數:<strong>{totalPlayers}</strong>
       </p>
@@ -222,16 +220,8 @@ const StatsOverview = () => {
             ],
           })}
         />
-        <p className={classes["rating-target-nav"]}>
-          <span>各 Rating 目標的 Best 50 組成曲:</span>
-          {RATING_TARGETS.map((target) => (
-            <Link key={target} href={`~/dxi/s/rt/${target}`}>
-              {target}
-            </Link>
-          ))}
-        </p>
       </QueryResult>
-      <h5>Most Played Charts</h5>
+      <h5>最多人遊玩的譜面</h5>
       <p>依照公開成績單中的遊玩人數排序。</p>
       <QueryResult result={songsResult}>
         <ol className={chartBlockClasses["chart-blocks"]}>
@@ -247,10 +237,7 @@ const StatsOverview = () => {
         </ol>
       </QueryResult>
       <h5>各版本 SSS / FC / AP 率最低 15 譜面</h5>
-      <p>
-        僅統計 EXPERT 與 MASTER 難度,依照公開成績單中的對應達成率排序,
-        僅計算有玩家遊玩過的譜面。可用開關加入 Re:MASTER。
-      </p>
+      <p>僅計算公開成績單中有遊玩過的 EXPERT、MASTER 譜面。</p>
       <QueryResult result={songsResult}>
         <div>
           <ScrollableSegmentGroupRoot
