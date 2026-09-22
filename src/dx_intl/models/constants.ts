@@ -40,6 +40,7 @@ export const versions = [
   "PRiSM PLUS",
   "CiRCLE",
   "CiRCLE PLUS",
+  "MAGiCAL",
 ] as const
 
 export const levels = [
@@ -295,6 +296,7 @@ export const versionTitles = [
   "鏡",
   "彩",
   "丸",
+  "廻",
 ]
 
 // The merged maimai / maimai PLUS at index 0 shares maimai PLUS's 真 title.
