@@ -86,20 +86,26 @@ type LevelQueryFragment<Level extends string = (typeof levels)[number]> =
 
 type FolderDifficulty = number | "all"
 
-type Ordering =
-  | "index"
-  | "level"
-  | "internal_lv"
-  | "score"
-  | "rating"
-  | "combo_flag"
-  | "sync_flag"
-  | "updated_at"
-  | "sss_rate"
-  | "fc_rate"
-  | "ap_rate"
-  | "rating_group_average"
-  | "rating_group_difference"
+const orderings = [
+  "index",
+  "level",
+  "internal_lv",
+  "score",
+  "rating",
+  "combo_flag",
+  "sync_flag",
+  "updated_at",
+  "sss_rate",
+  "fc_rate",
+  "ap_rate",
+  "rating_group_average",
+  "rating_group_difference",
+] as const
+type Ordering = (typeof orderings)[number]
+const ratingGroupOrderings: readonly Ordering[] = [
+  "rating_group_average",
+  "rating_group_difference",
+]
 
 const dxIntlScoresDocument = graphql(
   `
@@ -335,11 +341,30 @@ const searchParser = createParser<string>({
   serialize: String,
 }).withDefault("")
 
+interface SortQuery {
+  key: Ordering
+  desc: boolean
+}
+
+// `sort=updated_at` sorts ascending; a leading `-` sorts descending.
+const sortParser = createParser<SortQuery>({
+  parse: (value) => {
+    const desc = value.startsWith("-")
+    const key = desc ? value.slice(1) : value
+    return (orderings as readonly string[]).includes(key)
+      ? { key: key as Ordering, desc }
+      : null
+  },
+  serialize: ({ key, desc }) => `${desc ? "-" : ""}${key}`,
+  eq: (a, b) => a.key === b.key && a.desc === b.desc,
+}).withDefault({ key: "index", desc: false })
+
 const scoreQueryParsers = {
   folder: folderParser,
   filter: conditionsParser,
   difficulty: folderDifficultyParser,
   search: searchParser,
+  sort: sortParser,
 }
 
 const getOrderingCollection = (ratingGroupTarget?: number) =>
@@ -570,6 +595,7 @@ const PlayerScores = memo(function PlayerScores({
     filter: conditions,
     difficulty: difficultyQuery,
     search: songSearch,
+    sort,
   } = scoreQuery
   const advanced = folder === "filters" || folder === "all"
   const showAll = folder === "all"
@@ -579,8 +605,27 @@ const PlayerScores = memo(function PlayerScores({
     [folder, folderDifficulty],
   )
 
-  const [ordering, setOrdering] = useState<Ordering>("index")
-  const [orderingDesc, setOrderingDesc] = useState(false)
+  // Rating group orderings are unavailable for legacy ratings, so a shared
+  // URL carrying one falls back to the default ordering.
+  const ordering: Ordering =
+    ratingLegacy && ratingGroupOrderings.includes(sort.key) ? "index" : sort.key
+  const orderingDesc = sort.desc
+  const setOrdering = useCallback(
+    (key: Ordering) =>
+      void setScoreQuery(
+        { sort: { key, desc: orderingDesc } },
+        { history: "replace" },
+      ),
+    [orderingDesc, setScoreQuery],
+  )
+  const setOrderingDesc = useCallback(
+    (desc: boolean) =>
+      void setScoreQuery(
+        { sort: { key: ordering, desc } },
+        { history: "replace" },
+      ),
+    [ordering, setScoreQuery],
+  )
   const [includeInactive, setIncludeInactive] = useState(false)
   const [showCover, setShowCover] = useState(true)
   const [allSongs, setAllSongs] = useState(false)
