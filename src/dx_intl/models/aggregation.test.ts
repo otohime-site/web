@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest"
-import { getRankConstIndex, getRating } from "./aggregation"
-import { RANK_CONST_BORDERS } from "./constants"
+import {
+  ScoreTableEntry,
+  getRankConstIndex,
+  getRating,
+  getVersionRewardProgress,
+} from "./aggregation"
+import { RANK_CONST_BORDERS, versionTitleExcludes } from "./constants"
 
 describe("getRankConstIndex", () => {
   it("returns -1 below the lowest border", () => {
@@ -77,5 +82,68 @@ describe("getRating", () => {
     expect(getRating(14.0, 100.5, true)).toBe(316)
     // No AP bonus when the score is too low to rate at all
     expect(getRating(13.7, 79.9999, true)).toBe(0)
+  })
+})
+
+describe("getVersionRewardProgress", () => {
+  const entry = (overrides: Partial<ScoreTableEntry>): ScoreTableEntry =>
+    ({
+      song_id: "song",
+      version: 7,
+      active: true,
+      difficulty: 3,
+      combo_flag: 0,
+      sync_flag: 0,
+      ...overrides,
+    }) as ScoreTableEntry
+
+  it("counts Basic to Master charts per difficulty", () => {
+    const progress = getVersionRewardProgress(
+      [
+        entry({ difficulty: 0, score: 100.5, combo_flag: 3, sync_flag: 4 }),
+        entry({ difficulty: 3, score: 99, combo_flag: 1 }),
+        entry({ difficulty: 3 }),
+        // Re:Master, inactive, other-version and excluded charts are ignored
+        entry({ difficulty: 4, score: 100.5 }),
+        entry({ active: false, score: 100.5 }),
+        entry({ version: 8, score: 100.5 }),
+        entry({ song_id: versionTitleExcludes[0], score: 100.5 }),
+      ],
+      7,
+    )
+    expect(progress.map(({ key, title }) => [key, title])).toEqual([
+      ["sss", "櫻将"],
+      ["fc", "櫻極"],
+      ["ap", "櫻神"],
+      ["fdx", "櫻舞舞"],
+    ])
+    const [sss, fc, ap, fdx] = progress
+    expect(sss).toMatchObject({ achieved: 1, total: 3 })
+    expect(sss.difficulties).toEqual([
+      { achieved: 1, total: 1 },
+      { achieved: 0, total: 0 },
+      { achieved: 0, total: 0 },
+      { achieved: 0, total: 2 },
+    ])
+    expect(fc).toMatchObject({ achieved: 2, total: 3 })
+    expect(ap).toMatchObject({ achieved: 1, total: 3 })
+    expect(fdx).toMatchObject({ achieved: 1, total: 3 })
+  })
+
+  it("merges maimai into maimai PLUS without the SSS reward", () => {
+    const entries = [entry({ version: 0 }), entry({ version: 1 })]
+    for (const version of [0, 1]) {
+      const progress = getVersionRewardProgress(entries, version)
+      expect(progress.map(({ title }) => title)).toEqual([
+        "真極",
+        "真神",
+        "真舞舞",
+      ])
+      expect(progress[0].total).toBe(2)
+    }
+  })
+
+  it("returns nothing for a version without charts", () => {
+    expect(getVersionRewardProgress([], 7)).toEqual([])
   })
 })

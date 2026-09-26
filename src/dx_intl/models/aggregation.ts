@@ -1,4 +1,3 @@
-import { groupByKey } from "../../common/utils/grouping"
 import { ResultOf } from "../../graphql"
 import {
   RANK_CONST_BORDERS,
@@ -7,6 +6,7 @@ import {
   comboFlags,
   levels,
   syncFlags,
+  versionRewardTitle,
   versionTitleExcludes,
   versionTitles,
   versions,
@@ -172,46 +172,67 @@ export const getScoreStats = (
   return { scoreStats, comboStats, syncStats }
 }
 
-export const getVerTitleResults = (scoreTable: ScoreTableEntry[]) => {
-  const results: Record<"fc" | "sss" | "ap" | "fdx", number[]> = {
-    fc: [],
-    sss: [],
-    ap: [],
-    fdx: [],
-  }
-  const versionGroups = groupByKey(scoreTable, "version")
-  const sssIndex = RANK_SCORES.findIndex((s) => s[1] == "SSS")
-  const fcIndex = comboFlags.indexOf("fc")
-  const apIndex = comboFlags.indexOf("ap")
-  const fdxIndex = syncFlags.indexOf("fdx")
+export const versionRewardKeys = ["sss", "fc", "ap", "fdx"] as const
+export type VersionRewardKey = (typeof versionRewardKeys)[number]
 
-  for (let ver = 1; ver < versionTitles.length; ver++) {
-    const versionTable =
-      [
-        ...(ver == 1 ? (versionGroups?.get(0) ?? []) : []),
-        ...(versionGroups?.get(ver) ?? []),
-      ].filter(
-        (entry) =>
-          entry.active &&
-          entry.difficulty <= 3 &&
-          !versionTitleExcludes.includes(entry.song_id),
-      ) ?? []
-    const { scoreStats, comboStats, syncStats } = getScoreStats(versionTable)
-    const count = versionTable.length
-    if (count == scoreStats[sssIndex] && ver != 1) {
-      results.sss.push(ver)
-    }
-    if (count == comboStats[fcIndex]) {
-      results.fc.push(ver)
-    }
-    if (count == comboStats[apIndex]) {
-      results.ap.push(ver)
-    }
-    if (count == syncStats[fdxIndex]) {
-      results.fdx.push(ver)
-    }
-  }
-  return results
+const versionRewardAchieved: Record<
+  VersionRewardKey,
+  (entry: ScoreTableEntry) => boolean
+> = {
+  sss: (entry) =>
+    entry.score != null &&
+    getRankScoreIndex(entry.score) >=
+      RANK_SCORES.findIndex((rank) => rank[1] === "SSS"),
+  fc: (entry) => entry.combo_flag >= comboFlags.indexOf("fc"),
+  ap: (entry) => entry.combo_flag >= comboFlags.indexOf("ap"),
+  fdx: (entry) => entry.sync_flag >= syncFlags.indexOf("fdx"),
+}
+
+export interface VersionRewardProgress {
+  key: VersionRewardKey
+  title: string
+  achieved: number
+  total: number
+  // Indexed by difficulty (Basic to Master)
+  difficulties: Array<{ achieved: number; total: number }>
+}
+
+// Version rewards (e.g. 櫻将 / 櫻極 / 櫻神 / 櫻舞舞) count every active
+// Basic to Master chart of the version. maimai and maimai PLUS share the
+// 真 rewards, which have no SSS (将) reward.
+export const getVersionRewardProgress = (
+  entries: ScoreTableEntry[],
+  version: number,
+): VersionRewardProgress[] => {
+  const rewardVersion = version === 0 ? 1 : version
+  if (!versionTitles[rewardVersion]) return []
+  const rewardEntries = entries.filter(
+    (entry) =>
+      (rewardVersion === 1
+        ? entry.version === 0 || entry.version === 1
+        : entry.version === rewardVersion) &&
+      entry.active &&
+      entry.difficulty <= 3 &&
+      !versionTitleExcludes.includes(entry.song_id),
+  )
+  if (rewardEntries.length === 0) return []
+  return versionRewardKeys
+    .filter((key) => key !== "sss" || rewardVersion !== 1)
+    .map((key) => {
+      const difficulties = [0, 1, 2, 3].map(() => ({ achieved: 0, total: 0 }))
+      for (const entry of rewardEntries) {
+        const difficulty = difficulties[entry.difficulty]
+        difficulty.total++
+        if (versionRewardAchieved[key](entry)) difficulty.achieved++
+      }
+      return {
+        key,
+        title: versionRewardTitle(rewardVersion, key) ?? "",
+        achieved: difficulties.reduce((sum, d) => sum + d.achieved, 0),
+        total: rewardEntries.length,
+        difficulties,
+      }
+    })
 }
 
 export const getGroupTitle = (

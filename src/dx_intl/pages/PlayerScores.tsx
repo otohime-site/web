@@ -10,6 +10,7 @@ import { createPortal } from "react-dom"
 import { useQuery } from "urql"
 import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
+import IconCheckCircle from "~icons/mdi/check-circle"
 import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
 import IconFolder from "~icons/mdi/folder"
@@ -35,6 +36,7 @@ import {
   getNoteHash,
   getRating,
   getScoreStats,
+  getVersionRewardProgress,
 } from "../models/aggregation"
 import {
   RANK_SCORES,
@@ -43,6 +45,7 @@ import {
   categories,
   comboFlags,
   difficulties,
+  difficultyShortNames,
   getClosestRatingTarget,
   levelCompareKey,
   levels,
@@ -754,6 +757,19 @@ const PlayerScores = memo(function PlayerScores({
     [allEntries, includeInactive, statsUseAllSongs, table.entries],
   )
   const stats = useMemo(() => getScoreStats(statsEntries), [statsEntries])
+  // Version rewards span every Basic to Master chart of the version, so they
+  // ignore the folder difficulty and the deleted-songs toggle.
+  const rewardVersion =
+    !advanced && folder.startsWith("version-")
+      ? Number(folder.slice("version-".length))
+      : null
+  const versionRewards = useMemo(
+    () =>
+      rewardVersion == null
+        ? []
+        : getVersionRewardProgress(allEntries, rewardVersion),
+    [allEntries, rewardVersion],
+  )
 
   const clearConditionsConfirmed = useCallback(
     (message: string) => conditions.length === 0 || window.confirm(message),
@@ -1132,6 +1148,87 @@ const PlayerScores = memo(function PlayerScores({
               </section>
             </div>
           </section>
+          {rewardVersion != null && versionRewards.length > 0 ? (
+            <section
+              aria-labelledby="player-version-rewards-title"
+              className={clsx(
+                classes["score-stats-block"],
+                classes["reward-block"],
+              )}
+            >
+              <div className={classes["stats-header"]}>
+                <strong id="player-version-rewards-title">
+                  {rewardVersion <= 1
+                    ? "maimai / maimai PLUS"
+                    : versions[rewardVersion]}{" "}
+                  版本稱號
+                </strong>
+              </div>
+              <ul className={classes["reward-list"]}>
+                {versionRewards.map(
+                  ({ key, title, achieved, total, difficulties: progress }) => {
+                    const complete = achieved === total
+                    return (
+                      <li key={key} data-complete={complete ? "" : undefined}>
+                        <span className={classes["reward-title"]}>{title}</span>
+                        <span className={classes["reward-flag"]}>
+                          {key === "sss" ? (
+                            <span className={classes["rank-label"]}>SSS</span>
+                          ) : key === "fdx" ? (
+                            <SyncFlag flag="fdx" />
+                          ) : (
+                            <ComboFlag flag={key} />
+                          )}
+                        </span>
+                        <span
+                          className={classes["reward-bar"]}
+                          role="group"
+                          aria-label={title}
+                        >
+                          {progress.map((item, difficulty) => {
+                            if (item.total === 0) return null
+                            const label = `${difficultyShortNames[difficulty]} ${item.achieved}/${item.total}${item.achieved < item.total ? ` · 剩 ${item.total - item.achieved}` : " ✔"}`
+                            return (
+                              <button
+                                key={difficulties[difficulty]}
+                                type="button"
+                                className={
+                                  classes[`reward-segment-${difficulty}`]
+                                }
+                                style={{
+                                  flexGrow: item.total,
+                                  "--progress": `${(item.achieved / item.total) * 100}%`,
+                                }}
+                                data-tooltip={label}
+                                aria-label={`${label}，切換至 ${difficulties[difficulty]}`}
+                                aria-pressed={folderDifficulty === difficulty}
+                                onClick={() =>
+                                  handleFolderDifficultyChange(difficulty)
+                                }
+                              />
+                            )
+                          })}
+                        </span>
+                        <span className={classes["reward-count"]}>
+                          {complete ? (
+                            <>
+                              <IconCheckCircle aria-hidden />
+                              達成
+                            </>
+                          ) : (
+                            <>
+                              {achieved}
+                              <small>/{total}</small>
+                            </>
+                          )}
+                        </span>
+                      </li>
+                    )
+                  },
+                )}
+              </ul>
+            </section>
+          ) : null}
         </div>
         <div>
           <PlayerScoreTable

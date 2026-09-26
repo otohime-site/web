@@ -307,11 +307,13 @@ const rewardSuffixes = {
   sss: "将",
   fc: "極",
   ap: "神",
+  fdx: "舞舞",
 } as const
 
 // The per-version reward title is the version title char followed by the
-// rate-specific suffix (e.g. v2 "超" -> 超将 / 超極 / 超神). Versions without a
-// title (e.g. the merged maimai / maimai PLUS at index 0) have no reward.
+// rate-specific suffix (e.g. v2 "超" -> 超将 / 超極 / 超神 / 超舞舞). Versions
+// without a title (e.g. the merged maimai / maimai PLUS at index 0) have no
+// reward.
 export const versionRewardTitle = (
   version: number,
   rate: keyof typeof rewardSuffixes,

@@ -82,6 +82,10 @@
   font-family: "M PLUS 2";
 }
 
+.reward-block {
+  margin-top: var(--size-3);
+}
+
 .stats-header {
   display: flex;
   align-items: center;
@@ -148,6 +152,178 @@
   -webkit-text-stroke: 1px var(--red-8);
 }
 
+.reward-list {
+  display: grid;
+  gap: var(--size-1);
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: 3.5em 3.25em minmax(0, 1fr) 4.5em;
+    align-items: center;
+    gap: var(--size-2);
+    padding: 0.1rem var(--size-1);
+    list-style-type: none;
+  }
+}
+
+.reward-title {
+  font-weight: var(--font-weight-7);
+  white-space: nowrap;
+}
+
+.reward-flag {
+  display: flex;
+  justify-content: center;
+}
+
+.reward-bar {
+  display: flex;
+  gap: 2px;
+
+  > button {
+    position: relative;
+    flex-basis: 0;
+    min-width: 0;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    /* Drop the open-props button shadow, border and hover ring. */
+    appearance: none;
+    box-shadow: none;
+    background: none;
+    cursor: pointer;
+
+    /* The button is the hit area; the bar itself is painted inset. */
+    &::before {
+      position: absolute;
+      inset: 0.25rem 0;
+      border-radius: var(--radius-1);
+      background-color: color-mix(
+        in oklab,
+        var(--difficulty-color),
+        transparent 82%
+      );
+      background-image: linear-gradient(
+        var(--difficulty-color),
+        var(--difficulty-color)
+      );
+      background-repeat: no-repeat;
+      background-size: var(--progress) 100%;
+      content: "";
+      transition: inset 0.1s;
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      inset-block: 0.125rem;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--difficulty-color);
+      outline-offset: 1px;
+    }
+
+    /* A background-colored gap keeps the ring visible on a full bar. */
+    &[aria-pressed="true"]::before {
+      box-shadow:
+        0 0 0 1px var(--surface-1),
+        0 0 0 2px var(--difficulty-color);
+    }
+
+    &::after {
+      position: absolute;
+      bottom: calc(100% + 0.25rem);
+      left: 50%;
+      z-index: 1;
+      padding: 0.125rem var(--size-2);
+      border-radius: var(--radius-2);
+      background: var(--difficulty-color);
+      color: #fff;
+      content: attr(data-tooltip);
+      font-size: var(--font-size-0);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 0.125rem);
+      transition:
+        opacity 0.1s,
+        transform 0.1s;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+.reward-segment-0 {
+  --difficulty-color: var(--green-6);
+}
+
+.reward-segment-1 {
+  --difficulty-color: var(--orange-6);
+}
+
+.reward-segment-2 {
+  --difficulty-color: var(--red-6);
+}
+
+.reward-segment-3 {
+  --difficulty-color: var(--violet-6);
+}
+
+.reward-count {
+  display: flex;
+  /* Shrink to the content so the completed badge hugs it. */
+  justify-self: end;
+  align-items: center;
+  gap: 0.2em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  small {
+    color: var(--text-2);
+  }
+
+  li[data-complete] & {
+    color: var(--yellow-9);
+    font-weight: var(--font-weight-7);
+    padding: 0 var(--size-1);
+    border-radius: var(--radius-2);
+    background: color-mix(in oklab, var(--yellow-3), transparent 70%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .reward-segment-0 {
+    --difficulty-color: var(--green-5);
+  }
+
+  .reward-segment-1 {
+    --difficulty-color: var(--orange-5);
+  }
+
+  .reward-segment-2 {
+    --difficulty-color: var(--red-5);
+  }
+
+  .reward-segment-3 {
+    --difficulty-color: var(--violet-5);
+  }
+
+  .reward-count {
+    li[data-complete] & {
+      color: var(--yellow-3);
+      background: color-mix(in oklab, var(--yellow-7), transparent 75%);
+    }
+  }
+}
+
 @media (max-width: 480px) {
   .sidebar-tools {
     gap: var(--size-1);
@@ -189,6 +365,11 @@
 
   .stats-group h3 {
     margin-top: 0;
+  }
+
+  .reward-list li {
+    grid-template-columns: 3.25em 2.5em minmax(0, 1fr) 4.25em;
+    gap: var(--size-1);
   }
 
   .stats-list {
