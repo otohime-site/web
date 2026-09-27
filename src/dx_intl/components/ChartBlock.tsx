@@ -1,7 +1,7 @@
 import { type ReactNode } from "react"
 import { Link } from "wouter"
 import { type flatSongsResult, getCoverUrl } from "../models/aggregation"
-import { difficulties } from "../models/constants"
+import { type Difficulty, difficulties } from "../models/constants"
 import classes from "./ChartBlock.module.css"
 import tableClasses from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
@@ -31,14 +31,7 @@ const ChartBlock = ({ entry, rank, value }: ChartBlockProps) => (
         <Variant deluxe={entry.deluxe} />
         <span
           className={
-            tableClasses[
-              `difficulty-${entry.difficulty}` as
-                | "difficulty-0"
-                | "difficulty-1"
-                | "difficulty-2"
-                | "difficulty-3"
-                | "difficulty-4"
-            ]
+            tableClasses[`difficulty-${entry.difficulty as Difficulty}`]
           }
         >
           {difficulties[entry.difficulty]}{" "}

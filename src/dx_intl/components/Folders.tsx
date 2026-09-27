@@ -2,7 +2,7 @@ import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { useMemo } from "react"
 import { ScoreTableEntry } from "../models/aggregation"
 import {
-  difficultyClasses,
+  type Difficulty,
   difficultyShortNames,
   displayVersionTitle,
   levels,
@@ -77,11 +77,11 @@ export const DifficultyFolders = ({
 }) => {
   const difficultyValues = difficulty == null ? ["all"] : [`${difficulty}`]
   const difficultyOptions: FolderOption[] = [
-    { value: "all", label: "全部", className: styles.diffAll },
+    { value: "all", label: "全部", className: styles["difficulty-all"] },
     ...difficultyShortNames.map((label, value) => ({
       value: `${value}`,
       label,
-      className: styles[difficultyClasses[value]],
+      className: styles[`difficulty-${value as Difficulty}`],
     })),
   ]
   const changeDifficulty = (values: string[]) => {

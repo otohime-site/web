@@ -5,7 +5,14 @@ import { Toggle } from "@ark-ui/react/toggle"
 import clsx from "clsx"
 import saveAs from "file-saver"
 import { createMultiParser, createParser, useQueryStates } from "nuqs"
-import { memo, useCallback, useEffect, useMemo, useState } from "react"
+import {
+  type CSSProperties,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import { createPortal } from "react-dom"
 import { useQuery } from "urql"
 import IconArrowDown from "~icons/mdi/arrow-down"
@@ -39,6 +46,7 @@ import {
   getVersionRewardProgress,
 } from "../models/aggregation"
 import {
+  type Difficulty,
   RANK_SCORES,
   RATING_NEW_COUNT,
   RATING_OLD_COUNT,
@@ -1193,12 +1201,16 @@ const PlayerScores = memo(function PlayerScores({
                                 key={difficulties[difficulty]}
                                 type="button"
                                 className={
-                                  classes[`reward-segment-${difficulty}`]
+                                  classes[
+                                    `reward-segment-${difficulty as Exclude<Difficulty, 4>}`
+                                  ]
                                 }
-                                style={{
-                                  flexGrow: item.total,
-                                  "--progress": `${(item.achieved / item.total) * 100}%`,
-                                }}
+                                style={
+                                  {
+                                    flexGrow: item.total,
+                                    "--progress": `${(item.achieved / item.total) * 100}%`,
+                                  } as CSSProperties
+                                }
                                 data-tooltip={label}
                                 aria-label={`${label}，切換至 ${difficulties[difficulty]}`}
                                 aria-pressed={folderDifficulty === difficulty}

@@ -23,6 +23,7 @@ import {
   comboFlags,
   difficultyShortNames,
   syncFlags,
+  type Difficulty,
 } from "../models/constants"
 import {
   finaleRecordsWithHistoryFields,
@@ -337,7 +338,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
                         className={clsx(
                           classes["col-level-diff"],
                           tableClasses[
-                            `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4 | 5}`
+                            `difficulty-${entry.difficulty as Difficulty}`
                           ],
                           entry.level.includes("+")
                             ? tableClasses["plus"]

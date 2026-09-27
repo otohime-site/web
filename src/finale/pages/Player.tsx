@@ -35,6 +35,7 @@ import {
 } from "../models/aggregation"
 import {
   comboFlags,
+  type Difficulty,
   difficultyShortNames,
   syncFlags,
 } from "../models/constants"
@@ -339,9 +340,7 @@ const Player = ({ params }: { params: Params }) => {
                   <RadioGroupItem
                     key={d}
                     value={i.toString()}
-                    className={
-                      classes[`radio-difficulty-${i as 0 | 1 | 2 | 3 | 4}`]
-                    }
+                    className={classes[`radio-difficulty-${i as Difficulty}`]}
                   >
                     {d}
                   </RadioGroupItem>

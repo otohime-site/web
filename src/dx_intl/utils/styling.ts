@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { type Difficulty } from "../models/constants"
 
 export const getDifficultyClassName = (
   classes: Record<string, string>,
@@ -11,7 +12,7 @@ export const getDifficultyClassName = (
 ) =>
   clsx(
     className ?? classes["col-difficulty"],
-    classes[`difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4}`],
+    classes[`difficulty-${entry.difficulty as Difficulty}`],
     entry.internal_lv
       ? ""
       : entry.level.includes("+")

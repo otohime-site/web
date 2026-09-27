@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
-import { comboFlags, syncFlags } from "../models/constants"
+import { comboFlags, syncFlags, type Difficulty } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
 import classes from "./PlayerScoreTable.module.css"
 
@@ -26,9 +26,7 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
             <td
               className={clsx(
                 classes["col-difficulty"],
-                classes[
-                  `difficulty-${entry.difficulty as 0 | 1 | 2 | 3 | 4 | 5}`
-                ],
+                classes[`difficulty-${entry.difficulty as Difficulty}`],
                 entry.level.includes("+")
                   ? classes["plus"]
                   : classes["non-plus"],

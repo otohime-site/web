@@ -117,21 +117,15 @@ export const difficulties = [
   "Re:Master",
 ] as const
 
+// Index into `difficulties`, for typed CSS module lookups like `difficulty-${d}`
+export type Difficulty = 0 | 1 | 2 | 3 | 4
+
 export const difficultyShortNames = [
   "BSC",
   "ADV",
   "EXP",
   "MAS",
   "RE:M",
-] as const
-
-// Make typescript-plugin-css-modules happy
-export const difficultyClasses = [
-  "diff0",
-  "diff1",
-  "diff2",
-  "diff3",
-  "diff4",
 ] as const
 
 export const RANKS = [
