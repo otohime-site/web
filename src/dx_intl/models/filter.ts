@@ -115,14 +115,18 @@ export const valueOptions: Record<
 
 // Range conditions start on a narrow, already-effective band so a
 // freshly added condition does not list the whole table.
-export const defaultCondition = (key: ConditionKey): Condition =>
-  key === "level"
-    ? { key, range: [levels.indexOf("13"), levels.indexOf("14")] }
-    : key === "internal_lv"
-      ? { key, range: [13, 14] }
-      : key === "score"
-        ? { key, range: [97, 99] }
-        : { key, values: [] }
+export const defaultCondition = (key: ConditionKey): Condition => {
+  switch (key) {
+    case "level":
+      return { key, range: [levels.indexOf("13"), levels.indexOf("14")] }
+    case "internal_lv":
+      return { key, range: [13, 14] }
+    case "score":
+      return { key, range: [97, 99] }
+    default:
+      return { key, values: [] }
+  }
+}
 
 // A full-range / nothing-picked condition does not restrict anything.
 // Callers avoid listing the whole table until at least one condition
