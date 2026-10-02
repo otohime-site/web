@@ -31,18 +31,6 @@ export const graphql = initGraphQLTada<{
     dx_intl_combo_flag: "" | "fc" | "fc+" | "ap" | "ap+"
     dx_intl_sync_flag: "" | "s" | "fs" | "fs+" | "fdx" | "fdx+"
     dx_intl_trophy: "normal" | "bronze" | "silver" | "gold" | "rainbow"
-    dx_intl_scores_stats_ranges:
-      | "AP+"
-      | "SSS+"
-      | "SSS"
-      | "SS+"
-      | "SS"
-      | "S+"
-      | "S"
-      | "AAA"
-      | "AA"
-      | "A"
-      | "D～BBB"
     finale_level:
       | "1"
       | "2"
