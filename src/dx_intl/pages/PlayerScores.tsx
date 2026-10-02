@@ -58,6 +58,7 @@ import {
   levelCompareKey,
   levels,
   syncFlags,
+  versionTitleExcludes,
   versions,
 } from "../models/constants"
 import {
@@ -778,6 +779,37 @@ const PlayerScores = memo(function PlayerScores({
         : getVersionRewardProgress(allEntries, rewardVersion),
     [allEntries, rewardVersion],
   )
+  // Titles of the selected version's songs that never count for rewards.
+  const rewardExcludedTitles = useMemo(
+    () =>
+      rewardVersion == null
+        ? []
+        : [
+            ...new Set(
+              allEntries
+                .filter(
+                  (entry) =>
+                    (rewardVersion <= 1
+                      ? entry.version <= 1
+                      : entry.version === rewardVersion) &&
+                    versionTitleExcludes.includes(entry.song_id),
+                )
+                .map((entry) => entry.title),
+            ),
+          ],
+    [allEntries, rewardVersion],
+  )
+  const rewardNotices = [
+    rewardVersion === maxVersion
+      ? "此為最新版本，名牌將在下次版本更新時彙整發放。"
+      : null,
+    rewardVersion != null && rewardVersion <= 1
+      ? `數字為兩版本合計，但表格只會顯示篩選的版本。`
+      : null,
+    rewardExcludedTitles.length > 0
+      ? `${rewardExcludedTitles.map((title) => `《${title}》`).join("")}不算。`
+      : null,
+  ].filter((notice) => notice != null)
 
   const clearConditionsConfirmed = useCallback(
     (message: string) => conditions.length === 0 || window.confirm(message),
@@ -1169,9 +1201,17 @@ const PlayerScores = memo(function PlayerScores({
                   {rewardVersion <= 1
                     ? "maimai / maimai PLUS"
                     : versions[rewardVersion]}{" "}
-                  版本稱號
+                  版本牌進度
                 </strong>
               </div>
+              <p>點選對應難易度的區塊可以切換難易度。</p>
+              {rewardNotices.length > 0 ? (
+                <Alert severity="info">
+                  {rewardNotices.map((notice) => (
+                    <p key={notice}>{notice}</p>
+                  ))}
+                </Alert>
+              ) : null}
               <ul className={classes["reward-list"]}>
                 {versionRewards.map(
                   ({ key, title, achieved, total, difficulties: progress }) => {
