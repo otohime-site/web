@@ -1,4 +1,5 @@
 import { Link, Params, Redirect, Route, Switch, useRoute } from "wouter"
+import NotFound from "../../common/pages/NotFound"
 import classes from "./Stats.module.css"
 import StatsOverview from "./StatsOverview"
 import StatsRatingTarget from "./StatsRatingTarget"
@@ -50,9 +51,7 @@ const Stats = () => {
           />
           <Route path="/:songId/:variant" component={StatsSong} />
           <Route path="/:songId" component={StatsSong} />
-          <Route>
-            <Redirect to="~/dxi/s" replace />
-          </Route>
+          <Route component={NotFound} />
         </Switch>
       </div>
     </div>

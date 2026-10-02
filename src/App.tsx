@@ -1,9 +1,10 @@
 import { lazy, Suspense } from "react"
-import { Link, Redirect, Route, Router, useRoute } from "wouter"
+import { Link, Redirect, Route, Router, Switch, useRoute } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
 import classes from "./App.module.css"
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
+import NotFound from "./common/pages/NotFound"
 import DxIntl from "./dx_intl/index"
 import "./global.css"
 import Logo from "./logo/favicon.svg"
@@ -18,7 +19,7 @@ const App = () => {
     <>
       <div className={classes.top}>
         <Link href="~/" className={classes.title}>
-          <img src={Logo} /> <p>Otohime</p>
+          <img src={Logo} alt="" /> <p>Otohime</p>
         </Link>
         <Search />
         <nav className={classes.nav}>
@@ -35,20 +36,23 @@ const App = () => {
               firebase.json synchronized with route changes here. They avoid a
               catch-all so unknown URLs receive a real HTTP 404. */}
           <Router>
-            <Route path="/" component={Home} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/transfer">
-              <Redirect to="/settings" replace />
-            </Route>
-            <Route path="/forget">
-              <Redirect to="/settings" replace />
-            </Route>
-            <Route path="/dxi" nest>
-              <DxIntl />
-            </Route>
-            <Route path="/fin" nest>
-              <Finale />
-            </Route>
+            <Switch>
+              <Route path="/" component={Home} />
+              <Route path="/settings" component={Settings} />
+              <Route path="/transfer">
+                <Redirect to="/settings" replace />
+              </Route>
+              <Route path="/forget">
+                <Redirect to="/settings" replace />
+              </Route>
+              <Route path="/dxi" nest>
+                <DxIntl />
+              </Route>
+              <Route path="/fin" nest>
+                <Finale />
+              </Route>
+              <Route component={NotFound} />
+            </Switch>
           </Router>
         </Suspense>
       </div>

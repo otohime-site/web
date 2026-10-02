@@ -25,15 +25,15 @@
         "destination": "/index.html"
       },
       {
-        "source": "/dxi/s{,/**}",
+        "source": "/dxi/s{,/*,/*/*,/*/*/*}",
         "destination": "/index.html"
       },
       {
-        "source": "/dxi/p/**",
+        "source": "/dxi/p/*{,/edit,/image,/history,/history/*}",
         "destination": "/index.html"
       },
       {
-        "source": "/fin/p/**",
+        "source": "/fin/p/*{,/history,/history/*}",
         "destination": "/index.html"
       }
     ],

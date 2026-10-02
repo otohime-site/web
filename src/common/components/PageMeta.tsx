@@ -1,6 +1,7 @@
 import { useHead, useSeoMeta } from "@unhead/react"
 
 const SITE_ORIGIN = "https://otohi.me"
+const SITE_IMAGE = `${SITE_ORIGIN}/social-preview.png`
 
 export const SITE_DESCRIPTION =
   "Otohime 是適用於 maimai DX 國際版的成績單系統，提供成績單的同步、公開分享、篩選搜尋與統計功能。"
@@ -15,7 +16,15 @@ export const SiteMeta = () => {
       ogLocale: "zh_TW",
       ogSiteName: "Otohime",
       ogType: "website",
+      ogImage: SITE_IMAGE,
+      ogImageWidth: 512,
+      ogImageHeight: 512,
+      ogImageAlt: "Otohime",
       twitterCard: "summary",
+      twitterTitle: "Otohime",
+      twitterDescription: SITE_DESCRIPTION,
+      twitterImage: SITE_IMAGE,
+      twitterImageAlt: "Otohime",
     },
     { tagPriority: "low" },
   )
@@ -40,8 +49,14 @@ export const PageMeta = ({
     canonicalPath == null ? undefined : new URL(canonicalPath, SITE_ORIGIN).href
 
   useSeoMeta({
-    ...(title == null ? {} : { title, ogTitle: title }),
-    ...(description == null ? {} : { description, ogDescription: description }),
+    ...(title == null ? {} : { title, ogTitle: title, twitterTitle: title }),
+    ...(description == null
+      ? {}
+      : {
+          description,
+          ogDescription: description,
+          twitterDescription: description,
+        }),
     ...(canonicalUrl == null ? {} : { ogUrl: canonicalUrl }),
     robots: noIndex ? "noindex, follow" : "index, follow",
   })

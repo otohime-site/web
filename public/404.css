@@ -1,0 +1,62 @@
+html:has(.otohime-not-found) {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  background: Canvas;
+  color: CanvasText;
+}
+
+body:has(.otohime-not-found) {
+  display: grid;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  background: Canvas;
+  color: CanvasText;
+}
+
+/* Flatten the app layout and hide its chrome while a client 404 is visible. */
+#root:has(.otohime-not-found),
+#root :has(.otohime-not-found) {
+  display: contents;
+}
+
+:is(#root, #root *):has(.otohime-not-found)
+  > :not(:has(.otohime-not-found)):not(.otohime-not-found) {
+  display: none;
+}
+
+.otohime-not-found {
+  box-sizing: border-box;
+  max-width: 36rem;
+  padding: 2rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.otohime-not-found h1 {
+  max-inline-size: none;
+  margin: 0 0 1rem;
+  font:
+    700 2rem / 1.2 system-ui,
+    sans-serif;
+  text-wrap: balance;
+}
+
+.otohime-not-found p {
+  max-inline-size: none;
+  margin: 0 0 1rem;
+  font:
+    400 1rem / 1.5 system-ui,
+    sans-serif;
+  text-wrap: wrap;
+}
+
+.otohime-not-found a {
+  color: inherit;
+  font:
+    400 1rem / 1.5 system-ui,
+    sans-serif;
+  text-decoration: underline;
+}

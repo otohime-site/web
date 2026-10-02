@@ -2,7 +2,7 @@
   margin: var(--size-8) auto var(--size-7);
   max-width: 44rem;
   text-align: center;
-  h2 {
+  h1 {
     max-width: initial;
     font-size: var(--font-size-4);
     font-weight: var(--font-weight-7);
@@ -42,7 +42,8 @@
     padding: var(--size-4);
     background: var(--surface-2);
     border-radius: var(--radius-3);
-    h5 {
+    h2 {
+      font-size: var(--font-size-3);
       margin-bottom: var(--size-2);
     }
     p {
@@ -54,7 +55,8 @@
 .getting-started {
   max-width: 44rem;
   margin: var(--size-7) auto var(--size-5);
-  h5 {
+  h2 {
+    font-size: var(--font-size-3);
     margin-bottom: var(--size-2);
   }
   ol {

@@ -168,10 +168,8 @@ const StatsSong = ({ params }: { params: Params }) => {
         description={`查看 ${song?.title ?? songId}${song ? `（${song.artist}）` : ""} 的 ${deluxe ? "DELUXE" : "STANDARD"} 譜面達成率分布、SSS、FC、AP 比例與各 Rating 玩家平均成績。`}
         title={`${song?.title ?? songId}（${deluxe ? "DELUXE" : "STANDARD"}）- maimai DX 樂曲統計 - Otohime`}
         noIndex={
-          !songsResult.fetching &&
-          songsResult.error == null &&
-          songsResult.data != null &&
-          song == null
+          songsResult.error != null ||
+          (!songsResult.fetching && songsResult.data != null && song == null)
         }
       />
       <QueryResult result={songsResult}>

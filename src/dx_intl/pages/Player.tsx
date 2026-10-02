@@ -16,6 +16,7 @@ import IconPublic from "~icons/mdi/public"
 import { PageMeta } from "../../common/components/PageMeta"
 import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
+import NotFound from "../../common/pages/NotFound"
 import { formatDateTime, formatRelative } from "../../common/utils/datetime"
 import { graphql, readFragment } from "../../graphql"
 import Record from "../components/Record"
@@ -123,6 +124,9 @@ const Player = ({ params }: { params: Params }) => {
     observer.observe(bar)
     topBarObserverRef.current = observer
   }, [])
+  if (!/^\/(?:edit|image|history(?:\/[^/]+)?)?$/.test(location)) {
+    return <NotFound />
+  }
   if (recordResult.error != null) {
     return (
       <>
