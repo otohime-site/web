@@ -14,19 +14,33 @@ import Long from "./Long"
 import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
 
-const percentageValueKeys = [
+const percentageValueColumns = [
   "sss_rate",
   "fc_rate",
   "ap_rate",
   "rating_group_average",
   "rating_group_difference",
 ] as const
+type PercentageValueColumn = (typeof percentageValueColumns)[number]
+
+// What the trailing value column displays.
+export type ValueColumn = "rating" | "updated_at" | PercentageValueColumn
+
+const isPercentageValueColumn = (key: string): key is PercentageValueColumn =>
+  (percentageValueColumns as readonly string[]).includes(key)
+
+// Orderings without a column of their own (index, level, score, ...) show the
+// rating.
+export const getValueColumn = (ordering: string): ValueColumn =>
+  ordering === "updated_at" || isPercentageValueColumn(ordering)
+    ? ordering
+    : "rating"
 
 const getDisplayedValue = (
   entry: ScoreTableEntry,
-  valueKey: keyof ScoreTableEntry,
+  valueColumn: ValueColumn,
 ) => {
-  if (valueKey === "updated_at") {
+  if (valueColumn === "updated_at") {
     return entry.updated_at != null ? (
       <time
         dateTime={entry.updated_at}
@@ -39,25 +53,21 @@ const getDisplayedValue = (
     )
   }
 
-  if (
-    percentageValueKeys.includes(
-      valueKey as (typeof percentageValueKeys)[number],
-    )
-  ) {
-    const value = entry[valueKey]
-    if (typeof value !== "number") return "—"
-    const percentage =
-      valueKey === "sss_rate" ||
-      valueKey === "fc_rate" ||
-      valueKey === "ap_rate"
-        ? value * 100
-        : value
-    const prefix =
-      valueKey === "rating_group_difference" && percentage > 0 ? "+" : ""
-    return `${prefix}${percentage.toFixed(1)}%`
+  if (valueColumn === "rating") {
+    return entry.rating
   }
 
-  return entry.rating
+  const value = entry[valueColumn]
+  if (typeof value !== "number") return "—"
+  const percentage =
+    valueColumn === "sss_rate" ||
+    valueColumn === "fc_rate" ||
+    valueColumn === "ap_rate"
+      ? value * 100
+      : value
+  const prefix =
+    valueColumn === "rating_group_difference" && percentage > 0 ? "+" : ""
+  return `${prefix}${percentage.toFixed(1)}%`
 }
 
 // Memoized: the table is large and most props are identity-stable, so
@@ -68,7 +78,7 @@ const PlayerScoreTableBase = ({
   showCover,
   afterCircle,
   ratingGroupTarget,
-  valueKey,
+  valueColumn,
   expandedHash,
   onNoteToggle,
 }: {
@@ -76,7 +86,7 @@ const PlayerScoreTableBase = ({
   showCover: boolean
   afterCircle: boolean
   ratingGroupTarget?: number
-  valueKey: keyof ScoreTableEntry
+  valueColumn: ValueColumn
   expandedHash: string | null
   onNoteToggle: (hash: string) => void
 }) => {
@@ -85,12 +95,8 @@ const PlayerScoreTableBase = ({
       className={clsx(
         classes.table,
         !showCover && classes["no-cover"],
-        valueKey !== "rating" &&
-          percentageValueKeys.includes(
-            valueKey as (typeof percentageValueKeys)[number],
-          ) &&
-          classes["wide-value"],
-        valueKey === "updated_at" && classes["date-value"],
+        isPercentageValueColumn(valueColumn) && classes["wide-value"],
+        valueColumn === "updated_at" && classes["date-value"],
       )}
     >
       <colgroup>
@@ -146,7 +152,7 @@ const PlayerScoreTableBase = ({
                 <td
                   className={clsx(
                     classes["col-value"],
-                    valueKey === "rating" &&
+                    valueColumn === "rating" &&
                       !entry.internal_lv &&
                       classes.estimated,
                   )}
@@ -154,12 +160,12 @@ const PlayerScoreTableBase = ({
                   <span
                     className={clsx(
                       classes["rating-value"],
-                      valueKey === "rating" &&
+                      valueColumn === "rating" &&
                         entry.rating_used &&
                         classes["rating-used"],
                     )}
                   >
-                    {getDisplayedValue(entry, valueKey)}
+                    {getDisplayedValue(entry, valueColumn)}
                   </span>
                 </td>
               </tr>

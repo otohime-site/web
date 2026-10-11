@@ -35,7 +35,10 @@ import { ComboFlag, SyncFlag } from "../components/Flags"
 import Folders, { DifficultyFolders } from "../components/Folders"
 import type { RatingImageInfo } from "../components/PlayerRatingCanvas"
 import PlayerRatingImage from "../components/PlayerRatingImage"
-import { PlayerScoreTable } from "../components/PlayerScoreTable"
+import {
+  PlayerScoreTable,
+  getValueColumn,
+} from "../components/PlayerScoreTable"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
@@ -1288,7 +1291,7 @@ const PlayerScores = memo(function PlayerScores({
             showCover={showCover}
             afterCircle={afterCircle}
             ratingGroupTarget={ratingLegacy ? undefined : ratingGroupTarget}
-            valueKey={ratingFolder ? "rating" : ordering}
+            valueColumn={ratingFolder ? "rating" : getValueColumn(ordering)}
             expandedHash={expandedHash}
             onNoteToggle={handleNoteToggle}
           />
