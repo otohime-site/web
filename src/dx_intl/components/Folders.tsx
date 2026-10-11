@@ -1,6 +1,5 @@
 import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { useMemo } from "react"
-import { ScoreTableEntry } from "../models/aggregation"
 import {
   type Difficulty,
   difficultyShortNames,
@@ -10,7 +9,12 @@ import {
   RATING_OLD_COUNT,
   versions,
 } from "../models/constants"
-import { EMPTY_FILTER, ScoreFilter, valueOptions } from "../models/filter"
+import {
+  EMPTY_FILTER,
+  FolderEntry,
+  ScoreFilter,
+  valueOptions,
+} from "../models/filter"
 import styles from "./Folders.module.css"
 
 type ArrayFolderKey = "category" | "version" | "level"
@@ -98,17 +102,23 @@ export const DifficultyFolders = ({
   )
 }
 
-const Folders = ({
+const Folders = <Entry extends FolderEntry>({
   entries,
   filter,
   difficulty,
   maxVersion,
+  ratingFolders = true,
+  getCountKey,
   onFilterChange,
 }: {
-  entries: ScoreTableEntry[]
+  entries: Entry[]
   filter: ScoreFilter
   difficulty: number | null
   maxVersion: number
+  ratingFolders?: boolean
+  // Folders count charts by default. Entries sharing a key count once, e.g.
+  // to count songs rather than charts.
+  getCountKey?: (entry: Entry) => string
   onFilterChange: (filter: ScoreFilter) => void
 }) => {
   // Category/version counts follow the selected difficulty. A null
@@ -119,24 +129,31 @@ const Folders = ({
   // rating composition counts.
   const { categoryOptions, versionOptions, levelOptions, ratingOptions } =
     useMemo(() => {
-      const categoryCounts = new Map<number, number>(
-        valueOptions.category.map(({ value }) => [value, 0]),
+      const categoryKeys = new Map<number, Set<string | number>>(
+        valueOptions.category.map(({ value }) => [value, new Set()]),
       )
-      const versionCounts = new Array<number>(versions.length).fill(0)
-      const levelCounts = new Array<number>(levels.length).fill(0)
-      const ratingCounts = [0, 0] // [old, latest]
-      for (const entry of entries) {
+      const newKeySets = (length: number) =>
+        Array.from({ length }, () => new Set<string | number>())
+      const versionKeys = newKeySets(versions.length)
+      const levelKeys = newKeySets(levels.length)
+      const ratingKeys = newKeySets(2) // [old, latest]
+      entries.forEach((entry, index) => {
+        const key = getCountKey?.(entry) ?? index
         const levelIndex = levels.indexOf(entry.level)
-        if (levelIndex >= 0) levelCounts[levelIndex]++
+        if (levelIndex >= 0) levelKeys[levelIndex].add(key)
         // Preserve the existing Master-based rating folder totals.
-        if (entry.difficulty === 3) ratingCounts[entry.rating_latest ? 1 : 0]++
-        if (difficulty != null && entry.difficulty !== difficulty) continue
-        const categoryCount = categoryCounts.get(entry.category)
-        if (categoryCount != null)
-          categoryCounts.set(entry.category, categoryCount + 1)
-        if (entry.version >= 0 && entry.version < versionCounts.length)
-          versionCounts[entry.version]++
-      }
+        if (entry.difficulty === 3 && entry.rating_latest != null)
+          ratingKeys[entry.rating_latest ? 1 : 0].add(key)
+        if (difficulty != null && entry.difficulty !== difficulty) return
+        categoryKeys.get(entry.category)?.add(key)
+        versionKeys[entry.version]?.add(key)
+      })
+      const categoryCounts = new Map(
+        [...categoryKeys].map(([value, keys]) => [value, keys.size]),
+      )
+      const versionCounts = versionKeys.map((keys) => keys.size)
+      const levelCounts = levelKeys.map((keys) => keys.size)
+      const ratingCounts = ratingKeys.map((keys) => keys.size)
       return {
         categoryOptions: valueOptions.category.map(({ value, label }) => ({
           value: `${value}`,
@@ -171,7 +188,7 @@ const Folders = ({
           },
         ],
       }
-    }, [entries, difficulty, maxVersion])
+    }, [entries, difficulty, maxVersion, getCountKey])
 
   const changeDimension = (key: ArrayFolderKey) => (values: string[]) => {
     const nums = values.map((v) => parseInt(v, 10))
@@ -201,13 +218,17 @@ const Folders = ({
 
   return (
     <div className={styles.folders}>
-      <h4>Rating 組成</h4>
-      <FolderGroup
-        values={ratingValues}
-        options={ratingOptions}
-        onChange={changeRating}
-        className={styles.ratingGroup}
-      />
+      {ratingFolders ? (
+        <>
+          <h4>Rating 組成</h4>
+          <FolderGroup
+            values={ratingValues}
+            options={ratingOptions}
+            onChange={changeRating}
+            className={styles.ratingGroup}
+          />
+        </>
+      ) : null}
       <h4>分類</h4>
       <FolderGroup
         values={filter.category.map((v) => `${v}`)}

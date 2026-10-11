@@ -1,0 +1,161 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-2) var(--size-3);
+  margin-bottom: var(--size-3);
+
+  > label:first-of-type {
+    flex: 1 1 16rem;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: var(--size-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    min-width: 0;
+    padding: 0;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  height: 100%;
+  padding: var(--size-2);
+  border: var(--border-size-1) solid var(--surface-3);
+  border-radius: var(--radius-3);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-2);
+  color: inherit;
+  font-family: "M PLUS 2";
+  text-decoration: none;
+  transition:
+    transform 0.15s var(--ease-out-3),
+    box-shadow 0.15s var(--ease-out-3),
+    border-color 0.15s var(--ease-out-3);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--otohime-4);
+    box-shadow: var(--shadow-4);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:focus-visible {
+      transform: none;
+    }
+  }
+}
+
+.inactive {
+  opacity: 0.6;
+
+  .title {
+    text-decoration: line-through;
+  }
+}
+
+.header {
+  display: flex;
+  min-width: 0;
+  gap: var(--size-2);
+}
+
+.cover {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-2);
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.title,
+.artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title {
+  font-weight: var(--font-weight-7);
+}
+
+.artist {
+  color: var(--text-2);
+  font-size: var(--font-size-0);
+}
+
+.meta {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--size-2);
+  color: var(--text-2);
+  font-size: var(--font-size-0);
+
+  img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--size-1);
+  margin-top: auto;
+}
+
+/* --difficulty-color comes from the Folders difficulty classes. */
+.chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.1rem 0;
+  border: var(--border-size-1) solid
+    color-mix(in oklab, var(--difficulty-color), transparent 50%);
+  border-radius: var(--radius-2);
+  background: color-mix(in oklab, var(--difficulty-color), transparent 90%);
+  color: var(--difficulty-color);
+  line-height: 1.2;
+}
+
+.dimmed {
+  opacity: 0.35;
+}
+
+.difficulty {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-6);
+}
+
+.level {
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-7);
+  font-variant-numeric: tabular-nums;
+}
+
+.estimated {
+  font-style: italic;
+}

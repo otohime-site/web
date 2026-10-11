@@ -171,7 +171,7 @@ const StatsOverview = () => {
   return (
     <main>
       <PageMeta
-        canonicalPath="/dxi/s"
+        canonicalPath="/dxi/s/overview"
         description="Otohime 的 maimai DX 國際版玩家 Rating、熱門譜面與達成率統計。"
         title="maimai DX 國際版玩家統計 - Otohime"
       />

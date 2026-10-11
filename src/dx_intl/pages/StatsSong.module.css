@@ -1,21 +1,105 @@
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--size-4);
+  padding: var(--size-3);
+  border: var(--border-size-1) solid var(--surface-3);
+  border-radius: var(--radius-3);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-2);
+  font-family: "M PLUS 2";
+}
+
+.cover {
+  flex: none;
+  width: 8rem;
+  height: 8rem;
+  border-radius: var(--radius-2);
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--size-1);
+}
+
 .title {
+  margin: 0;
   font-family: "M PLUS 2";
   font-weight: 700;
+  overflow-wrap: anywhere;
   &:where(h3, h4, h5, h6, dt) {
     max-width: unset;
   }
 }
 
-.intro {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--size-2);
-  font-family: "M PLUS 2";
+.artist {
+  max-width: unset;
+  margin: 0;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
 
-  img {
-    height: 4em;
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-1) var(--size-4);
+  margin: 0;
+  font-size: var(--font-size-1);
+
+  > div {
+    display: flex;
+    align-items: baseline;
+    gap: var(--size-2);
   }
+
+  dt {
+    color: var(--text-2);
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-6);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.deleted {
+  padding: 0 var(--size-2);
+  border-radius: var(--radius-round);
+  background: var(--surface-3);
+  color: var(--text-2);
+  font-size: var(--font-size-0);
+}
+
+.variants {
+  align-self: flex-start;
+  margin-top: var(--size-1);
+}
+
+.notes {
+  max-width: unset;
+  margin: var(--size-2) 0 0;
+  color: var(--text-2);
+  font-size: var(--font-size-0);
+}
+
+@media (max-width: 480px) {
+  .hero {
+    gap: var(--size-3);
+  }
+
+  .cover {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.heading {
+  margin-top: var(--size-5);
 }
 
 .chart {
@@ -29,6 +113,10 @@
     width: 100%;
     max-width: 40rem;
     font-variant-numeric: tabular-nums;
+  }
+
+  th[scope="row"] {
+    white-space: nowrap;
   }
 
   :is(th, td):not(:first-child) {

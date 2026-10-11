@@ -33,13 +33,19 @@ export const DEFAULT_FILTER: ScoreFilter = {
   rating_latest: true,
 }
 
+// What folders need from a chart. Charts without scores (e.g. the song
+// list) have no rating fields and never match the rating folders.
+export type FolderEntry = Pick<
+  ScoreTableEntry,
+  "category" | "version" | "level" | "difficulty"
+> &
+  Partial<Pick<ScoreTableEntry, "rating_latest" | "rating_listed">>
+
 // The rating folders only list the rating candidates (rating_listed).
-export const filterEntry = (
-  entry: ScoreTableEntry,
-  filter: ScoreFilter,
-): boolean =>
+export const filterEntry = (entry: FolderEntry, filter: ScoreFilter): boolean =>
   (filter.rating_latest == null ||
-    (entry.rating_latest === filter.rating_latest && entry.rating_listed)) &&
+    (entry.rating_latest === filter.rating_latest &&
+      entry.rating_listed === true)) &&
   (filter.category.length === 0 || filter.category.includes(entry.category)) &&
   (filter.version.length === 0 || filter.version.includes(entry.version)) &&
   (filter.level.length === 0 ||

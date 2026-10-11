@@ -1,15 +1,22 @@
 import { SegmentGroup } from "@ark-ui/react/segment-group"
 import * as Plot from "@observablehq/plot"
 import { useQuery } from "urql"
-import { Params, Redirect } from "wouter"
+import { Link, Params, Redirect } from "wouter"
 import { navigate } from "wouter/use-browser-location"
 import { ObservablePlot } from "../../common/components/ObservablePlot"
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
+import tableClasses from "../components/PlayerScoreTable.module.css"
 import { flatSongsResult, getCoverUrl } from "../models/aggregation"
-import { difficulties } from "../models/constants"
+import {
+  type Difficulty,
+  categories,
+  difficulties,
+  difficultyShortNames,
+  versions,
+} from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 import classes from "./StatsSong.module.css"
 
@@ -77,6 +84,9 @@ const StatsSong = ({ params }: { params: Params }) => {
   const variantValid =
     (variant === "std" && variants[0]) || (variant === "dx" && variants[1])
   const variantEntries = songEntries.filter((entry) => entry.deluxe === deluxe)
+  // Version and availability belong to the variant, not the song.
+  const variantVersion = variantEntries[0]?.version
+  const variantInactive = variantEntries[0]?.active === false
   const ratingGroupPoints = variantEntries.flatMap((entry) =>
     ratingGroupStats.flatMap((stat) =>
       stat.deluxe === entry.deluxe &&
@@ -175,31 +185,60 @@ const StatsSong = ({ params }: { params: Params }) => {
       <QueryResult result={songsResult}>
         {song != null ? (
           <>
-            <section className={classes.intro}>
-              <img src={getCoverUrl(song.id)} />
-              <div>
+            <section className={classes.hero}>
+              <img
+                className={classes.cover}
+                src={getCoverUrl(song.id)}
+                alt=""
+              />
+              <div className={classes.info}>
                 <h4 className={classes.title}>{song.title}</h4>
-                <p>{song.artist}</p>
+                <p className={classes.artist}>{song.artist}</p>
+                <dl className={classes.meta}>
+                  <div>
+                    <dt>分類</dt>
+                    <dd>
+                      <Link href={`~/dxi/s?folder=category-${song.category}`}>
+                        {categories[song.category]}
+                      </Link>
+                    </dd>
+                  </div>
+                  {variantVersion != null ? (
+                    <div>
+                      <dt>版本</dt>
+                      <dd>
+                        <Link href={`~/dxi/s?folder=version-${variantVersion}`}>
+                          {versions[variantVersion]}
+                        </Link>
+                      </dd>
+                    </div>
+                  ) : null}
+                  {variantInactive ? (
+                    <div>
+                      <dd className={classes.deleted}>已刪除</dd>
+                    </div>
+                  ) : null}
+                </dl>
+                <SegmentGroup.Root
+                  className={classes.variants}
+                  value={deluxe ? "dx" : "std"}
+                  onValueChange={({ value }) => {
+                    navigate(`/dxi/s/${songId}/${value}`)
+                  }}
+                >
+                  {variants[0] ? (
+                    <SegmentGroupItem value="std">STANDARD</SegmentGroupItem>
+                  ) : null}
+                  {variants[1] ? (
+                    <SegmentGroupItem value="dx">DELUXE</SegmentGroupItem>
+                  ) : null}
+                </SegmentGroup.Root>
               </div>
             </section>
-            <ul>
-              <li>數字來自 Otohime 系統中所有登錄且公開的成績單。</li>
-              <li>每十分鐘更新。</li>
-            </ul>
-            <SegmentGroup.Root
-              value={deluxe ? "dx" : "std"}
-              onValueChange={({ value }) => {
-                navigate(`/dxi/s/${songId}/${value}`)
-              }}
-            >
-              {variants[0] ? (
-                <SegmentGroupItem value="std">STANDARD</SegmentGroupItem>
-              ) : null}
-              {variants[1] ? (
-                <SegmentGroupItem value="dx">DELUXE</SegmentGroupItem>
-              ) : null}
-            </SegmentGroup.Root>
-            <h5>譜面統計</h5>
+            <p className={classes.notes}>
+              數字來自 Otohime 系統中所有登錄且公開的成績單，每十分鐘更新。
+            </p>
+            <h5 className={classes.heading}>譜面統計</h5>
             <div className={classes["table-scroll"]}>
               <table>
                 <thead>
@@ -214,8 +253,15 @@ const StatsSong = ({ params }: { params: Params }) => {
                 <tbody>
                   {variantEntries.map((entry) => (
                     <tr key={entry.difficulty}>
-                      <th scope="row">
-                        {difficulties[entry.difficulty]}{" "}
+                      <th
+                        scope="row"
+                        className={
+                          tableClasses[
+                            `difficulty-${entry.difficulty as Difficulty}`
+                          ]
+                        }
+                      >
+                        {difficultyShortNames[entry.difficulty]}{" "}
                         {entry.internal_lv
                           ? entry.internal_lv.toFixed(1)
                           : entry.level}
@@ -229,7 +275,7 @@ const StatsSong = ({ params }: { params: Params }) => {
                 </tbody>
               </table>
             </div>
-            <h5>Rating 別平均成績</h5>
+            <h5 className={classes.heading}>Rating 別平均成績</h5>
             <QueryResult result={ratingGroupResult}>
               {ratingGroupPoints.length > 0 ? (
                 <ObservablePlot
