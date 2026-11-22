@@ -2,7 +2,5 @@ allowBuilds:
   '@firebase/util': false
   '@parcel/watcher': false
   protobufjs: false
-overrides:
-  # 0.6.18 breaks TypeScript type resolution and the `main`/`module` entries.
-  # Remove once fixed: https://github.com/observablehq/plot/issues/2469
-  '@observablehq/plot': 0.6.17
+minimumReleaseAgeExclude:
+  - '@otohime-site/parser@26.11.0'

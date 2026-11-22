@@ -1,8 +1,12 @@
 import { Dialog } from "@ark-ui/react/dialog"
 import { Listbox, createListCollection } from "@ark-ui/react/listbox"
 import { Portal } from "@ark-ui/react/portal"
-import { parsePlayer, parseScores } from "@otohime-site/parser/dx_intl"
-import { ScoresParseEntry } from "@otohime-site/parser/dx_intl/scores"
+import {
+  parsePlayer,
+  parseScores,
+  type PlayerParseResult,
+  type ScoresParseEntryWithScore,
+} from "@otohime-site/parser/dx_intl"
 import { useEffect, useState } from "react"
 import { useClient, useQuery } from "urql"
 import PlayerItem from "../../common/components/PlayerItem"
@@ -97,7 +101,7 @@ const Book = () => {
   )
 
   const [netPlayerResult, setNetPlayerResult] = useState<{
-    data?: ReturnType<typeof parsePlayer>
+    data?: PlayerParseResult
     fetching: boolean
     error: boolean
   }>({ fetching: true, error: false })
@@ -142,26 +146,35 @@ const Book = () => {
       return
     }
     setUploadState("fetching")
-    const entries = await DIFFICULTIES.reduce<Promise<ScoresParseEntry[]>>(
-      async (prevPromise, _, difficulty) => {
-        const prev = await prevPromise
-        const resp = await window.parent.fetch(
-          `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`,
-        )
-        if (!resp.ok) {
-          throw new Error("Network Error!")
-        }
-        const result = parseScores(await resp.text())
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        setFetchProgress(difficulty + 1)
-        return [...prev, ...result]
-      },
-      Promise.resolve([]),
-    )
+    const entries = await DIFFICULTIES.reduce<
+      Promise<ScoresParseEntryWithScore[]>
+    >(async (prevPromise, _, difficulty) => {
+      const prev = await prevPromise
+      const resp = await window.parent.fetch(
+        `/maimai-mobile/record/musicGenre/search/?genre=99&diff=${difficulty}`,
+      )
+      if (!resp.ok) {
+        throw new Error("Network Error!")
+      }
+      const result = parseScores(await resp.text())
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      setFetchProgress(difficulty + 1)
+      return [...prev, ...result]
+    }, Promise.resolve([]))
     const scores = await Promise.all(
       entries.map(async (entry) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { category, title, level, ...entryWithoutSong } = entry
+        // dx_score / max_dx_score are not stored yet
+        const {
+          category,
+          title,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          level,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          dx_score,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          max_dx_score,
+          ...entryWithoutSong
+        } = entry
         return {
           song_id: await sha256Sum(`${category}_${title}`),
           ...entryWithoutSong,
