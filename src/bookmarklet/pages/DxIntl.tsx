@@ -9,12 +9,14 @@ import {
 } from "@otohime-site/parser/dx_intl"
 import { useEffect, useState } from "react"
 import { useClient, useQuery } from "urql"
+
 import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
 import { Alert } from "../../common/components/ui/Alert"
 import { dxIntlPlayersFields } from "../../dx_intl/models/fragments"
 import { graphql, readFragment } from "../../graphql"
 import host from "../../host"
+
 import classes from "./DxIntl.module.css"
 
 const DIFFICULTIES = [0, 1, 2, 3, 4]

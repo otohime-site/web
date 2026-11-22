@@ -24,7 +24,7 @@ import IconFolder from "~icons/mdi/folder"
 import IconImage from "~icons/mdi/image"
 import IconMagnify from "~icons/mdi/magnify"
 import IconSortVariant from "~icons/mdi/sort-variant"
-import layoutClasses from "../../common/components/PlayerLayout.module.css"
+
 import { Alert } from "../../common/components/ui/Alert"
 import { SelectContainer } from "../../common/components/ui/SelectContainer"
 import { Switch } from "../../common/components/ui/Switch"
@@ -84,6 +84,8 @@ import {
 } from "../models/filter"
 import { dxIntlScoresFields } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
+
+import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import playerClasses from "./Player.module.css"
 import classes from "./PlayerScores.module.css"
 

@@ -1,4 +1,5 @@
 import { Redirect, Route, Switch, useLocation } from "wouter"
+
 import { PageMeta } from "../common/components/PageMeta"
 import NotFound from "../common/pages/NotFound"
 import Player from "./pages/Player"

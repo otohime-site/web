@@ -3,6 +3,7 @@ import {
   SegmentGroupRootProps,
 } from "@ark-ui/react/segment-group"
 import { useCallback, useState } from "react"
+
 import classes from "./ScrollableSegmentGroupRoot.module.css"
 
 export const ScrollableSegmentGroupRoot = ({

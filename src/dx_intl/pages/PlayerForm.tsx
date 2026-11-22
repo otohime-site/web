@@ -8,11 +8,13 @@ import { useLocation } from "wouter"
 import IconClose from "~icons/mdi/close"
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
+
 import { Alert } from "../../common/components/ui/Alert"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
 import { useUser } from "../../common/contexts"
 import { graphql } from "../../graphql"
 import { dxIntlPlayersEditableDocument } from "../models/queries"
+
 import classes from "./PlayerForm.module.css"
 
 const insertDxIntlPlayerDocument = graphql(`

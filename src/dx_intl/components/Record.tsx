@@ -1,10 +1,12 @@
 import clsx from "clsx"
 import { useLayoutEffect, useRef } from "react"
+
 import { ResultOf } from "../../graphql"
 import { dxIntlRecordsFields } from "../models/fragments"
 import Grade from "./Grade"
 import { ClassRank, CourseRank } from "./Ranks"
 import Rating from "./Rating"
+
 import classes from "./Record.module.css"
 
 const Record = ({

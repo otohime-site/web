@@ -1,5 +1,6 @@
 import { UnheadProvider, createHead } from "@unhead/react/client"
 import { createRoot } from "react-dom/client"
+
 import App from "./App"
 import { SiteMeta } from "./common/components/PageMeta"
 import { AppProvider } from "./common/contexts"

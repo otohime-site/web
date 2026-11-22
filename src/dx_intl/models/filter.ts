@@ -57,7 +57,12 @@ export const filterEntry = (
 // everything, like a freshly added, not yet filled-in condition.
 export type RangeConditionKey = "level" | "internal_lv" | "score"
 export type ValuesConditionKey =
-  "category" | "version" | "deluxe" | "difficulty" | "combo_flag" | "sync_flag"
+  | "category"
+  | "version"
+  | "deluxe"
+  | "difficulty"
+  | "combo_flag"
+  | "sync_flag"
 export type ConditionKey = RangeConditionKey | ValuesConditionKey
 
 export type Condition =

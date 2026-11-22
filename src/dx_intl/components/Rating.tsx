@@ -12,6 +12,7 @@ import Rainbow from "../images/ratings/rainbow.svg"
 import RainbowKiwami from "../images/ratings/rainbow_kiwami.svg"
 import Red from "../images/ratings/red.svg"
 import Silver from "../images/ratings/silver.svg"
+
 import classes from "./Rating.module.css"
 
 export const getRatingImage = (rating: number, legacy: boolean): any => {

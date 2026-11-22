@@ -1,10 +1,12 @@
 import { type ReactNode } from "react"
 import { Link } from "wouter"
+
 import { type flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { type Difficulty, difficulties } from "../models/constants"
+import Variant from "./Variant"
+
 import classes from "./ChartBlock.module.css"
 import tableClasses from "./PlayerScoreTable.module.css"
-import Variant from "./Variant"
 
 type ChartEntry = ReturnType<typeof flatSongsResult>[number]
 

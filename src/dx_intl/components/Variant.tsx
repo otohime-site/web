@@ -1,5 +1,6 @@
 import DX from "../images/variants/dx.svg"
 import STD from "../images/variants/std.svg"
+
 import classes from "./Variant.module.css"
 
 const Variant = ({ deluxe }: { deluxe: boolean }) => (

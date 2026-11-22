@@ -1,7 +1,9 @@
 import clsx from "clsx"
+
 import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
 import { comboFlags, syncFlags, type Difficulty } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
+
 import classes from "./PlayerScoreTable.module.css"
 
 export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {

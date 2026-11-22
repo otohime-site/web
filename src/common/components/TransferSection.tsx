@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
 import MdiBriefcaseTransfer from "~icons/mdi/briefcase-transfer"
+
 import { graphql } from "../../graphql"
 import { Alert } from "./ui/Alert"
 

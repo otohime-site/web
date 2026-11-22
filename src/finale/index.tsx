@@ -1,4 +1,5 @@
 import { Route, Switch } from "wouter"
+
 import NotFound from "../common/pages/NotFound"
 import Player from "./pages/Player"
 import PlayerHistory from "./pages/PlayerHistory"

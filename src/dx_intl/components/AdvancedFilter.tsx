@@ -2,6 +2,7 @@ import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { Fragment } from "react"
 import IconClose from "~icons/mdi/close"
 import IconPlus from "~icons/mdi/plus"
+
 import { Menu } from "../../common/components/ui/Menu"
 import { Slider } from "../../common/components/ui/Slider"
 import { Switch } from "../../common/components/ui/Switch"
@@ -17,6 +18,7 @@ import {
   defaultCondition,
   valueOptions,
 } from "../models/filter"
+
 import styles from "./AdvancedFilter.module.css"
 
 const conditionKeys = Object.keys(conditionLabels) as ConditionKey[]

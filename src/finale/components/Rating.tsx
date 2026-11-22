@@ -1,4 +1,5 @@
 import clsx from "clsx"
+
 import classes from "./Rating.module.css"
 
 const getRatingClass = (rating: number) => {

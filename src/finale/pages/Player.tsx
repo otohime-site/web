@@ -11,8 +11,8 @@ import IconArrowDown from "~icons/mdi/arrow-down"
 import IconArrowUp from "~icons/mdi/arrow-up"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
 import IconHistory from "~icons/mdi/history"
+
 import { PageMeta } from "../../common/components/PageMeta"
-import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
 import { RadioGroupItem } from "../../common/components/ui/RadioGroupItem"
@@ -44,6 +44,8 @@ import {
   finalePlayersEditableDocument,
   finaleSongsDocument,
 } from "../models/queries"
+
+import layoutClasses from "../../common/components/PlayerLayout.module.css"
 import classes from "./Player.module.css"
 
 const finaleRecordWithScoresDocument = graphql(
@@ -267,7 +269,11 @@ const Player = ({ params }: { params: Params }) => {
               onValueChange={(e) =>
                 setOrdering(
                   e.items[0].value as
-                    "index" | "level" | "score" | "combo_flag" | "sync_flag",
+                    | "index"
+                    | "level"
+                    | "score"
+                    | "combo_flag"
+                    | "sync_flag",
                 )
               }
             >

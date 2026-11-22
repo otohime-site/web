@@ -1,13 +1,15 @@
 import { lazy, Suspense } from "react"
 import { Link, Redirect, Route, Router, Switch, useRoute } from "wouter"
 import GitHubIcon from "~icons/grommet-icons/github"
-import classes from "./App.module.css"
+
 import Search from "./common/components/Search"
 import UserBox from "./common/components/UserBox"
 import NotFound from "./common/pages/NotFound"
 import DxIntl from "./dx_intl/index"
-import "./global.css"
 import Logo from "./logo/favicon.svg"
+
+import "./global.css"
+import classes from "./App.module.css"
 
 const Home = lazy(async () => await import("./common/pages/Home"))
 const Settings = lazy(async () => await import("./common/pages/Settings"))

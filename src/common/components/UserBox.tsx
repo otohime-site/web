@@ -8,12 +8,13 @@ import {
 import { useCallback } from "react"
 import { navigate } from "wouter/use-browser-location"
 import IconGoogle from "~icons/mdi/google"
+
 import { firebaseAuth, prepareSignIn, useUser } from "../contexts"
 import { isMobile } from "../utils/browser"
-
 import { Alert } from "./ui/Alert"
 import { Avatar } from "./ui/Avatar"
 import { Menu } from "./ui/Menu"
+
 import classes from "./UserBox.module.css"
 
 const googleProvider = new GoogleAuthProvider()

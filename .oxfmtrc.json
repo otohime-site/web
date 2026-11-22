@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": false,
+  "printWidth": 80,
+  "sortImports": {},
+  "sortPackageJson": false,
+  "ignorePatterns": ["src/graphql-env.d.ts", "pnpm-workspace.yaml"]
+}

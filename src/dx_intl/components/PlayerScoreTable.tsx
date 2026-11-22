@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { Fragment, memo } from "react"
+
 import { formatDate, formatNumericDate } from "../../common/utils/datetime"
 import {
   ScoreTableEntry,
@@ -11,8 +12,9 @@ import { getDifficultyClassName } from "../utils/styling"
 import ChartDetail from "./ChartDetail"
 import { ComboFlag, SyncFlag } from "./Flags"
 import Long from "./Long"
-import classes from "./PlayerScoreTable.module.css"
 import Variant from "./Variant"
+
+import classes from "./PlayerScoreTable.module.css"
 
 const percentageValueColumns = [
   "sss_rate",

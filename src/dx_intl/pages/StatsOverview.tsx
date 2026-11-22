@@ -1,6 +1,7 @@
 import * as Plot from "@observablehq/plot"
 import { useMemo, useState } from "react"
 import { useQuery } from "urql"
+
 import { ObservablePlot } from "../../common/components/ObservablePlot"
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -12,6 +13,7 @@ import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
 import { flatSongsResult } from "../models/aggregation"
 import { versionRewardTitle, versions } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
+
 import classes from "./StatsOverview.module.css"
 
 // Solid colors representing each maimai DX rating frame tier. Mirrors the

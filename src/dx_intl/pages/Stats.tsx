@@ -1,9 +1,11 @@
 import { Link, Params, Redirect, Route, Switch, useRoute } from "wouter"
+
 import NotFound from "../../common/pages/NotFound"
-import classes from "./Stats.module.css"
 import StatsOverview from "./StatsOverview"
 import StatsRatingTarget from "./StatsRatingTarget"
 import StatsSong from "./StatsSong"
+
+import classes from "./Stats.module.css"
 
 const LegacySongStatsRedirect = ({ params }: { params: Params }) => (
   <Redirect

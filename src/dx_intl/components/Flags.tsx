@@ -9,6 +9,7 @@ import FSDP from "../images/flags/fsdp.svg"
 import FSP from "../images/flags/fsp.svg"
 import S from "../images/flags/s.svg"
 import { comboFlags, syncFlags } from "../models/constants"
+
 import classes from "./Flags.module.css"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

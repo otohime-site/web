@@ -1,6 +1,7 @@
 import { createListCollection, Listbox } from "@ark-ui/react/listbox"
 import { useQuery } from "urql"
 import { Link } from "wouter"
+
 import PlayerItem from "../../common/components/PlayerItem"
 import { QueryResult } from "../../common/components/QueryResult"
 import { useUser } from "../../common/contexts"

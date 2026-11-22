@@ -1,10 +1,12 @@
 import { createRoot } from "react-dom/client"
+
 import "../bookmarklet.css"
 import "../global.css"
 import host from "../host"
 import GraphQLTokenProvider from "./components/GraphQLTokenProvider"
-import classes from "./entry.module.css"
 import DxIntl from "./pages/DxIntl"
+
+import classes from "./entry.module.css"
 
 const token = document.body.getAttribute("data-otohime-token")
 if (document.getElementById("otohime-root") != null) {

@@ -1,6 +1,7 @@
 import { cacheExchange, fetchExchange } from "@urql/core"
 import { PropsWithChildren, useMemo } from "react"
 import { Provider as UrqlProvider, createClient } from "urql"
+
 import { apiHost } from "../../host"
 
 const GraphQLTokenProvider = ({

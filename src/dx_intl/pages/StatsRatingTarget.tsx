@@ -2,6 +2,7 @@ import { useMemo } from "react"
 import { useQuery } from "urql"
 import { Params, Redirect } from "wouter"
 import { navigate } from "wouter/use-browser-location"
+
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"

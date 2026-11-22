@@ -1,5 +1,7 @@
 import clsx from "clsx"
+
 import { classLevels, classNames } from "../models/constants"
+
 import classes from "./Class.module.css"
 
 const Class = ({ rawClass }: { rawClass: string }) => {

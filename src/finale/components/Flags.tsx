@@ -1,5 +1,7 @@
 import clsx from "clsx"
+
 import { comboFlags, syncFlags } from "../models/constants"
+
 import classes from "./Flag.module.css"
 
 const comboFlagNames = {

@@ -2,11 +2,11 @@ import clsx from "clsx"
 import { useMemo } from "react"
 import { useQuery } from "urql"
 import { Params } from "wouter"
+import { navigate } from "wouter/use-browser-location"
 import IconArrowBack from "~icons/mdi/arrow-back"
 import IconNavigateNext from "~icons/mdi/navigate-next"
-import { PageMeta } from "../../common/components/PageMeta"
 
-import { navigate } from "wouter/use-browser-location"
+import { PageMeta } from "../../common/components/PageMeta"
 import { RatingHistoryPlot } from "../../common/components/RatingHistoryPlot"
 import { Alert } from "../../common/components/ui/Alert"
 import { LinkButton } from "../../common/components/ui/Button"
@@ -16,7 +16,6 @@ import { useUser } from "../../common/contexts"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
-import tableClasses from "../components/PlayerScoreTable.module.css"
 import { flatSongsResult, getNoteHash } from "../models/aggregation"
 import {
   classNames,
@@ -30,6 +29,8 @@ import {
   finaleScoresWithHistoryFields,
 } from "../models/fragments"
 import { finaleSongsDocument } from "../models/queries"
+
+import tableClasses from "../components/PlayerScoreTable.module.css"
 import classes from "./PlayerHistory.module.css"
 
 const finalePlayersTimelinesDocument = graphql(`

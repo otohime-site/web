@@ -1,5 +1,6 @@
 import { useHead } from "@unhead/react"
 import { Link } from "wouter"
+
 import { PageMeta } from "../components/PageMeta"
 
 const NotFound = () => {

@@ -3,6 +3,7 @@ import * as Plot from "@observablehq/plot"
 import { useQuery } from "urql"
 import { Params, Redirect } from "wouter"
 import { navigate } from "wouter/use-browser-location"
+
 import { ObservablePlot } from "../../common/components/ObservablePlot"
 import { PageMeta } from "../../common/components/PageMeta"
 import { QueryResult } from "../../common/components/QueryResult"
@@ -11,6 +12,7 @@ import { graphql } from "../../graphql"
 import { flatSongsResult, getCoverUrl } from "../models/aggregation"
 import { difficulties } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
+
 import classes from "./StatsSong.module.css"
 
 const dxIntlScoresHistogramDocument = graphql(`

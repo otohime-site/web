@@ -1,5 +1,6 @@
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
+
 import {
   classRankNames,
   gradeNames,
@@ -10,6 +11,7 @@ import { classNames } from "../../finale/models/constants"
 import { finalePlayersFields } from "../../finale/models/fragments"
 import { ResultOf } from "../../graphql"
 import { formatRelative } from "../utils/datetime"
+
 import classes from "./PlayerItem.module.css"
 
 const getGradeOrRanks = (record: {
@@ -59,7 +61,7 @@ const PlayerItem = ({
           {record == null ? (
             <>
               尚無紀錄
-              {forAutoComplete ?? false ? (
+              {(forAutoComplete ?? false) ? (
                 <></>
               ) : (
                 <>
@@ -72,7 +74,7 @@ const PlayerItem = ({
           ) : (
             <>
               {record.card_name}
-              {forAutoComplete ?? false ? (
+              {(forAutoComplete ?? false) ? (
                 <></>
               ) : (
                 <>

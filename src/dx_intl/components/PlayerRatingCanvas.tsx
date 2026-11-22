@@ -19,6 +19,7 @@ import {
   Text,
 } from "react-konva"
 import { encode } from "uqr"
+
 import logoUrl from "../../logo/favicon.svg"
 import apFlagUrl from "../images/flags/ap.svg"
 import appFlagUrl from "../images/flags/app.svg"

@@ -1,5 +1,6 @@
 import { Progress as ArkProgess } from "@ark-ui/react/progress"
 import clsx from "clsx"
+
 import classes from "./Progress.module.css"
 
 interface ProgressProps extends ArkProgess.RootProps {

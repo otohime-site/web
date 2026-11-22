@@ -1,4 +1,5 @@
 import clsx from "clsx"
+
 import { type Difficulty } from "../models/constants"
 
 export const getDifficultyClassName = (

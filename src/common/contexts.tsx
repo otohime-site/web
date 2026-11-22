@@ -24,6 +24,7 @@ import {
   useState,
 } from "react"
 import { Provider as UrqlProvider, createClient } from "urql"
+
 import firebaseConfig from "../firebase"
 import { apiHost } from "../host"
 

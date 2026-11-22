@@ -13,6 +13,7 @@ import IconHistory from "~icons/mdi/history"
 import IconLock from "~icons/mdi/lock"
 import IconPencil from "~icons/mdi/pencil"
 import IconPublic from "~icons/mdi/public"
+
 import { PageMeta } from "../../common/components/PageMeta"
 import { Alert } from "../../common/components/ui/Alert"
 import { useUser } from "../../common/contexts"
@@ -22,9 +23,10 @@ import { graphql, readFragment } from "../../graphql"
 import Record from "../components/Record"
 import { dxIntlRecordsFields } from "../models/fragments"
 import { dxIntlPlayersEditableDocument } from "../models/queries"
-import classes from "./Player.module.css"
 import PlayerForm from "./PlayerForm"
 import PlayerScores from "./PlayerScores"
+
+import classes from "./Player.module.css"
 
 // History pulls in Observable Plot; keep it in its own chunk.
 const PlayerHistory = lazy(async () => await import("./PlayerHistory"))

@@ -2,9 +2,9 @@ import clsx from "clsx"
 import { useMemo } from "react"
 import { useQuery } from "urql"
 import { Link, Params } from "wouter"
+import { navigate } from "wouter/use-browser-location"
 import IconNavigateNext from "~icons/mdi/navigate-next"
 
-import { navigate } from "wouter/use-browser-location"
 import { RatingHistoryPlot } from "../../common/components/RatingHistoryPlot"
 import { Alert } from "../../common/components/ui/Alert"
 import { ScrollableSegmentGroupRoot } from "../../common/components/ui/ScrollableSegmentGroupRoot"
@@ -12,7 +12,6 @@ import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
-import tableClasses from "../components/PlayerScoreTable.module.css"
 import Variant from "../components/Variant"
 import {
   flatSongsResult,
@@ -33,6 +32,8 @@ import {
 } from "../models/fragments"
 import { dxIntlSongsDocument } from "../models/queries"
 import { getDifficultyClassName } from "../utils/styling"
+
+import tableClasses from "../components/PlayerScoreTable.module.css"
 import classes from "./PlayerHistory.module.css"
 
 const dxIntlPlayersTimelinesDocument = graphql(`

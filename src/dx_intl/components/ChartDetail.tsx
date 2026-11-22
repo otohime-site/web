@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
+
 import { formatDate } from "../../common/utils/datetime"
 import apIcon from "../images/flags/ap.svg"
 import {
@@ -16,6 +17,7 @@ import {
   comboFlags,
   versions,
 } from "../models/constants"
+
 import classes from "./ChartDetail.module.css"
 
 // The gauge axis is linear in rating, so the fill and the border labels

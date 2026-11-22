@@ -1,5 +1,6 @@
-import react from "@vitejs/plugin-react"
 import { resolve } from "path"
+
+import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import icons from "unplugin-icons/vite"
 import { defineConfig } from "vite"

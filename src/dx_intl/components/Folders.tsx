@@ -1,5 +1,6 @@
 import { ToggleGroup } from "@ark-ui/react/toggle-group"
 import { useMemo } from "react"
+
 import { ScoreTableEntry } from "../models/aggregation"
 import {
   type Difficulty,
@@ -11,6 +12,7 @@ import {
   versions,
 } from "../models/constants"
 import { EMPTY_FILTER, ScoreFilter, valueOptions } from "../models/filter"
+
 import styles from "./Folders.module.css"
 
 type ArrayFolderKey = "category" | "version" | "level"

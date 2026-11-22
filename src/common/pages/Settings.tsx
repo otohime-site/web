@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useMutation } from "urql"
 import { useLocation } from "wouter"
 import MdiDeleteAlert from "~icons/mdi/delete-alert"
+
 import { graphql } from "../../graphql"
 import { PageMeta } from "../components/PageMeta"
 import TransferSection from "../components/TransferSection"

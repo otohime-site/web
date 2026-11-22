@@ -1,10 +1,12 @@
 import IconLock from "~icons/mdi/lock"
 import IconPublic from "~icons/mdi/public"
+
 import { formatDate } from "../../common/utils/datetime"
 import { ResultOf } from "../../graphql"
 import { finaleRecordsFields } from "../models/fragments"
 import Class from "./Class"
 import Rating from "./Rating"
+
 import classes from "./Record.module.css"
 
 const Record = ({

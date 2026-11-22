@@ -7,13 +7,15 @@ import MdiCheckCircle from "~icons/mdi/check-circle"
 import MdiCloudDownloadOutline from "~icons/mdi/cloud-download-outline"
 import MdiContentCopy from "~icons/mdi/content-copy"
 import IconRefresh from "~icons/mdi/refresh"
+
 import { graphql } from "../../graphql"
 import host from "../../host"
 import { useUser } from "../contexts"
 import { isMobile } from "../utils/browser"
 import { QueryResult } from "./QueryResult"
-import classes from "./Token.module.css"
 import { Alert } from "./ui/Alert"
+
+import classes from "./Token.module.css"
 
 const BookmarkTitle = () => {
   useHead({ title: "更新 Otohime 成績單" })

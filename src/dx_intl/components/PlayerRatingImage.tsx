@@ -11,10 +11,12 @@ import {
 } from "react"
 import IconClose from "~icons/mdi/close"
 import IconFileDownload from "~icons/mdi/file-download"
+
 import { Switch } from "../../common/components/ui/Switch"
 import host from "../../host"
 import { ScoreTableEntry } from "../models/aggregation"
 import type { RatingImageInfo } from "./PlayerRatingCanvas"
+
 import classes from "./PlayerRatingImage.module.css"
 
 // Konva is heavy; only pull it into a chunk that loads when the dialog opens.

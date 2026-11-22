@@ -1,6 +1,7 @@
 import { Slider as ArkSlider } from "@ark-ui/react/slider"
 import clsx from "clsx"
 import { ReactNode } from "react"
+
 import classes from "./Slider.module.css"
 
 interface SliderProps extends ArkSlider.RootProps {
