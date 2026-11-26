@@ -188,6 +188,9 @@ const ScoreChanges = ({
   )
 }
 
+// dx_score is stored but not displayed yet, so it is intentionally not compared:
+// an import where only the DX score improved shows the "no displayable changes"
+// message. Add it here once HistoryEntryRow can render it.
 const historyEntriesEqual = (
   before?: HistoryEntry,
   after?: HistoryEntry,

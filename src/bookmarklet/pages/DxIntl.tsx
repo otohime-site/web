@@ -61,7 +61,7 @@ const insertDxIntlRecordWithScoresDocument = graphql(`
       objects: $scores
       on_conflict: {
         constraint: dx_intl_scores_player_id_song_id_deluxe_difficulty_key
-        update_columns: [score, combo_flag, sync_flag]
+        update_columns: [score, combo_flag, sync_flag, dx_score, max_dx_score]
       }
     ) {
       affected_rows
@@ -165,16 +165,11 @@ const Book = () => {
     }, Promise.resolve([]))
     const scores = await Promise.all(
       entries.map(async (entry) => {
-        // dx_score / max_dx_score are not stored yet
         const {
           category,
           title,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           level,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          dx_score,
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          max_dx_score,
           ...entryWithoutSong
         } = entry
         return {

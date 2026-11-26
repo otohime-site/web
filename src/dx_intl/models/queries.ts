@@ -25,7 +25,7 @@ export const dxIntlSongsDocument = graphql(`
         deluxe
         version
         active
-        dx_intl_notes(order_by: { difficulty: asc }) {
+        dx_intl_charts(order_by: { difficulty: asc }) {
           internal_lv
           difficulty
           level

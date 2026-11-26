@@ -103,7 +103,7 @@ export const getRating = (
 export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
   (data?.dx_intl_songs ?? []).flatMap((song) =>
     song.dx_intl_variants.flatMap((variant) =>
-      variant.dx_intl_notes.map((note) => ({
+      variant.dx_intl_charts.map((note) => ({
         hash: getNoteHash({
           song_id: song.id,
           deluxe: variant.deluxe,
