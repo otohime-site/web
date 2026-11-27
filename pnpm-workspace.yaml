@@ -2,5 +2,3 @@ allowBuilds:
   '@firebase/util': false
   '@parcel/watcher': false
   protobufjs: false
-minimumReleaseAgeExclude:
-  - '@otohime-site/parser@26.11.0'
