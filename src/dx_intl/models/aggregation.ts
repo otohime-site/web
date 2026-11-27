@@ -13,7 +13,7 @@ import {
 } from "./constants"
 import { dxIntlSongsDocument } from "./queries"
 
-export const getNoteHash = (instance: {
+export const getChartHash = (instance: {
   // As we cannot restrict null in history tables
   song_id: string
   deluxe: boolean
@@ -103,11 +103,11 @@ export const getRating = (
 export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
   (data?.dx_intl_songs ?? []).flatMap((song) =>
     song.dx_intl_variants.flatMap((variant) =>
-      variant.dx_intl_charts.map((note) => ({
-        hash: getNoteHash({
+      variant.dx_intl_charts.map((chart) => ({
+        hash: getChartHash({
           song_id: song.id,
           deluxe: variant.deluxe,
-          difficulty: note.difficulty,
+          difficulty: chart.difficulty,
         }),
         song_id: song.id,
         category: song.category,
@@ -118,13 +118,13 @@ export const flatSongsResult = (data?: ResultOf<typeof dxIntlSongsDocument>) =>
         deluxe: variant.deluxe,
         version: variant.version,
         active: variant.active,
-        difficulty: note.difficulty,
-        level: note.level,
-        internal_lv: note.internal_lv,
-        play: note.dx_intl_scores_rates?.play,
-        sss_rate: note.dx_intl_scores_rates?.sss_rate,
-        fc_rate: note.dx_intl_scores_rates?.fc_rate,
-        ap_rate: note.dx_intl_scores_rates?.ap_rate,
+        difficulty: chart.difficulty,
+        level: chart.level,
+        internal_lv: chart.internal_lv,
+        play: chart.dx_intl_scores_rates?.play,
+        sss_rate: chart.dx_intl_scores_rates?.sss_rate,
+        fc_rate: chart.dx_intl_scores_rates?.fc_rate,
+        ap_rate: chart.dx_intl_scores_rates?.ap_rate,
         // Currently DXNET did not expose this
         // so we hard-coded it in the frontend for now.
         long:

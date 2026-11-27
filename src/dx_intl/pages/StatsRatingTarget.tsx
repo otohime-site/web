@@ -9,7 +9,7 @@ import { ScrollableSegmentGroupRoot } from "../../common/components/ui/Scrollabl
 import { SegmentGroupItem } from "../../common/components/ui/SegmentGroupItem"
 import { graphql } from "../../graphql"
 import { ChartBlock, chartBlockClasses } from "../components/ChartBlock"
-import { flatSongsResult, getNoteHash } from "../models/aggregation"
+import { flatSongsResult, getChartHash } from "../models/aggregation"
 import { RATING_TARGETS } from "../models/constants"
 import { dxIntlSongsDocument } from "../models/queries"
 
@@ -30,7 +30,7 @@ const dxIntlRatingTargetStatsDocument = graphql(`
 `)
 
 type AggregatedRow = {
-  note: ReturnType<typeof flatSongsResult>[number]
+  chart: ReturnType<typeof flatSongsResult>[number]
   average_score: number
   count: number
 }
@@ -38,9 +38,9 @@ type AggregatedRow = {
 const RatingTargetList = ({ rows }: { rows: AggregatedRow[] }) => (
   <ol className={chartBlockClasses["chart-blocks"]}>
     {rows.map((row, index) => (
-      <li key={getNoteHash(row.note)}>
+      <li key={getChartHash(row.chart)}>
         <ChartBlock
-          entry={row.note}
+          entry={row.chart}
           rank={index + 1}
           value={
             <span className={chartBlockClasses["chart-value-group"]}>
@@ -63,11 +63,11 @@ const StatsRatingTarget = ({ params }: { params: Params }) => {
     variables: { rating_target: rating },
   })
   const [songsResult] = useQuery({ query: dxIntlSongsDocument })
-  const noteMap = useMemo(
+  const chartMap = useMemo(
     () =>
       new Map(
         flatSongsResult(songsResult.data).map((entry) => [
-          getNoteHash(entry),
+          getChartHash(entry),
           entry,
         ]),
       ),
@@ -80,24 +80,24 @@ const StatsRatingTarget = ({ params }: { params: Params }) => {
     return stats.flatMap((row) => {
       if (row.song_id == null || row.deluxe == null || row.difficulty == null)
         return []
-      const note = noteMap.get(
-        getNoteHash({
+      const chart = chartMap.get(
+        getChartHash({
           song_id: row.song_id,
           deluxe: row.deluxe,
           difficulty: row.difficulty,
         }),
       )
-      if (!note) return []
+      if (!chart) return []
       return [
         {
-          note,
+          chart,
           average_score: Number(row.average_score ?? 0),
           count: row.count ?? 0,
           current_version: row.current_version ?? false,
         },
       ]
     })
-  }, [ratingTargetStatsResult, noteMap])
+  }, [ratingTargetStatsResult, chartMap])
 
   if (!RATING_TARGETS.includes(rating)) {
     return <Redirect to="~/dxi/s/rt/14000" />

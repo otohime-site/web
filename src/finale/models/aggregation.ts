@@ -2,7 +2,7 @@ import { ResultOf } from "../../graphql"
 import { categories, versions } from "./constants"
 import { finaleSongsDocument } from "./queries"
 
-export const getNoteHash = (instance: {
+export const getChartHash = (instance: {
   // As we cannot restrict null in history tables
   song_id: number
   difficulty: number
@@ -10,10 +10,10 @@ export const getNoteHash = (instance: {
 
 export const flatSongsResult = (data?: ResultOf<typeof finaleSongsDocument>) =>
   (data?.finale_songs ?? []).flatMap((song) =>
-    song.finale_notes.map((note) => ({
-      hash: getNoteHash({
+    song.finale_charts.map((chart) => ({
+      hash: getChartHash({
         song_id: song.id,
-        difficulty: note.difficulty,
+        difficulty: chart.difficulty,
       }),
       song_id: song.id,
       category: song.category,
@@ -22,8 +22,8 @@ export const flatSongsResult = (data?: ResultOf<typeof finaleSongsDocument>) =>
       order: song.order,
       version: song.version,
       active: song.active,
-      difficulty: note.difficulty,
-      level: note.level,
+      difficulty: chart.difficulty,
+      level: chart.level,
     })),
   )
 

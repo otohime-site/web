@@ -16,7 +16,7 @@ import { useUser } from "../../common/contexts"
 import { formatDateTime } from "../../common/utils/datetime"
 import { ResultOf, graphql, readFragment } from "../../graphql"
 import { ComboFlag, SyncFlag } from "../components/Flags"
-import { flatSongsResult, getNoteHash } from "../models/aggregation"
+import { flatSongsResult, getChartHash } from "../models/aggregation"
 import {
   classNames,
   comboFlags,
@@ -169,7 +169,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
     const beforeMap: Map<string, HistoryEntry> = new Map(
       beforeScores.map((score) => [
-        getNoteHash({
+        getChartHash({
           song_id: score.song_id ?? -1,
           difficulty: score.difficulty ?? -1,
         }),
@@ -182,7 +182,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
     const afterMap: Map<string, HistoryEntry> = new Map(
       afterScores.map((score) => [
-        getNoteHash({
+        getChartHash({
           song_id: score.song_id ?? -1,
           difficulty: score.difficulty ?? -1,
         }),

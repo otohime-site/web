@@ -15,8 +15,8 @@ import { ComboFlag, SyncFlag } from "../components/Flags"
 import Variant from "../components/Variant"
 import {
   flatSongsResult,
+  getChartHash,
   getCoverUrl,
-  getNoteHash,
 } from "../models/aggregation"
 import {
   classRankNames,
@@ -263,7 +263,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
     const beforeMap: Map<string, HistoryEntry> = new Map(
       beforeScores.map((score) => [
-        getNoteHash({
+        getChartHash({
           song_id: score.song_id ?? "",
           deluxe: score.deluxe ?? false,
           difficulty: score.difficulty ?? -1,
@@ -277,7 +277,7 @@ const PlayerHistory = ({ params }: { params: Params }) => {
     )
     const afterMap: Map<string, HistoryEntry> = new Map(
       afterScores.map((score) => [
-        getNoteHash({
+        getChartHash({
           song_id: score.song_id ?? "",
           deluxe: score.deluxe ?? false,
           difficulty: score.difficulty ?? -1,

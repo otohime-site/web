@@ -29,8 +29,8 @@ import { PlayerScoreTable } from "../components/PlayerScoreTable"
 import Record from "../components/Record"
 import {
   flatSongsResult,
+  getChartHash,
   getGroupTitle,
-  getNoteHash,
   ScoreTableEntry,
 } from "../models/aggregation"
 import {
@@ -123,7 +123,7 @@ const Player = ({ params }: { params: Params }) => {
         recordResult.data.finale_players[0]?.finale_scores ?? [],
       ) ?? []
     const scoresMap = new Map(
-      scores.map((score) => [getNoteHash(score), score]),
+      scores.map((score) => [getChartHash(score), score]),
     )
     return flattedEntries.map<ScoreTableEntry>((entry, index) => {
       const score = scoresMap.get(entry.hash)

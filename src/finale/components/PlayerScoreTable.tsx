@@ -1,6 +1,6 @@
 import clsx from "clsx"
 
-import { ScoreTableEntry, getNoteHash } from "../models/aggregation"
+import { ScoreTableEntry, getChartHash } from "../models/aggregation"
 import { comboFlags, syncFlags, type Difficulty } from "../models/constants"
 import { ComboFlag, SyncFlag } from "./Flags"
 
@@ -18,7 +18,7 @@ export const PlayerScoreTable = ({ table }: { table: ScoreTableEntry[] }) => {
       <tbody>
         {table.map((entry) => (
           <tr
-            key={getNoteHash(entry)}
+            key={getChartHash(entry)}
             className={clsx(!entry.active && classes["inactive"])}
           >
             <td className={classes["col-title"]}>

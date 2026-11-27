@@ -22,7 +22,7 @@ export const finaleSongsDocument = graphql(`
       order
       active
       version
-      finale_notes(order_by: { difficulty: asc }) {
+      finale_charts(order_by: { difficulty: asc }) {
         difficulty
         level
       }

@@ -43,7 +43,7 @@ import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
   flatSongsResult,
-  getNoteHash,
+  getChartHash,
   getRating,
   getScoreStats,
   getVersionRewardProgress,
@@ -506,9 +506,9 @@ const PlayerScores = memo(function PlayerScores({
   // * "Latest songs" includes songs from the most recent two versions.
   // * All Perfect adds 1 point to Rating.
   const afterCircle = useMemo(() => maxVersion >= 25, [maxVersion])
-  const { scoreTable: allEntries, noteInconsistency } = useMemo(() => {
+  const { scoreTable: allEntries, chartInconsistency } = useMemo(() => {
     if (scoresResult.data == null) {
-      return { scoreTable: [], noteInconsistency: false }
+      return { scoreTable: [], chartInconsistency: false }
     }
     const scores =
       readFragment(
@@ -516,7 +516,7 @@ const PlayerScores = memo(function PlayerScores({
         scoresResult.data.dx_intl_players[0]?.dx_intl_scores ?? [],
       ) ?? []
     const scoresMap = new Map(
-      scores.map((score) => [getNoteHash(score), score]),
+      scores.map((score) => [getChartHash(score), score]),
     )
     const ratingGroupAverageMap = new Map(
       (ratingLegacy
@@ -530,7 +530,7 @@ const PlayerScores = memo(function PlayerScores({
           ? []
           : [
               [
-                getNoteHash({
+                getChartHash({
                   song_id: entry.song_id,
                   deluxe: entry.deluxe,
                   difficulty: entry.difficulty,
@@ -596,7 +596,7 @@ const PlayerScores = memo(function PlayerScores({
           (entry.old_rank ?? Infinity) <= RATING_OLD_COUNT)
     })
     // Remaining scores indicate that the score and song data are out of sync.
-    return { scoreTable, noteInconsistency: scoresMap.size > 0 }
+    return { scoreTable, chartInconsistency: scoresMap.size > 0 }
   }, [
     afterCircle,
     flattedEntries,
@@ -880,7 +880,7 @@ const PlayerScores = memo(function PlayerScores({
     },
     [setScoreQuery],
   )
-  const handleNoteToggle = useCallback((hash: string) => {
+  const handleChartToggle = useCallback((hash: string) => {
     setExpandedHash((current) => (current === hash ? null : hash))
   }, [])
 
@@ -1052,7 +1052,7 @@ const PlayerScores = memo(function PlayerScores({
 
   return (
     <>
-      {maxVersion > versions.length - 1 || noteInconsistency ? (
+      {maxVersion > versions.length - 1 || chartInconsistency ? (
         <Alert severity="error">
           成績單目前有同步狀況，請試圖重新整理頁面。
         </Alert>
@@ -1295,7 +1295,7 @@ const PlayerScores = memo(function PlayerScores({
             ratingGroupTarget={ratingLegacy ? undefined : ratingGroupTarget}
             valueColumn={ratingFolder ? "rating" : getValueColumn(ordering)}
             expandedHash={expandedHash}
-            onNoteToggle={handleNoteToggle}
+            onChartToggle={handleChartToggle}
           />
         </div>
       </div>

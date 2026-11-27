@@ -4,8 +4,8 @@ import { Fragment, memo } from "react"
 import { formatDate, formatNumericDate } from "../../common/utils/datetime"
 import {
   ScoreTableEntry,
+  getChartHash,
   getCoverUrl,
-  getNoteHash,
 } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { getDifficultyClassName } from "../utils/styling"
@@ -74,7 +74,7 @@ const getDisplayedValue = (
 
 // Memoized: the table is large and most props are identity-stable, so
 // unrelated Player state changes (e.g. the condensing top bar) skip it.
-// Toggling a note detail re-renders the table like a filter change does.
+// Toggling a chart detail re-renders the table like a filter change does.
 const PlayerScoreTableBase = ({
   table,
   showCover,
@@ -82,7 +82,7 @@ const PlayerScoreTableBase = ({
   ratingGroupTarget,
   valueColumn,
   expandedHash,
-  onNoteToggle,
+  onChartToggle,
 }: {
   table: ScoreTableEntry[]
   showCover: boolean
@@ -90,7 +90,7 @@ const PlayerScoreTableBase = ({
   ratingGroupTarget?: number
   valueColumn: ValueColumn
   expandedHash: string | null
-  onNoteToggle: (hash: string) => void
+  onChartToggle: (hash: string) => void
 }) => {
   return (
     <table
@@ -112,7 +112,7 @@ const PlayerScoreTableBase = ({
       </colgroup>
       <tbody>
         {table.map((entry) => {
-          const hash = getNoteHash(entry)
+          const hash = getChartHash(entry)
           return (
             <Fragment key={hash}>
               <tr
@@ -120,7 +120,7 @@ const PlayerScoreTableBase = ({
                   !entry.active && classes["inactive"],
                   hash === expandedHash && classes["expanded"],
                 )}
-                onClick={() => onNoteToggle(hash)}
+                onClick={() => onChartToggle(hash)}
               >
                 {showCover ? (
                   <td className={classes["col-cover"]}>
