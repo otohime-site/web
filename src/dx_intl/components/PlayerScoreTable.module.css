@@ -119,8 +119,9 @@ td.col-cover img {
   padding-right: 1.5rem;
 }
 .col-flags {
-  width: 3.3rem;
+  width: 4.8rem;
   height: 2rem;
+  white-space: nowrap;
   & img {
     display: inline-block;
     vertical-align: middle;
@@ -200,7 +201,7 @@ td.col-difficulty.non-plus {
 
   .table tbody tr {
     display: grid;
-    grid-template-columns: 3rem 1.8rem 2.6rem 1fr 3.3rem minmax(
+    grid-template-columns: 3rem 1.8rem 2.6rem 1fr 4.8rem minmax(
         2.4rem,
         max-content
       );
@@ -236,7 +237,7 @@ td.col-difficulty.non-plus {
   }
 
   .table.no-cover tbody tr {
-    grid-template-columns: 1.8rem 2.6rem 1fr 3.3rem minmax(2.4rem, max-content);
+    grid-template-columns: 1.8rem 2.6rem 1fr 4.8rem minmax(2.4rem, max-content);
   }
 
   .table.no-cover tbody td.col-title {

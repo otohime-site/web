@@ -139,6 +139,9 @@ export const RANKS = [
   "SSS",
   "SSS+",
 ] as const
+// DX score percentages needed for 1 to 5 DX stars. Below 85% is no star.
+export const DX_STAR_BORDERS = [85, 90, 93, 95, 97] as const
+
 export const RANK_SCORES: Array<[number, (typeof RANKS)[number], number]> = [
   [80, "A", 0.136],
   [90, "AA", 0.152],

@@ -1,5 +1,6 @@
 import { ResultOf } from "../../graphql"
 import {
+  DX_STAR_BORDERS,
   RANK_CONST_BORDERS,
   RANK_SCORES,
   categories,
@@ -32,6 +33,47 @@ export const getRankConstIndex = (score: number): number =>
     (curr, rank, idx) => (rank[0] <= score * 10000 ? idx : curr),
     -1,
   )
+
+export const getDxScoreRate = (
+  dxScore?: number | null,
+  maxDxScore?: number | null,
+): number | undefined =>
+  dxScore != null && maxDxScore != null && maxDxScore > 0
+    ? dxScore / maxDxScore
+    : undefined
+
+// Rounded down, never up: 96.96% must not read as "97.0%" next to a ★4,
+// since ★5 needs 97%.
+export const formatDxScoreRate = (rate: number): string =>
+  `${(Math.floor(rate * 1000 + 1e-9) / 10).toFixed(1)}%`
+
+// Number of DX stars (0 to 5). Compared in integers so that a score exactly
+// on a border never misses it through floating-point error.
+export const getDxStar = (
+  dxScore?: number | null,
+  maxDxScore?: number | null,
+): number =>
+  dxScore == null || maxDxScore == null || maxDxScore <= 0
+    ? 0
+    : DX_STAR_BORDERS.filter((border) => dxScore * 100 >= maxDxScore * border)
+        .length
+
+// The minimum DX score needed for each star.
+export const getDxStarScores = (maxDxScore: number): number[] =>
+  DX_STAR_BORDERS.map((border) => Math.ceil((maxDxScore * border) / 100))
+
+export const getDxScoreFields = ({
+  dx_score,
+  max_dx_score,
+}: {
+  dx_score?: number
+  max_dx_score?: number
+}) => ({
+  dx_score,
+  max_dx_score,
+  dx_score_rate: getDxScoreRate(dx_score, max_dx_score),
+  dx_star: getDxStar(dx_score, max_dx_score),
+})
 
 export const ESTIMATED_INTERNAL_LV: Record<(typeof levels)[number], number> = {
   "1": 1.5,
@@ -138,6 +180,12 @@ export type ScoreTableEntry = ReturnType<typeof flatSongsResult>[number] & {
   score?: number
   combo_flag: number
   sync_flag: number
+  dx_score?: number
+  max_dx_score?: number
+  // dx_score / max_dx_score, as a fraction
+  dx_score_rate?: number
+  // 0 to 5; see DX_STAR_BORDERS
+  dx_star: number
   updated_at?: string
   rating_group_average?: number
   rating_group_difference?: number
@@ -158,6 +206,8 @@ export const getScoreStats = (
   scoreStats: number[]
   comboStats: number[]
   syncStats: number[]
+  // Index 0 is ★1: charts with at least that many stars, like the others.
+  dxStarStats: number[]
 } => {
   const scoreStats = RANK_SCORES.map(
     (_, i) =>
@@ -169,7 +219,10 @@ export const getScoreStats = (
   const syncStats = syncFlags.map(
     (_, i) => scores.filter((s) => s.sync_flag >= i).length,
   )
-  return { scoreStats, comboStats, syncStats }
+  const dxStarStats = DX_STAR_BORDERS.map(
+    (_, i) => scores.filter((s) => s.dx_star >= i + 1).length,
+  )
+  return { scoreStats, comboStats, syncStats, dxStarStats }
 }
 
 export const versionRewardKeys = ["sss", "fc", "ap", "fdx"] as const

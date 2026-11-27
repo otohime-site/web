@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useMemo } from "react"
 import { Link } from "wouter"
 import IconCircleOutline from "~icons/mdi/help-circle-outline"
@@ -7,7 +8,9 @@ import apIcon from "../images/flags/ap.svg"
 import {
   ESTIMATED_INTERNAL_LV,
   ScoreTableEntry,
+  formatDxScoreRate,
   getCoverUrl,
+  getDxStarScores,
   getRating,
 } from "../models/aggregation"
 import {
@@ -17,6 +20,7 @@ import {
   comboFlags,
   versions,
 } from "../models/constants"
+import { getDxStarImage } from "./Flags"
 
 import classes from "./ChartDetail.module.css"
 
@@ -30,6 +34,111 @@ import classes from "./ChartDetail.module.css"
 // actually reached.
 const GAUGE_LEAD = 0.15
 const GAUGE_STOPS = RANK_SCORES.slice(3)
+
+// The DX gauge uses the same broken axis: 0→85% (no star) is the
+// compressed lead-in and 85%→100% is linear, so the star borders get
+// room to read.
+const DX_GAUGE_FLOOR = 0.85
+
+const DxScoreGauge = ({ entry }: { entry: ScoreTableEntry }) => {
+  const {
+    dx_score: dxScore,
+    max_dx_score: maxDxScore,
+    dx_score_rate: dxScoreRate,
+  } = entry
+  const header = (
+    <div className={classes["rating-header"]}>
+      <h6>DX 分數</h6>
+      <span className={classes["rating-value"]}>
+        {dxScore ?? "—"}{" "}
+        {maxDxScore != null ? (
+          <span className={classes["rating-max"]}>
+            / {maxDxScore}
+            {dxScoreRate != null
+              ? ` (${formatDxScoreRate(dxScoreRate)})`
+              : null}
+          </span>
+        ) : null}
+      </span>
+    </div>
+  )
+  if (maxDxScore == null || maxDxScore <= 0) {
+    return (
+      <section className={classes.rating} aria-label="DX 分數">
+        {header}
+        <p className={classes["dx-missing"]}>尚無 DX 分數紀錄</p>
+      </section>
+    )
+  }
+  const pos = (value: number) => {
+    const rate = value / maxDxScore
+    return rate < DX_GAUGE_FLOOR
+      ? GAUGE_LEAD * (rate / DX_GAUGE_FLOOR)
+      : GAUGE_LEAD +
+          ((rate - DX_GAUGE_FLOOR) / (1 - DX_GAUGE_FLOOR)) * (1 - GAUGE_LEAD)
+  }
+  const fill = Math.min(pos(dxScore ?? 0), 1)
+  const stops = getDxStarScores(maxDxScore).map((minScore, index) => ({
+    name: `★${index + 1}`,
+    image: getDxStarImage(index + 1),
+    minScore,
+  }))
+  return (
+    <section className={classes.rating} aria-label="DX 分數">
+      {header}
+      <div className={classes.gauge}>
+        {dxScore != null ? (
+          <span className={classes.marker}>
+            <span
+              className={classes["marker-label"]}
+              style={{
+                left: `clamp(1rem, ${(fill * 100).toFixed(2)}%, calc(100% - 1rem))`,
+              }}
+            >
+              {dxScore}
+            </span>
+            <span
+              aria-hidden="true"
+              className={clsx(classes["marker-pointer"], classes["dx-pointer"])}
+              style={{ left: `${(fill * 100).toFixed(2)}%` }}
+            />
+          </span>
+        ) : null}
+        <div className={classes.track}>
+          <span
+            className={classes.lead}
+            style={{ width: `${(GAUGE_LEAD * 100).toFixed(2)}%` }}
+          />
+          <span
+            className={clsx(classes.fill, classes["dx-fill"])}
+            style={{ width: `${(fill * 100).toFixed(2)}%` }}
+          />
+        </div>
+        <ol className={clsx(classes.stops, classes["dx-stops"])}>
+          {stops.map((stop) => (
+            <li
+              key={stop.name}
+              data-achieved={
+                dxScore != null && dxScore >= stop.minScore ? "" : undefined
+              }
+              style={{
+                left: `clamp(1.25rem, ${(pos(stop.minScore) * 100).toFixed(2)}%, calc(100% - 1.25rem))`,
+              }}
+            >
+              <img
+                className={classes["dx-stop-icon"]}
+                src={stop.image ?? undefined}
+                alt={stop.name}
+                title={`DX ${stop.name}`}
+              />
+              <span className={classes["stop-rating"]}>{stop.minScore}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
 
 const ChartDetail = ({
   entry,
@@ -178,127 +287,134 @@ const ChartDetail = ({
           ) : null}
         </div>
       </div>
-      <section className={classes.rating} aria-label="Rating">
-        <div className={classes["rating-header"]}>
-          <h6>
-            Rating{" "}
-            <a
-              href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
-              target="_blank"
-              rel="noreferrer"
-              title="顯示相關說明"
-            >
-              <IconCircleOutline />
-            </a>
-          </h6>
-          <span className={classes["rating-value"]}>
-            {rating}{" "}
-            <span className={classes["rating-max"]}>/ {maxRating}</span>
-          </span>
-        </div>
-        <div className={classes.gauge}>
-          {entry.score != null ? (
-            <span className={classes.marker}>
-              <span
-                className={classes["marker-label"]}
-                style={{
-                  left: `clamp(0.75rem, ${(fill * 100).toFixed(2)}%, calc(100% - 0.75rem))`,
-                }}
-              >
-                {rating}
-              </span>
-              <span
-                aria-hidden="true"
-                className={classes["marker-pointer"]}
-                style={{ left: `${(fill * 100).toFixed(2)}%` }}
-              />
-            </span>
-          ) : null}
-          <div className={classes.track}>
-            <span
-              className={classes.lead}
-              style={{ width: `${(GAUGE_LEAD * 100).toFixed(2)}%` }}
-            />
-            <span
-              className={classes.fill}
-              style={{ width: `${(fill * 100).toFixed(2)}%` }}
-            />
-            {gaps.map((gap) => (
-              <span
-                key={`${gap.from}-${gap.to}`}
-                aria-label={`無法取得的 Rating：${gap.from} 到 ${gap.to}`}
-                className={classes.gap}
-                title={`Rating 跳躍：${gap.from} → ${gap.to}`}
-                style={{
-                  left: `${(gap.start * 100).toFixed(2)}%`,
-                  width: `${((gap.end - gap.start) * 100).toFixed(2)}%`,
-                }}
-              >
-                {gap.to > stops[0].rating ? `+${gap.to - gap.from}` : null}
-              </span>
-            ))}
-            {tail > 0 ? (
-              <span
-                className={classes["ap-tail"]}
-                data-achieved={apBonus ? "" : undefined}
-                title={
-                  apBonus
-                    ? "AP 加成：Rating 已 +1"
-                    : "達成 AP / AP+ 時 Rating +1"
-                }
-                style={{ width: `${(tail * 100).toFixed(2)}%` }}
-              />
-            ) : null}
-          </div>
-          <ol className={classes.stops}>
-            {stops.map((stop, index) => {
-              // The last stop is the axis endpoint and carries the extra
-              // AP line, so it anchors to the right edge instead of being
-              // centred — a centred label that wide overflows the track.
-              const isLast = index === stops.length - 1
-              return (
-                <li
-                  key={stop.name}
-                  data-achieved={score >= stop.minScore ? "" : undefined}
-                  data-endpoint={isLast ? "" : undefined}
-                  style={
-                    isLast
-                      ? undefined
-                      : {
-                          left: `clamp(1.5rem, ${(stop.pos * 100).toFixed(2)}%, calc(100% - 1.75rem))`,
-                        }
-                  }
+      <div className={classes.gauges}>
+        <div className={classes["gauges-inner"]}>
+          <section className={classes.rating} aria-label="Rating">
+            <div className={classes["rating-header"]}>
+              <h6>
+                Rating{" "}
+                <a
+                  href="https://littlebtc.gitbook.io/otohime-docs/internal-lv"
+                  target="_blank"
+                  rel="noreferrer"
+                  title="顯示相關說明"
                 >
-                  <span className={classes["stop-rank"]}>{stop.name}</span>
-                  <span className={classes["stop-rating"]}>{stop.rating}</span>
-                  {/* The AP bonus is just one more rating above SSS+, so it
-                    reads as an extra line on that last stop. */}
-                  {afterCircle && isLast ? (
-                    <span
-                      className={classes["ap-rating"]}
-                      data-achieved={apBonus ? "" : undefined}
-                      aria-label={`AP 加成 Rating：${maxRating}`}
-                      title={
-                        apBonus
-                          ? "AP 加成：Rating 已 +1"
-                          : "達成 AP / AP+ 時 Rating +1"
+                  <IconCircleOutline />
+                </a>
+              </h6>
+              <span className={classes["rating-value"]}>
+                {rating}{" "}
+                <span className={classes["rating-max"]}>/ {maxRating}</span>
+              </span>
+            </div>
+            <div className={classes.gauge}>
+              {entry.score != null ? (
+                <span className={classes.marker}>
+                  <span
+                    className={classes["marker-label"]}
+                    style={{
+                      left: `clamp(0.75rem, ${(fill * 100).toFixed(2)}%, calc(100% - 0.75rem))`,
+                    }}
+                  >
+                    {rating}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={classes["marker-pointer"]}
+                    style={{ left: `${(fill * 100).toFixed(2)}%` }}
+                  />
+                </span>
+              ) : null}
+              <div className={classes.track}>
+                <span
+                  className={classes.lead}
+                  style={{ width: `${(GAUGE_LEAD * 100).toFixed(2)}%` }}
+                />
+                <span
+                  className={classes.fill}
+                  style={{ width: `${(fill * 100).toFixed(2)}%` }}
+                />
+                {gaps.map((gap) => (
+                  <span
+                    key={`${gap.from}-${gap.to}`}
+                    aria-label={`無法取得的 Rating：${gap.from} 到 ${gap.to}`}
+                    className={classes.gap}
+                    title={`Rating 跳躍：${gap.from} → ${gap.to}`}
+                    style={{
+                      left: `${(gap.start * 100).toFixed(2)}%`,
+                      width: `${((gap.end - gap.start) * 100).toFixed(2)}%`,
+                    }}
+                  >
+                    {gap.to > stops[0].rating ? `+${gap.to - gap.from}` : null}
+                  </span>
+                ))}
+                {tail > 0 ? (
+                  <span
+                    className={classes["ap-tail"]}
+                    data-achieved={apBonus ? "" : undefined}
+                    title={
+                      apBonus
+                        ? "AP 加成：Rating 已 +1"
+                        : "達成 AP / AP+ 時 Rating +1"
+                    }
+                    style={{ width: `${(tail * 100).toFixed(2)}%` }}
+                  />
+                ) : null}
+              </div>
+              <ol className={classes.stops}>
+                {stops.map((stop, index) => {
+                  // The last stop is the axis endpoint and carries the extra
+                  // AP line, so it anchors to the right edge instead of being
+                  // centred — a centred label that wide overflows the track.
+                  const isLast = index === stops.length - 1
+                  return (
+                    <li
+                      key={stop.name}
+                      data-achieved={score >= stop.minScore ? "" : undefined}
+                      data-endpoint={isLast ? "" : undefined}
+                      style={
+                        isLast
+                          ? undefined
+                          : {
+                              left: `clamp(1.5rem, ${(stop.pos * 100).toFixed(2)}%, calc(100% - 1.75rem))`,
+                            }
                       }
                     >
-                      <img
-                        className={classes["ap-icon"]}
-                        src={apIcon}
-                        alt=""
-                        aria-hidden="true"
-                      />
-                      {maxRating}
-                    </span>
-                  ) : null}
-                </li>
-              )
-            })}
-          </ol>
+                      <span className={classes["stop-rank"]}>{stop.name}</span>
+                      <span className={classes["stop-rating"]}>
+                        {stop.rating}
+                      </span>
+                      {/* The AP bonus is just one more rating above SSS+, so it
+                    reads as an extra line on that last stop. */}
+                      {afterCircle && isLast ? (
+                        <span
+                          className={classes["ap-rating"]}
+                          data-achieved={apBonus ? "" : undefined}
+                          aria-label={`AP 加成 Rating：${maxRating}`}
+                          title={
+                            apBonus
+                              ? "AP 加成：Rating 已 +1"
+                              : "達成 AP / AP+ 時 Rating +1"
+                          }
+                        >
+                          <img
+                            className={classes["ap-icon"]}
+                            src={apIcon}
+                            alt=""
+                            aria-hidden="true"
+                          />
+                          {maxRating}
+                        </span>
+                      ) : null}
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
+          </section>
+          <DxScoreGauge entry={entry} />
         </div>
-      </section>
+      </div>
       <Link
         className={classes["stats-link"]}
         href={`~/dxi/s/${entry.song_id.substring(0, 8)}`}

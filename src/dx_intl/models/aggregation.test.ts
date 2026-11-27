@@ -2,7 +2,11 @@ import { describe, expect, it } from "vitest"
 
 import {
   ScoreTableEntry,
+  formatDxScoreRate,
+  getDxStar,
+  getDxStarScores,
   getRankConstIndex,
+  getScoreStats,
   getRating,
   getVersionRewardProgress,
 } from "./aggregation"
@@ -146,5 +150,54 @@ describe("getVersionRewardProgress", () => {
 
   it("returns nothing for a version without charts", () => {
     expect(getVersionRewardProgress([], 7)).toEqual([])
+  })
+})
+
+describe("getDxStar", () => {
+  it("is zero without a DX score or below 85%", () => {
+    expect(getDxStar(undefined, 1000)).toBe(0)
+    expect(getDxStar(1000, null)).toBe(0)
+    expect(getDxStar(849, 1000)).toBe(0)
+  })
+
+  it("counts stars at the 85/90/93/95/97% borders inclusively", () => {
+    expect(getDxStar(850, 1000)).toBe(1)
+    expect(getDxStar(899, 1000)).toBe(1)
+    expect(getDxStar(900, 1000)).toBe(2)
+    expect(getDxStar(930, 1000)).toBe(3)
+    expect(getDxStar(950, 1000)).toBe(4)
+    expect(getDxStar(970, 1000)).toBe(5)
+    expect(getDxStar(1000, 1000)).toBe(5)
+  })
+
+  it("does not miss a border through floating-point error", () => {
+    // 20 * 0.85 is 17.000000000000004 in floating point.
+    expect(getDxStar(17, 20)).toBe(1)
+    expect(getDxStarScores(20)[0]).toBe(17)
+  })
+})
+
+describe("getDxStarScores", () => {
+  it("rounds each border up to a reachable score", () => {
+    expect(getDxStarScores(1234)).toEqual([1049, 1111, 1148, 1173, 1197])
+  })
+})
+
+describe("formatDxScoreRate", () => {
+  it("rounds down so a rate never shows a star it has not reached", () => {
+    expect(formatDxScoreRate(0.9696)).toBe("96.9%")
+    expect(formatDxScoreRate(0.97)).toBe("97.0%")
+    expect(formatDxScoreRate(1)).toBe("100.0%")
+    expect(formatDxScoreRate(1291 / 1341)).toBe("96.2%")
+  })
+})
+
+describe("getScoreStats", () => {
+  it("counts DX stars cumulatively, like the combo and sync counts", () => {
+    const entries = [0, 1, 3, 3, 5].map(
+      (dx_star) =>
+        ({ dx_star, combo_flag: 0, sync_flag: 0 }) as ScoreTableEntry,
+    )
+    expect(getScoreStats(entries).dxStarStats).toEqual([4, 3, 3, 1, 1])
   })
 })

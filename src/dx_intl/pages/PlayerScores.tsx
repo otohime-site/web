@@ -31,7 +31,7 @@ import { Switch } from "../../common/components/ui/Switch"
 import { useTable } from "../../common/utils/table"
 import { graphql, readFragment } from "../../graphql"
 import AdvancedFilter from "../components/AdvancedFilter"
-import { ComboFlag, SyncFlag } from "../components/Flags"
+import { ComboFlag, DxStarFlag, SyncFlag } from "../components/Flags"
 import Folders, { DifficultyFolders } from "../components/Folders"
 import type { RatingImageInfo } from "../components/PlayerRatingCanvas"
 import PlayerRatingImage from "../components/PlayerRatingImage"
@@ -44,11 +44,13 @@ import {
   ScoreTableEntry,
   flatSongsResult,
   getChartHash,
+  getDxScoreFields,
   getRating,
   getScoreStats,
   getVersionRewardProgress,
 } from "../models/aggregation"
 import {
+  DX_STAR_BORDERS,
   type Difficulty,
   RANK_SCORES,
   RATING_NEW_COUNT,
@@ -111,6 +113,7 @@ const orderings = [
   "rating",
   "combo_flag",
   "sync_flag",
+  "dx_score",
   "updated_at",
   "sss_rate",
   "fc_rate",
@@ -394,6 +397,7 @@ const getOrderingCollection = (ratingGroupTarget?: number) =>
       { group: "成績單", value: "rating", label: "Rating 分數" },
       { group: "成績單", value: "combo_flag", label: "Combo 標記" },
       { group: "成績單", value: "sync_flag", label: "Sync 標記" },
+      { group: "成績單", value: "dx_score", label: "DX 分數" },
       { group: "成績單", value: "updated_at", label: "分數更新時間" },
       { group: "玩家統計", value: "sss_rate", label: "SSS Rate" },
       { group: "玩家統計", value: "fc_rate", label: "FC Rate" },
@@ -550,6 +554,10 @@ const PlayerScores = memo(function PlayerScores({
         score: score?.score,
         combo_flag: comboFlags.indexOf(score?.combo_flag ?? ""),
         sync_flag: syncFlags.indexOf(score?.sync_flag ?? ""),
+        ...getDxScoreFields({
+          dx_score: score?.dx_score ?? undefined,
+          max_dx_score: score?.max_dx_score ?? undefined,
+        }),
         updated_at: score?.start,
         rating_group_average: ratingGroupAverage,
         rating_group_difference:
@@ -737,6 +745,12 @@ const PlayerScores = memo(function PlayerScores({
       internal_lv: (a: ScoreTableEntry, b: ScoreTableEntry) =>
         (a.internal_lv ?? levelCompareKey[a.level]) -
         (b.internal_lv ?? levelCompareKey[b.level]),
+      // By the rate, as raw DX scores mostly follow the note count.
+      // Charts without a DX score count as lowest, so they come last in
+      // descending order and first in ascending order.
+      dx_score: (a: ScoreTableEntry, b: ScoreTableEntry) =>
+        (a.dx_score_rate ?? -1) - (b.dx_score_rate ?? -1) ||
+        (a.dx_score ?? -1) - (b.dx_score ?? -1),
       updated_at: (a: ScoreTableEntry, b: ScoreTableEntry) =>
         (a.updated_at != null ? Date.parse(a.updated_at) : 0) -
         (b.updated_at != null ? Date.parse(b.updated_at) : 0),
@@ -906,6 +920,8 @@ const PlayerScores = memo(function PlayerScores({
       score: entry.score != null ? entry.score.toFixed(4) : "",
       combo_flag: comboFlags[entry.combo_flag],
       sync_flag: syncFlags[entry.sync_flag],
+      dx_score: entry.dx_score?.toString() ?? "",
+      max_dx_score: entry.max_dx_score?.toString() ?? "",
       rating: entry.rating.toString(),
     }))
     const csvText = papa.unparse(data)
@@ -1189,6 +1205,17 @@ const PlayerScores = memo(function PlayerScores({
                       </li>
                     ) : null,
                   )}
+                </ul>
+              </section>
+              <section className={classes["stats-group"]}>
+                <h3>DX</h3>
+                <ul className={classes["stats-list"]}>
+                  {DX_STAR_BORDERS.map((border, index) => (
+                    <li key={border}>
+                      <DxStarFlag star={index + 1} />
+                      <span>{stats.dxStarStats[index]}</span>
+                    </li>
+                  ))}
                 </ul>
               </section>
             </div>

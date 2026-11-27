@@ -2,3 +2,8 @@
   width: 1.5em;
   height: 1.5em;
 }
+
+.spacer {
+  display: inline-block;
+  vertical-align: middle;
+}

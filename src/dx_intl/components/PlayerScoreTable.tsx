@@ -4,19 +4,21 @@ import { Fragment, memo } from "react"
 import { formatDate, formatNumericDate } from "../../common/utils/datetime"
 import {
   ScoreTableEntry,
+  formatDxScoreRate,
   getChartHash,
   getCoverUrl,
 } from "../models/aggregation"
 import { comboFlags, syncFlags } from "../models/constants"
 import { getDifficultyClassName } from "../utils/styling"
 import ChartDetail from "./ChartDetail"
-import { ComboFlag, SyncFlag } from "./Flags"
+import { ComboFlag, DxStarFlag, SyncFlag } from "./Flags"
 import Long from "./Long"
 import Variant from "./Variant"
 
 import classes from "./PlayerScoreTable.module.css"
 
 const percentageValueColumns = [
+  "dx_score",
   "sss_rate",
   "fc_rate",
   "ap_rate",
@@ -59,6 +61,11 @@ const getDisplayedValue = (
     return entry.rating
   }
 
+  if (valueColumn === "dx_score") {
+    return entry.dx_score_rate != null
+      ? formatDxScoreRate(entry.dx_score_rate)
+      : "—"
+  }
   const value = entry[valueColumn]
   if (typeof value !== "number") return "—"
   const percentage =
@@ -150,6 +157,7 @@ const PlayerScoreTableBase = ({
                 <td className={classes["col-flags"]}>
                   <ComboFlag flag={comboFlags[entry.combo_flag]} />
                   <SyncFlag flag={syncFlags[entry.sync_flag]} />
+                  <DxStarFlag star={entry.dx_star} />
                 </td>
                 <td
                   className={clsx(

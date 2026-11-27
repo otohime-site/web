@@ -10,9 +10,29 @@
   font-size: 0.86rem;
 }
 
-.rating,
+.gauges,
 .stats-link {
   grid-column: 1 / -1;
+}
+
+/* Rating and DX score gauges sit side by side when the card is wide and
+   stack otherwise. This follows the card, not the viewport: beside the
+   sidebar the table can be narrow even on a large screen. */
+.gauges {
+  container: gauges / inline-size;
+}
+
+.gauges-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--size-3) var(--size-5);
+}
+
+@container gauges (min-width: 44rem) {
+  .gauges-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -364,5 +384,47 @@
 
   .marker-pointer {
     border-top-color: var(--otohime-7);
+  }
+}
+
+/* Same height as the rank line in the Rating stops, so the two gauges'
+   labels line up. Stars not reached yet are muted, like the AP icon. */
+.dx-stop-icon {
+  width: 1.3em;
+  height: 1.3em;
+}
+
+li:not([data-achieved]) > .dx-stop-icon {
+  filter: grayscale(0.6);
+  opacity: 0.65;
+}
+
+.dx-missing {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 0.75rem;
+}
+
+/* No AP line, so the stops need two lines only. */
+.dx-stops {
+  height: 2.6em;
+}
+
+/* The brand colour two steps lighter than the Rating gauge's fill
+   (otohime-6, or otohime-7 in dark mode), so the two gauges read as one
+   family without looking like the same measure. */
+.dx-fill {
+  background: var(--otohime-4);
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--otohime-5);
+  }
+}
+
+.dx-pointer {
+  border-top-color: var(--otohime-4);
+
+  @media (prefers-color-scheme: dark) {
+    border-top-color: var(--otohime-5);
   }
 }

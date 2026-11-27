@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="digit-fill" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#fff" offset="0"/>
+      <stop stop-color="#FFE36B" offset="1"/>
+    </linearGradient>
+  </defs>
+  <path id="star" d="M16 1Q20 12 31 16Q20 20 16 31Q12 20 1 16Q12 12 16 1Z" fill="#ffc880" stroke="#dc4812" stroke-linejoin="round"/>
+  <path id="digit" d="M16.84 15.02H16.98Q18.128 15.02 18.849 15.783Q19.57 16.546 19.57 17.82Q19.57 19.458 18.562 20.319Q17.554 21.18 15.65 21.18Q13.774 21.18 12.15 20.34L12.836 18.24Q14.306 18.968 15.37 18.968Q16.084 18.968 16.462 18.681Q16.84 18.394 16.84 17.89Q16.84 17.47 16.644 17.26Q16.448 17.05 15.909 16.945Q15.37 16.84 14.32 16.84H13.76V15.02L16.14 13.088V13.06H12.36V10.82H19.43V13.06L16.84 14.992Z" fill="url(#digit-fill)" fill-rule="evenodd" stroke="#dc4812" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" style="paint-order:stroke"/>
+</svg>
